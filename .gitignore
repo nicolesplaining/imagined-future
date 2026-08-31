@@ -14,5 +14,6 @@ results/*
 !results/.gitkeep
 !results/task4_state2_deterministic_clamps.csv
 !results/task8_state3_deterministic_clamp.csv
+!results/task4_state2_attention_ablation.csv
 wandb/
 *.log
