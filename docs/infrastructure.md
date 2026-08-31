@@ -15,7 +15,9 @@ This was treated as an infrastructure/provisioning issue, not an experimental re
 
 ## Replacement host validation
 
-The provider replacement exposes the same two NVIDIA H100 80 GB GPUs. Both report `Fabric: Completed / Success`; PyTorch 2.7.0+cu128 detects both devices and completed an explicit CUDA tensor computation. The intervention suite passes 14 tests in the official environment.
+The provider replacement exposes the same two NVIDIA H100 80 GB GPUs. Both report `Fabric: Completed / Success`; PyTorch 2.7.0+cu128 detects both devices and completed an explicit CUDA tensor computation. The intervention suite passes 21 tests in the official environment.
+
+The replacement initially lacked a working container-side EGL vendor mapping for MuJoCo. The host's NVIDIA GL packages were aligned to driver `580.105.08`, Docker's NVIDIA runtime was configured, and its CDI device specification was regenerated. Unprivileged experiment containers now receive the NVIDIA EGL vendor JSON and libraries plus explicit `/dev/dri` access. Fresh LIBERO reconstructions are exact for both tested tasks: task 0 matches all 44 numeric observation fields and task 3 matches all 20, with zero flattened-state error across three independent environment constructions.
 
 The official Cosmos Policy config eagerly resolves a gated base-model path before its public loader replaces that path with the full fine-tuned policy checkpoint. The project defers only that unused config-time lookup. The 508 MB video tokenizer is a real gated dependency and was downloaded after authenticating an account with repository access. The authentication token was removed from the server after the required artifact was cached.
 

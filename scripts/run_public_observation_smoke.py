@@ -10,6 +10,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
+from imagined_future.cosmos_config import libero_policy_config
 from imagined_future.frames import LatentFrameGroups
 from imagined_future.interventions import resample_frames
 from imagined_future.model_patch import defer_hf_config_checkpoint_resolution, transform_model_initial_noise
@@ -32,30 +33,7 @@ def main() -> None:
         init_t5_text_embeddings_cache,
         load_dataset_stats,
     )
-    from cosmos_policy.experiments.robot.libero.run_libero_eval import PolicyEvalConfig
-
-    cfg = PolicyEvalConfig(
-        config="cosmos_predict2_2b_480p_libero__inference_only",
-        ckpt_path="nvidia/Cosmos-Policy-LIBERO-Predict2-2B",
-        config_file="cosmos_policy/config/config.py",
-        dataset_stats_path="nvidia/Cosmos-Policy-LIBERO-Predict2-2B/libero_dataset_statistics.json",
-        t5_text_embeddings_path="nvidia/Cosmos-Policy-LIBERO-Predict2-2B/libero_t5_embeddings.pkl",
-        use_wrist_image=True,
-        use_proprio=True,
-        normalize_proprio=True,
-        unnormalize_actions=False,
-        chunk_size=16,
-        num_open_loop_steps=16,
-        trained_with_image_aug=True,
-        use_jpeg_compression=True,
-        flip_images=True,
-        num_denoising_steps_action=5,
-        num_denoising_steps_future_state=1,
-        num_denoising_steps_value=1,
-        deterministic=True,
-        randomize_seed=False,
-        use_variance_scale=False,
-    )
+    cfg = libero_policy_config(unnormalize_actions=False)
     dataset_stats = load_dataset_stats(cfg.dataset_stats_path)
     init_t5_text_embeddings_cache(cfg.t5_text_embeddings_path)
     with defer_hf_config_checkpoint_resolution():
