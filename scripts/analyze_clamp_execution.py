@@ -18,6 +18,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--branch-run-dir", type=Path, required=True)
     parser.add_argument("--clamp-run-dir", type=Path, required=True)
+    parser.add_argument("--execution-artifact", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
@@ -25,7 +26,11 @@ def main() -> None:
         raise FileExistsError(f"refusing to overwrite existing result: {args.output}")
     clamp = json.loads((args.clamp_run_dir / "summary.json").read_text())
     branch = np.load(args.branch_run_dir / "branches.npz", allow_pickle=False)
-    execution = np.load(args.clamp_run_dir / "execution_endpoint_states.npz", allow_pickle=False)
+    execution_artifact = args.execution_artifact or args.clamp_run_dir / "execution.json"
+    execution = np.load(
+        execution_artifact.with_name(f"{execution_artifact.stem}_endpoint_states.npz"),
+        allow_pickle=False,
+    )
     recipient_index = int(clamp["recipient_branch"])
     donor_index = int(clamp["donor_branch"])
     recipient_state = branch["endpoint_states"][recipient_index]
@@ -34,9 +39,14 @@ def main() -> None:
     donor_image = branch["endpoint_primary_images"][donor_index]
 
     conditions = {}
-    for name_raw, state in zip(execution["names"], execution["endpoint_states"], strict=True):
+    endpoint_proprios = execution["endpoint_proprios"] if "endpoint_proprios" in execution.files else None
+    for index, (name_raw, state) in enumerate(
+        zip(execution["names"], execution["endpoint_states"], strict=True)
+    ):
         name = str(name_raw)
-        image = np.asarray(Image.open(args.clamp_run_dir / f"execution_{name}_endpoint_primary.png"))
+        image = np.asarray(
+            Image.open(args.clamp_run_dir / f"{execution_artifact.stem}_{name}_endpoint_primary.png")
+        )
         recipient_pixel_l1 = pixel_l1(image, recipient_image)
         donor_pixel_l1 = pixel_l1(image, donor_image)
         state_score = float(
@@ -54,6 +64,21 @@ def main() -> None:
             "primary_pixel_l1_to_donor": donor_pixel_l1,
             "primary_pixel_donor_preference": recipient_pixel_l1 - donor_pixel_l1,
         }
+        if endpoint_proprios is not None:
+            proprio = endpoint_proprios[index]
+            recipient_proprio = branch["endpoint_proprios"][recipient_index]
+            donor_proprio = branch["endpoint_proprios"][donor_index]
+            conditions[name].update(
+                proprio_donor_steering=float(
+                    donor_steering(
+                        torch.from_numpy(proprio).unsqueeze(0),
+                        torch.from_numpy(recipient_proprio).unsqueeze(0),
+                        torch.from_numpy(donor_proprio).unsqueeze(0),
+                    ).item()
+                ),
+                proprio_l2_to_recipient=float(np.linalg.norm(proprio - recipient_proprio)),
+                proprio_l2_to_donor=float(np.linalg.norm(proprio - donor_proprio)),
+            )
     for required in ("recipient_clamp", "donor_clamp"):
         if required not in conditions:
             raise ValueError(f"execution artifact is missing {required}")
@@ -79,6 +104,11 @@ def main() -> None:
             ),
         },
     }
+    if "proprio_donor_steering" in conditions["donor_clamp"]:
+        result["donor_minus_recipient_clamp"]["proprio_donor_steering"] = (
+            conditions["donor_clamp"]["proprio_donor_steering"]
+            - conditions["recipient_clamp"]["proprio_donor_steering"]
+        )
     args.output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
     print(json.dumps(result, indent=2, sort_keys=True))
 

@@ -56,6 +56,7 @@ def main() -> None:
 
     executions = []
     endpoint_states = []
+    endpoint_proprios = []
     args.output.parent.mkdir(parents=True, exist_ok=True)
     expected_digest = state_digest(branch["branch_state"])
     for name in names:
@@ -80,6 +81,7 @@ def main() -> None:
         finally:
             environment.close()
         endpoint_states.append(endpoint_state)
+        endpoint_proprios.append(np.asarray(endpoint["proprio"], dtype=np.float64))
         Image.fromarray(np.asarray(endpoint["primary_image"], dtype=np.uint8)).save(
             args.output.parent / f"{args.output.stem}_{name}_endpoint_primary.png"
         )
@@ -109,6 +111,7 @@ def main() -> None:
         args.output.with_name(f"{args.output.stem}_endpoint_states.npz"),
         names=np.asarray(names),
         endpoint_states=np.stack(endpoint_states),
+        endpoint_proprios=np.stack(endpoint_proprios),
     )
     print(
         json.dumps(

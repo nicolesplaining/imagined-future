@@ -1,6 +1,6 @@
 # Natural-rollout and matched-branch screen
 
-Status: exploratory donor discovery and one matched-state intervention; superseded for confirmatory use by a deterministic-tokenizer rerun now in progress.
+Status: corrected deterministic exploration complete at one selected state; held-out state screening in progress.
 
 ## Reproducibility correction
 
@@ -12,6 +12,8 @@ The shared configuration now reproduces the [official evaluator switch](https://
 
 The corrected branch screen again found a robust failure/success pair, but the donor changed. Branch seed 195 fails under all three shared continuation seeds (0/3), while branch seed 198 succeeds under all three (3/3, at policy steps 213--215). The current simulator state and observation are bitwise identical across branches.
 
+This state was selected using the earlier rollout screen, and donor identities were assigned after observing continuation outcomes. The corrected analysis is therefore a clean exploratory within-unit result, not a held-out confirmatory estimate.
+
 Two all-modality semantic clamps used independent future-noise draws. Both unclamped baselines exactly reproduce the saved recipient action. The clean target-latent norms are nearly matched (`137.6223` recipient and `137.6004` donor), with donor-minus-recipient L2 `9.7361`.
 
 | Future-noise seed | Action donor steering | Executed-state donor steering | Endpoint-image donor preference |
@@ -19,7 +21,7 @@ Two all-modality semantic clamps used independent future-noise draws. Both uncla
 | 20195 | +0.2306 | +0.1603 | +0.2551 |
 | 20196 | +0.2082 | +0.0441 | +0.1569 |
 
-All three directional contrasts are positive in both draws. This is clean evidence that explicitly changing future endpoint content can causally change the jointly generated action and its 16-step physical endpoint at this exact state. The two noise draws are replications of one experimental unit, not independent states, and do not establish a population effect. A robust-failure-to-robust-failure control produces a smaller action contrast (`+0.1151`), a negative executed-state contrast (`-0.0255`), and a positive endpoint-image contrast (`+0.1472`). The robust-success donor exceeds this control on action and simulator-state outcomes in both noise draws, but one control donor at one state is insufficient for a success-specific claim.
+All three directional contrasts are positive in both draws. A rerun that additionally records the official nine-dimensional endpoint proprioception gives a donor-minus-recipient proprio steering contrast of `+0.2664` for noise seed 20195. This is clean evidence that explicitly changing future endpoint content can causally change the jointly generated action and its 16-step physical endpoint at this exact state. The two noise draws are replications of one experimental unit, not independent states, and do not establish a population effect. A robust-failure-to-robust-failure control produces a smaller action contrast (`+0.1151`), a negative executed-state contrast (`-0.0255`), and a positive endpoint-image contrast (`+0.1472`). The robust-success donor exceeds this control on action and simulator-state outcomes in both noise draws, but one control donor at one state is insufficient for a success-specific claim.
 
 The other two robust-success donors also give positive action and endpoint-image contrasts: seed 201 gives `+0.0735` and `+0.1664`, while seed 202 gives `+0.2103` and `+0.4021`. Their full-state contrasts are slightly negative (`-0.0553` and `-0.0515`). Thus action and visual-endpoint steering replicate across all three success donors, whereas full-state steering is donor-dependent. The flattened MuJoCo state includes robot and object coordinates at incompatible scales, so the full-state projection is retained as a broad diagnostic rather than treated as the sole behavioral endpoint.
 
@@ -34,6 +36,14 @@ Corrected single-modality clamps show that the positive action effect is visual:
 Wrist and primary-camera targets have comparable action effects but different endpoint signatures. The wrist clamp accounts for the positive full-state contrast, while the primary-camera clamp accounts for the primary-image contrast. Future proprioception is directionally negative on both action and state outcomes. Because modalities interact in the joint denoiser, these single-slot effects are not additive decompositions of the all-modality effect.
 
 The versioned machine-readable table is [results/task4_state2_deterministic_clamps.csv](../results/task4_state2_deterministic_clamps.csv).
+
+## Independent-state negative
+
+A corrected deterministic screen at task-8/state-3 provides an independent exact-state endpoint pair. Its outcome labels are not robust: recipient seed 195 fails under continuation seeds 195 and 196 but succeeds under 197, so this unit is excluded from success/failure mediation. It remains a valid test of local future-conditioned behavior.
+
+The clamp passes exactness and manipulation checks. Recipient and donor decoded futures differ by `0.6091` primary-camera pixels and `1.0663` wrist-camera pixels. Nevertheless, donor-minus-recipient action steering is only `+0.0015`. Executed contrasts are likewise near zero: `+0.0094` for full simulator state, `+0.0094` for primary endpoint-image preference, and `-0.0263` for endpoint proprioception. This unit has the epiphenomenal pattern motivating the project: the explicit future changes while behavior does not move coherently toward it. Its machine-readable row is [results/task8_state3_deterministic_clamp.csv](../results/task8_state3_deterministic_clamp.csv).
+
+Task-4/state-9 also failed to yield a robust outcome pair: candidate branch labels changed across continuation seeds. No success-mediation intervention is reported for that state.
 
 ## Natural rollout screen
 

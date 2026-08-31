@@ -21,6 +21,7 @@ def main() -> None:
     parser.add_argument("--suite", default="libero_10")
     parser.add_argument("--task-id", type=int, required=True)
     parser.add_argument("--continuation-seed", type=int, required=True)
+    parser.add_argument("--branch-indices", type=int, nargs="+")
     parser.add_argument("--max-policy-steps", type=int, default=520)
     parser.add_argument("--warmup-steps", type=int, default=10)
     args = parser.parse_args()
@@ -54,6 +55,13 @@ def main() -> None:
     task = suite.get_task(args.task_id)
     dummy_action = get_libero_dummy_action("cosmos")
     expected_branch_digest = state_digest(branch["branch_state"])
+    branch_count = len(branch["branch_seeds"])
+    selected_indices = args.branch_indices or list(range(branch_count))
+    if len(set(selected_indices)) != len(selected_indices):
+        raise ValueError("branch indices must be unique")
+    if any(index < 0 or index >= branch_count for index in selected_indices):
+        raise IndexError(f"branch indices must be within 0..{branch_count - 1}")
+    selected_index_set = set(selected_indices)
 
     def env_factory():
         environment, _description = get_libero_env(task, "cosmos", resolution=256)
@@ -76,6 +84,8 @@ def main() -> None:
     for index, (branch_seed, initial_actions, expected_endpoint) in enumerate(
         zip(branch["branch_seeds"], branch["branch_actions"], branch["endpoint_states"], strict=True)
     ):
+        if index not in selected_index_set:
+            continue
         environment = env_factory()
         try:
             raw_observation = restore(environment)
@@ -162,6 +172,7 @@ def main() -> None:
         "branch_run": str(args.branch_run_dir),
         "branch_state_digest": expected_branch_digest,
         "continuation_seed": args.continuation_seed,
+        "branch_indices": selected_indices,
         "deterministic_tokenizer": deterministic_tokenizer_enabled(),
         "max_policy_steps": args.max_policy_steps,
         "successes": sum(outcome["success"] for outcome in outcomes),

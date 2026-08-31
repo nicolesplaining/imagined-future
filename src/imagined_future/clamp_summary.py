@@ -20,8 +20,12 @@ def summarize_clamp_runs(
         deterministic = bool(summary.get("deterministic_tokenizer", False))
         if require_deterministic and not deterministic:
             raise ValueError(f"{run_dir} does not record deterministic tokenization")
-        execution_path = run_dir / "execution_analysis.json"
-        execution = json.loads(execution_path.read_text()) if execution_path.exists() else None
+        execution_candidates = (
+            run_dir / "execution_analysis_with_proprio.json",
+            run_dir / "execution_analysis.json",
+        )
+        execution_path = next((path for path in execution_candidates if path.exists()), None)
+        execution = json.loads(execution_path.read_text()) if execution_path else None
         execution_effects = execution["donor_minus_recipient_clamp"] if execution else {}
         latent = summary.get("selected_clean_latent_l2", {})
         rows.append(
@@ -36,6 +40,9 @@ def summarize_clamp_runs(
                 "executed_state_donor_steering_effect": execution_effects.get("state_donor_steering"),
                 "endpoint_primary_donor_preference_effect": execution_effects.get(
                     "primary_pixel_donor_preference"
+                ),
+                "endpoint_proprio_donor_steering_effect": execution_effects.get(
+                    "proprio_donor_steering"
                 ),
                 "recipient_latent_norm": latent.get("recipient_norm"),
                 "donor_latent_norm": latent.get("donor_norm"),

@@ -34,6 +34,7 @@ def _write_run(path, *, deterministic=True, baseline_error=0.0, with_execution=T
                     "donor_minus_recipient_clamp": {
                         "state_donor_steering": 0.2,
                         "primary_pixel_donor_preference": 0.3,
+                        "proprio_donor_steering": 0.4,
                     }
                 }
             )
@@ -55,6 +56,7 @@ def test_summarizes_valid_deterministic_run(tmp_path) -> None:
             "action_donor_steering_effect": 0.25,
             "executed_state_donor_steering_effect": 0.2,
             "endpoint_primary_donor_preference_effect": 0.3,
+            "endpoint_proprio_donor_steering_effect": 0.4,
             "recipient_latent_norm": 10.0,
             "donor_latent_norm": 10.1,
             "donor_minus_recipient_latent_l2": 2.0,
