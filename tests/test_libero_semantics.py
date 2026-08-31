@@ -65,3 +65,19 @@ def test_goal_predicate_snapshot_handles_free_joint_address_ranges() -> None:
 
     assert snapshot["success"] is False
     assert snapshot["predicates"][0]["arguments"][0]["joints"]["qpos"] == [[1.0, 2.0, 3.0]]
+
+
+def test_goal_predicate_snapshot_handles_objects_without_joints() -> None:
+    state = FakeState()
+    state.object_state_type = "object"
+    state.object_name = "fixed_object"
+    simulator_environment = SimpleNamespace(
+        parsed_problem={"goal_state": [["Visible", "fixed_object"]]},
+        object_states_dict={"fixed_object": state},
+        get_object=lambda _name: SimpleNamespace(joints=None, object_properties={}),
+        _eval_predicate=lambda _state: True,
+    )
+    snapshot = goal_predicate_snapshot(SimpleNamespace(env=simulator_environment))
+
+    assert snapshot["success"] is True
+    assert "joints" not in snapshot["predicates"][0]["arguments"][0]

@@ -120,9 +120,9 @@ def main() -> None:
     closed_result, closed_clamp = run_clamp(closed_clean)
 
     normalized_actions = {
-        "baseline": np.asarray(recipient["actions"], dtype=np.float64),
-        "open_clamp": np.asarray(open_result["actions"], dtype=np.float64),
-        "closed_clamp": np.asarray(closed_result["actions"], dtype=np.float64),
+        "baseline": np.asarray(recipient["actions"]),
+        "open_clamp": np.asarray(open_result["actions"]),
+        "closed_clamp": np.asarray(closed_result["actions"]),
     }
     environment_actions = {
         name: unnormalize_actions(action.copy(), dataset_stats) for name, action in normalized_actions.items()
@@ -148,12 +148,23 @@ def main() -> None:
         "future_frame_indices": list(groups.future),
         "denoiser_sigmas": {"open": open_clamp.calls, "closed": closed_clamp.calls},
         "normalized_action_l2": {
-            "open_from_baseline": float(np.linalg.norm(normalized_actions["open_clamp"] - normalized_actions["baseline"])),
+            "open_from_baseline": float(
+                np.linalg.norm(
+                    normalized_actions["open_clamp"].astype(np.float64)
+                    - normalized_actions["baseline"].astype(np.float64)
+                )
+            ),
             "closed_from_baseline": float(
-                np.linalg.norm(normalized_actions["closed_clamp"] - normalized_actions["baseline"])
+                np.linalg.norm(
+                    normalized_actions["closed_clamp"].astype(np.float64)
+                    - normalized_actions["baseline"].astype(np.float64)
+                )
             ),
             "closed_from_open": float(
-                np.linalg.norm(normalized_actions["closed_clamp"] - normalized_actions["open_clamp"])
+                np.linalg.norm(
+                    normalized_actions["closed_clamp"].astype(np.float64)
+                    - normalized_actions["open_clamp"].astype(np.float64)
+                )
             ),
         },
         "predicted_values": {

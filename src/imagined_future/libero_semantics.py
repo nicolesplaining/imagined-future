@@ -17,11 +17,11 @@ def _joint_snapshot(environment: Any, object_state: Any) -> dict[str, Any] | Non
     simulator_environment = environment.env
     if getattr(object_state, "object_state_type", None) == "site":
         site = simulator_environment.object_sites_dict[object_state.object_name]
-        joint_names = list(site.joints)
+        joint_names = list(site.joints or ())
         articulated_object = simulator_environment.get_object(object_state.parent_name)
     elif getattr(object_state, "object_state_type", None) == "object":
         articulated_object = simulator_environment.get_object(object_state.object_name)
-        joint_names = list(getattr(articulated_object, "joints", ()))
+        joint_names = list(getattr(articulated_object, "joints", ()) or ())
     else:
         return None
 

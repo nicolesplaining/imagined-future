@@ -73,11 +73,12 @@ def main() -> None:
         get_model,
         init_t5_text_embeddings_cache,
         load_dataset_stats,
+        unnormalize_actions,
     )
     from cosmos_policy.experiments.robot.libero.libero_utils import get_libero_dummy_action, get_libero_env
     from cosmos_policy.experiments.robot.libero.run_libero_eval import prepare_observation
 
-    cfg = libero_policy_config(args.suite, unnormalize_actions=True)
+    cfg = libero_policy_config(args.suite, unnormalize_actions=False)
     dataset_stats = load_dataset_stats(cfg.dataset_stats_path)
     init_t5_text_embeddings_cache(cfg.t5_text_embeddings_path)
     with defer_hf_config_checkpoint_resolution():
@@ -116,7 +117,8 @@ def main() -> None:
                 num_denoising_steps_action=cfg.num_denoising_steps_action,
                 generate_future_state_and_value_in_parallel=True,
             )
-            actions = np.asarray(result["actions"], dtype=np.float64)
+            normalized_raw = np.asarray(result["actions"])
+            actions = unnormalize_actions(normalized_raw.copy(), dataset_stats)
             del result
             for action in actions:
                 raw_observation, _reward, done, _info = prefix_env.step(action.tolist())
@@ -136,6 +138,7 @@ def main() -> None:
     branch_observation = prepare_observation(replay_results[0].observation, 256, cfg.flip_images)
 
     branch_actions = []
+    normalized_branch_actions = []
     endpoint_states = []
     endpoint_primary_images = []
     endpoint_wrist_images = []
@@ -158,7 +161,8 @@ def main() -> None:
             num_denoising_steps_action=cfg.num_denoising_steps_action,
             generate_future_state_and_value_in_parallel=True,
         )
-        actions = np.asarray(result["actions"], dtype=np.float64)
+        normalized_raw = np.asarray(result["actions"])
+        actions = unnormalize_actions(normalized_raw.copy(), dataset_stats)
         predictions = result["future_image_predictions"]
         predicted_primary = np.asarray(predictions["future_image"], dtype=np.uint8)
         predicted_wrist = np.asarray(predictions["future_wrist_image"], dtype=np.uint8)
@@ -172,6 +176,7 @@ def main() -> None:
         endpoint_proprio = np.asarray(endpoint["proprio"], dtype=np.float64)
 
         branch_actions.append(actions)
+        normalized_branch_actions.append(normalized_raw.astype(np.float64))
         endpoint_states.append(endpoint_state)
         endpoint_primary_images.append(endpoint_primary)
         endpoint_wrist_images.append(endpoint_wrist)
@@ -186,6 +191,7 @@ def main() -> None:
         Image.fromarray(predicted_primary).save(args.output_dir / f"{label}_predicted_primary.png")
 
     branch_actions_array = np.stack(branch_actions)
+    normalized_branch_actions_array = np.stack(normalized_branch_actions)
     endpoint_states_array = np.stack(endpoint_states)
     endpoint_primary_array = np.stack(endpoint_primary_images)
     endpoint_wrist_array = np.stack(endpoint_wrist_images)
@@ -213,6 +219,7 @@ def main() -> None:
         current_wrist_image=np.asarray(branch_observation["wrist_image"], dtype=np.uint8),
         current_proprio=np.asarray(branch_observation["proprio"], dtype=np.float64),
         branch_seeds=np.asarray(args.branch_seeds, dtype=np.int64),
+        normalized_branch_actions=normalized_branch_actions_array,
         branch_actions=branch_actions_array,
         endpoint_states=endpoint_states_array,
         endpoint_primary_images=endpoint_primary_array,
