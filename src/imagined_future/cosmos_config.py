@@ -2,13 +2,21 @@
 
 from __future__ import annotations
 
+import os
+
+
+def deterministic_tokenizer_enabled() -> bool:
+    """Report whether the public policy tokenizer uses its fixed encoding seed."""
+
+    return os.environ.get("DETERMINISTIC", "").lower() == "true"
+
 
 def libero_policy_config(task_suite_name: str = "libero_10", *, unnormalize_actions: bool = True):
     """Return the shared deterministic five-step LIBERO inference config."""
 
     from cosmos_policy.experiments.robot.libero.run_libero_eval import PolicyEvalConfig
 
-    return PolicyEvalConfig(
+    config = PolicyEvalConfig(
         config="cosmos_predict2_2b_480p_libero__inference_only",
         ckpt_path="nvidia/Cosmos-Policy-LIBERO-Predict2-2B",
         config_file="cosmos_policy/config/config.py",
@@ -31,3 +39,11 @@ def libero_policy_config(task_suite_name: str = "libero_10", *, unnormalize_acti
         randomize_seed=False,
         use_variance_scale=False,
     )
+    # The official LIBERO evaluator applies this side effect outside
+    # ``PolicyEvalConfig``.  Our research scripts call ``get_action`` directly,
+    # so merely setting ``deterministic=True`` on the config is insufficient:
+    # the stochastic video tokenizer only enables its fixed encoding seed when
+    # this environment variable is present.
+    if config.deterministic:
+        os.environ["DETERMINISTIC"] = "True"
+    return config

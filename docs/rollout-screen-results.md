@@ -1,6 +1,39 @@
 # Natural-rollout and matched-branch screen
 
-Status: exploratory donor discovery and one matched-state intervention; not a confirmatory mediation result.
+Status: exploratory donor discovery and one matched-state intervention; superseded for confirmatory use by a deterministic-tokenizer rerun now in progress.
+
+## Reproducibility correction
+
+The first screen and clamps set `PolicyEvalConfig.deterministic=True` but called `get_action` directly. NVIDIA's public evaluator performs an additional side effect: it sets the `DETERMINISTIC=True` environment variable before inference. The public policy tokenizer checks this variable and otherwise samples during VAE encoding. The initial experiments therefore controlled diffusion seeds but not tokenizer sampling. This explains the two cross-process action variants described below and means that semantic clamps could differ in both endpoint content and tokenizer noise.
+
+The shared configuration now reproduces the [official evaluator switch](https://github.com/NVlabs/cosmos-policy/blob/18a2accadf4e7a3531e56754102af5a24d2316da/cosmos_policy/experiments/robot/libero/run_libero_eval.py#L803-L808), and every new artifact records whether deterministic tokenization was enabled. A fresh task-4/state-2 branch collection was run independently on both physical H100s; the complete compressed `branches.npz` artifacts have the same SHA-256 digest. Earlier results remain useful exploratory evidence, but none is promoted to a confirmatory claim until it is reproduced from the corrected branch artifact.
+
+## Corrected deterministic result
+
+The corrected branch screen again found a robust failure/success pair, but the donor changed. Branch seed 195 fails under all three shared continuation seeds (0/3), while branch seed 198 succeeds under all three (3/3, at policy steps 213--215). The current simulator state and observation are bitwise identical across branches.
+
+Two all-modality semantic clamps used independent future-noise draws. Both unclamped baselines exactly reproduce the saved recipient action. The clean target-latent norms are nearly matched (`137.6223` recipient and `137.6004` donor), with donor-minus-recipient L2 `9.7361`.
+
+| Future-noise seed | Action donor steering | Executed-state donor steering | Endpoint-image donor preference |
+|---|---:|---:|---:|
+| 20195 | +0.2306 | +0.1603 | +0.2551 |
+| 20196 | +0.2082 | +0.0441 | +0.1569 |
+
+All three directional contrasts are positive in both draws. This is clean evidence that explicitly changing future endpoint content can causally change the jointly generated action and its 16-step physical endpoint at this exact state. The two noise draws are replications of one experimental unit, not independent states, and do not establish a population effect. A robust-failure-to-robust-failure control produces a smaller action contrast (`+0.1151`), a negative executed-state contrast (`-0.0255`), and a positive endpoint-image contrast (`+0.1472`). The robust-success donor exceeds this control on action and simulator-state outcomes in both noise draws, but one control donor at one state is insufficient for a success-specific claim.
+
+The other two robust-success donors also give positive action and endpoint-image contrasts: seed 201 gives `+0.0735` and `+0.1664`, while seed 202 gives `+0.2103` and `+0.4021`. Their full-state contrasts are slightly negative (`-0.0553` and `-0.0515`). Thus action and visual-endpoint steering replicate across all three success donors, whereas full-state steering is donor-dependent. The flattened MuJoCo state includes robot and object coordinates at incompatible scales, so the full-state projection is retained as a broad diagnostic rather than treated as the sole behavioral endpoint.
+
+Corrected single-modality clamps show that the positive action effect is visual:
+
+| Future slots clamped | Action steering | Executed-state steering | Endpoint-image preference |
+|---|---:|---:|---:|
+| Wrist camera | +0.1439 | +0.1602 | +0.0831 |
+| Primary camera | +0.1462 | -0.0686 | +0.2538 |
+| Proprioception | -0.0494 | -0.0714 | +0.0093 |
+
+Wrist and primary-camera targets have comparable action effects but different endpoint signatures. The wrist clamp accounts for the positive full-state contrast, while the primary-camera clamp accounts for the primary-image contrast. Future proprioception is directionally negative on both action and state outcomes. Because modalities interact in the joint denoiser, these single-slot effects are not additive decompositions of the all-modality effect.
+
+The versioned machine-readable table is [results/task4_state2_deterministic_clamps.csv](../results/task4_state2_deterministic_clamps.csv).
 
 ## Natural rollout screen
 
@@ -41,6 +74,16 @@ Two additional targets were evaluated with the same recipient, future-noise real
 
 The manipulation check is directionally successful but modest. Recipient and donor endpoint targets differ by only 0.7697 pixel levels after preprocessing, while their decoded clamped futures differ by 1.1860. Each decoded future is about 2.9 pixel levels from its own target. Both clamps also cause substantial generic movement toward the donor action relative to the unclamped baseline; the causal contrast is therefore the donor-minus-recipient difference, not either raw clamp displacement.
 
+Exploratory follow-ups before the reproducibility correction were directionally consistent. A second future-noise draw produced action, executed-state, and endpoint-image contrasts of `+0.2012`, `+0.0999`, and `+0.3602`. An independently collected branch reference on the other H100 produced `+0.2390`, `+0.1493`, and `+0.4237`. Single-modality clamps localized the effect mainly to visual future slots:
+
+| Future slots clamped | Action steering | Executed-state steering | Endpoint-image preference |
+|---|---:|---:|---:|
+| Wrist camera | +0.1324 | +0.1403 | +0.2725 |
+| Primary camera | +0.0932 | +0.0723 | +0.0544 |
+| Proprioception | -0.0370 | -0.0338 | +0.0162 |
+
+These follow-ups share the uncontrolled-tokenizer limitation and are hypothesis-generating only. They motivate a prespecified visual-versus-proprioception contrast in the corrected pipeline rather than serving as inferential replications.
+
 ## Interpretation
 
-This unit is evidence against strict behavioral epiphenomenality at the tested state: changing only the local endpoint target changes the action and executed endpoint in the donor direction relative to an equally strong recipient-target clamp. It is not yet evidence that Cosmos Policy generally relies on imagined futures, nor that future latents mediate information about eventual success. The result is one state, three donor targets, one all-modality clamp, and one future-noise realization. Confirmatory interpretation requires modality ablations, shuffled and norm-matched controls, additional independent simulator states, future-noise replications, and held-out analysis choices.
+Within the original pipeline, these units are evidence against strict behavioral epiphenomenality at the tested state: changing the local endpoint target changes the action and executed endpoint in the donor direction relative to an equally strong recipient-target clamp. The tokenizer omission prevents the stronger statement that endpoint semantics alone caused the contrast. It is also not evidence that Cosmos Policy generally relies on imagined futures or that future latents mediate information about eventual success. Confirmatory interpretation requires reproduction under deterministic tokenization, shuffled and norm-matched controls, additional independent simulator states, and held-out analysis choices.

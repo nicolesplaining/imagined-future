@@ -3,7 +3,7 @@ from __future__ import annotations
 import pytest
 import torch
 
-from imagined_future.frames import LatentFrameGroups
+from imagined_future.frames import LatentFrameGroups, future_frame_modalities
 
 
 def test_resolves_libero_frame_groups() -> None:
@@ -33,3 +33,14 @@ def test_resolves_libero_frame_groups() -> None:
 def test_rejects_mixed_indices_in_paired_batch() -> None:
     with pytest.raises(ValueError, match="constant"):
         LatentFrameGroups.from_batch({"action_latent_idx": torch.tensor([4, 5])})
+
+
+def test_groups_future_frames_by_modality() -> None:
+    batch = {
+        "future_proprio_latent_idx": torch.tensor([5]),
+        "future_wrist_image_latent_idx": torch.tensor([6]),
+        "future_wrist_image2_latent_idx": torch.tensor([-1]),
+        "future_image_latent_idx": torch.tensor([7]),
+        "future_image2_latent_idx": torch.tensor([-1]),
+    }
+    assert future_frame_modalities(batch) == {"proprio": (5,), "wrist": (6,), "primary": (7,)}

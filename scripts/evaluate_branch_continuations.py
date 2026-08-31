@@ -9,7 +9,7 @@ from pathlib import Path
 import numpy as np
 
 from imagined_future.branching import state_digest
-from imagined_future.cosmos_config import libero_policy_config
+from imagined_future.cosmos_config import deterministic_tokenizer_enabled, libero_policy_config
 from imagined_future.libero_semantics import goal_predicate_snapshot
 from imagined_future.model_patch import defer_hf_config_checkpoint_resolution
 
@@ -162,6 +162,7 @@ def main() -> None:
         "branch_run": str(args.branch_run_dir),
         "branch_state_digest": expected_branch_digest,
         "continuation_seed": args.continuation_seed,
+        "deterministic_tokenizer": deterministic_tokenizer_enabled(),
         "max_policy_steps": args.max_policy_steps,
         "successes": sum(outcome["success"] for outcome in outcomes),
         "failures": sum(not outcome["success"] for outcome in outcomes),

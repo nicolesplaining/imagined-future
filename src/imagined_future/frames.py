@@ -83,3 +83,20 @@ class LatentFrameGroups:
                 overlap = left & right
                 if overlap:
                     raise ValueError(f"{left_name} and {right_name} overlap at {sorted(overlap)}")
+
+
+def future_frame_modalities(batch: Mapping[str, Any]) -> dict[str, tuple[int, ...]]:
+    """Return future-frame indices grouped by semantic modality."""
+
+    groups = {
+        "proprio": _present_indices(batch, ("future_proprio_latent_idx",)),
+        "wrist": _present_indices(
+            batch,
+            ("future_wrist_image_latent_idx", "future_wrist_image2_latent_idx"),
+        ),
+        "primary": _present_indices(batch, ("future_image_latent_idx", "future_image2_latent_idx")),
+    }
+    flattened = tuple(index for indices in groups.values() for index in indices)
+    if len(flattened) != len(set(flattened)):
+        raise ValueError(f"future modality groups overlap at {flattened}")
+    return groups

@@ -12,7 +12,7 @@ from typing import Any
 import numpy as np
 
 from imagined_future.branching import state_digest
-from imagined_future.cosmos_config import libero_policy_config
+from imagined_future.cosmos_config import deterministic_tokenizer_enabled, libero_policy_config
 from imagined_future.libero_semantics import goal_predicate_snapshot
 from imagined_future.model_patch import defer_hf_config_checkpoint_resolution
 
@@ -229,6 +229,7 @@ def main() -> None:
                         "task_description": task.language,
                         "initial_state_index": initial_state_index,
                         "model_seed": model_seed,
+                        "deterministic_tokenizer": deterministic_tokenizer_enabled(),
                         "warmup_steps": args.warmup_steps,
                         "max_policy_steps": args.max_policy_steps,
                         "policy_steps": policy_step,

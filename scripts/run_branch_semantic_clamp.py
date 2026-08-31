@@ -10,8 +10,8 @@ import numpy as np
 import torch
 from PIL import Image
 
-from imagined_future.cosmos_config import libero_policy_config
-from imagined_future.frames import LatentFrameGroups
+from imagined_future.cosmos_config import deterministic_tokenizer_enabled, libero_policy_config
+from imagined_future.frames import LatentFrameGroups, future_frame_modalities
 from imagined_future.interventions import SemanticFutureClamp, replace_frames, resample_frames
 from imagined_future.metrics import donor_steering
 from imagined_future.model_patch import (
@@ -48,6 +48,12 @@ def main() -> None:
     parser.add_argument("--suite", default="libero_10")
     parser.add_argument("--model-seed", type=int, required=True)
     parser.add_argument("--future-noise-seed", type=int, default=20195)
+    parser.add_argument(
+        "--modalities",
+        nargs="+",
+        choices=("proprio", "wrist", "primary"),
+        default=["proprio", "wrist", "primary"],
+    )
     args = parser.parse_args()
 
     if (args.output_dir / "summary.json").exists():
@@ -105,6 +111,12 @@ def main() -> None:
     recipient_target_batch = get_action(obs=recipient_target_observation, **common)
     donor_target_batch = get_action(obs=donor_target_observation, **common)
     groups = LatentFrameGroups.from_batch(baseline["data_batch"])
+    modality_frames = future_frame_modalities(baseline["data_batch"])
+    if len(set(args.modalities)) != len(args.modalities):
+        raise ValueError("modalities must be unique")
+    clamp_frames = tuple(index for name in args.modalities for index in modality_frames[name])
+    if not clamp_frames:
+        raise ValueError("selected modalities have no future frames in this batch")
     if LatentFrameGroups.from_batch(recipient_target_batch["data_batch"]) != groups:
         raise RuntimeError("recipient target uses a different latent frame layout")
     if LatentFrameGroups.from_batch(donor_target_batch["data_batch"]) != groups:
@@ -125,17 +137,17 @@ def main() -> None:
         donor_target_batch["proprio"],
     )
     shared_noise = resample_frames(
-        torch.zeros_like(donor_clean), groups.future, seed=args.future_noise_seed, standard_deviation=1.0
+        torch.zeros_like(donor_clean), clamp_frames, seed=args.future_noise_seed, standard_deviation=1.0
     )
 
     def run_clamp(clean: torch.Tensor):
-        clamp = SemanticFutureClamp(clean, shared_noise, groups.future)
+        clamp = SemanticFutureClamp(clean, shared_noise, clamp_frames)
 
         def initial_transform(initial: torch.Tensor, batch: dict) -> torch.Tensor:
             if LatentFrameGroups.from_batch(batch) != groups:
                 raise RuntimeError("latent frame layout changed during clamp")
             target_at_maximum_noise = clean + float(model.sde.sigma_max) * shared_noise
-            return replace_frames(initial, target_at_maximum_noise, groups.future)
+            return replace_frames(initial, target_at_maximum_noise, clamp_frames)
 
         with transform_model_initial_noise(model, initial_transform):
             with transform_model_x0_factory(model, clamp.wrap):
@@ -163,6 +175,22 @@ def main() -> None:
         for name, action in normalized_actions.items()
     }
 
+    def sliced_steering(action: np.ndarray, *, transpose: bool = False) -> list[float]:
+        tensors = [
+            torch.from_numpy(value.astype(np.float64))
+            for value in (action, recipient_action, donor_action)
+        ]
+        if transpose:
+            tensors = [value.T for value in tensors]
+        return donor_steering(*tensors).tolist()
+
+    steering_by_timestep = {
+        name: sliced_steering(action) for name, action in normalized_actions.items()
+    }
+    steering_by_dimension = {
+        name: sliced_steering(action, transpose=True) for name, action in normalized_actions.items()
+    }
+
     args.output_dir.mkdir(parents=True, exist_ok=True)
     results = {
         "baseline": baseline,
@@ -172,12 +200,19 @@ def main() -> None:
     for label, result in results.items():
         for modality, image in result["future_image_predictions"].items():
             Image.fromarray(image).save(args.output_dir / f"{label}_{modality}.png")
-    target_primary = {
-        "recipient": np.asarray(recipient_target_batch["all_camera_images"][1], dtype=np.uint8),
-        "donor": np.asarray(donor_target_batch["all_camera_images"][1], dtype=np.uint8),
+    target_images = {
+        "primary": {
+            "recipient": np.asarray(recipient_target_batch["all_camera_images"][1], dtype=np.uint8),
+            "donor": np.asarray(donor_target_batch["all_camera_images"][1], dtype=np.uint8),
+        },
+        "wrist": {
+            "recipient": np.asarray(recipient_target_batch["all_camera_images"][0], dtype=np.uint8),
+            "donor": np.asarray(donor_target_batch["all_camera_images"][0], dtype=np.uint8),
+        },
     }
-    for name, image in target_primary.items():
-        Image.fromarray(image).save(args.output_dir / f"{name}_target_primary.png")
+    for modality, targets in target_images.items():
+        for name, image in targets.items():
+            Image.fromarray(image).save(args.output_dir / f"{name}_target_{modality}.png")
     np.savez_compressed(
         args.output_dir / "actions.npz",
         recipient_reference_normalized=recipient_action,
@@ -189,8 +224,16 @@ def main() -> None:
     decoded_recipient = recipient_result["future_image_predictions"]["future_image"]
     decoded_donor = donor_result["future_image_predictions"]["future_image"]
     target_shape = decoded_recipient.shape[:2]
-    recipient_target = resize_uint8_image(target_primary["recipient"], target_shape)
-    donor_target = resize_uint8_image(target_primary["donor"], target_shape)
+    recipient_target = resize_uint8_image(target_images["primary"]["recipient"], target_shape)
+    donor_target = resize_uint8_image(target_images["primary"]["donor"], target_shape)
+    decoded_recipient_wrist = recipient_result["future_image_predictions"]["future_wrist_image"]
+    decoded_donor_wrist = donor_result["future_image_predictions"]["future_wrist_image"]
+    wrist_shape = decoded_recipient_wrist.shape[:2]
+    recipient_target_wrist = resize_uint8_image(target_images["wrist"]["recipient"], wrist_shape)
+    donor_target_wrist = resize_uint8_image(target_images["wrist"]["donor"], wrist_shape)
+    frame_index = torch.as_tensor(clamp_frames, device=donor_clean.device)
+    recipient_selected = torch.index_select(recipient_clean, 2, frame_index).float()
+    donor_selected = torch.index_select(donor_clean, 2, frame_index).float()
     summary = {
         "scope": "matched exact-state semantic future clamp",
         "branch_run": str(args.branch_run_dir),
@@ -204,7 +247,9 @@ def main() -> None:
         "donor_seed": int(artifact["branch_seeds"][args.donor_branch]),
         "model_seed": args.model_seed,
         "future_noise_seed": args.future_noise_seed,
-        "future_frame_indices": list(groups.future),
+        "deterministic_tokenizer": deterministic_tokenizer_enabled(),
+        "modalities": args.modalities,
+        "future_frame_indices": list(clamp_frames),
         "denoiser_sigmas": {"recipient": recipient_clamp.calls, "donor": donor_clamp.calls},
         "reference_action_l2": float(
             np.linalg.norm(donor_action.astype(np.float64) - recipient_action.astype(np.float64))
@@ -212,6 +257,22 @@ def main() -> None:
         "baseline_reference_max_abs_error": baseline_reference_error,
         "donor_steering": steering,
         "donor_steering_effect": steering["donor_clamp"] - steering["recipient_clamp"],
+        "donor_steering_effect_by_timestep": [
+            donor - recipient
+            for donor, recipient in zip(
+                steering_by_timestep["donor_clamp"],
+                steering_by_timestep["recipient_clamp"],
+                strict=True,
+            )
+        ],
+        "donor_steering_effect_by_action_dimension": [
+            donor - recipient
+            for donor, recipient in zip(
+                steering_by_dimension["donor_clamp"],
+                steering_by_dimension["recipient_clamp"],
+                strict=True,
+            )
+        ],
         "normalized_action_l2": {
             "recipient_clamp_from_baseline": float(
                 np.linalg.norm(normalized_actions["recipient_clamp"] - normalized_actions["baseline"])
@@ -228,6 +289,21 @@ def main() -> None:
             "donor_decoded_to_donor_target": pixel_l1(decoded_donor, donor_target),
             "recipient_target_to_donor_target": pixel_l1(recipient_target, donor_target),
             "recipient_decoded_to_donor_decoded": pixel_l1(decoded_recipient, decoded_donor),
+        },
+        "wrist_pixel_l1": {
+            "recipient_decoded_to_recipient_target": pixel_l1(
+                decoded_recipient_wrist, recipient_target_wrist
+            ),
+            "donor_decoded_to_donor_target": pixel_l1(decoded_donor_wrist, donor_target_wrist),
+            "recipient_target_to_donor_target": pixel_l1(recipient_target_wrist, donor_target_wrist),
+            "recipient_decoded_to_donor_decoded": pixel_l1(decoded_recipient_wrist, decoded_donor_wrist),
+        },
+        "selected_clean_latent_l2": {
+            "recipient_norm": float(torch.linalg.vector_norm(recipient_selected).item()),
+            "donor_norm": float(torch.linalg.vector_norm(donor_selected).item()),
+            "donor_minus_recipient": float(
+                torch.linalg.vector_norm(donor_selected - recipient_selected).item()
+            ),
         },
         "predicted_values": {name: float(result["value_prediction"]) for name, result in results.items()},
     }

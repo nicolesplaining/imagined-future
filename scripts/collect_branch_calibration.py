@@ -11,7 +11,7 @@ import numpy as np
 from PIL import Image
 
 from imagined_future.branching import BranchPoint, state_digest, tuple_actions, validate_replay_stability
-from imagined_future.cosmos_config import libero_policy_config
+from imagined_future.cosmos_config import deterministic_tokenizer_enabled, libero_policy_config
 from imagined_future.model_patch import defer_hf_config_checkpoint_resolution
 
 
@@ -247,6 +247,7 @@ def main() -> None:
         "branch_state_digest": state_digest(branch_state),
         "replay_state_digests": [result.state_digest for result in replay_results],
         "replay_exact": len({result.state_digest for result in replay_results}) == 1,
+        "deterministic_tokenizer": deterministic_tokenizer_enabled(),
         "successes": successes,
         "predicted_values": predicted_values,
         "pairwise_action_l2": _off_diagonal_summary(action_distances),
