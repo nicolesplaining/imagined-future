@@ -24,14 +24,27 @@ def _torch_record() -> dict[str, Any]:
         import torch
     except ImportError:
         return {"installed": False}
-    return {
+    record: dict[str, Any] = {
         "installed": True,
         "version": torch.__version__,
         "cuda_version": torch.version.cuda,
         "cudnn_version": torch.backends.cudnn.version(),
-        "cuda_available": torch.cuda.is_available(),
-        "devices": [torch.cuda.get_device_name(index) for index in range(torch.cuda.device_count())],
     }
+    try:
+        record["cuda_available"] = torch.cuda.is_available()
+        record["device_count"] = torch.cuda.device_count()
+        record["devices"] = (
+            [torch.cuda.get_device_name(index) for index in range(record["device_count"])]
+            if record["cuda_available"]
+            else []
+        )
+        if record["cuda_available"]:
+            torch.cuda.init()
+            record["cuda_initialized"] = True
+    except RuntimeError as exc:
+        record["cuda_initialized"] = False
+        record["cuda_error"] = f"{type(exc).__name__}: {exc}"
+    return record
 
 
 def main() -> None:
