@@ -1,0 +1,27 @@
+[provenance]
+cosmos_policy_git = "https://github.com/NVlabs/cosmos-policy.git"
+cosmos_policy_commit = "18a2accadf4e7a3531e56754102af5a24d2316da"
+checkpoint = "nvidia/Cosmos-Policy-LIBERO-Predict2-2B"
+libero_git = "https://github.com/Lifelong-Robot-Learning/LIBERO.git"
+
+[inference]
+task_suite = "libero_10"
+tasks = [0, 1]
+model_seeds = [195, 196, 197]
+denoising_steps = 5
+action_chunk = 16
+deterministic = true
+variance_scale = false
+
+[pilot]
+states_per_task = 50
+branches_per_state = 8
+future_noise_draws = 8
+bootstrap_resamples = 10000
+familywise_alpha = 0.05
+
+[interventions]
+future_groups = ["future_proprio", "future_wrist", "future_primary"]
+primary_clamp_input = true
+primary_clamp_output = true
+controls = ["same_outcome_donor", "shuffled_donor", "random_frames", "norm_matched_noise"]

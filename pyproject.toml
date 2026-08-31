@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "imagined-future"
+version = "0.1.0"
+description = "Causal tests of whether Cosmos Policy uses its imagined future"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Nicole Ma" }]
+dependencies = ["torch>=2.7"]
+
+[project.optional-dependencies]
+test = ["pytest>=8.0"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/imagined_future"]
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = ["tests"]
