@@ -12,7 +12,7 @@ from PIL import Image
 
 from imagined_future.frames import LatentFrameGroups
 from imagined_future.interventions import resample_frames
-from imagined_future.model_patch import transform_model_initial_noise
+from imagined_future.model_patch import defer_hf_config_checkpoint_resolution, transform_model_initial_noise
 
 
 def _actions(result: dict) -> np.ndarray:
@@ -58,7 +58,8 @@ def main() -> None:
     )
     dataset_stats = load_dataset_stats(cfg.dataset_stats_path)
     init_t5_text_embeddings_cache(cfg.t5_text_embeddings_path)
-    model, _ = get_model(cfg)
+    with defer_hf_config_checkpoint_resolution():
+        model, _ = get_model(cfg)
 
     sample_path = Path("cosmos_policy/experiments/robot/libero/sample_libero_10_observation.pkl")
     with sample_path.open("rb") as handle:

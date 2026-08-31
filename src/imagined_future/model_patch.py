@@ -11,6 +11,35 @@ from imagined_future.interventions import X0Function
 
 
 @contextmanager
+def defer_hf_config_checkpoint_resolution(checkpoint_db: Any | None = None) -> Iterator[None]:
+    """Avoid resolving an unused base checkpoint while Cosmos builds its config.
+
+    The public loader constructs the selected experiment config before replacing
+    ``config.checkpoint.load_path`` with the caller-supplied policy checkpoint.
+    Some configs eagerly resolve their default ``hf://`` base path during that
+    construction. A full fine-tuned policy checkpoint does not read that default,
+    so this context preserves the URI until the loader performs its documented
+    override. Local paths continue through the official resolver.
+    """
+
+    if checkpoint_db is None:
+        from cosmos_policy._src.imaginaire.utils import checkpoint_db
+
+    original = checkpoint_db.get_checkpoint_path
+
+    def deferred(checkpoint_uri: str) -> str:
+        if checkpoint_uri.startswith("hf://"):
+            return checkpoint_uri.rstrip("/")
+        return original(checkpoint_uri)
+
+    checkpoint_db.get_checkpoint_path = deferred
+    try:
+        yield
+    finally:
+        checkpoint_db.get_checkpoint_path = original
+
+
+@contextmanager
 def transform_model_x0_factory(model: Any, transform: Callable[[X0Function], X0Function]) -> Iterator[None]:
     """Temporarily transform every denoiser callable created by a Cosmos model.
 

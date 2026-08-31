@@ -27,7 +27,7 @@ The pilot uses NVIDIA's public [`NVlabs/cosmos-policy`](https://github.com/NVlab
 - `tests/`: CPU unit tests for intervention locality and metrics.
 - `configs/pilot.toml`: frozen pilot settings and upstream revisions.
 - `docs/preregistration.md`: hypotheses, controls, exclusions, and analysis plan.
-- `results/`: ignored machine-generated artifacts; raw data should live in immutable run directories.
+- `artifacts/`: ignored machine-generated artifacts; raw data should live in immutable run directories.
 
 ## Development check
 
@@ -42,4 +42,4 @@ The H100 experiment environment follows the official Cosmos Policy Docker setup.
 
 ## Current status
 
-The intervention layer and preregistration are in place. No outcome-bearing Cosmos run has been analyzed yet.
+The intervention layer and preregistration are in place. A three-seed public-observation smoke test found weak but exactly reproducible future-to-action computational coupling. This is not evidence of semantic mediation; see [docs/smoke-results.md](docs/smoke-results.md). The next outcome-bearing stage is counterfactual branch collection followed by semantic future clamping and prespecified controls.

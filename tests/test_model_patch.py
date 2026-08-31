@@ -5,7 +5,11 @@ from types import SimpleNamespace
 import pytest
 import torch
 
-from imagined_future.model_patch import transform_model_initial_noise, transform_model_x0_factory
+from imagined_future.model_patch import (
+    defer_hf_config_checkpoint_resolution,
+    transform_model_initial_noise,
+    transform_model_x0_factory,
+)
 
 
 class FakeModel:
@@ -55,3 +59,19 @@ def test_initial_noise_transform_rejects_variance_scaling(monkeypatch) -> None:
     with transform_model_initial_noise(model, lambda noise, _batch: noise):
         with pytest.raises(ValueError, match="variance_scale"):
             model.generate_samples_from_batch({}, use_variance_scale=True)
+
+
+def test_defer_hf_config_checkpoint_resolution_is_narrow_and_restored() -> None:
+    calls: list[str] = []
+
+    def resolve(path: str) -> str:
+        calls.append(path)
+        return f"resolved:{path}"
+
+    checkpoint_db = SimpleNamespace(get_checkpoint_path=resolve)
+    with defer_hf_config_checkpoint_resolution(checkpoint_db):
+        assert checkpoint_db.get_checkpoint_path("hf://org/model/base.pt/") == "hf://org/model/base.pt"
+        assert checkpoint_db.get_checkpoint_path("/local/model") == "resolved:/local/model"
+
+    assert checkpoint_db.get_checkpoint_path is resolve
+    assert calls == ["/local/model"]
