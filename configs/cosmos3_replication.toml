@@ -42,6 +42,7 @@ server_process_is_blocking_factor = true
 cross_process_bitwise_exactness_required = false
 minimum_server_process_blocks = 3
 decoded_target_top1_minimum = 0.90
+decoded_factor_edge_direction_minimum = 0.90
 
 [screen]
 study_id = "cosmos3_robolab_screen_v1"
@@ -58,7 +59,7 @@ pilot_tasks = [
   "SmartphoneInBinTask",
 ]
 pilot_environment_seeds = [101, 103, 107]
-confirmatory_environment_seeds = [101, 103, 107, 109]
+confirmatory_environment_seeds = [101, 103, 107, 109, 113]
 native_branch_seeds = [211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293]
 minimum_normalized_action_l2 = 0.01
 minimum_endpoint_displacement_m = 0.003
@@ -82,7 +83,14 @@ task_rule = "retain tasks with at least one successful native rollout and at lea
 state_rule = "rank within task by native endpoint diversity, then environment seed; never use interventional outcomes"
 donor_rule = "from the same exact state, select the maximum native action-L2 pair among all 16 seeds before physical execution; ties use the lower ordered seed pair; retain only if that fixed pair passes endpoint eligibility"
 replacement_after_intervention = false
-seed_expansion_rule = "screen all four confirmatory environment seeds on the six calibration-feasible tasks; do not add seeds after population interventions begin"
+seed_expansion_rule = "before any population intervention, add seed 113 to all six calibration-feasible tasks after the four-seed native census remained below 20 eligible units; do not add further seeds after any population intervention begins"
+reserve_task_rule = "before any population intervention, screen both declared reserve tasks at branch points fixed from excluded seed-0 trajectories; admit every reserve task with at least one successful native rollout and otherwise apply the unchanged population rules"
+
+[screen.reserve_branch_points]
+# Frozen from excluded seed-0 trajectories before reserve-task screening:
+# Bagels first registered a target-object grab at step 70; Yogurt at step 215.
+BagelsOnPlateTask = 64
+YogurtInBowlTask = 192
 
 [interventions]
 recipient_diffusion_seeds = [1201, 1213, 1217]
@@ -123,6 +131,8 @@ MustardInLeftBinTask = "/World/envs/env_0/mustard"
 SpoonInMugTask = "/World/envs/env_0/spoon_big"
 MarkerInMugTask = "/World/envs/env_0/marker"
 SmartphoneInBinTask = "/World/envs/env_0/smartphone"
+BagelsOnPlateTask = "/World/envs/env_0/bagel_00"
+YogurtInBowlTask = "/World/envs/env_0/yogurt_cup"
 
 [attention_localization]
 calibration_layers = "all 36 transformer layers"

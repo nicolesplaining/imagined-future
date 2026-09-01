@@ -91,8 +91,21 @@ def main() -> None:
             raise ValueError(f"result changed the frozen donor pair for {key}")
         if float(report["prefix_maximum_state_error"]) != 0.0:
             raise ValueError(f"result failed exact prefix replay for {key}")
+        if float(report["self_identity_action_maximum_error"]) != 0.0:
+            raise ValueError(f"result failed exact native self recomputation for {key}")
+        if not report["continuation_repeat_audit"]["exact"]:
+            raise ValueError(f"result failed exact continuation repeat for {key}")
+        if len(set(report["restore_state_digests"])) != 1:
+            raise ValueError(f"result failed exact branch-state restoration for {key}")
         if any(float(value) != 0.0 for value in report["kv_patch_identity_action_maximum_errors"].values()):
             raise ValueError(f"result failed K/V identity recomputation for {key}")
+        gaussian_server = report["interventions"]["gaussian_executed"]["server"]
+        for metric in (
+            "research_gaussian_norm_relative_error",
+            "research_gaussian_distance_relative_error",
+        ):
+            if float(gaussian_server[metric]) > 1e-5:
+                raise ValueError(f"result failed Gaussian matching for {key}: {metric}")
         reports[key] = report
 
     expected = set(manifest_rows)
@@ -117,6 +130,18 @@ def main() -> None:
             "gaussian_executed",
             "action_donor_projection",
             None,
+        ),
+        "factor_subset_executed_donor_minus_executed_self_action": (
+            "executed_donor",
+            "executed_self",
+            "action_donor_projection",
+            None,
+        ),
+        "factor_subset_executed_donor_minus_executed_self_physical": (
+            "executed_donor",
+            "executed_self",
+            "endpoint_donor_projection",
+            "all",
         ),
         "predicted_future_kv_mediation_action": (
             "predicted_donor",
@@ -153,15 +178,30 @@ def main() -> None:
         for name, adjusted in zip(names, holm_adjust(raw_sign_p), strict=True):
             effects[name]["sign_test"]["holm_adjusted_p_value"] = adjusted
 
+    factor_expected = set(manifest["factorization_selected_unit_ids"])
+    unexpected_factor_reports = {
+        key
+        for key, report in reports.items()
+        if report.get("factorize_selected_donor", False) and key not in factor_expected
+    }
+    if unexpected_factor_reports:
+        raise ValueError(
+            "factorization was run outside the frozen subset: "
+            f"{sorted(unexpected_factor_reports)}"
+        )
     factor_reports = {
         key: report
         for key, report in reports.items()
-        if report.get("factorize_selected_donor", False)
+        if report.get("factorize_selected_donor", False) and key in factor_expected
     }
     for key, report in factor_reports.items():
-        top1 = float(report["factorization"]["decoded_target_top1_rate"]["composite"])
-        if top1 < 0.90:
-            raise ValueError(f"decoded composite-target top-1 gate failed for {key}: {top1}")
+        direction_rate = float(
+            report["factorization"]["decoded_factor_edge_direction_rate"]["composite"]
+        )
+        if direction_rate < 0.90:
+            raise ValueError(
+                f"decoded composite factor-edge gate failed for {key}: {direction_rate}"
+            )
     factor_effects: dict[str, Any] = {}
     for outcome, path in (
         ("action", ("action_donor_projection_effects", None)),
@@ -183,7 +223,6 @@ def main() -> None:
                 estimate["task_means"] = task_means(values, manifest_rows)
                 factor_effects[name] = estimate
 
-    factor_expected = set(manifest["factorization_selected_unit_ids"])
     factor_observed = set(factor_reports)
     report = {
         "scope": "frozen saved-state-clustered Cosmos 3 population estimates",

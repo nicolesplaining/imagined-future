@@ -106,6 +106,8 @@ from robolab.registrations.droid.camera_presets import WRIST_LEFT_RIGHT_HEAD  # 
 
 import robolab.constants  # noqa: E402
 
+from imagined_future.video_geometry import center_crop_video, difference_alignment  # noqa: E402
+
 
 def clone_tree(value: Any) -> Any:
     if isinstance(value, dict):
@@ -733,6 +735,7 @@ def main() -> None:
                 ),
             }
             decoded_target_audits = {}
+            decoded_factor_edge_audits = {}
             for design, (videos, audits, donor_ids) in target_designs.items():
                 roundtrip_videos = {}
                 for cell, audit in audits.items():
@@ -751,14 +754,31 @@ def main() -> None:
                         )
                     donor_ids[cell] = record_id
                     roundtrip_videos[cell] = np.asarray(registered["video"], dtype=np.uint8)
+                    np.savez_compressed(
+                        args.output_dir / f"decoded_{design}_cell_{cell}.npz",
+                        video=roundtrip_videos[cell],
+                    )
                     progress("factorized_donor_registered", design=design, cell=cell)
+                decoded_shapes = {decoded.shape for decoded in roundtrip_videos.values()}
+                if len(decoded_shapes) != 1:
+                    raise RuntimeError(
+                        f"decoded {design} cells have inconsistent shapes: {decoded_shapes}"
+                    )
+                decoded_shape = next(iter(decoded_shapes))
+                if len(decoded_shape) != 4 or decoded_shape[0] != 33:
+                    raise RuntimeError(
+                        f"decoded {design} targets have invalid shape {decoded_shape}"
+                    )
+                normalized_targets = {
+                    candidate: center_crop_video(
+                        candidate_video,
+                        height=decoded_shape[1],
+                        width=decoded_shape[2],
+                    )
+                    for candidate, candidate_video in videos.items()
+                }
                 design_audits = {}
                 for cell, decoded in roundtrip_videos.items():
-                    if decoded.shape != videos[cell].shape:
-                        raise RuntimeError(
-                            f"decoded {design} cell {cell} has shape {decoded.shape}, "
-                            f"expected {videos[cell].shape}"
-                        )
                     distances = {
                         candidate: float(
                             np.square(
@@ -766,7 +786,7 @@ def main() -> None:
                                 - candidate_video[1:].astype(np.float32)
                             ).mean()
                         )
-                        for candidate, candidate_video in videos.items()
+                        for candidate, candidate_video in normalized_targets.items()
                     }
                     nearest = min(
                         distances, key=lambda candidate: (distances[candidate], candidate)
@@ -774,9 +794,36 @@ def main() -> None:
                     design_audits[cell] = {
                         "nearest_raw_target_cell": nearest,
                         "correct_target_top1": nearest == cell,
+                        "raw_target_shape": list(videos[cell].shape),
+                        "decoded_target_shape": list(decoded.shape),
+                        "raw_target_geometry_normalization": "center_crop_to_decoded_shape",
                         "raw_target_mean_squared_rgb_distances": distances,
                     }
                 decoded_target_audits[design] = design_audits
+                edge_audits = {}
+                for factor, low, high in (
+                    ("robot", "o0r0", "o0r1"),
+                    ("robot", "o1r0", "o1r1"),
+                    ("object", "o0r0", "o1r0"),
+                    ("object", "o0r1", "o1r1"),
+                ):
+                    edge_audits[f"{low}:{high}"] = {
+                        "factor": factor,
+                        **difference_alignment(
+                            normalized_targets[low][1:],
+                            normalized_targets[high][1:],
+                            roundtrip_videos[low][1:],
+                            roundtrip_videos[high][1:],
+                        ),
+                    }
+                decoded_factor_edge_audits[design] = edge_audits
+                progress(
+                    "factorized_decode_audit_completed",
+                    design=design,
+                    edge_direction_rate=float(
+                        np.mean([audit["direction_preserved"] for audit in edge_audits.values()])
+                    ),
+                )
 
             factorization_report = {
                 "recipient_seed": recipient_seed,
@@ -786,6 +833,13 @@ def main() -> None:
                 "composite_cells": composite_cell_audits,
                 "target_video_contrasts": video_contrasts,
                 "decoded_target_audits": decoded_target_audits,
+                "decoded_factor_edge_audits": decoded_factor_edge_audits,
+                "decoded_factor_edge_direction_rate": {
+                    design: float(
+                        np.mean([audit["direction_preserved"] for audit in audits.values()])
+                    )
+                    for design, audits in decoded_factor_edge_audits.items()
+                },
                 "decoded_target_top1_rate": {
                     design: float(
                         np.mean([audit["correct_target_top1"] for audit in audits.values()])
