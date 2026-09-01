@@ -1,0 +1,70 @@
+[provenance]
+cosmos_policy_commit = "18a2accadf4e7a3531e56754102af5a24d2316da"
+checkpoint = "nvidia/Cosmos-Policy-LIBERO-Predict2-2B"
+checkpoint_revision = "cb689ec0e3347c13667d70a78a3447388f5c3bb8"
+container_digest = "sha256:2f5ff2badf82657c82e046bff84cc754acf4a2b3973828f12ab802c751f439e0"
+
+[design]
+study_id = "libero_content_factorization_v1"
+task_suite = "libero_10"
+task_ids = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+initial_state_indices = [17, 35]
+prefix_seed = 503
+maximum_prefix_chunks = 32
+candidate_chunks_per_trajectory = 3
+branches_stage_one = 32
+branches_stage_two = 64
+warmup_steps = 10
+action_chunk = 16
+reciprocal_pairs = true
+calibration_units_are_excluded = true
+prior_intervention_outcomes_may_not_enter_selection = true
+
+[design.branch_seeds]
+stage_one = [521, 523, 541, 547, 557, 563, 569, 571, 577, 587, 593, 599, 601, 607, 613, 617, 619, 631, 641, 643, 647, 653, 659, 661, 673, 677, 683, 691, 701, 709, 719, 727]
+stage_two_additional = [733, 739, 743, 751, 757, 761, 769, 773, 787, 797, 809, 811, 821, 823, 827, 829, 839, 853, 857, 859, 863, 877, 881, 883, 887, 907, 911, 919, 929, 937, 941, 947]
+
+[natural_screen]
+candidate_rule = "three largest deterministic one-chunk goal-feature changes; ties favor earlier chunks"
+candidate_order = "descending deterministic goal-feature change, then ascending prefix chunk"
+candidate_progression = "for each candidate in order, test 32 branches, expand that candidate to 64 if needed, then advance only if still ineligible"
+stage_two_rule = "collect 32 additional branches only when no common recipient has both eligible pair classes after stage one at that candidate"
+structural_exclusion_rule = "exclude after 64 branches if either registered pair class remains unavailable"
+replacement_after_intervention = false
+
+[pair_selection]
+minimum_normalized_action_l2 = 0.01
+robot_position_match_m = 0.003
+robot_orientation_match_rad = 0.03
+robot_gripper_match_l2 = 0.005
+minimum_object_goal_l2 = 0.003
+maximum_object_match_l2 = 0.0005
+minimum_robot_position_l2_m = 0.003
+minimum_robot_orientation_angle_rad = 0.03
+minimum_robot_gripper_l2 = 0.003
+object_pair = "robot matched on all three robot thresholds; object difference above floor"
+robot_pair = "object matched below floor; at least one robot difference above its floor"
+anchor_rule = "select a common recipient with eligible object and robot donors, maximizing prespecified rank score"
+
+[interventions]
+future_noise_seeds = [1201, 1213, 1217]
+gaussian_seed = 1223
+targets = ["recipient", "object_donor", "robot_donor", "joint_donor", "matched_natural", "gaussian"]
+modalities = ["all", "wrist", "primary", "proprio"]
+
+[outcomes]
+primary = "object_pair_executed_goal_endpoint_donor_steering"
+secondary = [
+  "object_pair_normalized_action_donor_steering",
+  "robot_pair_normalized_action_donor_steering",
+  "robot_pair_executed_robot_endpoint_donor_steering",
+  "multi_donor_diagonal_alignment_margin",
+  "correct_donor_top1_rate",
+]
+
+[inference]
+cluster_unit = "saved_simulator_state"
+bootstrap_resamples = 10000
+familywise_alpha = 0.05
+smallest_effect_of_interest = 0.10
+minimum_confirmatory_units = 10
