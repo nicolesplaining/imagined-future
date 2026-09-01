@@ -24,9 +24,9 @@ Prefixes use model seed 307. If a prefix completes the task before the registere
 
 Donor pairs are selected using only natural branch actions and executed 16-step endpoints. No patched action, decoded patched future, attention ablation, or other intervention outcome may enter selection.
 
-For each state, pairwise normalized-action and goal-relevant endpoint distances are converted to within-state ranks. The primary pair maximizes their mean rank subject to normalized action L2 at least 0.01. Both directions are tested, so each branch serves once as recipient and once as donor. Ties are broken lexicographically by branch index.
+For each state, pairwise normalized-action and physical-endpoint distances are converted to within-state ranks. The physical endpoint concatenates LIBERO goal-object positions and articulated joints with the official nine-dimensional endpoint proprioception. The primary pair maximizes the mean action/endpoint rank subject to normalized action L2 at least 0.01 and nonzero physical-endpoint L2 above `1e-8`. Both directions are tested, so each branch serves once as recipient and once as donor. Ties are broken lexicographically by branch index.
 
-Goal-relevant endpoint features are constructed in parsed goal order from LIBERO's own predicate arguments: object positions and articulated-joint coordinates are included; quaternion components are included only for orientation predicates. Endpoint proprioception is used as a documented fallback when no physical predicate feature is available.
+Goal-relevant endpoint features are constructed in parsed goal order from LIBERO's own predicate arguments: object positions and articulated-joint coordinates are included; quaternion components are included only for orientation predicates. Endpoint proprioception is always appended because early action chunks can produce distinct task-directed robot motion before contact moves a goal object.
 
 Continuation outcomes under seeds 353, 359, and 367 are secondary labels. A branch is a robust success or failure only when all three continuations agree. Success-specific contrasts are reported only for robust failure-to-success pairs and are not substituted for the primary endpoint-divergence analysis.
 
@@ -54,7 +54,7 @@ Each run includes a bitwise all-key recomputation control, an equal-count curren
 
 ## Outcomes
 
-The primary outcome is donor steering of the executed, task-relevant physical endpoint after the 16-step action chunk. Secondary outcomes are normalized action donor steering, endpoint proprioception steering, primary-image donor preference, individual LIBERO goal predicates, and full-episode success under shared continuation seeds.
+The primary outcome is donor steering of the executed physical endpoint—goal-relevant object coordinates plus official proprioception—after the 16-step action chunk. Secondary outcomes separate object-only steering, normalized action donor steering, endpoint proprioception steering, primary-image donor preference, individual LIBERO goal predicates, and full-episode success under shared continuation seeds.
 
 Flattened MuJoCo state distance and pixel distance remain broad diagnostics. They are not substitutes for task-relevant physical outcomes.
 
@@ -69,5 +69,10 @@ The all-future semantic clamp is the sole primary intervention family. Wrist, pr
 - General semantic use requires a positive primary interval and superiority to matched nonsemantic controls.
 - State-dependent use is supported if effects are reproducible but heterogeneous, with pre-intervention state features explaining held-out variation.
 - Coupling without semantic use is concluded if interventions move actions but semantic targets do not outperform Gaussian and shuffled controls.
-- A runtime-null region is supported when the manipulation check succeeds and the confidence interval excludes the frozen smallest effect of interest. That threshold will be set from no-op and control variability before semantic outcomes are aggregated.
+- A runtime-null region is supported when the manipulation check succeeds and the confidence interval excludes the frozen smallest effect of interest.
 
+The frozen smallest effect of interest is `0.10` donor-steering units: ten percent of the natural recipient-to-donor physical displacement. Bitwise no-op controls have zero variability and therefore cannot provide a useful nonzero threshold. A positive-use claim requires uncertainty above zero and is interpreted as practically meaningful only when it also excludes `0.10`.
+
+## Pre-intervention amendment: physical endpoint
+
+Added 2026-08-31 after the first natural-only held-out branch collection and before any held-out intervention. Goal-object coordinates were exactly tied across all branches at an early state because the first 16 actions moved the robot toward the objects without contacting them. The registered primary endpoint was therefore clarified to concatenate goal-relevant coordinates with official endpoint proprioception for every unit, rather than using proprioception only as a missing-feature fallback. The object-only endpoint remains secondary. No patched action, decoded patched future, or attention-ablation outcome had been generated when this amendment was made.

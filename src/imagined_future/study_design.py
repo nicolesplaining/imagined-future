@@ -63,6 +63,7 @@ def select_primary_pair(
     goal_endpoint_features: np.ndarray,
     *,
     minimum_action_l2: float,
+    minimum_endpoint_l2: float = 1e-8,
 ) -> tuple[int, int, dict[str, float]]:
     """Select the action/endpoint-divergent pair without intervention outcomes."""
 
@@ -73,9 +74,14 @@ def select_primary_pair(
         for left in range(len(normalized_actions))
         for right in range(left + 1, len(normalized_actions))
     ]
-    eligible = [pair for pair in pairs if action_distances[pair] >= minimum_action_l2]
+    eligible = [
+        pair
+        for pair in pairs
+        if action_distances[pair] >= minimum_action_l2
+        and endpoint_distances[pair] >= minimum_endpoint_l2
+    ]
     if not eligible:
-        raise ValueError("no branch pair passes the registered action-distance floor")
+        raise ValueError("no branch pair passes the registered action and endpoint distance floors")
     action_values = np.asarray([action_distances[pair] for pair in eligible])
     endpoint_values = np.asarray([endpoint_distances[pair] for pair in eligible])
     scores = (_average_ranks(action_values) + _average_ranks(endpoint_values)) / 2.0
@@ -87,7 +93,7 @@ def select_primary_pair(
     return left, right, {
         "score": float(scores[best_index]),
         "normalized_action_l2": float(action_distances[left, right]),
-        "goal_endpoint_l2": float(endpoint_distances[left, right]),
+        "physical_endpoint_l2": float(endpoint_distances[left, right]),
     }
 
 
@@ -111,6 +117,36 @@ def matched_same_label_donor(
     ]
     if not candidates:
         return None
+    action_target = float(action_distances[recipient, primary_donor])
+    endpoint_target = float(endpoint_distances[recipient, primary_donor])
+    action_scale = max(action_target, np.finfo(np.float64).eps)
+    endpoint_scale = max(endpoint_target, np.finfo(np.float64).eps)
+    return min(
+        candidates,
+        key=lambda index: (
+            abs(float(action_distances[recipient, index]) - action_target) / action_scale
+            + abs(float(endpoint_distances[recipient, index]) - endpoint_target) / endpoint_scale,
+            index,
+        ),
+    )
+
+
+def distance_matched_control_donor(
+    *,
+    recipient: int,
+    primary_donor: int,
+    action_distances: np.ndarray,
+    endpoint_distances: np.ndarray,
+) -> int:
+    """Preselect a natural control with primary-like intervention size."""
+
+    candidates = [
+        index
+        for index in range(action_distances.shape[0])
+        if index not in (recipient, primary_donor)
+    ]
+    if not candidates:
+        raise ValueError("distance-matched control requires at least three branches")
     action_target = float(action_distances[recipient, primary_donor])
     endpoint_target = float(endpoint_distances[recipient, primary_donor])
     action_scale = max(action_target, np.finfo(np.float64).eps)

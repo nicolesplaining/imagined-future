@@ -25,9 +25,10 @@ reciprocal_primary_pair = true
 
 [selection]
 pair_selection_uses_intervention_outcomes = false
-primary_pair_score = "mean_rank_action_goal_endpoint"
+primary_pair_score = "mean_rank_action_physical_endpoint"
 minimum_normalized_action_l2 = 0.01
-control_match_fields = ["normalized_action_l2", "goal_endpoint_l2"]
+minimum_physical_endpoint_l2 = 1e-8
+control_match_fields = ["normalized_action_l2", "physical_endpoint_l2"]
 exclude_pilot_task_state_pairs = [[4, 2], [4, 9], [8, 3], [8, 8]]
 
 [semantic_interventions]
@@ -48,7 +49,7 @@ gates = [0.25, 0.5, 0.75, 1.0]
 controls = ["all_key_recompute", "equal_count_current_keys", "equal_count_random_keys"]
 
 [outcomes]
-primary = "task_relevant_endpoint_donor_steering"
+primary = "physical_endpoint_donor_steering"
 secondary = [
   "normalized_action_donor_steering",
   "endpoint_proprio_donor_steering",
@@ -62,4 +63,5 @@ familywise_alpha = 0.05
 cluster_unit = "saved_simulator_state"
 stratify_by_task = true
 primary_hypothesis = "semantic_donor_minus_recipient_self_gt_controls"
-
+smallest_effect_of_interest = 0.10
+smallest_effect_basis = "ten_percent_of_within_state_recipient_to_donor_displacement"

@@ -4,7 +4,11 @@ from types import SimpleNamespace
 
 import numpy as np
 
-from imagined_future.libero_semantics import goal_feature_vector, goal_predicate_snapshot
+from imagined_future.libero_semantics import (
+    goal_feature_vector,
+    goal_predicate_snapshot,
+    physical_endpoint_feature_vector,
+)
 
 
 class FakeState:
@@ -99,3 +103,7 @@ def test_goal_feature_vector_uses_positions_and_joint_coordinates() -> None:
         ]
     }
     np.testing.assert_allclose(goal_feature_vector(snapshot), [1, 2, 3, 0.4, 0.5])
+    np.testing.assert_allclose(
+        physical_endpoint_feature_vector(snapshot, [6, 7]),
+        [1, 2, 3, 0.4, 0.5, 6, 7],
+    )

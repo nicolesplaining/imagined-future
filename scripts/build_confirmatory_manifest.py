@@ -3,13 +3,18 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 
 import numpy as np
 
-from imagined_future.libero_semantics import goal_feature_vector
-from imagined_future.study_design import pairwise_l2, select_primary_pair
+from imagined_future.libero_semantics import physical_endpoint_feature_vector
+from imagined_future.study_design import (
+    distance_matched_control_donor,
+    pairwise_l2,
+    select_primary_pair,
+)
 
 
 def main() -> None:
@@ -17,6 +22,14 @@ def main() -> None:
     parser.add_argument("--branch-run-dirs", type=Path, nargs="+", required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--minimum-action-l2", type=float, default=0.01)
+    parser.add_argument("--minimum-endpoint-l2", type=float, default=1e-8)
+    parser.add_argument("--project-commit", required=True)
+    parser.add_argument("--cosmos-commit", default="18a2accadf4e7a3531e56754102af5a24d2316da")
+    parser.add_argument("--checkpoint-revision", default="cb689ec0e3347c13667d70a78a3447388f5c3bb8")
+    parser.add_argument(
+        "--container-digest",
+        default="sha256:2f5ff2badf82657c82e046bff84cc754acf4a2b3973828f12ab802c751f439e0",
+    )
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError(f"refusing to overwrite existing manifest: {args.output}")
@@ -28,14 +41,36 @@ def main() -> None:
             raise ValueError(f"{run_dir} is not a valid deterministic exact-replay unit")
         branch = np.load(run_dir / "branches.npz", allow_pickle=False)
         predicate_records = json.loads((run_dir / "endpoint_predicates.json").read_text())
-        features = np.stack([goal_feature_vector(record["snapshot"]) for record in predicate_records])
-        if features.shape[1] == 0:
-            features = np.asarray(branch["endpoint_proprios"], dtype=np.float64)
+        features = np.stack(
+            [
+                physical_endpoint_feature_vector(record["snapshot"], proprio)
+                for record, proprio in zip(
+                    predicate_records, branch["endpoint_proprios"], strict=True
+                )
+            ]
+        )
         left, right, selection = select_primary_pair(
             branch["normalized_branch_actions"],
             features,
             minimum_action_l2=args.minimum_action_l2,
+            minimum_endpoint_l2=args.minimum_endpoint_l2,
         )
+        action_distances = pairwise_l2(branch["normalized_branch_actions"])
+        endpoint_distances = pairwise_l2(features)
+        distance_controls = {
+            "forward": distance_matched_control_donor(
+                recipient=left,
+                primary_donor=right,
+                action_distances=action_distances,
+                endpoint_distances=endpoint_distances,
+            ),
+            "reverse": distance_matched_control_donor(
+                recipient=right,
+                primary_donor=left,
+                action_distances=action_distances,
+                endpoint_distances=endpoint_distances,
+            ),
+        }
         units.append(
             {
                 "unit_id": run_dir.name,
@@ -44,10 +79,18 @@ def main() -> None:
                 "initial_state_index": int(summary["initial_state_index"]),
                 "prefix_chunks": int(summary["prefix_chunks"]),
                 "primary_pair": [left, right],
+                "distance_matched_control_by_direction": distance_controls,
                 "selection": selection,
                 "branch_seeds": branch["branch_seeds"].astype(int).tolist(),
-                "action_distances": pairwise_l2(branch["normalized_branch_actions"]).tolist(),
-                "goal_endpoint_distances": pairwise_l2(features).tolist(),
+                "artifact_sha256": {
+                    "branches.npz": hashlib.sha256((run_dir / "branches.npz").read_bytes()).hexdigest(),
+                    "summary.json": hashlib.sha256((run_dir / "summary.json").read_bytes()).hexdigest(),
+                    "endpoint_predicates.json": hashlib.sha256(
+                        (run_dir / "endpoint_predicates.json").read_bytes()
+                    ).hexdigest(),
+                },
+                "action_distances": action_distances.tolist(),
+                "physical_endpoint_distances": endpoint_distances.tolist(),
             }
         )
 
@@ -66,7 +109,14 @@ def main() -> None:
 
     result = {
         "scope": "confirmatory pairs selected without intervention outcomes",
+        "provenance": {
+            "project_commit": args.project_commit,
+            "cosmos_policy_commit": args.cosmos_commit,
+            "checkpoint_revision": args.checkpoint_revision,
+            "container_digest": args.container_digest,
+        },
         "minimum_action_l2": args.minimum_action_l2,
+        "minimum_endpoint_l2": args.minimum_endpoint_l2,
         "units": units,
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)

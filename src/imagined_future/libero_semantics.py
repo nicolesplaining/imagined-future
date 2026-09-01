@@ -117,3 +117,11 @@ def goal_feature_vector(snapshot: dict[str, Any]) -> np.ndarray:
                     if len(joint) <= 3:
                         values.extend(float(value) for value in joint)
     return np.asarray(values, dtype=np.float64)
+
+
+def physical_endpoint_feature_vector(snapshot: dict[str, Any], proprio: Any) -> np.ndarray:
+    """Combine goal-relevant world coordinates with official robot proprioception."""
+
+    return np.concatenate(
+        [goal_feature_vector(snapshot), np.asarray(proprio, dtype=np.float64).reshape(-1)]
+    )
