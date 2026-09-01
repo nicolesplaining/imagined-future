@@ -1,0 +1,54 @@
+[provenance]
+cosmos_policy_commit = "18a2accadf4e7a3531e56754102af5a24d2316da"
+checkpoint = "nvidia/Cosmos-Policy-LIBERO-Predict2-2B"
+checkpoint_revision = "cb689ec0e3347c13667d70a78a3447388f5c3bb8"
+container_digest = "sha256:2f5ff2badf82657c82e046bff84cc754acf4a2b3973828f12ab802c751f439e0"
+
+[design]
+study_id = "libero_factorial_hybrid_v1"
+status = "prospective secondary fallback frozen before hybrid intervention outcomes"
+task_suite = "libero_10"
+task_ids = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+initial_state_indices = [17, 35]
+prefix_seed = 503
+future_noise_seeds = [1201, 1213, 1217]
+gaussian_seed = 1223
+minimum_valid_units = 10
+
+[selection]
+candidate_order = "frozen content-factorization screen order"
+minimum_object_goal_l2 = 0.003
+minimum_robot_position_l2_m = 0.003
+minimum_robot_orientation_angle_rad = 0.03
+minimum_robot_gripper_l2 = 0.003
+robot_rule = "at least one robot threshold must be met"
+candidate_rule = "first candidate with both registered object and robot change"
+
+[cells]
+o0r0 = "natural current object and natural current robot"
+o1r0 = "natural future object and current robot coordinates"
+o0r1 = "natural current object and future robot coordinates"
+o1r1 = "natural future object and natural future robot"
+renderer = "LIBERO MuJoCo renderer after sim.forward with no relaxation step"
+
+[validation]
+maximum_goal_feature_error = 1e-9
+maximum_robot_proprio_error = 1e-6
+record_contact_counts = true
+exclude_nonfinite_states = true
+
+[outcomes]
+primary = "object_main_effect_on_executed_goal_donor_steering"
+secondary = [
+  "robot_main_effect_on_executed_robot_donor_steering",
+  "robot_cross_effect_on_executed_goal_donor_steering",
+  "object_cross_effect_on_executed_robot_donor_steering",
+  "factorial_interactions",
+  "target_cell_endpoint_identification",
+  "action_distance_to_native_action",
+]
+
+[inference]
+cluster_unit = "saved_simulator_state"
+bootstrap_resamples = 10000
+smallest_effect_of_interest = 0.10
