@@ -1,0 +1,110 @@
+[provenance]
+cosmos_commit = "9aa98e5a0773a5558f07d2699e640858f7ca8827"
+cosmos_framework_commit = "d4599e2e43fbd06168e9884205b9b66c3902d8f6"
+robolab_commit = "9db0aaf09d9fe5d4f37b168320788258c7012463"
+checkpoint = "nvidia/Cosmos3-Nano-Policy-DROID"
+checkpoint_revision = "2b9f9517efcfbf26e222945b386ae9b65c0930ac"
+container_digest = "sha256:c2e321b92c692934a885702b3bbd230c8af910beebc887eb2069c148425d84bf"
+license = "open-mdw-1.1"
+
+[model]
+parameters = "16b"
+transformer_layers = 36
+hidden_size = 4096
+joint_attention = "two_way"
+action_domain = "droid_lerobot"
+action_space = "absolute_joint_position"
+raw_action_dimension = 8
+model_action_dimension = 64
+action_chunk = 32
+raw_video_frames = 33
+video_height = 540
+video_width = 640
+conditioning_fps = 15
+sampler = "unipc"
+denoising_steps = 4
+shift = 5.0
+guidance = 3.0
+
+[validation]
+deterministic_seed = true
+exact_noop_required = true
+maximum_noop_action_absolute_error = 0.0
+maximum_noop_vision_latent_absolute_error = 0.0
+maximum_action_coordinate_intervention_error = 0.0
+gaussian_norm_relative_tolerance = 1e-5
+gaussian_distance_relative_tolerance = 1e-5
+replay_num_envs = 1
+replay_state_absolute_tolerance = 1e-6
+decoded_target_top1_minimum = 0.90
+
+[screen]
+study_id = "cosmos3_robolab_screen_v1"
+pilot_units_are_excluded = true
+intervention_outcomes_may_not_enter_task_or_state_selection = true
+pilot_tasks = [
+  "BananaInBowlTask",
+  "RubiksCubeTask",
+  "MustardInLeftBinTask",
+  "SpoonInMugTask",
+  "MarkerInMugTask",
+  "BagelsOnPlateTask",
+  "YogurtInBowlTask",
+  "SmartphoneInBinTask",
+]
+pilot_environment_seeds = [101, 103, 107]
+native_branch_seeds = [211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293]
+minimum_normalized_action_l2 = 0.01
+minimum_endpoint_displacement_m = 0.003
+minimum_confirmatory_tasks = 5
+minimum_confirmatory_units = 20
+maximum_units_per_task = 6
+
+[screen.selection]
+task_rule = "retain tasks with at least one successful native rollout and at least one reachable endpoint-divergent donor pair; rank by eligible-unit count, then task name"
+state_rule = "rank within task by native endpoint diversity, then environment seed; never use interventional outcomes"
+donor_rule = "from the same exact state, select maximally separated eligible native endpoints; ties use lower ordered seed pair"
+replacement_after_intervention = false
+
+[interventions]
+recipient_diffusion_seeds = [1201, 1213, 1217]
+gaussian_seed = 1223
+reciprocal_pairs = true
+future_latent_frames = "all unconditioned vision latent frames"
+current_vision = "never replaced"
+action_state = "never replaced"
+primary_targets = ["self", "donor", "matched_natural", "gaussian", "shuffled_natural"]
+timing_windows = ["step_0", "step_1", "step_2", "step_3", "all_steps"]
+
+[factorization]
+robot_position_match_m = 0.003
+robot_orientation_match_rad = 0.03
+robot_gripper_match_l2 = 0.005
+minimum_object_goal_l2 = 0.003
+maximum_object_match_l2 = 0.0005
+minimum_robot_position_l2_m = 0.003
+minimum_robot_orientation_angle_rad = 0.03
+minimum_robot_gripper_l2 = 0.003
+
+[attention_localization]
+calibration_layers = "all 36 transformer layers"
+interfaces = ["vision_key_value_to_action_query", "action_key_value_to_action_query"]
+controls = ["equal_count_current_vision", "equal_count_text", "random_layer"]
+selection_rule = "choose the smallest contiguous layer window maximizing donor-minus-self action steering on calibration units"
+confirmatory_layers_are_frozen = true
+
+[outcomes]
+primary = "normalized_action_donor_steering"
+secondary = [
+  "executed_endpoint_donor_steering",
+  "correct_donor_top1_rate",
+  "decoded_future_target_top1_rate",
+  "object_only_executed_goal_steering",
+  "robot_only_executed_robot_steering",
+]
+
+[inference]
+cluster_unit = "saved_simulator_state"
+bootstrap_resamples = 10000
+familywise_alpha = 0.05
+smallest_effect_of_interest = 0.10

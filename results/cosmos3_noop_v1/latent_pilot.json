@@ -1,0 +1,73 @@
+{
+  "label": "synthetic-observation engineering pilot; not a RoboLab causal result",
+  "recipient_seed": 0,
+  "donor_seed": 1,
+  "future_latent_frames": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "native_action_l2": 8.080360412597656,
+  "gaussian_relative_norm_error": 5.419854574029159e-07,
+  "gaussian_relative_distance_error": 2.333978500246303e-06,
+  "clamp_audits": {
+    "self": {
+      "sigmas": [
+        0.999,
+        0.937,
+        0.833,
+        0.624
+      ],
+      "maximum_action_input_error": 0.0,
+      "maximum_action_output_error": 0.0
+    },
+    "donor": {
+      "sigmas": [
+        0.999,
+        0.937,
+        0.833,
+        0.624
+      ],
+      "maximum_action_input_error": 0.0,
+      "maximum_action_output_error": 0.0
+    },
+    "gaussian": {
+      "sigmas": [
+        0.999,
+        0.937,
+        0.833,
+        0.624
+      ],
+      "maximum_action_input_error": 0.0,
+      "maximum_action_output_error": 0.0
+    }
+  },
+  "results": {
+    "self": {
+      "action_donor_projection": -0.19478329612401954,
+      "action_l2_from_recipient": 2.0497353076934814,
+      "future_target_maximum_absolute_error": 0.01770162582397461,
+      "decoded_l1_to_recipient": 0.0016794062685221434,
+      "decoded_l1_to_donor": 0.0997595489025116
+    },
+    "donor": {
+      "action_donor_projection": 0.325494259701472,
+      "action_l2_from_recipient": 6.358335018157959,
+      "future_target_maximum_absolute_error": 0.018913745880126953,
+      "decoded_l1_to_recipient": 0.09973142296075821,
+      "decoded_l1_to_donor": 0.0
+    },
+    "gaussian": {
+      "action_donor_projection": -0.05865945677043827,
+      "action_l2_from_recipient": 1.8839161396026611,
+      "future_target_maximum_absolute_error": 0.01749444007873535,
+      "decoded_l1_to_recipient": 0.16903585195541382,
+      "decoded_l1_to_donor": 0.20004130899906158
+    }
+  }
+}

@@ -23,5 +23,7 @@ results/*
 !results/factorial_hybrid_v1/**
 !results/content_factorization_v1/
 !results/content_factorization_v1/**
+!results/cosmos3_noop_v1/
+!results/cosmos3_noop_v1/**
 wandb/
 *.log

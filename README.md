@@ -30,6 +30,11 @@ not planning, search, goal reasoning, or mediation of task success. See the
 [publication assessment](docs/publication-assessment.md), and
 [public foundations](docs/references.md).
 
+The Cosmos 3 cross-generation replication is now underway. Its pinned,
+outcome-independent protocol and the first exact no-op/content pilot are in the
+[Cosmos 3 protocol](docs/cosmos3-replication-protocol.md) and
+[engineering results](docs/cosmos3-engineering-results.md).
+
 ## Reproducibility
 
 Prospective protocols and pinned upstream revisions are in `configs/` and
