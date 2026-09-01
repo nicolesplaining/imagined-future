@@ -170,3 +170,50 @@ object-divergent donors and explicit robot-pixel interventions remain necessary
 to distinguish task-state consequence use from visible inverse dynamics. The
 machine-readable report is in
 `results/cosmos3_robolab_step64_v3/summary.json`.
+
+## Denoising-time localization
+
+The same excluded step-64 state and frozen recipient/donor seeds were rerun in
+a new server-process block. In addition to the all-step clamp, the future was
+clamped during exactly one of the four UniPC denoiser calls. Every single-step
+intervention strongly steered the action toward the donor:
+
+| active clamp calls | action donor projection | robot endpoint projection |
+| --- | ---: | ---: |
+| step 0 only | **1.0616** | **0.5209** |
+| step 1 only | **0.9785** | **0.5420** |
+| step 2 only | **1.0139** | **0.5293** |
+| step 3 only | **0.9917** | **0.4844** |
+| all steps | **0.9990** | **0.5054** |
+| self | 0.0107 | -0.3012 |
+| matched Gaussian | 0.0018 | -0.2706 |
+
+Thus the Cosmos 3 effect is not confined to one privileged denoising call:
+each call is individually sufficient for strong directional action steering on
+this state. The native donor object-position displacement was only 9.85 mm,
+whereas interventions moved the object by 31--41 mm. Normalized object-position
+projections of 3--4 are therefore overshoots along a small denominator and are
+not interpreted as isolated object-semantic use. The compact report is in
+`results/cosmos3_robolab_timing_v1/summary.json`.
+
+## Server-restart reproducibility audit
+
+Within one loaded server process, identical requests and seeds recompute
+bit-for-bit. Across fresh server processes, however, the released stack is not
+bitwise deterministic. Four controlled restart pairs used the same transformed
+observation hash, full initial sampler-state hash, and vision path-noise hash.
+Action differences ranged from 0.493 to 0.722 in L2 and 0.100 to 0.133 maximum
+absolute error. Clean-action and clean-video hashes diverged from the first
+forward pass.
+
+The final pair also had an identical deterministic head/tail fingerprint over
+every loaded model parameter
+(`21b79382b84b4bdebb943a2659c0272c99267ef433d83818f9a44b742c1170cc`).
+Forcing the public cuDNN attention backend did not remove the difference. These
+checks localize the issue after weight loading and sampler-noise construction,
+to process-dependent numerical behavior in the forward stack. They do not
+invalidate paired interventions performed within one process, but a server
+process must be treated as a blocking factor. Confirmatory estimates will use
+at least three fresh-process blocks rather than claiming cross-process bitwise
+reproducibility. The compact audit is in
+`results/cosmos3_restart_probe/summary.json`.

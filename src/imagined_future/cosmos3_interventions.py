@@ -180,10 +180,12 @@ class GuidedFutureClamp:
     target: Tensor
     path_noise: Tensor
     future_frame_indices: tuple[int, ...]
+    active_call_indices: tuple[int, ...] | None = None
     num_train_timesteps: float = 1000.0
     sample_index: int = 0
     vision_name: str = "vision_0"
     calls: list[float] = field(default_factory=list, init=False)
+    clamped_call_indices: list[int] = field(default_factory=list, init=False)
     maximum_action_input_error: float = field(default=0.0, init=False)
     maximum_action_output_error: float = field(default=0.0, init=False)
 
@@ -212,7 +214,12 @@ class GuidedFutureClamp:
             if not 0.0 <= sigma <= 1.0 + 1e-6:
                 raise ValueError(f"rectified-flow sigma is outside [0,1]: {sigma}")
             sigma = min(max(sigma, 0.0), 1.0)
+            call_index = len(self.calls)
             self.calls.append(sigma)
+
+            if self.active_call_indices is not None and call_index not in self.active_call_indices:
+                return velocity_fn(noisy_state, timestep)
+            self.clamped_call_indices.append(call_index)
 
             target = self.target.to(device=model_state[self.sample_index].device, dtype=model_state[self.sample_index].dtype)
             path_noise = self.path_noise.to(device=target.device, dtype=target.dtype)

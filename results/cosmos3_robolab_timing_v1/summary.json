@@ -1,0 +1,724 @@
+{
+  "branch_seeds": [
+    307,
+    311,
+    313,
+    317
+  ],
+  "branch_step": 64,
+  "continuation_repeat_audit": {
+    "exact": true,
+    "reference_endpoint_state_digest": "166fa3cc88d059908378418ab0e48700ae645e8936ec40f4a60e17c9ceebd70e",
+    "repeat_endpoint_state_digest": "166fa3cc88d059908378418ab0e48700ae645e8936ec40f4a60e17c9ceebd70e",
+    "seed": 307
+  },
+  "donor_seed": 313,
+  "fixed_current_video": "/lambda/nfs/imagined-future/results/cosmos3_robolab_branch_step64_v3/pilot/native_311.npz",
+  "instruction": "Pick up the banana and place it in the bowl",
+  "interventions": {
+    "executed_donor": {
+      "action_donor_projection": 0.7180405706308317,
+      "action_l2_from_recipient": 1.664178729057312,
+      "endpoint_donor_projection": {
+        "all": 0.6730246677108477,
+        "object": 1.0632053025370127,
+        "object_orientation": 1.0484843246555917,
+        "object_position": 3.497542530713501,
+        "robot": 0.6620412784150443
+      },
+      "endpoint_l2_from_recipient": {
+        "all": 0.5713300623888502,
+        "object": 0.23202216198772807,
+        "object_orientation": 0.22934704832705471,
+        "object_position": 0.035131397312477594,
+        "robot": 0.5220955434935142
+      },
+      "server": {
+        "research_action_donor_projection": 0.7180405706308317,
+        "research_clamped_call_indices": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "research_donor_id": "banana-step64-v4-executed-313",
+        "research_id": "banana-step64-v4-intervention-executed_donor",
+        "research_infer_ms": 843.7076799964416,
+        "research_maximum_action_input_error": 0.0,
+        "research_maximum_action_output_error": 0.0,
+        "research_mode": "donor",
+        "research_output_future_hash": "16a4527aa14b400cea2af026198c862b02ba8c1588d04d11f6ef08a9d6f8e6de",
+        "research_recipient_id": "banana-step64-v4-native-311",
+        "research_seed": 311,
+        "research_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_state_hash": "d12df7bcae332d31a6e20a491f435674bb4f7a82bab9ab6eb9650d259a041559",
+        "research_target_future_max_error": 0.026972293853759766,
+        "research_target_hash": "ee5e846d942d116428cfc47365b64d0979b8f92b42ce0ac1e2666915475e7a69",
+        "research_x0_action_hashes": [
+          "8462d332e80895a4f3ab8f2d7fd1d0bd36db2378f8d00bc6c18a8ac4c22fb4d0",
+          "ca3dbf73cd479725424dc196f00ad6471680eb3283fa7a52790c503897409070",
+          "a89f1d347d83259ee5a50eefd3082695aac83392235fcca2e9a92744dee03145",
+          "2cc9120a8ae8b83e596e13297f53863912028c436acb2bdca30aa6c788802016"
+        ],
+        "research_x0_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_x0_vision_hashes": [
+          "72797b24287ffc9221ae2279d76602001c1c702136cbc1eee2ba55bb11f2cf45",
+          "f8d1f6b88c852f947096f8c11dca81b2140a7c5040ce1736745781f487b33c80",
+          "f61d2365484dd6464d5c5a81f7d58d7e55feb846814c51d2a60498fccf5e7cb3",
+          "673f76eff36ec8f7193aad2e68ff265b655d89c16a3f272415707cb8690dbe82"
+        ],
+        "server_timing": {
+          "infer_ms": 845.1017230036086,
+          "prev_total_ms": 24251.157678998425
+        }
+      },
+      "video_path": "/lambda/nfs/imagined-future/results/cosmos3_robolab_branch_step64_v4/pilot/executed_donor.npz"
+    },
+    "gaussian_executed": {
+      "action_donor_projection": 0.0017778339756381524,
+      "action_l2_from_recipient": 0.5602565407752991,
+      "endpoint_donor_projection": {
+        "all": -0.2662656097100975,
+        "object": -0.110601686101052,
+        "object_orientation": -0.11189516733208568,
+        "object_position": 0.10329507673742792,
+        "robot": -0.27064747113454274
+      },
+      "endpoint_l2_from_recipient": {
+        "all": 0.2213347100019532,
+        "object": 0.019748862671292614,
+        "object_orientation": 0.019717054899825035,
+        "object_position": 0.0011204119273108973,
+        "robot": 0.2204518910665979
+      },
+      "server": {
+        "research_action_donor_projection": 0.0017778339756381524,
+        "research_clamped_call_indices": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "research_donor_id": "banana-step64-v4-executed-313",
+        "research_id": "banana-step64-v4-intervention-gaussian_executed",
+        "research_infer_ms": 861.9400230018073,
+        "research_maximum_action_input_error": 0.0,
+        "research_maximum_action_output_error": 0.0,
+        "research_mode": "gaussian",
+        "research_output_future_hash": "e4b2f8b4ef6d82af9014998edd489836ec4d422110997cac55ff7499a7d8709e",
+        "research_recipient_id": "banana-step64-v4-native-311",
+        "research_seed": 311,
+        "research_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_state_hash": "d12df7bcae332d31a6e20a491f435674bb4f7a82bab9ab6eb9650d259a041559",
+        "research_target_future_max_error": 0.023798704147338867,
+        "research_target_hash": "47f7ca72ad19d63a04eca04f01b5f6c68ac4dad4ed680bb84fcb27f710699da6",
+        "research_x0_action_hashes": [
+          "ae53342a252e181045939e7f28df52e16c28dcc1f68221114dc93f1474bb2bcf",
+          "59dd4c372b46338ac373ac9a1e05abb45b9b2afb5733943b9048d5dbd66aea8a",
+          "74d95731c9f3ac575508b7cae83916e78279a290638146aa57a337343463aca6",
+          "37dbf391e1525ff673956741eb1c42c0db6c23572f28aec0883f3419fa766302"
+        ],
+        "research_x0_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_x0_vision_hashes": [
+          "f8a7a9920aaf99f8921ad0c55c65acdbd0597c5dcd8547668fe83b1d7555ac61",
+          "d55b1d28a69082547ffd40277ba91fe8f51be5f614dab448350c4285d82ec80c",
+          "5683239df97081a4cdf578b8928beefac2cdb13f4e75be3c9c80a6e1b7cf9c23",
+          "c598b6e1dcebe57c372e3bbf2cb31312f30fd75434ba5cf6716322cd9532d007"
+        ],
+        "server_timing": {
+          "infer_ms": 863.3242929936387,
+          "prev_total_ms": 24615.058557996235
+        }
+      },
+      "video_path": "/lambda/nfs/imagined-future/results/cosmos3_robolab_branch_step64_v4/pilot/gaussian_executed.npz"
+    },
+    "predicted_donor": {
+      "action_donor_projection": 0.9989717527751292,
+      "action_l2_from_recipient": 2.125891923904419,
+      "endpoint_donor_projection": {
+        "all": 0.4942499050591408,
+        "object": 0.09804133789880297,
+        "object_orientation": 0.07574126001939024,
+        "object_position": 3.785697838055769,
+        "robot": 0.5054029776287038
+      },
+      "endpoint_l2_from_recipient": {
+        "all": 0.40469877606238686,
+        "object": 0.0917951996995553,
+        "object_orientation": 0.08357120150006986,
+        "object_position": 0.03797647913796057,
+        "robot": 0.3941506573107708
+      },
+      "server": {
+        "research_action_donor_projection": 0.9989717527751292,
+        "research_clamped_call_indices": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "research_donor_id": "banana-step64-v4-native-313",
+        "research_id": "banana-step64-v4-intervention-predicted_donor",
+        "research_infer_ms": 844.94299099606,
+        "research_maximum_action_input_error": 0.0,
+        "research_maximum_action_output_error": 0.0,
+        "research_mode": "donor",
+        "research_output_future_hash": "a102a5cdb11d0112ecb0cd5db7928ac1bf60eb982bf49ff2ac4569dc67a90561",
+        "research_recipient_id": "banana-step64-v4-native-311",
+        "research_seed": 311,
+        "research_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_state_hash": "d12df7bcae332d31a6e20a491f435674bb4f7a82bab9ab6eb9650d259a041559",
+        "research_target_future_max_error": 0.01972341537475586,
+        "research_target_hash": "90689cee1da68912bab3b1c0444351b11c07932a7ba08e172d10a887f4dfb6b7",
+        "research_x0_action_hashes": [
+          "bff8f221bfb703df8a15536e0821a37b6ff6ccadabdfce26dbf8c6b66ea4f7cf",
+          "83aaa198ae89463b8b053f4a439d554660a70c5782751f66a14825a5c52594a2",
+          "4a38d8388c5c9e33e77b3d36a304c5db1c21e09b955ebd58b6379c91528791e4",
+          "4af4531446f9e3b6bd7966e70f4ac837f9c0aad57b2a03e1ddd9f9502974007a"
+        ],
+        "research_x0_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_x0_vision_hashes": [
+          "14c3e2ff5fd7fe48b4ece2287bd963a981276616ec6e37d4efa35d22cef22e99",
+          "3bc12edb7f88a7d4ff793a3c0620d8587fc20ce369b018a35fa2efa673cea105",
+          "c3f115cc195b7e833d2e9d93c9205711af3d533c0fd0cc598457f89b92beadcd",
+          "ffbe3d5116448d071ca83ca12d34571a8ba29301e3e364e4d3d717b765da486f"
+        ],
+        "server_timing": {
+          "infer_ms": 846.3812569971196,
+          "prev_total_ms": 866.3315740050166
+        }
+      },
+      "video_path": "/lambda/nfs/imagined-future/results/cosmos3_robolab_branch_step64_v4/pilot/predicted_donor.npz"
+    },
+    "predicted_donor_step_0": {
+      "action_donor_projection": 1.0616301423747534,
+      "action_l2_from_recipient": 2.293051242828369,
+      "endpoint_donor_projection": {
+        "all": 0.5066930332279519,
+        "object": 0.0034631548124722184,
+        "object_orientation": -0.01513541788781174,
+        "object_position": 3.0790195668894635,
+        "robot": 0.5208587020658721
+      },
+      "endpoint_l2_from_recipient": {
+        "all": 0.41010705497032374,
+        "object": 0.0525649085415061,
+        "object_orientation": 0.04258162216173326,
+        "object_position": 0.03082004321950715,
+        "robot": 0.40672438693352936
+      },
+      "server": {
+        "research_action_donor_projection": 1.0616301423747534,
+        "research_clamped_call_indices": [
+          0
+        ],
+        "research_donor_id": "banana-step64-v4-native-313",
+        "research_id": "banana-step64-v4-intervention-predicted_donor_step_0",
+        "research_infer_ms": 840.4413720054436,
+        "research_maximum_action_input_error": 0.0,
+        "research_maximum_action_output_error": 0.0,
+        "research_mode": "donor",
+        "research_output_future_hash": "1f1b5130eb87a25ef1b0faecb14ce54b82a61e58bd26caebd44ec0c461e059f0",
+        "research_recipient_id": "banana-step64-v4-native-311",
+        "research_seed": 311,
+        "research_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_state_hash": "d12df7bcae332d31a6e20a491f435674bb4f7a82bab9ab6eb9650d259a041559",
+        "research_target_future_max_error": 3.322360038757324,
+        "research_target_hash": "90689cee1da68912bab3b1c0444351b11c07932a7ba08e172d10a887f4dfb6b7",
+        "research_x0_action_hashes": [
+          "bff8f221bfb703df8a15536e0821a37b6ff6ccadabdfce26dbf8c6b66ea4f7cf",
+          "650423e97cb427800bc8676d8cbecede38e515da9eefbe7b0d1189387f996b31",
+          "87595685c10e3868c3bb99c241693f75132be79a385712af3044bf4e19ae3c2e",
+          "979283eb0a8a7f269ede909bf36539517a62c49af16ccd8cb7c28649fd82921e"
+        ],
+        "research_x0_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_x0_vision_hashes": [
+          "14c3e2ff5fd7fe48b4ece2287bd963a981276616ec6e37d4efa35d22cef22e99",
+          "f3de5311a3d6f637563c20eabe9a39ec7431c5947b6180a38925fb810de25873",
+          "13da507645f925433eb0459961c837e8e239ca5f218356a135e61e8918624d01",
+          "cf58f2e8c3834baac807803afa9a54355925dc832f33708fbde4ae5b100aca81"
+        ],
+        "server_timing": {
+          "infer_ms": 841.7890700002317,
+          "prev_total_ms": 24780.970505002188
+        }
+      },
+      "video_path": "/lambda/nfs/imagined-future/results/cosmos3_robolab_branch_step64_v4/pilot/predicted_donor_step_0.npz"
+    },
+    "predicted_donor_step_1": {
+      "action_donor_projection": 0.9785005636107993,
+      "action_l2_from_recipient": 2.0934834480285645,
+      "endpoint_donor_projection": {
+        "all": 0.5456794794568797,
+        "object": 0.6774895831779765,
+        "object_orientation": 0.6616506743207914,
+        "object_position": 3.2966936737840498,
+        "robot": 0.5419690911057663
+      },
+      "endpoint_l2_from_recipient": {
+        "all": 0.4908815658876393,
+        "object": 0.256797351851954,
+        "object_orientation": 0.25471487227551415,
+        "object_position": 0.03263761265541323,
+        "robot": 0.41835371614236255
+      },
+      "server": {
+        "research_action_donor_projection": 0.9785005636107993,
+        "research_clamped_call_indices": [
+          1
+        ],
+        "research_donor_id": "banana-step64-v4-native-313",
+        "research_id": "banana-step64-v4-intervention-predicted_donor_step_1",
+        "research_infer_ms": 847.6116870006081,
+        "research_maximum_action_input_error": 0.0,
+        "research_maximum_action_output_error": 0.0,
+        "research_mode": "donor",
+        "research_output_future_hash": "4c94ed16014e22ec32f256d02aad774adbadaffff680d172825f41c7a80d3b02",
+        "research_recipient_id": "banana-step64-v4-native-311",
+        "research_seed": 311,
+        "research_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_state_hash": "d12df7bcae332d31a6e20a491f435674bb4f7a82bab9ab6eb9650d259a041559",
+        "research_target_future_max_error": 3.133932113647461,
+        "research_target_hash": "90689cee1da68912bab3b1c0444351b11c07932a7ba08e172d10a887f4dfb6b7",
+        "research_x0_action_hashes": [
+          "3fe6752f4342491f079cf4a2f2bd429b6444418bf8a2ca762e2ba56f646a1ffa",
+          "68da4eb7aad74b6fb77b9ac6532dd5699e7cf4a4e73cb1245ae9c9a6de845e6e",
+          "21fb09c05c0e9b1d55e8a827acfb28c73552c431e17f38f82da4d8aafbf9a6ad",
+          "2b96115a6efec6887512b258ae9c5c8c7a5520af58a937aaeb49190b518817ac"
+        ],
+        "research_x0_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_x0_vision_hashes": [
+          "709f3578530f352f44053fd9e1a42ebe2d0a55faf8f91ae0780ce4112e2e232b",
+          "dddba86149d2015fda0e3839d74ea48d405f8953f30fbc65f3184191707f846e",
+          "de421162298eaa0bfe0f46d77d440c3e79b815920dd43c31d5aa3846f867f096",
+          "aedc6f178f0fa2759d9e477e1edcf2651065ed15bb2c07cb29efc8105703d327"
+        ],
+        "server_timing": {
+          "infer_ms": 849.1710130037973,
+          "prev_total_ms": 24585.8832360027
+        }
+      },
+      "video_path": "/lambda/nfs/imagined-future/results/cosmos3_robolab_branch_step64_v4/pilot/predicted_donor_step_1.npz"
+    },
+    "predicted_donor_step_2": {
+      "action_donor_projection": 1.0138627244022345,
+      "action_l2_from_recipient": 2.157090902328491,
+      "endpoint_donor_projection": {
+        "all": 0.5142299112937477,
+        "object": -0.019768303472662188,
+        "object_orientation": -0.04370429960491365,
+        "object_position": 3.9384121209247467,
+        "robot": 0.5292616933775932
+      },
+      "endpoint_l2_from_recipient": {
+        "all": 0.41700659746520663,
+        "object": 0.07542758517636228,
+        "object_orientation": 0.0636303390161806,
+        "object_position": 0.04050309324265632,
+        "robot": 0.4101282503363691
+      },
+      "server": {
+        "research_action_donor_projection": 1.0138627244022345,
+        "research_clamped_call_indices": [
+          2
+        ],
+        "research_donor_id": "banana-step64-v4-native-313",
+        "research_id": "banana-step64-v4-intervention-predicted_donor_step_2",
+        "research_infer_ms": 845.2208369999425,
+        "research_maximum_action_input_error": 0.0,
+        "research_maximum_action_output_error": 0.0,
+        "research_mode": "donor",
+        "research_output_future_hash": "732dd176c9c87895c938cb6cb2ca7d7bd2f529394ab9d4983236e367edd3d284",
+        "research_recipient_id": "banana-step64-v4-native-311",
+        "research_seed": 311,
+        "research_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_state_hash": "d12df7bcae332d31a6e20a491f435674bb4f7a82bab9ab6eb9650d259a041559",
+        "research_target_future_max_error": 1.5740478038787842,
+        "research_target_hash": "90689cee1da68912bab3b1c0444351b11c07932a7ba08e172d10a887f4dfb6b7",
+        "research_x0_action_hashes": [
+          "3fe6752f4342491f079cf4a2f2bd429b6444418bf8a2ca762e2ba56f646a1ffa",
+          "cf3b28edb0d3891cc912914cf28f8897264e7a9086a4f7eea7ef61844f79ee7f",
+          "bb929f02b6886ed79c4f7da17737e0a4528acef5d06a2cf24a4d338be1f56091",
+          "8e978aaf51f2e8278a3feafaa207d813d87a3be69b346bcd9e7b248b8fa9b375"
+        ],
+        "research_x0_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_x0_vision_hashes": [
+          "709f3578530f352f44053fd9e1a42ebe2d0a55faf8f91ae0780ce4112e2e232b",
+          "695f144cfc4674961d5c935b53790c19a61483f920c36133868f4e695c1e1d3f",
+          "fffa9f19c23ad8c8937df418a02f3bc1c16fa897f1e03ed04e2b77f32a1cfc69",
+          "d578060b5e18ccf10df5e966baa9d83f89f8cef300ed6c52f2c7523214b1c059"
+        ],
+        "server_timing": {
+          "infer_ms": 846.8828770055552,
+          "prev_total_ms": 24835.20020699507
+        }
+      },
+      "video_path": "/lambda/nfs/imagined-future/results/cosmos3_robolab_branch_step64_v4/pilot/predicted_donor_step_2.npz"
+    },
+    "predicted_donor_step_3": {
+      "action_donor_projection": 0.9917158750828339,
+      "action_l2_from_recipient": 2.1097354888916016,
+      "endpoint_donor_projection": {
+        "all": 0.463904202689712,
+        "object": -0.26247175833390757,
+        "object_orientation": -0.2856766080946091,
+        "object_position": 3.5748025111974915,
+        "robot": 0.48435132190307323
+      },
+      "endpoint_l2_from_recipient": {
+        "all": 0.3879888175140298,
+        "object": 0.08558969666801637,
+        "object_orientation": 0.07738785554658717,
+        "object_position": 0.03656112675538885,
+        "robot": 0.3784306096766118
+      },
+      "server": {
+        "research_action_donor_projection": 0.9917158750828339,
+        "research_clamped_call_indices": [
+          3
+        ],
+        "research_donor_id": "banana-step64-v4-native-313",
+        "research_id": "banana-step64-v4-intervention-predicted_donor_step_3",
+        "research_infer_ms": 847.8373320031096,
+        "research_maximum_action_input_error": 0.0,
+        "research_maximum_action_output_error": 0.0,
+        "research_mode": "donor",
+        "research_output_future_hash": "4edecce8204bfee9ed764d2330ca69699abd0808c64b5695536a1954bdaa9cd3",
+        "research_recipient_id": "banana-step64-v4-native-311",
+        "research_seed": 311,
+        "research_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_state_hash": "d12df7bcae332d31a6e20a491f435674bb4f7a82bab9ab6eb9650d259a041559",
+        "research_target_future_max_error": 0.025660991668701172,
+        "research_target_hash": "90689cee1da68912bab3b1c0444351b11c07932a7ba08e172d10a887f4dfb6b7",
+        "research_x0_action_hashes": [
+          "3fe6752f4342491f079cf4a2f2bd429b6444418bf8a2ca762e2ba56f646a1ffa",
+          "cf3b28edb0d3891cc912914cf28f8897264e7a9086a4f7eea7ef61844f79ee7f",
+          "99005f2611b6d8f0523b381280589ffed8f206031baf164dbff8e7359b84aadc",
+          "a500740c6862a354feb41a6da592f9f35c7b8bc068706ecf4e43d120127ab0d6"
+        ],
+        "research_x0_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_x0_vision_hashes": [
+          "709f3578530f352f44053fd9e1a42ebe2d0a55faf8f91ae0780ce4112e2e232b",
+          "695f144cfc4674961d5c935b53790c19a61483f920c36133868f4e695c1e1d3f",
+          "feb1ef175293505836329fe4f8cdb750401e3415d006a7de717c5debd5cbeaf2",
+          "74a0bf3f880249ffd32a9b7176ae3f7f5a123eb08efc7d2926398d6a42e56db7"
+        ],
+        "server_timing": {
+          "infer_ms": 849.1214400055469,
+          "prev_total_ms": 24792.17464999965
+        }
+      },
+      "video_path": "/lambda/nfs/imagined-future/results/cosmos3_robolab_branch_step64_v4/pilot/predicted_donor_step_3.npz"
+    },
+    "self": {
+      "action_donor_projection": 0.010661449794801187,
+      "action_l2_from_recipient": 0.20845769345760345,
+      "endpoint_donor_projection": {
+        "all": -0.2906505379190368,
+        "object": 0.08287518599360393,
+        "object_orientation": 0.08374198500493053,
+        "object_position": -0.06046319272116695,
+        "robot": -0.30116509982074935
+      },
+      "endpoint_l2_from_recipient": {
+        "all": 0.23666906795718418,
+        "object": 0.023035815081394385,
+        "object_orientation": 0.02295511277942619,
+        "object_position": 0.0019265445097431107,
+        "robot": 0.23554532249921256
+      },
+      "server": {
+        "research_action_donor_projection": NaN,
+        "research_clamped_call_indices": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "research_donor_id": "banana-step64-v4-native-311",
+        "research_id": "banana-step64-v4-intervention-self",
+        "research_infer_ms": 858.1565250060521,
+        "research_maximum_action_input_error": 0.0,
+        "research_maximum_action_output_error": 0.0,
+        "research_mode": "self",
+        "research_output_future_hash": "7134a9f1feb768c42271369de7197dde23c36dd6650da9e91c7a1534dc0a84ce",
+        "research_recipient_id": "banana-step64-v4-native-311",
+        "research_seed": 311,
+        "research_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_state_hash": "d12df7bcae332d31a6e20a491f435674bb4f7a82bab9ab6eb9650d259a041559",
+        "research_target_future_max_error": 0.018900632858276367,
+        "research_target_hash": "4747236cec0c9affeae48acb6d6851ab31a3a5852198141cc963c246456fff10",
+        "research_x0_action_hashes": [
+          "7c36e9670a67eb6cefdcbf47dfe5624951564e0505fb2b521518ac002fa72b95",
+          "5aab5fd9140c94ca80bf83c5517e0ecd23a98b1e6b31e667fb0f63a5e7f00c8a",
+          "5bfa19e77c6599a6e1fbc5d4e874a420f6258aa26392c2caf43333e9993fa659",
+          "8b18fdec1e5046ec4ec6bee88ce1d8b6629db0db6757e74ed93d71f6dd8a0c7e"
+        ],
+        "research_x0_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_x0_vision_hashes": [
+          "522513325d47db69da9ffa18e2f6121f2e5dc06888c0b7ee77c37130b2669ed2",
+          "526ca01da455b1b37902e3715e594dc6265f78b422147faaf18596d1ba7cf246",
+          "d8eb6318e708e07093854afdffc7001ec58c7357c7e631d996c6add8cbf802dc",
+          "f3139c57e15501a0508eae3db7f279a0129239c0edf52bc6205fac353f15a9ef"
+        ],
+        "server_timing": {
+          "infer_ms": 859.9971719959285,
+          "prev_total_ms": 1468.9634449969162
+        }
+      },
+      "video_path": "/lambda/nfs/imagined-future/results/cosmos3_robolab_branch_step64_v4/pilot/self.npz"
+    }
+  },
+  "native": {
+    "307": {
+      "endpoint_state_digest": "166fa3cc88d059908378418ab0e48700ae645e8936ec40f4a60e17c9ceebd70e",
+      "server": {
+        "research_future_hash": "3a170b2541cf27cbc1468a9934ff3a725d43b0ccd40dd3fb88f659b74178e3e5",
+        "research_id": "banana-step64-v4-native-307",
+        "research_infer_ms": 838.3683150022989,
+        "research_mode": "native",
+        "research_seed": 307,
+        "research_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_state_hash": "d12df7bcae332d31a6e20a491f435674bb4f7a82bab9ab6eb9650d259a041559",
+        "research_x0_action_hashes": [
+          "533be07283813d1de6ca5214c9c47ff9d5b5b4c8808cf36e3e05c986e2f8b7ff",
+          "1415cef397cbf49178376349bfc7d7c6f6be2a3d3458698044c248c19793525e",
+          "7684109ed4305877aed3809001abb86ef0ce58601e16bcb8a7515b9a3ea35bc6",
+          "0c77e83d560cb0cfbd4aecd27620988632da4aafd0a5ee591c542abaa57a6148"
+        ],
+        "research_x0_vision_hashes": [
+          "40728c49861b63b9d42832e06de504fa321852d5e74513b66215da643d81c917",
+          "a3448c5b6e46061c15d47ad5e2e0aaa68df7073e5871c4d4b86e2da3c82eaa39",
+          "79affb3be141d64b063a041fd799b671cc93804d212810f156ecd0f0f18eb663",
+          "aa63eb504ced6f156825bd9a83267464ad09b75690a67dc6e306fbf9de017918"
+        ],
+        "server_timing": {
+          "infer_ms": 839.4945040054154
+        }
+      },
+      "video_path": "/lambda/nfs/imagined-future/results/cosmos3_robolab_branch_step64_v4/pilot/native_307.npz"
+    },
+    "311": {
+      "endpoint_state_digest": "619b5585b6412e23b5727107831b77c6a9b7efc182078afe06dd4ce1a565f18b",
+      "server": {
+        "research_future_hash": "4747236cec0c9affeae48acb6d6851ab31a3a5852198141cc963c246456fff10",
+        "research_id": "banana-step64-v4-native-311",
+        "research_infer_ms": 840.3183099944727,
+        "research_mode": "native",
+        "research_seed": 311,
+        "research_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_state_hash": "d12df7bcae332d31a6e20a491f435674bb4f7a82bab9ab6eb9650d259a041559",
+        "research_x0_action_hashes": [
+          "3fe6752f4342491f079cf4a2f2bd429b6444418bf8a2ca762e2ba56f646a1ffa",
+          "cf3b28edb0d3891cc912914cf28f8897264e7a9086a4f7eea7ef61844f79ee7f",
+          "99005f2611b6d8f0523b381280589ffed8f206031baf164dbff8e7359b84aadc",
+          "9dadc40105113ba9e7ab8a87748c18c5cbfbde3fb48071eef9d76d7b6f1cd551"
+        ],
+        "research_x0_vision_hashes": [
+          "709f3578530f352f44053fd9e1a42ebe2d0a55faf8f91ae0780ce4112e2e232b",
+          "695f144cfc4674961d5c935b53790c19a61483f920c36133868f4e695c1e1d3f",
+          "feb1ef175293505836329fe4f8cdb750401e3415d006a7de717c5debd5cbeaf2",
+          "3f3c8dde6ed05e0f25e5223ad4dd09d61b5ae045fa9becaae918ad32380fce5a"
+        ],
+        "server_timing": {
+          "infer_ms": 842.053472995758,
+          "prev_total_ms": 62742.415251996135
+        }
+      },
+      "video_path": "/lambda/nfs/imagined-future/results/cosmos3_robolab_branch_step64_v4/pilot/native_311.npz"
+    },
+    "313": {
+      "endpoint_state_digest": "8f388d23aa42c3b7367c9fd13d0c3835f8fa47c8db671e32013443b8d68a1b73",
+      "server": {
+        "research_future_hash": "90689cee1da68912bab3b1c0444351b11c07932a7ba08e172d10a887f4dfb6b7",
+        "research_id": "banana-step64-v4-native-313",
+        "research_infer_ms": 840.8398290048353,
+        "research_mode": "native",
+        "research_seed": 313,
+        "research_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_state_hash": "d12df7bcae332d31a6e20a491f435674bb4f7a82bab9ab6eb9650d259a041559",
+        "research_x0_action_hashes": [
+          "ba789abfc1a6367073f64a0259fd60ad86de89eaf980147723f5b8720195aad9",
+          "ae298dd4500367719c5502b1394852acfff7a0f2d01039bcee493bd223da2edf",
+          "ff84e2cc72b096eba480248f19f9606104c1b5b55b30031bcf6ecfc518e14702",
+          "104db2b11a76772feb6518381afb1bebc0581afd93ad9c235eecc64d4f3005e2"
+        ],
+        "research_x0_vision_hashes": [
+          "0eb2549ea43665804ad2125670bbadfbed194a6855ac8211be7e388054c5b41d",
+          "ee64c9df682baf82682a747b4847dd7ed108a2f3edc3f36e61d803c77b1d2caf",
+          "9da66eca6ef76f2202dc27036af49c39958df0190951bb8128139fa21f7b5f45",
+          "25327247ba8fb909111b7ac8c6126a68b8befd57b35afcb930c045e75f2171f5"
+        ],
+        "server_timing": {
+          "infer_ms": 842.3643159985659,
+          "prev_total_ms": 24397.595312002522
+        }
+      },
+      "video_path": "/lambda/nfs/imagined-future/results/cosmos3_robolab_branch_step64_v4/pilot/native_313.npz"
+    },
+    "317": {
+      "endpoint_state_digest": "6338e1089c20404ea04e19480cadf1905c7bc458b49550c44308d0d31b799a79",
+      "server": {
+        "research_future_hash": "32a4f4e9a3766d121c66292d734504abd617071beb6350008216a294602feeed",
+        "research_id": "banana-step64-v4-native-317",
+        "research_infer_ms": 833.4527599945432,
+        "research_mode": "native",
+        "research_seed": 317,
+        "research_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_state_hash": "d12df7bcae332d31a6e20a491f435674bb4f7a82bab9ab6eb9650d259a041559",
+        "research_x0_action_hashes": [
+          "6ae6f1089ea3a06850066e8cc32fbd28d61710037497363e067691520834abc8",
+          "176b762cdb17a473680c6aaa66e62878d917d321d00295b32ef0d9301bb01426",
+          "be1d58fcd189451ca9f397f3268811f8b5d5b786d53a8f1303e55cd31604e370",
+          "ee0d46a5bbe79d148b062a0c888119bf5331f6aebdf1f3d0eb940dfd113fcdf5"
+        ],
+        "research_x0_vision_hashes": [
+          "444887393061a07deaf5e404fabd89f869565f3e9b6723522af28631a5148540",
+          "54ad9b951541e054e6de27023ad8d8c6a028b6ca2fd99f7af9c7ef29850dc7a2",
+          "6a783f8d152da66edabe58f0d86cf7ba6ef7b00518491a9f34fcc85520e5900d",
+          "a927fd3b535ca72e13d018040a7098d3cf41cf30eed773754b77abcc7e49e916"
+        ],
+        "server_timing": {
+          "infer_ms": 834.7793569992064,
+          "prev_total_ms": 24390.912208000373
+        }
+      },
+      "video_path": "/lambda/nfs/imagined-future/results/cosmos3_robolab_branch_step64_v4/pilot/native_317.npz"
+    }
+  },
+  "native_action_l2": 2.1143949031829834,
+  "native_endpoint_l2": {
+    "all": 0.7677838357993629,
+    "object": 0.12704166109416035,
+    "object_orientation": 0.12665926995572446,
+    "object_position": 0.009849517137728773,
+    "robot": 0.7572003928031336
+  },
+  "native_pairwise_endpoint_l2": {
+    "307:311": 0.35657788867191587,
+    "307:313": 0.46972237033078545,
+    "307:317": 0.2728010525751242,
+    "311:313": 0.7677838357993629,
+    "311:317": 0.23606421765712293,
+    "313:317": 0.5962969369851452
+  },
+  "prefix_maximum_state_error": 0.0,
+  "recipient_seed": 311,
+  "recorded_hdf5": "/lambda/nfs/imagined-future/results/cosmos3_robolab_smoke/cosmos3_smoke_v2/BananaInBowlTask/run_0.hdf5",
+  "restore_image_maximum_absolute_errors": [
+    47,
+    40,
+    43
+  ],
+  "restore_state_digests": [
+    "d47efaa7f56b9bd24a5c82c2649c4a59078ed832d5d79c82d275641e82502509",
+    "d47efaa7f56b9bd24a5c82c2649c4a59078ed832d5d79c82d275641e82502509",
+    "d47efaa7f56b9bd24a5c82c2649c4a59078ed832d5d79c82d275641e82502509"
+  ],
+  "restore_strategy": "fresh_replay",
+  "scope": "same-state RoboLab engineering pilot; donor pair selected only by native endpoint separation",
+  "server_state_hash": "d12df7bcae332d31a6e20a491f435674bb4f7a82bab9ab6eb9650d259a041559",
+  "study_id": "banana-step64-v4",
+  "task": "BananaInBowlTask",
+  "timing_sweep": true
+}

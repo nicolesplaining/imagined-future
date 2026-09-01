@@ -36,7 +36,11 @@ maximum_action_coordinate_intervention_error = 0.0
 gaussian_norm_relative_tolerance = 1e-5
 gaussian_distance_relative_tolerance = 1e-5
 replay_num_envs = 1
-replay_state_absolute_tolerance = 1e-6
+replay_state_absolute_tolerance = 0.0
+fresh_environment_per_condition = true
+server_process_is_blocking_factor = true
+cross_process_bitwise_exactness_required = false
+minimum_server_process_blocks = 3
 decoded_target_top1_minimum = 0.90
 
 [screen]

@@ -112,6 +112,33 @@ def test_guided_x0_recorder_is_velocity_identity() -> None:
     assert torch.equal(recorder.records[0]["samples"][0]["action"].reshape(-1), state[0][24:] - 0.5)
 
 
+def test_guided_clamp_can_target_one_denoising_call() -> None:
+    plans, data = prepared()
+    capture = PreparedLayoutCapture()
+    capture(model=None, net=None, cond_tokens=[], sequence_plans=plans, gen_data_clean=data)
+    target = torch.arange(24, dtype=torch.float32)
+    path_noise = torch.full((24,), 10.0)
+    clamp = GuidedFutureClamp(capture, target, path_noise, (1, 2), active_call_indices=(1,))
+    native_state = [torch.arange(32, dtype=torch.float32)]
+    observed: list[torch.Tensor] = []
+
+    def velocity_fn(state: list[torch.Tensor], _timestep: torch.Tensor) -> list[torch.Tensor]:
+        observed.append(state[0].clone())
+        return [state[0] + 1.0]
+
+    wrapped = clamp.wrap_velocity(velocity_fn)
+    first = wrapped(native_state, torch.tensor([[900.0]]))[0]
+    second = wrapped(native_state, torch.tensor([[500.0]]))[0]
+
+    assert torch.equal(observed[0], native_state[0])
+    assert torch.equal(first, native_state[0] + 1.0)
+    assert not torch.equal(observed[1][:24], native_state[0][:24])
+    assert torch.equal(observed[1][24:], native_state[0][24:])
+    assert torch.equal(second[24:], native_state[0][24:] + 1.0)
+    assert clamp.calls == [0.9, 0.5]
+    assert clamp.clamped_call_indices == [1]
+
+
 def test_sampler_initial_state_capture_delegates_without_copying_argument() -> None:
     observed = []
 

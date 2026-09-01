@@ -1,0 +1,545 @@
+{
+  "label": "fixed public-observation server engineering audit; not a RoboLab causal result",
+  "native_action_l2": 7.777401924133301,
+  "native_recomputation": {
+    "action_maximum_absolute_error": 0.0,
+    "future_hash_equal": true,
+    "x0_action_hashes_equal": true,
+    "x0_vision_hashes_equal": true
+  },
+  "responses": {
+    "donor": {
+      "research_future_hash": "f67d8be2412f657e5123283cbc2b1c1d326882b3b4816a9f41c36f1e9ee10f14",
+      "research_id": "timing-v1b-donor",
+      "research_infer_ms": 819.4957259984221,
+      "research_mode": "native",
+      "research_seed": 1,
+      "research_sigmas": [
+        0.9990000128746033,
+        0.9369999766349792,
+        0.8330000042915344,
+        0.6240000128746033
+      ],
+      "research_state_hash": "2e94e022c1639ea9084ef9259bda4f12341d518787e04adf77ab1ae17c5490ca",
+      "research_x0_action_hashes": [
+        "044040aa933bc5d820e056f53bc1379ff76c989926e9785a297c93bc23879cb3",
+        "d3cfcb38e058d1ce8197a1a4b80e111dbb1cf45000618fd3583d92fc5b251eb6",
+        "0f342d981efcb2b260973166af2bcf2ca931817291bddf40759ab773bf2f024e",
+        "38d53eb1f579c77bc75f791cd3445c594cd4f5c3658de86a7e08ead1ba2d2887"
+      ],
+      "research_x0_vision_hashes": [
+        "71e07b3d00de0801264b14a64646f06710773cdec952b3fe6515b70207fd2a39",
+        "d5bcc86fca006af08595a41e1f17644f7588c9197e0a23f34dd155f1b9e262cb",
+        "c2d178fe4753edceb30191e41685f6fc8dd90e65e3ec43670f5b48436ac1b8a3",
+        "d9715545a12b012ac79d0064fbdea2c668d4cd6f728a7758ee600f826e601f2e"
+      ],
+      "server_timing": {
+        "infer_ms": 821.325145996525,
+        "prev_total_ms": 825.6672440038528
+      }
+    },
+    "donor_clamp": {
+      "research_action_donor_projection": -0.04145918656066608,
+      "research_clamped_call_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "research_donor_id": "timing-v1b-donor",
+      "research_id": "timing-v1b-donor-clamp",
+      "research_infer_ms": 827.5171840068651,
+      "research_maximum_action_input_error": 0.0,
+      "research_maximum_action_output_error": 0.0,
+      "research_mode": "donor",
+      "research_output_future_hash": "0e5d3964d7874d23b3a1c28502e532d0596eeee08258a948f70718618699964a",
+      "research_recipient_id": "timing-v1b-recipient",
+      "research_seed": 0,
+      "research_sigmas": [
+        0.9990000128746033,
+        0.9369999766349792,
+        0.8330000042915344,
+        0.6240000128746033
+      ],
+      "research_state_hash": "2e94e022c1639ea9084ef9259bda4f12341d518787e04adf77ab1ae17c5490ca",
+      "research_target_future_max_error": 0.018027544021606445,
+      "research_target_hash": "f67d8be2412f657e5123283cbc2b1c1d326882b3b4816a9f41c36f1e9ee10f14",
+      "research_x0_action_hashes": [
+        "9c5efaf14621bbffbcec98354ca236de6d25a5e8f5ec4e6c572c4b82720346ee",
+        "da12ae5ccfe995a5e6897a0117f7ee7a21c66d91fe7fb5043e724c9a763b503d",
+        "ba5924e8b971f35468ab69bfbc8836bb309cb6e865384d5260ab961bccd22653",
+        "cdf9da5cd1bcba9f40bab5badeae5902ddc625fdc5d2ab4957b6a18649678115"
+      ],
+      "research_x0_sigmas": [
+        0.9990000128746033,
+        0.9369999766349792,
+        0.8330000042915344,
+        0.6240000128746033
+      ],
+      "research_x0_vision_hashes": [
+        "e49b296a24cd55aa6b52f259ec25006f95d57c2fa98923922e434ea5c1bed08a",
+        "7a019264c157a18499d1a57fb53baad11e9cc874ea2880ea78bb7b1bae0fafec",
+        "1055ee8b3a3dd29a0ba3c22e736809b861c7fdb5eb4337c9287f479e57ba4bf6",
+        "ee114a2e3a2fcab2a0ade33e3f2d486b4c44bbe6373ecb8b995dbc39d7e8e488"
+      ],
+      "server_timing": {
+        "infer_ms": 829.1252149938373,
+        "prev_total_ms": 837.0977630038396
+      }
+    },
+    "executed_clamp": {
+      "research_clamped_call_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "research_donor_id": "timing-v1b-executed",
+      "research_id": "timing-v1b-executed-clamp",
+      "research_infer_ms": 817.010760998528,
+      "research_maximum_action_input_error": 0.0,
+      "research_maximum_action_output_error": 0.0,
+      "research_mode": "donor",
+      "research_output_future_hash": "d3489b0b01c33885ed47dc9c156d7ef23a2c0acca32ee204d00505580a4019a4",
+      "research_recipient_id": "timing-v1b-recipient",
+      "research_seed": 0,
+      "research_sigmas": [
+        0.9990000128746033,
+        0.9369999766349792,
+        0.8330000042915344,
+        0.6240000128746033
+      ],
+      "research_state_hash": "2e94e022c1639ea9084ef9259bda4f12341d518787e04adf77ab1ae17c5490ca",
+      "research_target_future_max_error": 0.018061399459838867,
+      "research_target_hash": "4234a5c9d007594a5ab7266ad24f8b92c2920a138fbc5238b373fedf7fcbf29c",
+      "research_x0_action_hashes": [
+        "238e09c273e986ebb3a457a2eaaf05b3bc67ffc037b665d07e5f384652b6c421",
+        "1933e66b7f7f9ce3d20798c99d851f42fa775597dd8c5a6573f5a8ff378e49ce",
+        "c3a1d3f41a92d558e75a495d9598d28ad5cd72c44dbc0bba0b2c0219ceec01ad",
+        "693d7330032b6e6dab39d88e5880c1e62af03ca3865d3f15975a23c1367ea79a"
+      ],
+      "research_x0_sigmas": [
+        0.9990000128746033,
+        0.9369999766349792,
+        0.8330000042915344,
+        0.6240000128746033
+      ],
+      "research_x0_vision_hashes": [
+        "65dd34121490d750a63557de01e7ba0d22f622d8977c43ae5a26f4697d307892",
+        "13c38d5dc9dafd58b63d6624d70500be20b8e7ea8659f67b2242a0dcccfa5a83",
+        "d9a925d6d57a62b7b639e18ca853211c627e382397a0d3af3f7c2d0fda314283",
+        "e32f0159bc7a5ab6a096b79661942cbf899c8f35462df3431075e8211a94e6f2"
+      ],
+      "server_timing": {
+        "infer_ms": 818.9862220024224,
+        "prev_total_ms": 2286.0097349985153
+      }
+    },
+    "gaussian": {
+      "research_action_donor_projection": -0.04786390051969029,
+      "research_clamped_call_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "research_donor_id": "timing-v1b-donor",
+      "research_id": "timing-v1b-gaussian",
+      "research_infer_ms": 843.096537006204,
+      "research_maximum_action_input_error": 0.0,
+      "research_maximum_action_output_error": 0.0,
+      "research_mode": "gaussian",
+      "research_output_future_hash": "167a9e2f31f8404e62c5f81766c885653bf6140952501cb43167c4765c08f41b",
+      "research_recipient_id": "timing-v1b-recipient",
+      "research_seed": 0,
+      "research_sigmas": [
+        0.9990000128746033,
+        0.9369999766349792,
+        0.8330000042915344,
+        0.6240000128746033
+      ],
+      "research_state_hash": "2e94e022c1639ea9084ef9259bda4f12341d518787e04adf77ab1ae17c5490ca",
+      "research_target_future_max_error": 0.017722368240356445,
+      "research_target_hash": "d288329e64a68451bd86618bb6ae3b41ee9ada328fa377a7188119367408929e",
+      "research_x0_action_hashes": [
+        "197a430884cf1c275c20f2e369a7653cc9ceeda0c84592c8959f058b39a6afbc",
+        "21a3ed49ca4911b02c60682575fe9ab39279fef3cb62a5946c180a4912bf5fc3",
+        "f23df7b3ae5ec57202de1b7683b498e7edfde4cc71cdef1a2fe2e77a7f675cfd",
+        "52b89f00ee4bfce3c5bf5ac867038f1b8411251ef2995abf549f954e6ac117c3"
+      ],
+      "research_x0_sigmas": [
+        0.9990000128746033,
+        0.9369999766349792,
+        0.8330000042915344,
+        0.6240000128746033
+      ],
+      "research_x0_vision_hashes": [
+        "ed7b148457eb01212ee01469943c65cf91328055be5b52aa555544d545ce7411",
+        "67bf63b838e35d1d7f740f79a36f7173faed3f594bb33b1b6918c6c81654eaa1",
+        "ba3b21756bcf880fae05b46feb5784d8bc85556f2140c52acfd474480f53e0bb",
+        "55d8e18a89eed2f5b11a272ab8f71057089787904e158c4122e7022057f6ebd9"
+      ],
+      "server_timing": {
+        "infer_ms": 845.0832310045371,
+        "prev_total_ms": 834.5497059999616
+      }
+    },
+    "recipient": {
+      "research_future_hash": "c50fb2e62f238d8c1078497a833109813818bbbdaf14e1da5ee99ba654cbd4e3",
+      "research_id": "timing-v1b-recipient",
+      "research_infer_ms": 812.2363920047064,
+      "research_mode": "native",
+      "research_seed": 0,
+      "research_sigmas": [
+        0.9990000128746033,
+        0.9369999766349792,
+        0.8330000042915344,
+        0.6240000128746033
+      ],
+      "research_state_hash": "2e94e022c1639ea9084ef9259bda4f12341d518787e04adf77ab1ae17c5490ca",
+      "research_x0_action_hashes": [
+        "a3aebd44c74ebb04e2000e1f98ff6d2c0c0bcbf0a53d7c50f67f10f536ffe986",
+        "fc5439191071cabe1fed037df0dee24c7e6365aab4a364cd3ebc9345822fba84",
+        "68adb81929f54deea90cb24aa6cef590c7ceadabed4b8c12638a8f8d83e9e8bc",
+        "d847ef570bfd9e88b16a0a2dce242a1f23630d701307a70957b60e21de9f03b5"
+      ],
+      "research_x0_vision_hashes": [
+        "6f8612533e8cb2217306f5024cd0e8b0f3a56804757b1c66c9c826502ab08bf6",
+        "dc9d2534340eb6295299cd6d300b5744eac20bff1b12e3b214d0afc26027905d",
+        "ed280ba756b0956290407df083be3f5c2395630c6544b959cd09f960140292c3",
+        "4c9727903fe45ac506647ea534b5364f46a2d3bc0f4479d21096ce5a0772b699"
+      ],
+      "server_timing": {
+        "infer_ms": 813.9070000033826
+      }
+    },
+    "registered_executed": {
+      "research_future_hash": "4234a5c9d007594a5ab7266ad24f8b92c2920a138fbc5238b373fedf7fcbf29c",
+      "research_id": "timing-v1b-executed",
+      "research_mode": "register_executed",
+      "research_source": "executed",
+      "research_state_hash": "2e94e022c1639ea9084ef9259bda4f12341d518787e04adf77ab1ae17c5490ca",
+      "server_timing": {
+        "infer_ms": 1407.1580700037885,
+        "prev_total_ms": 832.1451600058936
+      }
+    },
+    "repeated": {
+      "research_future_hash": "c50fb2e62f238d8c1078497a833109813818bbbdaf14e1da5ee99ba654cbd4e3",
+      "research_id": "timing-v1b-recipient-repeat",
+      "research_infer_ms": 817.7631450016634,
+      "research_mode": "native",
+      "research_seed": 0,
+      "research_sigmas": [
+        0.9990000128746033,
+        0.9369999766349792,
+        0.8330000042915344,
+        0.6240000128746033
+      ],
+      "research_state_hash": "2e94e022c1639ea9084ef9259bda4f12341d518787e04adf77ab1ae17c5490ca",
+      "research_x0_action_hashes": [
+        "a3aebd44c74ebb04e2000e1f98ff6d2c0c0bcbf0a53d7c50f67f10f536ffe986",
+        "fc5439191071cabe1fed037df0dee24c7e6365aab4a364cd3ebc9345822fba84",
+        "68adb81929f54deea90cb24aa6cef590c7ceadabed4b8c12638a8f8d83e9e8bc",
+        "d847ef570bfd9e88b16a0a2dce242a1f23630d701307a70957b60e21de9f03b5"
+      ],
+      "research_x0_vision_hashes": [
+        "6f8612533e8cb2217306f5024cd0e8b0f3a56804757b1c66c9c826502ab08bf6",
+        "dc9d2534340eb6295299cd6d300b5744eac20bff1b12e3b214d0afc26027905d",
+        "ed280ba756b0956290407df083be3f5c2395630c6544b959cd09f960140292c3",
+        "4c9727903fe45ac506647ea534b5364f46a2d3bc0f4479d21096ce5a0772b699"
+      ],
+      "server_timing": {
+        "infer_ms": 819.8292710003443,
+        "prev_total_ms": 820.368591004808
+      }
+    },
+    "self": {
+      "research_action_donor_projection": NaN,
+      "research_clamped_call_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "research_donor_id": "timing-v1b-recipient",
+      "research_id": "timing-v1b-self",
+      "research_infer_ms": 830.2323800016893,
+      "research_maximum_action_input_error": 0.0,
+      "research_maximum_action_output_error": 0.0,
+      "research_mode": "self",
+      "research_output_future_hash": "2dd259dc5622c741c435994acb1e9e32ac440b3d6489dedeb15cd72d345eeff3",
+      "research_recipient_id": "timing-v1b-recipient",
+      "research_seed": 0,
+      "research_sigmas": [
+        0.9990000128746033,
+        0.9369999766349792,
+        0.8330000042915344,
+        0.6240000128746033
+      ],
+      "research_state_hash": "2e94e022c1639ea9084ef9259bda4f12341d518787e04adf77ab1ae17c5490ca",
+      "research_target_future_max_error": 0.018124818801879883,
+      "research_target_hash": "c50fb2e62f238d8c1078497a833109813818bbbdaf14e1da5ee99ba654cbd4e3",
+      "research_x0_action_hashes": [
+        "496424429af56c7b71ed3935a26d922b9bba50d37df7ed27d945357784d393aa",
+        "eab57d525851d1ebb40a6494dc2e4fe87bed6c34f660148f49e78f6ce88160a8",
+        "cbe80d66d58df772078a9bd6aeccbb0c046ab13fc330e84794e3fe90d64b6217",
+        "453726130163727044248afc14aedce482291de49d49084c7a7d82a452653acd"
+      ],
+      "research_x0_sigmas": [
+        0.9990000128746033,
+        0.9369999766349792,
+        0.8330000042915344,
+        0.6240000128746033
+      ],
+      "research_x0_vision_hashes": [
+        "e30df3e8d789c2c8274895046ffbfe625351a59b997f88a8a2e3396b624c7120",
+        "851288b3939261fb028ffa9f9df06fb589bc841194d2a11a0db0c07c2f0b73a0",
+        "bb2edfc175a9bc1cfb54cda4c87fbfb72b31cc50f290c9605c315f54f3f72d45",
+        "6f5a1bb79172eccade8a9522ccb42d3693a6635838f7e4afd1dd83b103abdf41"
+      ],
+      "server_timing": {
+        "infer_ms": 832.2045280001475,
+        "prev_total_ms": 826.8026820005616
+      }
+    },
+    "timing_none": {
+      "research_action_donor_projection": 0.0,
+      "research_clamped_call_indices": [],
+      "research_donor_id": "timing-v1b-donor",
+      "research_id": "timing-v1b-donor-no-steps",
+      "research_infer_ms": 825.0830750039313,
+      "research_maximum_action_input_error": 0.0,
+      "research_maximum_action_output_error": 0.0,
+      "research_mode": "donor",
+      "research_output_future_hash": "c50fb2e62f238d8c1078497a833109813818bbbdaf14e1da5ee99ba654cbd4e3",
+      "research_recipient_id": "timing-v1b-recipient",
+      "research_seed": 0,
+      "research_sigmas": [
+        0.9990000128746033,
+        0.9369999766349792,
+        0.8330000042915344,
+        0.6240000128746033
+      ],
+      "research_state_hash": "2e94e022c1639ea9084ef9259bda4f12341d518787e04adf77ab1ae17c5490ca",
+      "research_target_future_max_error": 4.467218399047852,
+      "research_target_hash": "f67d8be2412f657e5123283cbc2b1c1d326882b3b4816a9f41c36f1e9ee10f14",
+      "research_x0_action_hashes": [
+        "a3aebd44c74ebb04e2000e1f98ff6d2c0c0bcbf0a53d7c50f67f10f536ffe986",
+        "fc5439191071cabe1fed037df0dee24c7e6365aab4a364cd3ebc9345822fba84",
+        "68adb81929f54deea90cb24aa6cef590c7ceadabed4b8c12638a8f8d83e9e8bc",
+        "d847ef570bfd9e88b16a0a2dce242a1f23630d701307a70957b60e21de9f03b5"
+      ],
+      "research_x0_sigmas": [
+        0.9990000128746033,
+        0.9369999766349792,
+        0.8330000042915344,
+        0.6240000128746033
+      ],
+      "research_x0_vision_hashes": [
+        "6f8612533e8cb2217306f5024cd0e8b0f3a56804757b1c66c9c826502ab08bf6",
+        "dc9d2534340eb6295299cd6d300b5744eac20bff1b12e3b214d0afc26027905d",
+        "ed280ba756b0956290407df083be3f5c2395630c6544b959cd09f960140292c3",
+        "4c9727903fe45ac506647ea534b5364f46a2d3bc0f4479d21096ce5a0772b699"
+      ],
+      "server_timing": {
+        "infer_ms": 826.796232999186,
+        "prev_total_ms": 831.0204919980606
+      }
+    },
+    "timing_step_0": {
+      "research_action_donor_projection": 0.2548815051265486,
+      "research_clamped_call_indices": [
+        0
+      ],
+      "research_donor_id": "timing-v1b-donor",
+      "research_id": "timing-v1b-donor-step-0",
+      "research_infer_ms": 822.8727469977457,
+      "research_maximum_action_input_error": 0.0,
+      "research_maximum_action_output_error": 0.0,
+      "research_mode": "donor",
+      "research_output_future_hash": "9116cb2cbc8e709808d209aca8caf6884efdf5df5ad298ed44c766be8496eea2",
+      "research_recipient_id": "timing-v1b-recipient",
+      "research_seed": 0,
+      "research_sigmas": [
+        0.9990000128746033,
+        0.9369999766349792,
+        0.8330000042915344,
+        0.6240000128746033
+      ],
+      "research_state_hash": "2e94e022c1639ea9084ef9259bda4f12341d518787e04adf77ab1ae17c5490ca",
+      "research_target_future_max_error": 3.405251979827881,
+      "research_target_hash": "f67d8be2412f657e5123283cbc2b1c1d326882b3b4816a9f41c36f1e9ee10f14",
+      "research_x0_action_hashes": [
+        "9c5efaf14621bbffbcec98354ca236de6d25a5e8f5ec4e6c572c4b82720346ee",
+        "47d446acc8000ce6d5c75bb8ec389c1ffbad71814ab04cc02ae9988482581bd8",
+        "95fe1e0cad4620a7b21914ed5f4f691a2cfbb9565b793cdb7de6a947572b4495",
+        "4e62badb12021fa9bcaf24274958e7b5cd83d0063bcbd4994e9a36125fa9c880"
+      ],
+      "research_x0_sigmas": [
+        0.9990000128746033,
+        0.9369999766349792,
+        0.8330000042915344,
+        0.6240000128746033
+      ],
+      "research_x0_vision_hashes": [
+        "e49b296a24cd55aa6b52f259ec25006f95d57c2fa98923922e434ea5c1bed08a",
+        "006b694afd947bcecbd8de4cdf4a17889e471c9363322287aac9a88ce700f3d9",
+        "dfb871876f12249d7c7236cf70aa59e79fa7134c18eaf109fe342730eb9e6a16",
+        "e181801a84dc4456ca6c42676819d4dad78a6fd2592129855b0e421c2609cda9"
+      ],
+      "server_timing": {
+        "infer_ms": 824.6337689997745,
+        "prev_total_ms": 850.058245996479
+      }
+    },
+    "timing_step_1": {
+      "research_action_donor_projection": 0.4435278350066936,
+      "research_clamped_call_indices": [
+        1
+      ],
+      "research_donor_id": "timing-v1b-donor",
+      "research_id": "timing-v1b-donor-step-1",
+      "research_infer_ms": 824.6760859983624,
+      "research_maximum_action_input_error": 0.0,
+      "research_maximum_action_output_error": 0.0,
+      "research_mode": "donor",
+      "research_output_future_hash": "e6d46f0fed47ffcc26444eb0226443ba74410b0db8f0844e01f6f1721a1d1204",
+      "research_recipient_id": "timing-v1b-recipient",
+      "research_seed": 0,
+      "research_sigmas": [
+        0.9990000128746033,
+        0.9369999766349792,
+        0.8330000042915344,
+        0.6240000128746033
+      ],
+      "research_state_hash": "2e94e022c1639ea9084ef9259bda4f12341d518787e04adf77ab1ae17c5490ca",
+      "research_target_future_max_error": 3.635662078857422,
+      "research_target_hash": "f67d8be2412f657e5123283cbc2b1c1d326882b3b4816a9f41c36f1e9ee10f14",
+      "research_x0_action_hashes": [
+        "a3aebd44c74ebb04e2000e1f98ff6d2c0c0bcbf0a53d7c50f67f10f536ffe986",
+        "4ffdb1171a2720124081d39a595d1691e3d145b86f8a488aed86ad5d319cdda6",
+        "883b46160e0faee53394d88c48c854173b532089e7b656f64baf2ac29da32b6f",
+        "af65c329714fc9e82c03916a02f3ff07f068422d3579636ea8ea067d8a8b9262"
+      ],
+      "research_x0_sigmas": [
+        0.9990000128746033,
+        0.9369999766349792,
+        0.8330000042915344,
+        0.6240000128746033
+      ],
+      "research_x0_vision_hashes": [
+        "6f8612533e8cb2217306f5024cd0e8b0f3a56804757b1c66c9c826502ab08bf6",
+        "7ebfeb568baae14620e60f4c125984338ff140a30567472de4524012f1b7657b",
+        "4d9509611b9d71d33fcfeecf8e582864b2ea4279785c482884aca9e60c41c0be",
+        "26a7c4aaf184914fede322218d0b0496f03f4544661d0bad0f6f6d52290bc802"
+      ],
+      "server_timing": {
+        "infer_ms": 826.4957110004616,
+        "prev_total_ms": 830.3902069965261
+      }
+    },
+    "timing_step_2": {
+      "research_action_donor_projection": -0.12340950250962165,
+      "research_clamped_call_indices": [
+        2
+      ],
+      "research_donor_id": "timing-v1b-donor",
+      "research_id": "timing-v1b-donor-step-2",
+      "research_infer_ms": 825.9388359947479,
+      "research_maximum_action_input_error": 0.0,
+      "research_maximum_action_output_error": 0.0,
+      "research_mode": "donor",
+      "research_output_future_hash": "ecfa7cfe87da3a588014a8f6374a357d4d8192b6f48864f56cb34d5fcf3f1f3d",
+      "research_recipient_id": "timing-v1b-recipient",
+      "research_seed": 0,
+      "research_sigmas": [
+        0.9990000128746033,
+        0.9369999766349792,
+        0.8330000042915344,
+        0.6240000128746033
+      ],
+      "research_state_hash": "2e94e022c1639ea9084ef9259bda4f12341d518787e04adf77ab1ae17c5490ca",
+      "research_target_future_max_error": 1.7583898305892944,
+      "research_target_hash": "f67d8be2412f657e5123283cbc2b1c1d326882b3b4816a9f41c36f1e9ee10f14",
+      "research_x0_action_hashes": [
+        "a3aebd44c74ebb04e2000e1f98ff6d2c0c0bcbf0a53d7c50f67f10f536ffe986",
+        "fc5439191071cabe1fed037df0dee24c7e6365aab4a364cd3ebc9345822fba84",
+        "f2f5025accf7491fdc0e836de862acb2bb25ccf84c324cacf1a2dbf42377aa90",
+        "6249503e3f7827e12288108138b9a6aec3b7be52cd10e811f5ff0756e0369b55"
+      ],
+      "research_x0_sigmas": [
+        0.9990000128746033,
+        0.9369999766349792,
+        0.8330000042915344,
+        0.6240000128746033
+      ],
+      "research_x0_vision_hashes": [
+        "6f8612533e8cb2217306f5024cd0e8b0f3a56804757b1c66c9c826502ab08bf6",
+        "dc9d2534340eb6295299cd6d300b5744eac20bff1b12e3b214d0afc26027905d",
+        "dc3b5202d6b5c95d4f3123f57ad80124dfe027758bbda2a1d76b4c5e6c714497",
+        "8276ca8c9798f441ae0aca9a8f653737dea9a33b3238fc4e87f9169e83dbd5c5"
+      ],
+      "server_timing": {
+        "infer_ms": 827.9635950020747,
+        "prev_total_ms": 831.6902000005939
+      }
+    },
+    "timing_step_3": {
+      "research_action_donor_projection": -0.07615822913723944,
+      "research_clamped_call_indices": [
+        3
+      ],
+      "research_donor_id": "timing-v1b-donor",
+      "research_id": "timing-v1b-donor-step-3",
+      "research_infer_ms": 824.2616509960499,
+      "research_maximum_action_input_error": 0.0,
+      "research_maximum_action_output_error": 0.0,
+      "research_mode": "donor",
+      "research_output_future_hash": "1a361a66b4cb7c40005ec8b7d23f902e48e97600eb0f7b192f4aec442d7519a5",
+      "research_recipient_id": "timing-v1b-recipient",
+      "research_seed": 0,
+      "research_sigmas": [
+        0.9990000128746033,
+        0.9369999766349792,
+        0.8330000042915344,
+        0.6240000128746033
+      ],
+      "research_state_hash": "2e94e022c1639ea9084ef9259bda4f12341d518787e04adf77ab1ae17c5490ca",
+      "research_target_future_max_error": 0.02661275863647461,
+      "research_target_hash": "f67d8be2412f657e5123283cbc2b1c1d326882b3b4816a9f41c36f1e9ee10f14",
+      "research_x0_action_hashes": [
+        "a3aebd44c74ebb04e2000e1f98ff6d2c0c0bcbf0a53d7c50f67f10f536ffe986",
+        "fc5439191071cabe1fed037df0dee24c7e6365aab4a364cd3ebc9345822fba84",
+        "68adb81929f54deea90cb24aa6cef590c7ceadabed4b8c12638a8f8d83e9e8bc",
+        "18ba5c2d7d0edbf85e33f94e2459da38f6ef794bff7cb3700e6d7bbc10aa8ef5"
+      ],
+      "research_x0_sigmas": [
+        0.9990000128746033,
+        0.9369999766349792,
+        0.8330000042915344,
+        0.6240000128746033
+      ],
+      "research_x0_vision_hashes": [
+        "6f8612533e8cb2217306f5024cd0e8b0f3a56804757b1c66c9c826502ab08bf6",
+        "dc9d2534340eb6295299cd6d300b5744eac20bff1b12e3b214d0afc26027905d",
+        "ed280ba756b0956290407df083be3f5c2395630c6544b959cd09f960140292c3",
+        "542afe2789970035d7366a198060c1bb2995afaa957d0baa4cb55df2c046daae"
+      ],
+      "server_timing": {
+        "infer_ms": 825.898873998085,
+        "prev_total_ms": 833.699583003181
+      }
+    }
+  },
+  "timing_sweep": {
+    "donor_projection": {
+      "all_steps": -0.04145918605822748,
+      "step_0": 0.2548815051907953,
+      "step_1": 0.4435278348537754,
+      "step_2": -0.12340950193120546,
+      "step_3": -0.07615822900766332
+    },
+    "no_step_action_maximum_absolute_error": 0.0
+  }
+}

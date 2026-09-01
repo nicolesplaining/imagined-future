@@ -27,6 +27,13 @@ parser.add_argument("--branch-seeds", type=int, nargs="+", default=[211, 223, 22
 parser.add_argument("--gaussian-seed", type=int, default=1223)
 parser.add_argument("--branch-step", type=int, default=0)
 parser.add_argument("--study-id")
+parser.add_argument("--fixed-current-video", type=Path)
+parser.add_argument("--timing-sweep", action="store_true")
+parser.add_argument(
+    "--multi-donor",
+    action="store_true",
+    help="Transplant every non-recipient native future and audit donor identification.",
+)
 parser.add_argument(
     "--restore-strategy",
     choices=("replay", "snapshot", "fresh_replay"),
@@ -102,6 +109,12 @@ def state_vector(state: dict[str, Any], group: str) -> np.ndarray:
         if group == "robot" and not path.startswith("articulation/robot/"):
             continue
         if group == "object" and not path.startswith("rigid_object/"):
+            continue
+        if group in {"object_position", "object_orientation"}:
+            if not (path.startswith("rigid_object/") and path.endswith("root_pose")):
+                continue
+            root_pose = tensor[0].double().reshape(-1).numpy()
+            selected.append(root_pose[:3] if group == "object_position" else root_pose[3:7])
             continue
         if group == "all" and not (
             path.startswith("articulation/robot/") or path.startswith("rigid_object/")
@@ -297,6 +310,14 @@ def main() -> None:
         progress("branch_point_reached", branch_step=args.branch_step, prefix_maximum_state_error=0.0)
         initial_observation = env.observation_manager.compute()
         initial_request = pack(initial_observation)
+        if args.fixed_current_video is not None:
+            with np.load(args.fixed_current_video, allow_pickle=False) as payload:
+                fixed_video = np.asarray(payload["video"])
+            if fixed_video.shape != (33, 540, 640, 3) or fixed_video.dtype != np.uint8:
+                raise ValueError(
+                    "fixed current video must contain uint8 video with shape (33, 540, 640, 3)"
+                )
+            initial_request["observation/image"] = fixed_video[0].copy()
         initial_image = np.asarray(initial_request["observation/image"], dtype=np.uint8)
 
         restore_digests = []
@@ -389,6 +410,40 @@ def main() -> None:
                 "research_gaussian_seed": args.gaussian_seed,
             },
         }
+        intervention_target_seeds: dict[str, int | None] = {
+            "self": recipient_seed,
+            "predicted_donor": donor_seed,
+            "executed_donor": donor_seed,
+            "gaussian_executed": None,
+        }
+        if args.multi_donor:
+            for candidate_seed in args.branch_seeds:
+                if candidate_seed in {recipient_seed, donor_seed}:
+                    continue
+                for source, donor_id in (
+                    ("predicted", f"{study_id}-native-{candidate_seed}"),
+                    ("executed", f"{study_id}-executed-{candidate_seed}"),
+                ):
+                    label = f"{source}_donor_seed_{candidate_seed}"
+                    intervention_specs[label] = {
+                        "research_mode": "donor",
+                        "research_donor_id": donor_id,
+                    }
+                    intervention_target_seeds[label] = candidate_seed
+        if args.timing_sweep:
+            intervention_specs.update(
+                {
+                    f"predicted_donor_step_{step}": {
+                        "research_mode": "donor",
+                        "research_donor_id": f"{study_id}-native-{donor_seed}",
+                        "research_timing_steps": [step],
+                    }
+                    for step in range(4)
+                }
+            )
+            intervention_target_seeds.update(
+                {f"predicted_donor_step_{step}": donor_seed for step in range(4)}
+            )
         intervention_responses = {}
         intervention_runs = {}
         for label, spec in intervention_specs.items():
@@ -408,20 +463,86 @@ def main() -> None:
         donor_run = native_runs[donor_seed]
         recipient_action = recipient_run["raw_action"]
         donor_action = donor_run["raw_action"]
-        groups = ("all", "robot", "object")
+        groups = ("all", "robot", "object", "object_position", "object_orientation")
         recipient_endpoints = {group: state_vector(recipient_run["endpoint_state"], group) for group in groups}
         donor_endpoints = {group: state_vector(donor_run["endpoint_state"], group) for group in groups}
         interventions = {}
         for label, run in intervention_runs.items():
             response = intervention_responses[label]
+            target_seed = intervention_target_seeds[label]
+            target_action = native_runs[target_seed]["raw_action"] if target_seed is not None else None
+            target_endpoints = (
+                {
+                    group: state_vector(native_runs[target_seed]["endpoint_state"], group)
+                    for group in groups
+                }
+                if target_seed is not None
+                else None
+            )
+            nearest_action_seed = min(
+                args.branch_seeds,
+                key=lambda seed: float(
+                    np.linalg.norm(run["raw_action"] - native_runs[seed]["raw_action"])
+                ),
+            )
+            nearest_endpoint_seed = {
+                group: min(
+                    args.branch_seeds,
+                    key=lambda seed: float(
+                        np.linalg.norm(
+                            state_vector(run["endpoint_state"], group)
+                            - state_vector(native_runs[seed]["endpoint_state"], group)
+                        )
+                    ),
+                )
+                for group in groups
+            }
             interventions[label] = {
+                "target_donor_seed": target_seed,
                 "action_donor_projection": projection(run["raw_action"], recipient_action, donor_action),
+                "action_target_donor_projection": (
+                    projection(run["raw_action"], recipient_action, target_action)
+                    if target_action is not None
+                    else None
+                ),
                 "action_l2_from_recipient": float(np.linalg.norm(run["raw_action"] - recipient_action)),
+                "nearest_native_action_seed": nearest_action_seed,
+                "correct_action_donor_top1": (
+                    nearest_action_seed == target_seed if target_seed is not None else None
+                ),
                 "endpoint_donor_projection": {
                     group: projection(
                         state_vector(run["endpoint_state"], group),
                         recipient_endpoints[group],
                         donor_endpoints[group],
+                    )
+                    for group in groups
+                },
+                "endpoint_target_donor_projection": (
+                    {
+                        group: projection(
+                            state_vector(run["endpoint_state"], group),
+                            recipient_endpoints[group],
+                            target_endpoints[group],
+                        )
+                        for group in groups
+                    }
+                    if target_endpoints is not None
+                    else None
+                ),
+                "nearest_native_endpoint_seed": nearest_endpoint_seed,
+                "correct_endpoint_donor_top1": (
+                    {
+                        group: nearest_endpoint_seed[group] == target_seed for group in groups
+                    }
+                    if target_seed is not None
+                    else None
+                ),
+                "endpoint_l2_from_recipient": {
+                    group: float(
+                        np.linalg.norm(
+                            state_vector(run["endpoint_state"], group) - recipient_endpoints[group]
+                        )
                     )
                     for group in groups
                 },
@@ -435,6 +556,9 @@ def main() -> None:
             "study_id": study_id,
             "branch_step": args.branch_step,
             "restore_strategy": args.restore_strategy,
+            "fixed_current_video": str(args.fixed_current_video) if args.fixed_current_video else None,
+            "timing_sweep": args.timing_sweep,
+            "multi_donor": args.multi_donor,
             "prefix_maximum_state_error": prefix_validator.max_drift,
             "instruction": env_cfg.instruction,
             "recorded_hdf5": str(args.recorded_hdf5),
@@ -445,6 +569,10 @@ def main() -> None:
                 f"{left}:{right}": distance for (left, right), distance in pair_distances.items()
             },
             "native_action_l2": float(np.linalg.norm(donor_action - recipient_action)),
+            "native_endpoint_l2": {
+                group: float(np.linalg.norm(donor_endpoints[group] - recipient_endpoints[group]))
+                for group in groups
+            },
             "restore_state_digests": restore_digests,
             "restore_image_maximum_absolute_errors": restore_image_errors,
             "continuation_repeat_audit": {

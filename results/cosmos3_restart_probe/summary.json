@@ -1,0 +1,55 @@
+{
+  "scope": "controlled fixed-public-observation cross-server-restart audit",
+  "conclusion": "input, weights, and sampler noise are stable; forward outputs are not bitwise stable across fresh processes",
+  "within_process_exact": true,
+  "cross_process_exact": false,
+  "server_process_is_blocking_factor": true,
+  "pairs": [
+    {
+      "label": "default_1",
+      "state_hash_equal": true,
+      "initial_state_hash_equal": true,
+      "path_noise_hash_equal": true,
+      "action_maximum_absolute_error": 0.10034894943237305,
+      "action_mean_absolute_error": 0.02358965748862829,
+      "action_l2_error": 0.4933555885677473,
+      "x0_action_hashes_equal": false,
+      "x0_vision_hashes_equal": false
+    },
+    {
+      "label": "default_2",
+      "state_hash_equal": true,
+      "initial_state_hash_equal": true,
+      "path_noise_hash_equal": true,
+      "action_maximum_absolute_error": 0.12786293029785156,
+      "action_mean_absolute_error": 0.034206340642413124,
+      "action_l2_error": 0.7217798463001314,
+      "x0_action_hashes_equal": false,
+      "x0_vision_hashes_equal": false
+    },
+    {
+      "label": "cudnn_attention",
+      "state_hash_equal": true,
+      "initial_state_hash_equal": true,
+      "path_noise_hash_equal": true,
+      "action_maximum_absolute_error": 0.13294482231140137,
+      "action_mean_absolute_error": 0.02454341991688125,
+      "action_l2_error": 0.5435698035667716,
+      "x0_action_hashes_equal": false,
+      "x0_vision_hashes_equal": false
+    },
+    {
+      "label": "default_with_parameter_probe",
+      "state_hash_equal": true,
+      "initial_state_hash_equal": true,
+      "path_noise_hash_equal": true,
+      "parameter_probe_hash_equal": true,
+      "parameter_probe_hash": "21b79382b84b4bdebb943a2659c0272c99267ef433d83818f9a44b742c1170cc",
+      "action_maximum_absolute_error": 0.13294482231140137,
+      "action_mean_absolute_error": 0.02454341991688125,
+      "action_l2_error": 0.5435698035667716,
+      "x0_action_hashes_equal": false,
+      "x0_vision_hashes_equal": false
+    }
+  ]
+}

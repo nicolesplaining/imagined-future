@@ -21,6 +21,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--asset-video", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--donor-video", type=Path, required=True)
+    parser.add_argument("--study-id", default="audit-v2")
     return parser.parse_args()
 
 
@@ -63,22 +64,42 @@ def main() -> None:
     def request(**research: Any) -> dict[str, Any]:
         return client.infer({**base, **research})
 
-    recipient = request(research_mode="native", research_seed=0, research_id="audit-recipient")
-    repeated = request(research_mode="native", research_seed=0, research_id="audit-recipient-repeat")
-    donor = request(research_mode="native", research_seed=1, research_id="audit-donor")
-    common = {"research_seed": 0, "research_recipient_id": "audit-recipient"}
-    self_clamp = request(research_mode="self", research_id="audit-self", **common)
+    def identity(label: str) -> str:
+        return f"{args.study_id}-{label}"
+
+    recipient = request(research_mode="native", research_seed=0, research_id=identity("recipient"))
+    repeated = request(research_mode="native", research_seed=0, research_id=identity("recipient-repeat"))
+    donor = request(research_mode="native", research_seed=1, research_id=identity("donor"))
+    common = {"research_seed": 0, "research_recipient_id": identity("recipient")}
+    self_clamp = request(research_mode="self", research_id=identity("self"), **common)
     donor_clamp = request(
         research_mode="donor",
-        research_id="audit-donor-clamp",
-        research_donor_id="audit-donor",
+        research_id=identity("donor-clamp"),
+        research_donor_id=identity("donor"),
         **common,
     )
     gaussian = request(
         research_mode="gaussian",
-        research_id="audit-gaussian",
-        research_donor_id="audit-donor",
+        research_id=identity("gaussian"),
+        research_donor_id=identity("donor"),
         research_gaussian_seed=1223,
+        **common,
+    )
+    timing_responses = {
+        f"step_{step}": request(
+            research_mode="donor",
+            research_id=identity(f"donor-step-{step}"),
+            research_donor_id=identity("donor"),
+            research_timing_steps=[step],
+            **common,
+        )
+        for step in range(4)
+    }
+    timing_none = request(
+        research_mode="donor",
+        research_id=identity("donor-no-steps"),
+        research_donor_id=identity("donor"),
+        research_timing_steps=[],
         **common,
     )
 
@@ -86,17 +107,27 @@ def main() -> None:
     np.savez_compressed(args.donor_video, video=np.repeat(image[None], 33, axis=0))
     registered = request(
         research_mode="register_executed",
-        research_id="audit-executed",
+        research_id=identity("executed"),
         research_donor_path=str(args.donor_video),
     )
     executed_clamp = request(
         research_mode="donor",
-        research_id="audit-executed-clamp",
-        research_donor_id="audit-executed",
+        research_id=identity("executed-clamp"),
+        research_donor_id=identity("executed"),
         **common,
     )
 
     native_action_error = float(np.max(np.abs(recipient["action"] - repeated["action"])))
+    timing_none_action_error = float(np.max(np.abs(recipient["action"] - timing_none["action"])))
+    action_direction = donor["action"].astype(np.float64) - recipient["action"].astype(np.float64)
+    action_denominator = float(np.square(action_direction).sum())
+
+    def donor_projection(response: dict[str, Any]) -> float:
+        return float(
+            ((response["action"].astype(np.float64) - recipient["action"]) * action_direction).sum()
+            / action_denominator
+        )
+
     report = {
         "label": "fixed public-observation server engineering audit; not a RoboLab causal result",
         "native_recomputation": {
@@ -108,6 +139,13 @@ def main() -> None:
             "x0_action_hashes_equal": recipient["research_x0_action_hashes"] == repeated["research_x0_action_hashes"],
         },
         "native_action_l2": float(np.linalg.norm(donor["action"] - recipient["action"])),
+        "timing_sweep": {
+            "no_step_action_maximum_absolute_error": timing_none_action_error,
+            "donor_projection": {
+                **{name: donor_projection(response) for name, response in timing_responses.items()},
+                "all_steps": donor_projection(donor_clamp),
+            },
+        },
         "responses": {
             "recipient": metadata(recipient),
             "repeated": metadata(repeated),
@@ -117,6 +155,8 @@ def main() -> None:
             "gaussian": metadata(gaussian),
             "registered_executed": metadata(registered),
             "executed_clamp": metadata(executed_clamp),
+            "timing_none": metadata(timing_none),
+            **{f"timing_{name}": metadata(response) for name, response in timing_responses.items()},
         },
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -128,7 +168,19 @@ def main() -> None:
         raise SystemExit(f"state fingerprints diverged: {hashes}")
     if native_action_error != 0.0 or not report["native_recomputation"]["future_hash_equal"]:
         raise SystemExit("native recomputation was not exact")
-    for name in ("self", "donor_clamp", "gaussian", "executed_clamp"):
+    if timing_none_action_error != 0.0:
+        raise SystemExit("empty timing window was not an exact action no-op")
+    for name in (
+        "self",
+        "donor_clamp",
+        "gaussian",
+        "executed_clamp",
+        "timing_none",
+        "timing_step_0",
+        "timing_step_1",
+        "timing_step_2",
+        "timing_step_3",
+    ):
         response = report["responses"][name]
         if response["research_maximum_action_input_error"] != 0.0:
             raise SystemExit(f"{name}: action input coordinates were mutated")

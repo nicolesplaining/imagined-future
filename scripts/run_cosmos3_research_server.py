@@ -63,6 +63,21 @@ def sample_fingerprint(sample: dict[str, Any]) -> str:
     return digest.hexdigest()
 
 
+def parameter_probe_fingerprint(module: torch.nn.Module, *, values_per_edge: int = 16) -> str:
+    """Hash small deterministic samples from every parameter without copying the 16B model."""
+
+    digest = hashlib.sha256()
+    for name, parameter in module.named_parameters():
+        flat = parameter.detach().reshape(-1)
+        edge = min(values_per_edge, flat.numel())
+        sample = torch.cat((flat[:edge], flat[-edge:])).cpu().contiguous()
+        digest.update(name.encode())
+        digest.update(str(parameter.dtype).encode())
+        digest.update(np.asarray(parameter.shape, dtype=np.int64).tobytes())
+        digest.update(sample.view(torch.uint8).numpy().tobytes())
+    return digest.hexdigest()
+
+
 @dataclass
 class FutureRecord:
     record_id: str
@@ -72,6 +87,7 @@ class FutureRecord:
     vision_shape: tuple[int, ...]
     target: torch.Tensor
     path_noise: torch.Tensor | None
+    initial_state_hash: str | None
     action: np.ndarray | None
     sigmas: tuple[float, ...]
     x0_vision_hashes: tuple[str, ...]
@@ -89,6 +105,7 @@ class ResearchPolicyService:
             raise ValueError("the research server currently supports the released joint-position policy only")
         self.registry_limit = int(registry_limit)
         self.registry: OrderedDict[str, FutureRecord] = OrderedDict()
+        self.parameter_probe_hash = parameter_probe_fingerprint(self._base.model.net)
 
     def _remember(self, record: FutureRecord) -> None:
         if record.record_id in self.registry:
@@ -139,6 +156,7 @@ class ResearchPolicyService:
             vision_shape=tuple(int(item) for item in samples["vision"][0].shape),
             target=samples["vision"][0].detach().cpu().reshape(-1),
             path_noise=path_noise,
+            initial_state_hash=tensor_digest(initial.initial_state[0]),
             action=action,
             sigmas=tuple(float(item["sigma"]) for item in x0.records),
             x0_vision_hashes=tuple(tensor_digest(item["samples"][0]["vision_0"]) for item in x0.records),
@@ -155,6 +173,7 @@ class ResearchPolicyService:
         donor: FutureRecord,
         mode: str,
         gaussian_seed: int,
+        timing_steps: tuple[int, ...] | None,
     ) -> tuple[dict[str, Any], dict[str, Any]]:
         layout = PreparedLayoutCapture()
         if donor.vision_shape != recipient.vision_shape:
@@ -174,7 +193,13 @@ class ResearchPolicyService:
         if recipient.path_noise is None:
             raise ValueError("recipient record has no captured path noise")
 
-        clamp = GuidedFutureClamp(layout, target, recipient.path_noise, future_frames)
+        clamp = GuidedFutureClamp(
+            layout,
+            target,
+            recipient.path_noise,
+            future_frames,
+            active_call_indices=timing_steps,
+        )
         x0 = GuidedX0Recorder(layout)
 
         def transform(velocity_fn):
@@ -201,6 +226,7 @@ class ResearchPolicyService:
             "maximum_action_input_error": clamp.maximum_action_input_error,
             "maximum_action_output_error": clamp.maximum_action_output_error,
             "sigmas": np.asarray(clamp.calls, dtype=np.float32),
+            "clamped_call_indices": np.asarray(clamp.clamped_call_indices, dtype=np.int64),
             "x0_sigmas": np.asarray([item["sigma"] for item in x0.records], dtype=np.float32),
             "x0_vision_hashes": [tensor_digest(item["samples"][0]["vision_0"]) for item in x0.records],
             "x0_action_hashes": [tensor_digest(item["samples"][0]["action"]) for item in x0.records],
@@ -255,6 +281,7 @@ class ResearchPolicyService:
             vision_shape=tuple(int(item) for item in encoded.shape),
             target=latent,
             path_noise=None,
+            initial_state_hash=None,
             action=action,
             sigmas=(),
             x0_vision_hashes=(),
@@ -278,6 +305,7 @@ class ResearchPolicyService:
                     "research_id": record_id,
                     "research_mode": mode,
                     "research_state_hash": state_hash,
+                    "research_parameter_probe_hash": self.parameter_probe_hash,
                     "research_future_hash": tensor_digest(record.target),
                     "research_source": record.source,
                 }
@@ -294,7 +322,10 @@ class ResearchPolicyService:
                     "research_mode": mode,
                     "research_seed": seed,
                     "research_state_hash": state_hash,
+                    "research_parameter_probe_hash": self.parameter_probe_hash,
                     "research_future_hash": tensor_digest(record.target),
+                    "research_path_noise_hash": tensor_digest(record.path_noise),
+                    "research_initial_state_hash": record.initial_state_hash,
                     "research_sigmas": np.asarray(record.sigmas, dtype=np.float32),
                     "research_x0_vision_hashes": list(record.x0_vision_hashes),
                     "research_x0_action_hashes": list(record.x0_action_hashes),
@@ -322,6 +353,11 @@ class ResearchPolicyService:
                     donor=donor,
                     mode=mode,
                     gaussian_seed=int(obs.get("research_gaussian_seed", 1223)),
+                    timing_steps=(
+                        tuple(int(item) for item in np.asarray(obs["research_timing_steps"]).reshape(-1))
+                        if "research_timing_steps" in obs
+                        else None
+                    ),
                 )
                 action = self._format_action(samples)
                 outputs = {
@@ -330,6 +366,7 @@ class ResearchPolicyService:
                     "research_mode": mode,
                     "research_seed": seed,
                     "research_state_hash": state_hash,
+                    "research_parameter_probe_hash": self.parameter_probe_hash,
                     "research_recipient_id": recipient_id,
                     "research_donor_id": donor_id,
                     **{f"research_{key}": value for key, value in audit.items()},
@@ -356,6 +393,16 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--registry-limit", type=int, default=256)
     args = parser.parse_args()
+
+    # The public attention backend filter emits a Loguru debug call from inside
+    # a torch.compile region when I4_ATTN_BACKENDS is set. Loguru reaches
+    # sys._getframe, which Dynamo cannot trace. Silence only that debug method
+    # before model construction so an explicitly pinned public backend remains
+    # usable without changing attention math.
+    if os.environ.get("I4_ATTN_BACKENDS"):
+        from cosmos_framework.model.attention.utils import environment as attention_environment
+
+        attention_environment.log.debug = lambda *_args, **_kwargs: None
 
     from cosmos_framework.scripts.action_policy_server_robolab import (
         RobolabPolicyService,
