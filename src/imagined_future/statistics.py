@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 from collections.abc import Mapping, Sequence
 
 import numpy as np
@@ -51,3 +52,25 @@ def holm_adjust(p_values: Sequence[float]) -> list[float]:
     adjusted = np.empty_like(values)
     adjusted[order] = np.minimum(adjusted_sorted, 1.0)
     return adjusted.tolist()
+
+
+def exact_sign_test(values: Sequence[float]) -> dict[str, float | int]:
+    """Return the exact two-sided sign test after dropping exact zeros."""
+
+    array = np.asarray(values, dtype=np.float64)
+    if not np.all(np.isfinite(array)):
+        raise ValueError("sign-test values must be finite")
+    nonzero = array[array != 0.0]
+    sample_size = int(nonzero.size)
+    positive = int(np.sum(nonzero > 0.0))
+    negative = sample_size - positive
+    if sample_size == 0:
+        return {"nonzero_units": 0, "positive_units": 0, "negative_units": 0, "p_value": 1.0}
+    tail = min(positive, negative)
+    probability = 2.0 * sum(math.comb(sample_size, index) for index in range(tail + 1)) / (2**sample_size)
+    return {
+        "nonzero_units": sample_size,
+        "positive_units": positive,
+        "negative_units": negative,
+        "p_value": float(min(probability, 1.0)),
+    }

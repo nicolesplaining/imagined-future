@@ -7,7 +7,6 @@ import json
 from pathlib import Path
 
 import numpy as np
-
 from imagined_future.study_design import matched_same_label_donor
 
 
@@ -16,6 +15,7 @@ def main() -> None:
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--continuation-files", type=Path, nargs="+", required=True)
     parser.add_argument("--continuation-seeds", type=int, nargs="+", default=[353, 359, 367])
+    parser.add_argument("--screen-seed", type=int, default=353)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if args.output.exists():
@@ -36,7 +36,17 @@ def main() -> None:
         selected = set(int(index) for index in unit["primary_pair"])
         selected.update(int(index) for index in unit["distance_matched_control_by_direction"].values())
         outcomes_by_branch: dict[int, list[bool]] = {index: [] for index in sorted(selected)}
-        for seed in args.continuation_seeds:
+        screen = records.get((unit_id, args.screen_seed))
+        if screen is None:
+            raise ValueError(f"missing continuation screen for {unit_id}, seed {args.screen_seed}")
+        screen_by_branch = {
+            int(outcome["branch_index"]): bool(outcome["success"])
+            for outcome in screen["outcomes"]
+        }
+        left, right = (int(index) for index in unit["primary_pair"])
+        entered_replication = screen_by_branch[left] != screen_by_branch[right]
+        required_seeds = args.continuation_seeds if entered_replication else [args.screen_seed]
+        for seed in required_seeds:
             result = records.get((unit_id, seed))
             if result is None:
                 raise ValueError(f"missing continuation result for {unit_id}, seed {seed}")
@@ -49,14 +59,20 @@ def main() -> None:
         robust_labels: list[bool | None] = [None] * len(unit["branch_seeds"])
         label_records = {}
         for branch_index, outcomes in outcomes_by_branch.items():
-            robust = outcomes[0] if all(value == outcomes[0] for value in outcomes) else None
+            robust = (
+                outcomes[0]
+                if entered_replication
+                and len(outcomes) == len(args.continuation_seeds)
+                and all(value == outcomes[0] for value in outcomes)
+                else None
+            )
             robust_labels[branch_index] = robust
             label_records[str(branch_index)] = {"outcomes": outcomes, "robust_label": robust}
         unit["continuation_labels"] = label_records
+        unit["entered_continuation_replication"] = entered_replication
 
         action_distances = np.asarray(unit["action_distances"], dtype=np.float64)
         endpoint_distances = np.asarray(unit["physical_endpoint_distances"], dtype=np.float64)
-        left, right = (int(index) for index in unit["primary_pair"])
         unit["same_outcome_control_by_direction"] = {
             "forward": matched_same_label_donor(
                 recipient=left,

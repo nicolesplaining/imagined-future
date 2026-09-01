@@ -47,3 +47,40 @@ def libero_policy_config(task_suite_name: str = "libero_10", *, unnormalize_acti
     if config.deterministic:
         os.environ["DETERMINISTIC"] = "True"
     return config
+
+
+def robocasa_policy_config(task_name: str, *, unnormalize_actions: bool = True):
+    """Return the released deterministic RoboCasa inference configuration."""
+
+    from cosmos_policy.experiments.robot.robocasa.run_robocasa_eval import PolicyEvalConfig
+
+    config = PolicyEvalConfig(
+        config="cosmos_predict2_2b_480p_robocasa_50_demos_per_task__inference",
+        ckpt_path="nvidia/Cosmos-Policy-RoboCasa-Predict2-2B",
+        config_file="cosmos_policy/config/config.py",
+        dataset_stats_path=(
+            "nvidia/Cosmos-Policy-RoboCasa-Predict2-2B/robocasa_dataset_statistics.json"
+        ),
+        t5_text_embeddings_path=(
+            "nvidia/Cosmos-Policy-RoboCasa-Predict2-2B/robocasa_t5_embeddings.pkl"
+        ),
+        task_name=task_name,
+        use_wrist_image=True,
+        num_wrist_images=1,
+        use_proprio=True,
+        normalize_proprio=True,
+        unnormalize_actions=unnormalize_actions,
+        chunk_size=32,
+        num_open_loop_steps=16,
+        trained_with_image_aug=True,
+        use_jpeg_compression=True,
+        flip_images=True,
+        num_denoising_steps_action=5,
+        num_denoising_steps_future_state=1,
+        num_denoising_steps_value=1,
+        deterministic=True,
+        randomize_seed=False,
+        use_variance_scale=False,
+    )
+    os.environ["DETERMINISTIC"] = "True"
+    return config

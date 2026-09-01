@@ -28,7 +28,7 @@ For each state, pairwise normalized-action and physical-endpoint distances are c
 
 Goal-relevant endpoint features are constructed in parsed goal order from LIBERO's own predicate arguments: object positions and articulated-joint coordinates are included; quaternion components are included only for orientation predicates. Endpoint proprioception is always appended because early action chunks can produce distinct task-directed robot motion before contact moves a goal object.
 
-Continuation outcomes under seeds 353, 359, and 367 are secondary labels. A branch is a robust success or failure only when all three continuations agree. Success-specific contrasts are reported only for robust failure-to-success pairs and are not substituted for the primary endpoint-divergence analysis.
+Continuation outcomes are secondary labels evaluated in two registered stages. Seed 353 screens the primary pair and its preselected distance-matched natural controls at every unit. Seeds 359 and 367 are run only when the primary pair has different outcomes under seed 353. A branch is called a robust success or failure only when all three tested continuations agree; units not entering stage two receive no robust label. Success-specific contrasts are reported only for robust failure-to-success pairs and are not substituted for the primary endpoint-divergence analysis.
 
 ## Semantic interventions and controls
 

@@ -1,0 +1,36 @@
+[provenance]
+cosmos_policy_git = "https://github.com/NVlabs/cosmos-policy.git"
+cosmos_policy_commit = "18a2accadf4e7a3531e56754102af5a24d2316da"
+checkpoint = "nvidia/Cosmos-Policy-RoboCasa-Predict2-2B"
+robocasa_git = "https://github.com/moojink/robocasa-cosmos-policy.git"
+robocasa_commit = "edd9a328b3ec98050f42d194c1419307a79c4d87"
+numpy = "1.26.4"
+numba = "0.61.2"
+llvmlite = "0.44.0"
+protobuf = "6.33.5"
+opencv = "4.11.0.86"
+
+[design]
+study_id = "robocasa_replication_v1"
+tasks = ["OpenDrawer", "TurnOffMicrowave", "PnPCounterToCab"]
+episode_indices = [0, 10]
+prefix_chunks = [0, 3]
+environment_seed_base = 195
+prefix_seed = 307
+branch_seeds = [311, 313, 317, 319, 331, 337, 347, 349]
+future_noise_seed = 401
+deterministic = true
+units = 6
+executed_actions_per_query = 16
+
+[interventions]
+semantic_modalities = ["proprio", "wrist", "primary", "secondary"]
+semantic_controls = ["recipient_self", "norm_distance_matched_gaussian"]
+attention_layer = 27
+attention_gate = 1.0
+attention_controls = ["all_key_recompute", "equal_count_current_keys"]
+
+[interpretation]
+status = "cross_domain_replication"
+pool_with_libero = false
+primary = "physical_endpoint_donor_steering"
