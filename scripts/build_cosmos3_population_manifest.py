@@ -71,6 +71,15 @@ def main() -> None:
             )
             if path is None:
                 attempted = bool(attempt_directories)
+                failure_logs = []
+                for candidate in attempt_directories:
+                    log_path = candidate / "run.log"
+                    if not log_path.exists():
+                        continue
+                    log_text = log_path.read_text(errors="replace")
+                    if "Traceback (most recent call last):" in log_text:
+                        failure_logs.append(str(log_path))
+                terminal = bool(failure_logs)
                 candidates.append(
                     {
                         "unit_id": f"{task}-seed-{seed}",
@@ -78,7 +87,9 @@ def main() -> None:
                         "environment_seed": seed,
                         "native_rollout_success": None,
                         "native_screen_attempted": attempted,
+                        "native_screen_terminal": terminal,
                         "native_screen_summary_present": False,
+                        "native_screen_failure_logs": failure_logs,
                         "screen_attempt_directories": [
                             str(candidate) for candidate in attempt_directories
                         ],
@@ -86,7 +97,11 @@ def main() -> None:
                         "factorization_selected": False,
                         "eligible_before_task_rule": False,
                         "exclusion_reasons": [
-                            "native_screen_failed" if attempted else "native_screen_missing"
+                            "native_screen_failed"
+                            if terminal
+                            else "native_screen_incomplete"
+                            if attempted
+                            else "native_screen_missing"
                         ],
                     }
                 )
@@ -138,13 +153,20 @@ def main() -> None:
                     "environment_seed": seed,
                     "native_rollout_success": read_success(recorded_hdf5),
                     "native_screen_attempted": True,
+                    "native_screen_terminal": True,
                     "native_screen_summary_present": True,
+                    "native_screen_failure_logs": [],
                     "screen_attempt_directories": [
                         str(candidate) for candidate in attempt_directories
                     ],
                     "branch_step": int(row["branch_step"]),
                     "recipient_seed": selected_pair[0],
                     "donor_seed": selected_pair[1],
+                    "natural_control_seed": next(
+                        branch
+                        for branch in expected_branches
+                        if branch not in selected_pair
+                    ),
                     "native_action_l2": float(row["native_action_l2"]),
                     "native_endpoint_l2": row["native_endpoint_l2"],
                     "target_object_name": str(row["target_object_name"]),
@@ -188,7 +210,7 @@ def main() -> None:
     expected_unit_count = len(expected_tasks) * len(expected_seeds)
     census_complete = (
         len(candidates) == expected_unit_count
-        and all(row["native_screen_attempted"] for row in candidates)
+        and all(row["native_screen_terminal"] for row in candidates)
     )
     ready = (
         census_complete
@@ -224,7 +246,13 @@ def main() -> None:
     )
     report = {
         "scope": "frozen Cosmos 3 population units selected without intervention outcomes",
-        "status": "confirmatory_ready" if ready else "underpowered_feasibility",
+        "status": (
+            "confirmatory_ready"
+            if ready
+            else "native_census_incomplete"
+            if not census_complete
+            else "underpowered_feasibility"
+        ),
         "selection_uses_intervention_outcomes": False,
         "registered_tasks": expected_tasks,
         "registered_environment_seeds": sorted(expected_seeds),
@@ -236,6 +264,9 @@ def main() -> None:
         "native_screen_completed_count": sum(
             bool(row["native_screen_summary_present"]) for row in candidates
         ),
+        "native_screen_terminal_count": sum(
+            bool(row["native_screen_terminal"]) for row in candidates
+        ),
         "native_screen_census_complete": census_complete,
         "minimum_tasks": minimum_tasks,
         "minimum_units": minimum_units,
@@ -244,7 +275,11 @@ def main() -> None:
         "selected_tasks": selected_tasks,
         "selected_unit_ids": [row["unit_id"] for row in selected],
         "factorization_status": (
-            "confirmatory_ready" if factor_ready else "underpowered_feasibility"
+            "confirmatory_ready"
+            if census_complete and factor_ready
+            else "native_census_incomplete"
+            if not census_complete
+            else "underpowered_feasibility"
         ),
         "factorization_selected_task_count": len(factor_tasks),
         "factorization_selected_unit_count": len(factor_selected),

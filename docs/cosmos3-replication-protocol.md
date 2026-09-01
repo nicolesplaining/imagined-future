@@ -55,8 +55,10 @@ The following checks must pass before outcomes are inspected:
    raw-target comparisons apply that same deterministic six-pixel crop at the
    top and bottom rather than requiring an incorrect 540-pixel decoded height.
 6. Gaussian controls match both donor latent norm and recipient-to-donor
-   distance within relative tolerance `1e-5`. Natural shuffled controls use a
-   valid endpoint from the same task and never the selected donor.
+   distance within relative tolerance `1e-5`. A non-donor natural control is
+   frozen as the lowest registered diffusion seed outside the recipient/donor
+   pair; it is generated from the same exact state and never selected using an
+   intervention outcome.
 7. RoboLab recreates a fresh environment for every condition, restores the
    recorded initial state, and replays the recorded prefix with zero HDF5 state
    error. Independent reconstructions must have identical branch-state digests,
@@ -77,7 +79,9 @@ native census still yielded fewer than 20 eligible units after the unchanged
 task-success and full-video rules were applied. Before any population
 intervention, seed 113 was therefore frozen as a balanced final expansion on
 all six calibration-feasible tasks. No further seed may be added after any
-population intervention begins. Sixteen native diffusion
+population intervention begins. To prevent the fifth seed from overweighting
+any task, the task cap is four units; states are ranked only by native endpoint
+diversity with the frozen seed tie break. Sixteen native diffusion
 branches are drawn from each saved state. All 16 action chunks are generated,
 the maximum native action-L2 pair is selected with a fixed lower-seed tie
 break, and only that pair plus an exact repeated continuation is physically
@@ -111,7 +115,7 @@ Confirmatory tasks need at least one successful native rollout and a fixed
 action-divergent pair whose two policy-generated endpoints are also different
 and reachable from the exact same state. We
 retain at least five tasks and 20 independent saved-state clusters, capped at
-six states per task. If that frozen minimum is unavailable, the result is
+four states per task. If that frozen minimum is unavailable, the result is
 reported as an underpowered feasibility study rather than broadened after
 seeing transplantation effects.
 
@@ -124,8 +128,8 @@ For a recipient branch A and donor branch B from state S:
 - Exact self control: recompute native A with the identical request and seed.
 - Mechanics-matched self clamp: current(S), noise(A), clamp the executed A future.
 - Donor transplant: current(S), noise(A), clamp future(B).
-- Controls: distance-matched Gaussian, a preselected non-donor natural future,
-  and shuffled natural future content.
+- Controls: distance-matched Gaussian and a preselected non-donor natural
+  predicted future from the same exact state.
 
 The primary action outcome is the signed projection of the transplanted action
 change onto `action(B)-action(A)`, normalized so A is 0 and B is 1. Every pair
@@ -166,7 +170,13 @@ that a full non-Fabric rerender introduces a large common camera-domain shift.
 The confirmatory primary design therefore uses those paired rerenders only to
 derive frozen RGB-difference masks (threshold 8, two-pixel dilation), then
 copies donor pixels within the robot and/or object mask onto the native
-recipient video. The native current frame is copied exactly. Full state
+recipient video. An excluded audit found substantial overlap between these
+masks, which makes the two nominal factors non-orthogonal. The confirmatory
+primary therefore uses a disjoint object-priority partition: every object-mask
+pixel is attributed to object content, and the robot factor receives only
+robot-mask pixels outside that set. Raw mask sizes and overlap are reported;
+this conservative choice prevents visible object content from leaking into the
+robot-only factor. The native current frame is copied exactly. Full state
 rerenders remain a secondary design. Only future frames change; the live
 current observation, instruction, proprioception, and action noise are
 identical. The robot and object main effects on action and physical execution

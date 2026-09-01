@@ -65,7 +65,7 @@ minimum_normalized_action_l2 = 0.01
 minimum_endpoint_displacement_m = 0.003
 minimum_confirmatory_tasks = 5
 minimum_confirmatory_units = 20
-maximum_units_per_task = 6
+maximum_units_per_task = 4
 
 [screen.branch_points]
 # Frozen from excluded seed-0 native trajectories before any population
@@ -99,13 +99,14 @@ reciprocal_pairs = true
 future_latent_frames = "all unconditioned vision latent frames"
 current_vision = "never replaced"
 action_state = "never replaced"
-primary_targets = ["self", "donor", "matched_natural", "gaussian", "shuffled_natural"]
+primary_targets = ["self", "executed_self", "predicted_donor", "executed_donor", "natural_control", "gaussian"]
 timing_windows = ["step_0", "step_1", "step_2", "step_3", "all_steps"]
 
 [factorization]
 primary_design = "native_background_masked_composite"
 difference_mask_rgb_threshold = 8
 difference_mask_dilation_pixels = 2
+mask_overlap_policy = "object_priority_disjoint_partition"
 robot_position_match_m = 0.003
 robot_orientation_match_rad = 0.03
 robot_gripper_match_l2 = 0.005

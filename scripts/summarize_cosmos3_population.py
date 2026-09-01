@@ -89,6 +89,10 @@ def main() -> None:
             int(frozen["donor_seed"]),
         ):
             raise ValueError(f"result changed the frozen donor pair for {key}")
+        if not report.get("frozen_pair_supplied", False):
+            raise ValueError(f"result did not use the frozen pair interface for {key}")
+        if int(report["natural_control_seed"]) != int(frozen["natural_control_seed"]):
+            raise ValueError(f"result changed the frozen natural control for {key}")
         if float(report["prefix_maximum_state_error"]) != 0.0:
             raise ValueError(f"result failed exact prefix replay for {key}")
         if float(report["self_identity_action_maximum_error"]) != 0.0:
@@ -131,13 +135,25 @@ def main() -> None:
             "action_donor_projection",
             None,
         ),
-        "factor_subset_executed_donor_minus_executed_self_action": (
+        "predicted_donor_minus_natural_control_action": (
+            "predicted_donor",
+            "natural_control",
+            "action_donor_projection",
+            None,
+        ),
+        "executed_donor_minus_natural_control_action": (
+            "executed_donor",
+            "natural_control",
+            "action_donor_projection",
+            None,
+        ),
+        "executed_donor_minus_executed_self_action": (
             "executed_donor",
             "executed_self",
             "action_donor_projection",
             None,
         ),
-        "factor_subset_executed_donor_minus_executed_self_physical": (
+        "executed_donor_minus_executed_self_physical": (
             "executed_donor",
             "executed_self",
             "endpoint_donor_projection",

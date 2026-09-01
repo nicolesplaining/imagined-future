@@ -24,6 +24,9 @@ parser.add_argument("--remote-port", type=int, default=8001)
 parser.add_argument("--output-dir", type=Path, required=True)
 parser.add_argument("--recorded-hdf5", type=Path, required=True)
 parser.add_argument("--branch-seeds", type=int, nargs="+", default=[211, 223, 227, 229])
+parser.add_argument("--frozen-recipient-seed", type=int)
+parser.add_argument("--frozen-donor-seed", type=int)
+parser.add_argument("--natural-control-seed", type=int)
 parser.add_argument("--gaussian-seed", type=int, default=1223)
 parser.add_argument("--branch-step", type=int, default=0)
 parser.add_argument("--study-id")
@@ -207,6 +210,26 @@ def main() -> None:
         raise ValueError("--factorization-object-prim is required for donor factorization")
     if args.native_screen_only and not args.target_object_name:
         raise ValueError("--target-object-name is required for a native population screen")
+    frozen_values = (args.frozen_recipient_seed, args.frozen_donor_seed)
+    if any(value is not None for value in frozen_values) != all(
+        value is not None for value in frozen_values
+    ):
+        raise ValueError("frozen recipient and donor seeds must be provided together")
+    if args.native_screen_only and any(value is not None for value in frozen_values):
+        raise ValueError("native screening selects its own frozen pair")
+    if all(value is not None for value in frozen_values):
+        frozen_pair = (int(args.frozen_recipient_seed), int(args.frozen_donor_seed))
+        if frozen_pair[0] == frozen_pair[1] or not set(frozen_pair) <= set(args.branch_seeds):
+            raise ValueError("frozen recipient/donor seeds must be distinct branch seeds")
+    else:
+        frozen_pair = None
+    if args.natural_control_seed is not None:
+        if frozen_pair is None:
+            raise ValueError("a natural control requires a frozen recipient/donor pair")
+        if args.natural_control_seed not in args.branch_seeds:
+            raise ValueError("natural-control seed must be included in branch seeds")
+        if args.natural_control_seed in frozen_pair:
+            raise ValueError("natural-control seed must differ from the frozen pair")
     study_id = args.study_id or f"{args.task.lower()}-step{args.branch_step}-{args.output_dir.parent.name}"
     args.output_dir.mkdir(parents=True, exist_ok=True)
     recorded_env_cfg_path = args.recorded_hdf5.parent / "env_cfg.json"
@@ -402,6 +425,9 @@ def main() -> None:
 
         native_responses: dict[int, dict[str, Any]] = {}
         native_runs: dict[int, dict[str, Any]] = {}
+        execute_native_seeds = (
+            set(frozen_pair) if frozen_pair is not None else set(args.branch_seeds)
+        )
         server_state_hashes = set()
         for seed in args.branch_seeds:
             request = dict(initial_request)
@@ -413,7 +439,7 @@ def main() -> None:
             response = client.client.infer(request)
             native_responses[seed] = response
             server_state_hashes.add(response["research_state_hash"])
-            if not args.native_screen_only:
+            if not args.native_screen_only and seed in execute_native_seeds:
                 native_runs[seed] = execute(
                     branch_state, initial_request, response, f"native_{seed}"
                 )
@@ -445,8 +471,14 @@ def main() -> None:
                     f"native_{seed}",
                 )
                 progress("selected_native_branch_completed", seed=seed)
+        elif frozen_pair is not None:
+            recipient_seed, donor_seed = frozen_pair
 
-        repeat_seed = recipient_seed if args.native_screen_only else args.branch_seeds[0]
+        repeat_seed = (
+            recipient_seed
+            if args.native_screen_only or frozen_pair is not None
+            else args.branch_seeds[0]
+        )
         repeat_run = execute(
             branch_state,
             initial_request,
@@ -467,7 +499,7 @@ def main() -> None:
             (left, right): float(np.linalg.norm(endpoint_vectors[left] - endpoint_vectors[right]))
             for left, right in combinations(native_runs, 2)
         }
-        if not args.native_screen_only:
+        if not args.native_screen_only and frozen_pair is None:
             recipient_seed, donor_seed = max(pair_distances, key=pair_distances.get)
         progress("donor_pair_selected", recipient_seed=recipient_seed, donor_seed=donor_seed)
 
@@ -689,10 +721,21 @@ def main() -> None:
                     [cv2.dilate(frame.astype(np.uint8), kernel).astype(bool) for frame in raw]
                 )
 
-            robot_mask = difference_mask(state_cell_videos["o0r0"], state_cell_videos["o0r1"])
-            object_mask = difference_mask(state_cell_videos["o0r0"], state_cell_videos["o1r0"])
-            robot_mask[0] = False
-            object_mask[0] = False
+            raw_robot_mask = difference_mask(
+                state_cell_videos["o0r0"], state_cell_videos["o0r1"]
+            )
+            raw_object_mask = difference_mask(
+                state_cell_videos["o0r0"], state_cell_videos["o1r0"]
+            )
+            raw_robot_mask[0] = False
+            raw_object_mask[0] = False
+            overlap_mask = raw_robot_mask & raw_object_mask
+            object_mask = raw_object_mask
+            robot_mask = raw_robot_mask & ~raw_object_mask
+            if not robot_mask[1:].any() or not object_mask[1:].any():
+                raise RuntimeError(
+                    "object-priority mask partition left an empty robot or object factor"
+                )
             composite_cell_videos = {}
             composite_cell_audits = {}
             for cell, use_robot, use_object in (
@@ -850,6 +893,14 @@ def main() -> None:
                 "mask_dilation_pixels": args.factorization_mask_dilation,
                 "robot_mask_future_pixel_fraction": float(robot_mask[1:].mean()),
                 "object_mask_future_pixel_fraction": float(object_mask[1:].mean()),
+                "raw_robot_mask_future_pixel_fraction": float(
+                    raw_robot_mask[1:].mean()
+                ),
+                "raw_object_mask_future_pixel_fraction": float(
+                    raw_object_mask[1:].mean()
+                ),
+                "mask_overlap_future_pixel_fraction": float(overlap_mask[1:].mean()),
+                "mask_overlap_policy": "object_priority_disjoint_partition",
                 "state_composition": (
                     "recipient simulator state with robot and target-object subtrees replaced "
                     "factorially from the donor at every future frame; current frame held exactly fixed"
@@ -873,20 +924,27 @@ def main() -> None:
                 "research_donor_id": f"{study_id}-executed-{donor_seed}",
                 "research_gaussian_seed": args.gaussian_seed,
             },
+            "executed_self": {
+                "research_mode": "donor",
+                "research_donor_id": f"{study_id}-executed-{recipient_seed}",
+            },
         }
         intervention_target_seeds: dict[str, int | None] = {
             "self": None,
             "predicted_donor": donor_seed,
             "executed_donor": donor_seed,
             "gaussian_executed": None,
+            "executed_self": None,
         }
+        if args.natural_control_seed is not None:
+            intervention_specs["natural_control"] = {
+                "research_mode": "donor",
+                "research_donor_id": f"{study_id}-native-{args.natural_control_seed}",
+            }
+            intervention_target_seeds["natural_control"] = None
         if args.factorize_selected_donor:
             intervention_specs.update(
                 {
-                    "executed_self": {
-                        "research_mode": "donor",
-                        "research_donor_id": f"{study_id}-executed-{recipient_seed}",
-                    },
                     **{
                         f"state_cell_{cell}": {
                             "research_mode": "donor",
@@ -905,7 +963,6 @@ def main() -> None:
             )
             intervention_target_seeds.update(
                 {
-                    "executed_self": None,
                     "state_cell_o0r0": None,
                     "state_cell_o0r1": donor_seed,
                     "state_cell_o1r0": donor_seed,
@@ -1083,14 +1140,17 @@ def main() -> None:
                 else None
             )
             nearest_action_seed = min(
-                args.branch_seeds,
+                native_responses,
                 key=lambda seed: float(
-                    np.linalg.norm(run["raw_action"] - native_runs[seed]["raw_action"])
+                    np.linalg.norm(
+                        run["raw_action"]
+                        - np.asarray(native_responses[seed]["action"], dtype=np.float32)
+                    )
                 ),
             )
             nearest_endpoint_seed = {
                 group: min(
-                    args.branch_seeds,
+                    native_runs,
                     key=lambda seed: float(
                         np.linalg.norm(
                             state_vector(run["endpoint_state"], group)
@@ -1202,7 +1262,11 @@ def main() -> None:
                 }
 
         summary = {
-            "scope": "same-state RoboLab engineering pilot; donor pair selected only by native endpoint separation",
+            "scope": (
+                "frozen same-state RoboLab population intervention"
+                if frozen_pair is not None
+                else "same-state RoboLab engineering pilot"
+            ),
             "task": args.task,
             "study_id": study_id,
             "branch_step": args.branch_step,
@@ -1224,8 +1288,15 @@ def main() -> None:
             "recorded_env_cfg": str(recorded_env_cfg_path),
             "environment_seed": recorded_environment_seed,
             "branch_seeds": args.branch_seeds,
+            "frozen_pair_supplied": frozen_pair is not None,
+            "natural_control_seed": args.natural_control_seed,
             "recipient_seed": recipient_seed,
             "donor_seed": donor_seed,
+            "donor_selection": (
+                "externally frozen maximum native action-L2 pair from the complete 16-seed screen"
+                if frozen_pair is not None
+                else "maximum physically executed native endpoint separation"
+            ),
             "native_pairwise_endpoint_l2": {
                 f"{left}:{right}": distance for (left, right), distance in pair_distances.items()
             },
