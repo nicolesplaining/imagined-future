@@ -1,0 +1,938 @@
+{
+  "calibration": {
+    "all_layer_means": {
+      "0": 0.039861178262037056,
+      "1": 0.0161983064149325,
+      "10": 0.02799858002431721,
+      "11": -0.0013678828042620328,
+      "12": 0.002474390301080015,
+      "13": 0.006684435192975208,
+      "14": 0.012340942469467542,
+      "15": 0.0249387755251535,
+      "16": 0.34646132056264367,
+      "17": 0.050148441337200256,
+      "18": 0.014470419099298831,
+      "19": 0.06679351137032491,
+      "2": 0.021296528975639384,
+      "20": 0.0076247274919857555,
+      "21": -0.00366874208761922,
+      "22": 0.01167733678828789,
+      "23": 0.02942630244338268,
+      "24": 0.09558392884934053,
+      "25": 0.022721686128425705,
+      "26": 0.002113039799588934,
+      "27": 0.014144299965217794,
+      "28": 0.03656317037706791,
+      "29": -0.0029298109989055465,
+      "3": 0.00771831761737643,
+      "30": 0.04469147816501293,
+      "31": 0.03936196277163939,
+      "32": 0.0011718092290690652,
+      "33": -0.004596254368588737,
+      "34": 0.009314731510742691,
+      "35": -0.01128461732851288,
+      "4": 0.009404415617640494,
+      "5": -0.01643520552166014,
+      "6": 1.2081177677453203e-05,
+      "7": 0.012690466792108474,
+      "8": 0.007767361961349528,
+      "9": 0.013605878240988717
+    },
+    "bootstrap": {
+      "cluster_unit": "task",
+      "repetitions": 10000,
+      "seed": 20260901
+    },
+    "eligible_layers": [
+      7,
+      15,
+      16,
+      17,
+      19,
+      24,
+      27
+    ],
+    "layer_selection_rule": "among layers with positive single-layer mediation loss in all four calibration tasks, select the largest task mean",
+    "metrics": {
+      "all_barrier_mediation_loss": {
+        "mean": 0.9948463648701207,
+        "positive_tasks": 4,
+        "task_bootstrap_95_interval": [
+          0.976307646732943,
+          1.0133850830072981
+        ],
+        "task_count": 4,
+        "values": [
+          0.9689961262331985,
+          0.9836191672326874,
+          1.022608820289445,
+          1.0041613457251513
+        ]
+      },
+      "all_direct_mediation_loss": {
+        "mean": 0.8418389042565171,
+        "positive_tasks": 4,
+        "task_bootstrap_95_interval": [
+          0.7656817354983412,
+          0.9095644909040286
+        ],
+        "task_count": 4,
+        "values": [
+          0.8833394023572829,
+          0.9357895794507741,
+          0.8217641220059837,
+          0.7264625132120272
+        ]
+      },
+      "baseline_projection": {
+        "mean": 0.9809538584601549,
+        "positive_tasks": 4,
+        "task_bootstrap_95_interval": [
+          0.9531039459200472,
+          1.0080645301373772
+        ],
+        "task_count": 4,
+        "values": [
+          1.0206184399481337,
+          0.9929833979409728,
+          0.9704028007051079,
+          0.9398107952464054
+        ]
+      },
+      "layer16_mediation_loss": {
+        "mean": 0.34646132056264367,
+        "positive_tasks": 4,
+        "task_bootstrap_95_interval": [
+          0.19225416702203768,
+          0.5006684741032497
+        ],
+        "task_count": 4,
+        "values": [
+          0.45755930375114007,
+          0.5437776444553591,
+          0.1976409051539374,
+          0.18686742889013797
+        ]
+      }
+    },
+    "rows": [
+      {
+        "all_barrier_mediation_loss": 0.9689961262331985,
+        "all_barrier_projection": 0.051622313714935246,
+        "all_direct_mediation_loss": 0.8833394023572829,
+        "all_direct_projection": 0.13727903759085083,
+        "baseline_projection": 1.0206184399481337,
+        "cache_calls_per_layer": [
+          8
+        ],
+        "cache_layers": 36,
+        "donor_repeat_maximum_action_error": 0.0,
+        "layer16_mediation_loss": 0.45755930375114007,
+        "layer16_projection": 0.5630591361969937,
+        "record_action_maximum_error": 0.0,
+        "self_patch_maximum_action_error": 0.0,
+        "study_id": "cosmos3-kv-patch-v4-rubiks",
+        "task": "rubiks"
+      },
+      {
+        "all_barrier_mediation_loss": 0.9836191672326874,
+        "all_barrier_projection": 0.00936423070828543,
+        "all_direct_mediation_loss": 0.9357895794507741,
+        "all_direct_projection": 0.05719381849019863,
+        "baseline_projection": 0.9929833979409728,
+        "cache_calls_per_layer": [
+          8
+        ],
+        "cache_layers": 36,
+        "donor_repeat_maximum_action_error": 0.0,
+        "layer16_mediation_loss": 0.5437776444553591,
+        "layer16_projection": 0.44920575348561365,
+        "record_action_maximum_error": 0.0,
+        "self_patch_maximum_action_error": 0.0,
+        "study_id": "cosmos3-kv-patch-v4-mustard",
+        "task": "mustard"
+      },
+      {
+        "all_barrier_mediation_loss": 1.022608820289445,
+        "all_barrier_projection": -0.052206019584337064,
+        "all_direct_mediation_loss": 0.8217641220059837,
+        "all_direct_projection": 0.1486386786991242,
+        "baseline_projection": 0.9704028007051079,
+        "cache_calls_per_layer": [
+          8
+        ],
+        "cache_layers": 36,
+        "donor_repeat_maximum_action_error": 0.0,
+        "layer16_mediation_loss": 0.1976409051539374,
+        "layer16_projection": 0.7727618955511705,
+        "record_action_maximum_error": 0.0,
+        "self_patch_maximum_action_error": 0.0,
+        "study_id": "cosmos3-kv-patch-v4-spoon",
+        "task": "spoon"
+      },
+      {
+        "all_barrier_mediation_loss": 1.0041613457251513,
+        "all_barrier_projection": -0.06435055047874577,
+        "all_direct_mediation_loss": 0.7264625132120272,
+        "all_direct_projection": 0.21334828203437825,
+        "baseline_projection": 0.9398107952464054,
+        "cache_calls_per_layer": [
+          8
+        ],
+        "cache_layers": 36,
+        "donor_repeat_maximum_action_error": 0.0,
+        "layer16_mediation_loss": 0.18686742889013797,
+        "layer16_projection": 0.7529433663562675,
+        "record_action_maximum_error": 0.0,
+        "self_patch_maximum_action_error": 0.0,
+        "study_id": "cosmos3-kv-patch-v4-marker",
+        "task": "marker"
+      }
+    ],
+    "scope": "excluded four-task calibration",
+    "selected_layer": 16,
+    "tasks": [
+      "rubiks",
+      "mustard",
+      "spoon",
+      "marker"
+    ]
+  },
+  "holdout": {
+    "arms": {
+      "executed": {
+        "baseline_action_projection": 1.5766020629382687,
+        "baseline_endpoint_projection": {
+          "all": 0.5011010842198534,
+          "object": -0.03578443858453307,
+          "object_orientation": -0.03744027786715382,
+          "object_position": 0.20218633045284182,
+          "robot": 1.0188912778212378
+        },
+        "patches": {
+          "all_barrier": {
+            "action_mediation_loss": 1.5886908243742304,
+            "action_projection": -0.012088761435961819,
+            "endpoint_mediation_loss": {
+              "all": 0.6709858908232618,
+              "object": -0.03726802786466927,
+              "object_orientation": -0.03958548049253371,
+              "object_position": 0.2957872329017802,
+              "robot": 1.3540494455281618
+            },
+            "endpoint_projection": {
+              "all": -0.16988480660340832,
+              "object": 0.0014835892801362026,
+              "object_orientation": 0.002145202625379888,
+              "object_position": -0.09360090244893837,
+              "robot": -0.3351581677069241
+            },
+            "target_future_maximum_error": 0.025839805603027344
+          },
+          "all_direct": {
+            "action_mediation_loss": 1.1948786625302041,
+            "action_projection": 0.38172340040806463,
+            "endpoint_mediation_loss": {
+              "all": 0.007338022338880201,
+              "object": -0.02969029500883134,
+              "object_orientation": -0.02981075303568652,
+              "object_position": -0.012378536803602042,
+              "robot": 0.043049358915915326
+            },
+            "endpoint_projection": {
+              "all": 0.49376306188097324,
+              "object": -0.006094143575701728,
+              "object_orientation": -0.007629524831467305,
+              "object_position": 0.21456486725644386,
+              "robot": 0.9758419189053225
+            },
+            "target_future_maximum_error": 0.025839805603027344
+          },
+          "selected": {
+            "action_mediation_loss": 0.25062513277988696,
+            "action_projection": 1.3259769301583817,
+            "endpoint_mediation_loss": {
+              "all": 0.01908326184343495,
+              "object": 0.03430996750365745,
+              "object_orientation": 0.034350251698283284,
+              "object_position": 0.028520480036016788,
+              "robot": 0.004398122205965915
+            },
+            "endpoint_projection": {
+              "all": 0.4820178223764185,
+              "object": -0.07009440608819052,
+              "object_orientation": -0.0717905295654371,
+              "object_position": 0.17366585041682503,
+              "robot": 1.0144931556152719
+            },
+            "target_future_maximum_error": 0.025839805603027344
+          }
+        }
+      },
+      "predicted": {
+        "baseline_action_projection": 0.8999855434882315,
+        "baseline_endpoint_projection": {
+          "all": 0.4877389350325338,
+          "object": -0.01557390940272674,
+          "object_orientation": -0.017101088997871532,
+          "object_position": 0.2039063907261544,
+          "robot": 0.9731505248271614
+        },
+        "patches": {
+          "all_barrier": {
+            "action_mediation_loss": 0.9120743049241933,
+            "action_projection": -0.012088761435961819,
+            "endpoint_mediation_loss": {
+              "all": 0.6576237416359421,
+              "object": -0.01705749868286294,
+              "object_orientation": -0.01924629162325142,
+              "object_position": 0.2975072931750928,
+              "robot": 1.3083086925340854
+            },
+            "endpoint_projection": {
+              "all": -0.16988480660340832,
+              "object": 0.0014835892801362026,
+              "object_orientation": 0.002145202625379888,
+              "object_position": -0.09360090244893837,
+              "robot": -0.3351581677069241
+            },
+            "target_future_maximum_error": 0.019857168197631836
+          },
+          "all_direct": {
+            "action_mediation_loss": 0.7777932069491179,
+            "action_projection": 0.12219233653911359,
+            "endpoint_mediation_loss": {
+              "all": 0.36501101668269537,
+              "object": -0.014428695101837993,
+              "object_orientation": -0.015213075915428548,
+              "object_position": 0.09829945876396157,
+              "robot": 0.7309552514959531
+            },
+            "endpoint_projection": {
+              "all": 0.12272791834983843,
+              "object": -0.0011452143008887472,
+              "object_orientation": -0.0018880130824429845,
+              "object_position": 0.10560693196219284,
+              "robot": 0.24219527333120827
+            },
+            "target_future_maximum_error": 0.019857168197631836
+          },
+          "selected": {
+            "action_mediation_loss": 0.15113546459444904,
+            "action_projection": 0.7488500788937824,
+            "endpoint_mediation_loss": {
+              "all": 0.010360875959087024,
+              "object": -0.009125138504433004,
+              "object_orientation": -0.009123212015934842,
+              "object_position": -0.009402005924030565,
+              "robot": 0.02915383418392914
+            },
+            "endpoint_projection": {
+              "all": 0.47737805907344677,
+              "object": -0.006448770898293737,
+              "object_orientation": -0.00797787698193669,
+              "object_position": 0.21330839665018497,
+              "robot": 0.9439966906432322
+            },
+            "target_future_maximum_error": 0.019857168197631836
+          }
+        }
+      }
+    },
+    "branch_step": 64,
+    "continuation_repeat_exact": true,
+    "controls": {
+      "gaussian_action_projection": 0.00029762963055843147,
+      "gaussian_endpoint_projection": {
+        "all": -0.09549976784347632,
+        "object": -0.014581800166750336,
+        "object_orientation": -0.015971458459161942,
+        "object_position": 0.18513447424180682,
+        "robot": -0.17353973794791927
+      },
+      "self_action_projection": -0.012088761435961819
+    },
+    "donor_seed": 311,
+    "identity_gates": {
+      "all_layer_self_patch_projection_error": 0.0,
+      "cache_calls_per_layer": [
+        8
+      ],
+      "cache_layers": 36,
+      "note": "the runner required elementwise maximum action error exactly zero for both identity arms before executing donor patches",
+      "record_projection_error": 0.0
+    },
+    "prefix_maximum_state_error": 0.0,
+    "recipient_seed": 307,
+    "restore_image_maximum_absolute_errors": [
+      234,
+      234,
+      234
+    ],
+    "scope": "prospectively frozen held-out physical Banana state",
+    "selected_layer": [
+      16
+    ],
+    "server_state_hash": "1a229a032850d6f9fc40858e2880abb5a5ee53e888425f1c0212a8059ab7dd04",
+    "study_id": "cosmos3-kv-patch-v1-banana-step64-layer16",
+    "task": "BananaInBowlTask",
+    "unique_restore_state_digests": 1
+  },
+  "physical_replication": {
+    "arms": {
+      "executed": {
+        "baseline_action_projection": 1.5785374811288133,
+        "baseline_endpoint_projection": {
+          "all": 0.49292272252214964,
+          "object": -0.06468767004215271,
+          "object_orientation": -0.06647738884296803,
+          "object_position": 0.19252374163336866,
+          "robot": 1.0307006674588595
+        },
+        "patches": {
+          "all_barrier": {
+            "action_mediation_loss": 1.590626242564775,
+            "action_projection": -0.012088761435961819,
+            "endpoint_mediation_loss": {
+              "all": 0.662807529125558,
+              "object": -0.06617125932228891,
+              "object_orientation": -0.06862259146834791,
+              "object_position": 0.28612464408230703,
+              "robot": 1.3658588351657834
+            },
+            "endpoint_projection": {
+              "all": -0.16988480660340832,
+              "object": 0.0014835892801362026,
+              "object_orientation": 0.002145202625379888,
+              "object_position": -0.09360090244893837,
+              "robot": -0.3351581677069241
+            },
+            "target_future_maximum_error": 0.027618408203125
+          },
+          "all_direct": {
+            "action_mediation_loss": 1.19716389912363,
+            "action_projection": 0.38137358200518334,
+            "endpoint_mediation_loss": {
+              "all": 0.0037212494530023954,
+              "object": -0.04601076348415355,
+              "object_orientation": -0.04627057563447749,
+              "object_position": -0.00867157370482663,
+              "robot": 0.05168445112848996
+            },
+            "endpoint_projection": {
+              "all": 0.48920147306914724,
+              "object": -0.018676906557999168,
+              "object_orientation": -0.020206813208490538,
+              "object_position": 0.2011953153381953,
+              "robot": 0.9790162163303695
+            },
+            "target_future_maximum_error": 0.027618408203125
+          },
+          "selected": {
+            "action_mediation_loss": 0.25787410995219706,
+            "action_projection": 1.3206633711766163,
+            "endpoint_mediation_loss": {
+              "all": -0.01886184444566097,
+              "object": -0.04665293172156071,
+              "object_orientation": -0.046762412284743274,
+              "object_position": -0.03091881181714473,
+              "robot": 0.007940801276309584
+            },
+            "endpoint_projection": {
+              "all": 0.5117845669678106,
+              "object": -0.018034738320592006,
+              "object_orientation": -0.019714976558224757,
+              "object_position": 0.2234425534505134,
+              "robot": 1.0227598661825499
+            },
+            "target_future_maximum_error": 0.027618408203125
+          }
+        }
+      },
+      "predicted": {
+        "baseline_action_projection": 0.8999855434882315,
+        "baseline_endpoint_projection": {
+          "all": 0.4877389350325338,
+          "object": -0.01557390940272674,
+          "object_orientation": -0.017101088997871532,
+          "object_position": 0.2039063907261544,
+          "robot": 0.9731505248271614
+        },
+        "patches": {
+          "all_barrier": {
+            "action_mediation_loss": 0.9120743049241933,
+            "action_projection": -0.012088761435961819,
+            "endpoint_mediation_loss": {
+              "all": 0.6576237416359421,
+              "object": -0.01705749868286294,
+              "object_orientation": -0.01924629162325142,
+              "object_position": 0.2975072931750928,
+              "robot": 1.3083086925340854
+            },
+            "endpoint_projection": {
+              "all": -0.16988480660340832,
+              "object": 0.0014835892801362026,
+              "object_orientation": 0.002145202625379888,
+              "object_position": -0.09360090244893837,
+              "robot": -0.3351581677069241
+            },
+            "target_future_maximum_error": 0.019857168197631836
+          },
+          "all_direct": {
+            "action_mediation_loss": 0.7777932069491179,
+            "action_projection": 0.12219233653911359,
+            "endpoint_mediation_loss": {
+              "all": 0.36501101668269537,
+              "object": -0.014428695101837993,
+              "object_orientation": -0.015213075915428548,
+              "object_position": 0.09829945876396157,
+              "robot": 0.7309552514959531
+            },
+            "endpoint_projection": {
+              "all": 0.12272791834983843,
+              "object": -0.0011452143008887472,
+              "object_orientation": -0.0018880130824429845,
+              "object_position": 0.10560693196219284,
+              "robot": 0.24219527333120827
+            },
+            "target_future_maximum_error": 0.019857168197631836
+          },
+          "selected": {
+            "action_mediation_loss": 0.15113546459444904,
+            "action_projection": 0.7488500788937824,
+            "endpoint_mediation_loss": {
+              "all": 0.010360875959087024,
+              "object": -0.009125138504433004,
+              "object_orientation": -0.009123212015934842,
+              "object_position": -0.009402005924030565,
+              "robot": 0.02915383418392914
+            },
+            "endpoint_projection": {
+              "all": 0.47737805907344677,
+              "object": -0.006448770898293737,
+              "object_orientation": -0.00797787698193669,
+              "object_position": 0.21330839665018497,
+              "robot": 0.9439966906432322
+            },
+            "target_future_maximum_error": 0.019857168197631836
+          }
+        }
+      }
+    },
+    "branch_step": 64,
+    "comparison_to_holdout": {
+      "executed": {
+        "baseline_action_projection_delta": 0.0019354181905446577,
+        "baseline_robot_endpoint_projection_delta": 0.011809389637621681,
+        "patch_deltas": {
+          "all_barrier": {
+            "action_projection_delta": 0.0,
+            "robot_endpoint_projection_delta": 0.0
+          },
+          "all_direct": {
+            "action_projection_delta": -0.00034981840288128563,
+            "robot_endpoint_projection_delta": 0.0031742974250470457
+          },
+          "selected": {
+            "action_projection_delta": -0.005313558981765443,
+            "robot_endpoint_projection_delta": 0.008266710567278013
+          }
+        }
+      },
+      "predicted": {
+        "baseline_action_projection_delta": 0.0,
+        "baseline_robot_endpoint_projection_delta": 0.0,
+        "patch_deltas": {
+          "all_barrier": {
+            "action_projection_delta": 0.0,
+            "robot_endpoint_projection_delta": 0.0
+          },
+          "all_direct": {
+            "action_projection_delta": 0.0,
+            "robot_endpoint_projection_delta": 0.0
+          },
+          "selected": {
+            "action_projection_delta": 0.0,
+            "robot_endpoint_projection_delta": 0.0
+          }
+        }
+      }
+    },
+    "continuation_repeat_exact": true,
+    "controls": {
+      "gaussian_action_projection": -0.011456998847527274,
+      "gaussian_endpoint_projection": {
+        "all": -0.4220487617389883,
+        "object": 0.003025185153581251,
+        "object_orientation": 0.0020948675093042423,
+        "object_position": 0.13672681162257014,
+        "robot": -0.8320041654659036
+      },
+      "self_action_projection": -0.012088761435961819
+    },
+    "donor_seed": 311,
+    "identity_gates": {
+      "all_layer_self_patch_projection_error": 0.0,
+      "cache_calls_per_layer": [
+        8
+      ],
+      "cache_layers": 36,
+      "note": "the runner required elementwise maximum action error exactly zero for both identity arms before executing donor patches",
+      "record_projection_error": 0.0
+    },
+    "prefix_maximum_state_error": 0.0,
+    "recipient_seed": 307,
+    "restore_image_maximum_absolute_errors": [
+      234,
+      234,
+      234
+    ],
+    "scope": "fresh-server exact-state physical process replication; repeated state is not an additional population unit",
+    "selected_layer": [
+      16
+    ],
+    "server_state_hash": "1a229a032850d6f9fc40858e2880abb5a5ee53e888425f1c0212a8059ab7dd04",
+    "study_id": "cosmos3-kv-patch-physical-v1-o3-banana",
+    "task": "BananaInBowlTask",
+    "unique_restore_state_digests": 1
+  },
+  "process_blocks": {
+    "all_blocks_identity_exact": true,
+    "all_blocks_metrics_exact_calibration_match": true,
+    "block_count": 5,
+    "blocks": [
+      {
+        "all_identity_gates_exact": true,
+        "all_metrics_exact_calibration_match": true,
+        "block": "a0",
+        "mean_all_barrier_mediation_loss": 0.9948463648701207,
+        "mean_all_direct_mediation_loss": 0.8418389042565171,
+        "mean_layer16_mediation_loss": 0.34646132056264367,
+        "tasks": [
+          {
+            "all_barrier_mediation_loss": 0.9689961262331985,
+            "all_direct_mediation_loss": 0.8833394023572829,
+            "baseline_projection": 1.0206184399481337,
+            "exact_calibration_metric_match": true,
+            "identity_errors": {
+              "donor_repeat": 0.0,
+              "record": 0.0,
+              "self_patch": 0.0
+            },
+            "layer16_mediation_loss": 0.45755930375114007,
+            "study_id": "cosmos3-kv-patch-process-v1-a0-rubiks",
+            "task": "rubiks"
+          },
+          {
+            "all_barrier_mediation_loss": 0.9836191672326874,
+            "all_direct_mediation_loss": 0.9357895794507741,
+            "baseline_projection": 0.9929833979409728,
+            "exact_calibration_metric_match": true,
+            "identity_errors": {
+              "donor_repeat": 0.0,
+              "record": 0.0,
+              "self_patch": 0.0
+            },
+            "layer16_mediation_loss": 0.5437776444553591,
+            "study_id": "cosmos3-kv-patch-process-v1-a0-mustard",
+            "task": "mustard"
+          },
+          {
+            "all_barrier_mediation_loss": 1.022608820289445,
+            "all_direct_mediation_loss": 0.8217641220059837,
+            "baseline_projection": 0.9704028007051079,
+            "exact_calibration_metric_match": true,
+            "identity_errors": {
+              "donor_repeat": 0.0,
+              "record": 0.0,
+              "self_patch": 0.0
+            },
+            "layer16_mediation_loss": 0.1976409051539374,
+            "study_id": "cosmos3-kv-patch-process-v1-a0-spoon",
+            "task": "spoon"
+          },
+          {
+            "all_barrier_mediation_loss": 1.0041613457251513,
+            "all_direct_mediation_loss": 0.7264625132120272,
+            "baseline_projection": 0.9398107952464054,
+            "exact_calibration_metric_match": true,
+            "identity_errors": {
+              "donor_repeat": 0.0,
+              "record": 0.0,
+              "self_patch": 0.0
+            },
+            "layer16_mediation_loss": 0.18686742889013797,
+            "study_id": "cosmos3-kv-patch-process-v1-a0-marker",
+            "task": "marker"
+          }
+        ]
+      },
+      {
+        "all_identity_gates_exact": true,
+        "all_metrics_exact_calibration_match": true,
+        "block": "a1",
+        "mean_all_barrier_mediation_loss": 0.9948463648701207,
+        "mean_all_direct_mediation_loss": 0.8418389042565171,
+        "mean_layer16_mediation_loss": 0.34646132056264367,
+        "tasks": [
+          {
+            "all_barrier_mediation_loss": 0.9689961262331985,
+            "all_direct_mediation_loss": 0.8833394023572829,
+            "baseline_projection": 1.0206184399481337,
+            "exact_calibration_metric_match": true,
+            "identity_errors": {
+              "donor_repeat": 0.0,
+              "record": 0.0,
+              "self_patch": 0.0
+            },
+            "layer16_mediation_loss": 0.45755930375114007,
+            "study_id": "cosmos3-kv-patch-process-v1-a1-rubiks",
+            "task": "rubiks"
+          },
+          {
+            "all_barrier_mediation_loss": 0.9836191672326874,
+            "all_direct_mediation_loss": 0.9357895794507741,
+            "baseline_projection": 0.9929833979409728,
+            "exact_calibration_metric_match": true,
+            "identity_errors": {
+              "donor_repeat": 0.0,
+              "record": 0.0,
+              "self_patch": 0.0
+            },
+            "layer16_mediation_loss": 0.5437776444553591,
+            "study_id": "cosmos3-kv-patch-process-v1-a1-mustard",
+            "task": "mustard"
+          },
+          {
+            "all_barrier_mediation_loss": 1.022608820289445,
+            "all_direct_mediation_loss": 0.8217641220059837,
+            "baseline_projection": 0.9704028007051079,
+            "exact_calibration_metric_match": true,
+            "identity_errors": {
+              "donor_repeat": 0.0,
+              "record": 0.0,
+              "self_patch": 0.0
+            },
+            "layer16_mediation_loss": 0.1976409051539374,
+            "study_id": "cosmos3-kv-patch-process-v1-a1-spoon",
+            "task": "spoon"
+          },
+          {
+            "all_barrier_mediation_loss": 1.0041613457251513,
+            "all_direct_mediation_loss": 0.7264625132120272,
+            "baseline_projection": 0.9398107952464054,
+            "exact_calibration_metric_match": true,
+            "identity_errors": {
+              "donor_repeat": 0.0,
+              "record": 0.0,
+              "self_patch": 0.0
+            },
+            "layer16_mediation_loss": 0.18686742889013797,
+            "study_id": "cosmos3-kv-patch-process-v1-a1-marker",
+            "task": "marker"
+          }
+        ]
+      },
+      {
+        "all_identity_gates_exact": true,
+        "all_metrics_exact_calibration_match": true,
+        "block": "b0",
+        "mean_all_barrier_mediation_loss": 0.9948463648701207,
+        "mean_all_direct_mediation_loss": 0.8418389042565171,
+        "mean_layer16_mediation_loss": 0.34646132056264367,
+        "tasks": [
+          {
+            "all_barrier_mediation_loss": 0.9689961262331985,
+            "all_direct_mediation_loss": 0.8833394023572829,
+            "baseline_projection": 1.0206184399481337,
+            "exact_calibration_metric_match": true,
+            "identity_errors": {
+              "donor_repeat": 0.0,
+              "record": 0.0,
+              "self_patch": 0.0
+            },
+            "layer16_mediation_loss": 0.45755930375114007,
+            "study_id": "cosmos3-kv-patch-process-v1-b0-rubiks",
+            "task": "rubiks"
+          },
+          {
+            "all_barrier_mediation_loss": 0.9836191672326874,
+            "all_direct_mediation_loss": 0.9357895794507741,
+            "baseline_projection": 0.9929833979409728,
+            "exact_calibration_metric_match": true,
+            "identity_errors": {
+              "donor_repeat": 0.0,
+              "record": 0.0,
+              "self_patch": 0.0
+            },
+            "layer16_mediation_loss": 0.5437776444553591,
+            "study_id": "cosmos3-kv-patch-process-v1-b0-mustard",
+            "task": "mustard"
+          },
+          {
+            "all_barrier_mediation_loss": 1.022608820289445,
+            "all_direct_mediation_loss": 0.8217641220059837,
+            "baseline_projection": 0.9704028007051079,
+            "exact_calibration_metric_match": true,
+            "identity_errors": {
+              "donor_repeat": 0.0,
+              "record": 0.0,
+              "self_patch": 0.0
+            },
+            "layer16_mediation_loss": 0.1976409051539374,
+            "study_id": "cosmos3-kv-patch-process-v1-b0-spoon",
+            "task": "spoon"
+          },
+          {
+            "all_barrier_mediation_loss": 1.0041613457251513,
+            "all_direct_mediation_loss": 0.7264625132120272,
+            "baseline_projection": 0.9398107952464054,
+            "exact_calibration_metric_match": true,
+            "identity_errors": {
+              "donor_repeat": 0.0,
+              "record": 0.0,
+              "self_patch": 0.0
+            },
+            "layer16_mediation_loss": 0.18686742889013797,
+            "study_id": "cosmos3-kv-patch-process-v1-b0-marker",
+            "task": "marker"
+          }
+        ]
+      },
+      {
+        "all_identity_gates_exact": true,
+        "all_metrics_exact_calibration_match": true,
+        "block": "b1",
+        "mean_all_barrier_mediation_loss": 0.9948463648701207,
+        "mean_all_direct_mediation_loss": 0.8418389042565171,
+        "mean_layer16_mediation_loss": 0.34646132056264367,
+        "tasks": [
+          {
+            "all_barrier_mediation_loss": 0.9689961262331985,
+            "all_direct_mediation_loss": 0.8833394023572829,
+            "baseline_projection": 1.0206184399481337,
+            "exact_calibration_metric_match": true,
+            "identity_errors": {
+              "donor_repeat": 0.0,
+              "record": 0.0,
+              "self_patch": 0.0
+            },
+            "layer16_mediation_loss": 0.45755930375114007,
+            "study_id": "cosmos3-kv-patch-process-v1-b1-rubiks",
+            "task": "rubiks"
+          },
+          {
+            "all_barrier_mediation_loss": 0.9836191672326874,
+            "all_direct_mediation_loss": 0.9357895794507741,
+            "baseline_projection": 0.9929833979409728,
+            "exact_calibration_metric_match": true,
+            "identity_errors": {
+              "donor_repeat": 0.0,
+              "record": 0.0,
+              "self_patch": 0.0
+            },
+            "layer16_mediation_loss": 0.5437776444553591,
+            "study_id": "cosmos3-kv-patch-process-v1-b1-mustard",
+            "task": "mustard"
+          },
+          {
+            "all_barrier_mediation_loss": 1.022608820289445,
+            "all_direct_mediation_loss": 0.8217641220059837,
+            "baseline_projection": 0.9704028007051079,
+            "exact_calibration_metric_match": true,
+            "identity_errors": {
+              "donor_repeat": 0.0,
+              "record": 0.0,
+              "self_patch": 0.0
+            },
+            "layer16_mediation_loss": 0.1976409051539374,
+            "study_id": "cosmos3-kv-patch-process-v1-b1-spoon",
+            "task": "spoon"
+          },
+          {
+            "all_barrier_mediation_loss": 1.0041613457251513,
+            "all_direct_mediation_loss": 0.7264625132120272,
+            "baseline_projection": 0.9398107952464054,
+            "exact_calibration_metric_match": true,
+            "identity_errors": {
+              "donor_repeat": 0.0,
+              "record": 0.0,
+              "self_patch": 0.0
+            },
+            "layer16_mediation_loss": 0.18686742889013797,
+            "study_id": "cosmos3-kv-patch-process-v1-b1-marker",
+            "task": "marker"
+          }
+        ]
+      },
+      {
+        "all_identity_gates_exact": true,
+        "all_metrics_exact_calibration_match": true,
+        "block": "o1",
+        "mean_all_barrier_mediation_loss": 0.9948463648701207,
+        "mean_all_direct_mediation_loss": 0.8418389042565171,
+        "mean_layer16_mediation_loss": 0.34646132056264367,
+        "tasks": [
+          {
+            "all_barrier_mediation_loss": 0.9689961262331985,
+            "all_direct_mediation_loss": 0.8833394023572829,
+            "baseline_projection": 1.0206184399481337,
+            "exact_calibration_metric_match": true,
+            "identity_errors": {
+              "donor_repeat": 0.0,
+              "record": 0.0,
+              "self_patch": 0.0
+            },
+            "layer16_mediation_loss": 0.45755930375114007,
+            "study_id": "cosmos3-kv-patch-process-v1-o1-rubiks",
+            "task": "rubiks"
+          },
+          {
+            "all_barrier_mediation_loss": 0.9836191672326874,
+            "all_direct_mediation_loss": 0.9357895794507741,
+            "baseline_projection": 0.9929833979409728,
+            "exact_calibration_metric_match": true,
+            "identity_errors": {
+              "donor_repeat": 0.0,
+              "record": 0.0,
+              "self_patch": 0.0
+            },
+            "layer16_mediation_loss": 0.5437776444553591,
+            "study_id": "cosmos3-kv-patch-process-v1-o1-mustard",
+            "task": "mustard"
+          },
+          {
+            "all_barrier_mediation_loss": 1.022608820289445,
+            "all_direct_mediation_loss": 0.8217641220059837,
+            "baseline_projection": 0.9704028007051079,
+            "exact_calibration_metric_match": true,
+            "identity_errors": {
+              "donor_repeat": 0.0,
+              "record": 0.0,
+              "self_patch": 0.0
+            },
+            "layer16_mediation_loss": 0.1976409051539374,
+            "study_id": "cosmos3-kv-patch-process-v1-o1-spoon",
+            "task": "spoon"
+          },
+          {
+            "all_barrier_mediation_loss": 1.0041613457251513,
+            "all_direct_mediation_loss": 0.7264625132120272,
+            "baseline_projection": 0.9398107952464054,
+            "exact_calibration_metric_match": true,
+            "identity_errors": {
+              "donor_repeat": 0.0,
+              "record": 0.0,
+              "self_patch": 0.0
+            },
+            "layer16_mediation_loss": 0.18686742889013797,
+            "study_id": "cosmos3-kv-patch-process-v1-o1-marker",
+            "task": "marker"
+          }
+        ]
+      }
+    ],
+    "scope": "fresh-process numerical replication on repeated excluded calibration states; blocks are not additional population units"
+  },
+  "scope": "Cosmos 3 token-count-preserving future-K/V content mediation"
+}

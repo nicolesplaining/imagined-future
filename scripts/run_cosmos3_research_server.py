@@ -340,11 +340,24 @@ class ResearchPolicyService:
             else ()
         )
         attention_scope = str(obs.get("research_attention_exclude_scope", "action"))
-        attention_instrumented = "research_attention_exclude_layers" in obs
+        attention_mode = str(obs.get("research_attention_mode", "exclude"))
+        attention_cache_id = (
+            str(obs["research_attention_cache_id"])
+            if "research_attention_cache_id" in obs
+            else None
+        )
+        attention_instrumented = (
+            "research_attention_exclude_layers" in obs or attention_mode != "exclude"
+        )
         if attention_instrumented and self.attention_excluder is None:
             raise ValueError("server was not started with --attention-instrumentation")
         attention_context = (
-            self.attention_excluder.activate(attention_layers, scope=attention_scope)
+            self.attention_excluder.activate(
+                attention_layers,
+                scope=attention_scope,
+                mode=attention_mode,
+                cache_id=attention_cache_id,
+            )
             if self.attention_excluder is not None
             else nullcontext()
         )
@@ -460,6 +473,15 @@ class ResearchPolicyService:
             "instrumented_server": self.attention_excluder is not None,
             "intervention_requested": attention_instrumented,
             "text_kv_reuse": self.attention_excluder is None,
+            "mode": attention_mode,
+            "cache_id": attention_cache_id,
+            "cache_call_counts": (
+                self.attention_excluder.cache_summary(attention_cache_id)
+                if self.attention_excluder is not None
+                and attention_cache_id is not None
+                and attention_cache_id in self.attention_excluder.kv_caches
+                else {}
+            ),
             "scopes": {
                 "action": "exclude only for action queries",
                 "nonfuture": (

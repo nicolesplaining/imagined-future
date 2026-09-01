@@ -1,0 +1,424 @@
+{
+  "all_barrier_patch_action_donor_projection": 0.00936423070828543,
+  "all_barrier_patch_mediation_loss": 0.9836191672326874,
+  "all_barrier_target_future_max_error": 0.018526554107666016,
+  "all_direct_patch_action_donor_projection": 0.05719381849019863,
+  "all_direct_patch_mediation_loss": 0.9357895794507741,
+  "all_direct_target_future_max_error": 0.018526554107666016,
+  "asset_video": "/research/results/cosmos3_multitask_branches/mustard_step96/pilot/native_223.npz",
+  "attention_interface": {
+    "action_tokens": 33,
+    "cache_call_counts": {
+      "0": 8,
+      "1": 8,
+      "10": 8,
+      "11": 8,
+      "12": 8,
+      "13": 8,
+      "14": 8,
+      "15": 8,
+      "16": 8,
+      "17": 8,
+      "18": 8,
+      "19": 8,
+      "2": 8,
+      "20": 8,
+      "21": 8,
+      "22": 8,
+      "23": 8,
+      "24": 8,
+      "25": 8,
+      "26": 8,
+      "27": 8,
+      "28": 8,
+      "29": 8,
+      "3": 8,
+      "30": 8,
+      "31": 8,
+      "32": 8,
+      "33": 8,
+      "34": 8,
+      "35": 8,
+      "4": 8,
+      "5": 8,
+      "6": 8,
+      "7": 8,
+      "8": 8,
+      "9": 8
+    },
+    "cache_id": "cosmos3-kv-patch-process-v1-a0-mustard-self-future-kv",
+    "excluded_keys_values": "future_video",
+    "instrumented_server": true,
+    "intervention_requested": true,
+    "layers": 36,
+    "mode": "record",
+    "scopes": {
+      "action": "exclude only for action queries",
+      "nonfuture": "exclude for current-video and action queries to block indirect future-to-current-to-action paths"
+    },
+    "text_kv_reuse": false,
+    "video_latent_frames": 9
+  },
+  "baseline_target_future_max_error": 0.018526554107666016,
+  "baseline_transplant_action_donor_projection": 0.9929833979409728,
+  "branch_step": 96,
+  "branch_summary": "/research/results/cosmos3_multitask_branches/mustard_step96/pilot/summary.json",
+  "cache_call_counts": {
+    "0": 8,
+    "1": 8,
+    "10": 8,
+    "11": 8,
+    "12": 8,
+    "13": 8,
+    "14": 8,
+    "15": 8,
+    "16": 8,
+    "17": 8,
+    "18": 8,
+    "19": 8,
+    "2": 8,
+    "20": 8,
+    "21": 8,
+    "22": 8,
+    "23": 8,
+    "24": 8,
+    "25": 8,
+    "26": 8,
+    "27": 8,
+    "28": 8,
+    "29": 8,
+    "3": 8,
+    "30": 8,
+    "31": 8,
+    "32": 8,
+    "33": 8,
+    "34": 8,
+    "35": 8,
+    "4": 8,
+    "5": 8,
+    "6": 8,
+    "7": 8,
+    "8": 8,
+    "9": 8
+  },
+  "donor_repeat_maximum_action_error": 0.0,
+  "donor_seed": 617,
+  "layer_rows": [
+    {
+      "action_donor_projection": 1.002025578342364,
+      "action_l2_from_baseline": 0.1808612197637558,
+      "layer": 0,
+      "mediation_loss_from_baseline": -0.009042180401391153,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9941181097295877,
+      "action_l2_from_baseline": 0.17538310587406158,
+      "layer": 1,
+      "mediation_loss_from_baseline": -0.001134711788614906,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 1.0040099971297365,
+      "action_l2_from_baseline": 0.17932617664337158,
+      "layer": 2,
+      "mediation_loss_from_baseline": -0.011026599188763697,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9893740106816371,
+      "action_l2_from_baseline": 0.16102729737758636,
+      "layer": 3,
+      "mediation_loss_from_baseline": 0.0036093872593356835,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9965129775518154,
+      "action_l2_from_baseline": 0.17338867485523224,
+      "layer": 4,
+      "mediation_loss_from_baseline": -0.003529579610842659,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 1.0028807296936764,
+      "action_l2_from_baseline": 0.16594836115837097,
+      "layer": 5,
+      "mediation_loss_from_baseline": -0.009897331752703575,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9913759463276595,
+      "action_l2_from_baseline": 0.16147246956825256,
+      "layer": 6,
+      "mediation_loss_from_baseline": 0.0016074516133133265,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9913007476440469,
+      "action_l2_from_baseline": 0.1629299819469452,
+      "layer": 7,
+      "mediation_loss_from_baseline": 0.001682650296925936,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 1.0016588671127917,
+      "action_l2_from_baseline": 0.1678866297006607,
+      "layer": 8,
+      "mediation_loss_from_baseline": -0.00867546917181894,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9965582634842639,
+      "action_l2_from_baseline": 0.151610866189003,
+      "layer": 9,
+      "mediation_loss_from_baseline": -0.003574865543291117,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9983417126508707,
+      "action_l2_from_baseline": 0.1796913594007492,
+      "layer": 10,
+      "mediation_loss_from_baseline": -0.005358314709897893,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9976982777810245,
+      "action_l2_from_baseline": 0.16634738445281982,
+      "layer": 11,
+      "mediation_loss_from_baseline": -0.0047148798400517,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9938732499513588,
+      "action_l2_from_baseline": 0.16551163792610168,
+      "layer": 12,
+      "mediation_loss_from_baseline": -0.0008898520103860497,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9900590077453636,
+      "action_l2_from_baseline": 0.17412692308425903,
+      "layer": 13,
+      "mediation_loss_from_baseline": 0.0029243901956091944,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9824453185513496,
+      "action_l2_from_baseline": 0.19441816210746765,
+      "layer": 14,
+      "mediation_loss_from_baseline": 0.010538079389623145,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9919568919069974,
+      "action_l2_from_baseline": 0.18096096813678741,
+      "layer": 15,
+      "mediation_loss_from_baseline": 0.0010265060339753607,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.44920575348561365,
+      "action_l2_from_baseline": 1.4225481748580933,
+      "layer": 16,
+      "mediation_loss_from_baseline": 0.5437776444553591,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9715997032980813,
+      "action_l2_from_baseline": 0.2107776701450348,
+      "layer": 17,
+      "mediation_loss_from_baseline": 0.02138369464289147,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9928429862564374,
+      "action_l2_from_baseline": 0.16597214341163635,
+      "layer": 18,
+      "mediation_loss_from_baseline": 0.00014041168453537978,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9612690234484892,
+      "action_l2_from_baseline": 0.23720048367977142,
+      "layer": 19,
+      "mediation_loss_from_baseline": 0.0317143744924836,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9936072038650013,
+      "action_l2_from_baseline": 0.17194904386997223,
+      "layer": 20,
+      "mediation_loss_from_baseline": -0.0006238059240285532,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 1.0000329227307454,
+      "action_l2_from_baseline": 0.15915504097938538,
+      "layer": 21,
+      "mediation_loss_from_baseline": -0.00704952478977261,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.994388001738056,
+      "action_l2_from_baseline": 0.16763480007648468,
+      "layer": 22,
+      "mediation_loss_from_baseline": -0.0014046037970831815,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9941280740599799,
+      "action_l2_from_baseline": 0.1717282086610794,
+      "layer": 23,
+      "mediation_loss_from_baseline": -0.0011446761190071486,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9794386413716485,
+      "action_l2_from_baseline": 0.23783229291439056,
+      "layer": 24,
+      "mediation_loss_from_baseline": 0.013544756569324301,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9894355333124962,
+      "action_l2_from_baseline": 0.16103169322013855,
+      "layer": 25,
+      "mediation_loss_from_baseline": 0.0035478646284765603,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 1.0040326567801336,
+      "action_l2_from_baseline": 0.16852566599845886,
+      "layer": 26,
+      "mediation_loss_from_baseline": -0.011049258839160858,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9910059121882095,
+      "action_l2_from_baseline": 0.15555323660373688,
+      "layer": 27,
+      "mediation_loss_from_baseline": 0.0019774857527632417,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9951338313310353,
+      "action_l2_from_baseline": 0.1623585969209671,
+      "layer": 28,
+      "mediation_loss_from_baseline": -0.0021504333900624895,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 1.0046650221145599,
+      "action_l2_from_baseline": 0.15702523291110992,
+      "layer": 29,
+      "mediation_loss_from_baseline": -0.01168162417358709,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9049458081809821,
+      "action_l2_from_baseline": 0.3096436560153961,
+      "layer": 30,
+      "mediation_loss_from_baseline": 0.08803758975999065,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9954954717428967,
+      "action_l2_from_baseline": 0.15849627554416656,
+      "layer": 31,
+      "mediation_loss_from_baseline": -0.002512073801923864,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9954883402670877,
+      "action_l2_from_baseline": 0.18487362563610077,
+      "layer": 32,
+      "mediation_loss_from_baseline": -0.0025049423261148673,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9921222430907278,
+      "action_l2_from_baseline": 0.16597850620746613,
+      "layer": 33,
+      "mediation_loss_from_baseline": 0.0008611548502449606,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9880243151368059,
+      "action_l2_from_baseline": 0.1603498011827469,
+      "layer": 34,
+      "mediation_loss_from_baseline": 0.004959082804166903,
+      "target_future_max_error": 0.018526554107666016
+    },
+    {
+      "action_donor_projection": 0.9948527567876149,
+      "action_l2_from_baseline": 0.16522711515426636,
+      "layer": 35,
+      "mediation_loss_from_baseline": -0.0018693588466420774,
+      "target_future_max_error": 0.018526554107666016
+    }
+  ],
+  "native_action_l2": 2.370791435241699,
+  "prompt": "Put the mustard in the left bin",
+  "proprio_source": "noise-free recorded post-step simulator state",
+  "recipient_seed": 613,
+  "record_action_maximum_error": 0.0,
+  "recorded_hdf5": "/research/results/cosmos3_multitask_screen/cosmos3_screen_v1/MustardInLeftBinTask/run_0.hdf5",
+  "repeat_target_future_max_error": 0.018526554107666016,
+  "scope": "excluded token-count-preserving future-K/V content mediation scan",
+  "self_action_donor_projection": 0.00936423070828543,
+  "self_patch_interface": {
+    "action_tokens": 33,
+    "cache_call_counts": {
+      "0": 8,
+      "1": 8,
+      "10": 8,
+      "11": 8,
+      "12": 8,
+      "13": 8,
+      "14": 8,
+      "15": 8,
+      "16": 8,
+      "17": 8,
+      "18": 8,
+      "19": 8,
+      "2": 8,
+      "20": 8,
+      "21": 8,
+      "22": 8,
+      "23": 8,
+      "24": 8,
+      "25": 8,
+      "26": 8,
+      "27": 8,
+      "28": 8,
+      "29": 8,
+      "3": 8,
+      "30": 8,
+      "31": 8,
+      "32": 8,
+      "33": 8,
+      "34": 8,
+      "35": 8,
+      "4": 8,
+      "5": 8,
+      "6": 8,
+      "7": 8,
+      "8": 8,
+      "9": 8
+    },
+    "cache_id": "cosmos3-kv-patch-process-v1-a0-mustard-self-future-kv",
+    "excluded_keys_values": "future_video",
+    "instrumented_server": true,
+    "intervention_requested": true,
+    "layers": 36,
+    "mode": "patch",
+    "scopes": {
+      "action": "exclude only for action queries",
+      "nonfuture": "exclude for current-video and action queries to block indirect future-to-current-to-action paths"
+    },
+    "text_kv_reuse": false,
+    "video_latent_frames": 9
+  },
+  "self_patch_maximum_action_error": 0.0,
+  "study_id": "cosmos3-kv-patch-process-v1-a0-mustard"
+}

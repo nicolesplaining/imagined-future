@@ -1,0 +1,424 @@
+{
+  "all_barrier_patch_action_donor_projection": -0.052206019584337064,
+  "all_barrier_patch_mediation_loss": 1.022608820289445,
+  "all_barrier_target_future_max_error": 0.018878936767578125,
+  "all_direct_patch_action_donor_projection": 0.1486386786991242,
+  "all_direct_patch_mediation_loss": 0.8217641220059837,
+  "all_direct_target_future_max_error": 0.018878936767578125,
+  "asset_video": "/research/results/cosmos3_multitask_branches/spoon_step128/pilot/native_227.npz",
+  "attention_interface": {
+    "action_tokens": 33,
+    "cache_call_counts": {
+      "0": 8,
+      "1": 8,
+      "10": 8,
+      "11": 8,
+      "12": 8,
+      "13": 8,
+      "14": 8,
+      "15": 8,
+      "16": 8,
+      "17": 8,
+      "18": 8,
+      "19": 8,
+      "2": 8,
+      "20": 8,
+      "21": 8,
+      "22": 8,
+      "23": 8,
+      "24": 8,
+      "25": 8,
+      "26": 8,
+      "27": 8,
+      "28": 8,
+      "29": 8,
+      "3": 8,
+      "30": 8,
+      "31": 8,
+      "32": 8,
+      "33": 8,
+      "34": 8,
+      "35": 8,
+      "4": 8,
+      "5": 8,
+      "6": 8,
+      "7": 8,
+      "8": 8,
+      "9": 8
+    },
+    "cache_id": "cosmos3-kv-patch-process-v1-a1-spoon-self-future-kv",
+    "excluded_keys_values": "future_video",
+    "instrumented_server": true,
+    "intervention_requested": true,
+    "layers": 36,
+    "mode": "record",
+    "scopes": {
+      "action": "exclude only for action queries",
+      "nonfuture": "exclude for current-video and action queries to block indirect future-to-current-to-action paths"
+    },
+    "text_kv_reuse": false,
+    "video_latent_frames": 9
+  },
+  "baseline_target_future_max_error": 0.018878936767578125,
+  "baseline_transplant_action_donor_projection": 0.9704028007051079,
+  "branch_step": 128,
+  "branch_summary": "/research/results/cosmos3_multitask_branches/spoon_step128/pilot/summary.json",
+  "cache_call_counts": {
+    "0": 8,
+    "1": 8,
+    "10": 8,
+    "11": 8,
+    "12": 8,
+    "13": 8,
+    "14": 8,
+    "15": 8,
+    "16": 8,
+    "17": 8,
+    "18": 8,
+    "19": 8,
+    "2": 8,
+    "20": 8,
+    "21": 8,
+    "22": 8,
+    "23": 8,
+    "24": 8,
+    "25": 8,
+    "26": 8,
+    "27": 8,
+    "28": 8,
+    "29": 8,
+    "3": 8,
+    "30": 8,
+    "31": 8,
+    "32": 8,
+    "33": 8,
+    "34": 8,
+    "35": 8,
+    "4": 8,
+    "5": 8,
+    "6": 8,
+    "7": 8,
+    "8": 8,
+    "9": 8
+  },
+  "donor_repeat_maximum_action_error": 0.0,
+  "donor_seed": 631,
+  "layer_rows": [
+    {
+      "action_donor_projection": 0.876285262913943,
+      "action_l2_from_baseline": 0.19632460176944733,
+      "layer": 0,
+      "mediation_loss_from_baseline": 0.09411753779116483,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.9335356530192062,
+      "action_l2_from_baseline": 0.15141677856445312,
+      "layer": 1,
+      "mediation_loss_from_baseline": 0.03686714768590171,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.9117416812134248,
+      "action_l2_from_baseline": 0.16058865189552307,
+      "layer": 2,
+      "mediation_loss_from_baseline": 0.05866111949168307,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.9726533539825106,
+      "action_l2_from_baseline": 0.14307385683059692,
+      "layer": 3,
+      "mediation_loss_from_baseline": -0.002250553277402756,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.9845961036459732,
+      "action_l2_from_baseline": 0.14188456535339355,
+      "layer": 4,
+      "mediation_loss_from_baseline": -0.014193302940865293,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 1.0256570019980218,
+      "action_l2_from_baseline": 0.1593502312898636,
+      "layer": 5,
+      "mediation_loss_from_baseline": -0.05525420129291392,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.9658612368738413,
+      "action_l2_from_baseline": 0.15941716730594635,
+      "layer": 6,
+      "mediation_loss_from_baseline": 0.004541563831266582,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.965549628750475,
+      "action_l2_from_baseline": 0.14754529297351837,
+      "layer": 7,
+      "mediation_loss_from_baseline": 0.004853171954632862,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 1.0043792775510632,
+      "action_l2_from_baseline": 0.16395723819732666,
+      "layer": 8,
+      "mediation_loss_from_baseline": -0.033976476845955284,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 1.0019129187966032,
+      "action_l2_from_baseline": 0.149589404463768,
+      "layer": 9,
+      "mediation_loss_from_baseline": -0.03151011809149529,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.9326840999987436,
+      "action_l2_from_baseline": 0.15806016325950623,
+      "layer": 10,
+      "mediation_loss_from_baseline": 0.037718700706364294,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.9518525213539899,
+      "action_l2_from_baseline": 0.14490073919296265,
+      "layer": 11,
+      "mediation_loss_from_baseline": 0.01855027935111797,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.9735857749793454,
+      "action_l2_from_baseline": 0.17541807889938354,
+      "layer": 12,
+      "mediation_loss_from_baseline": -0.0031829742742375267,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.9873217302767209,
+      "action_l2_from_baseline": 0.15257306396961212,
+      "layer": 13,
+      "mediation_loss_from_baseline": -0.016918929571613006,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.9869179776202642,
+      "action_l2_from_baseline": 0.15483151376247406,
+      "layer": 14,
+      "mediation_loss_from_baseline": -0.01651517691515636,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.9670542492203206,
+      "action_l2_from_baseline": 0.18170972168445587,
+      "layer": 15,
+      "mediation_loss_from_baseline": 0.003348551484787299,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.7727618955511705,
+      "action_l2_from_baseline": 0.2722947895526886,
+      "layer": 16,
+      "mediation_loss_from_baseline": 0.1976409051539374,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.9524679428504068,
+      "action_l2_from_baseline": 0.17496493458747864,
+      "layer": 17,
+      "mediation_loss_from_baseline": 0.01793485785470106,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.93120808204356,
+      "action_l2_from_baseline": 0.16465646028518677,
+      "layer": 18,
+      "mediation_loss_from_baseline": 0.03919471866154789,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.8947724730552747,
+      "action_l2_from_baseline": 0.1836673766374588,
+      "layer": 19,
+      "mediation_loss_from_baseline": 0.07563032764983313,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.9989558065651618,
+      "action_l2_from_baseline": 0.15867362916469574,
+      "layer": 20,
+      "mediation_loss_from_baseline": -0.028553005860053937,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.9995782510916393,
+      "action_l2_from_baseline": 0.16008120775222778,
+      "layer": 21,
+      "mediation_loss_from_baseline": -0.029175450386531465,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.9425638809772312,
+      "action_l2_from_baseline": 0.16255471110343933,
+      "layer": 22,
+      "mediation_loss_from_baseline": 0.027838919727876665,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.9172600889931667,
+      "action_l2_from_baseline": 0.1626579463481903,
+      "layer": 23,
+      "mediation_loss_from_baseline": 0.05314271171194118,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.8017024456253433,
+      "action_l2_from_baseline": 0.20789110660552979,
+      "layer": 24,
+      "mediation_loss_from_baseline": 0.16870035507976455,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.9511792157109304,
+      "action_l2_from_baseline": 0.15511462092399597,
+      "layer": 25,
+      "mediation_loss_from_baseline": 0.019223584994177423,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.9984115459357105,
+      "action_l2_from_baseline": 0.15054593980312347,
+      "layer": 26,
+      "mediation_loss_from_baseline": -0.028008745230602594,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.9552307458828025,
+      "action_l2_from_baseline": 0.17870284616947174,
+      "layer": 27,
+      "mediation_loss_from_baseline": 0.015172054822305325,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.9871154000191401,
+      "action_l2_from_baseline": 0.17060701549053192,
+      "layer": 28,
+      "mediation_loss_from_baseline": -0.01671259931403224,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.9880892683021807,
+      "action_l2_from_baseline": 0.16228348016738892,
+      "layer": 29,
+      "mediation_loss_from_baseline": -0.01768646759707282,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 1.0278543937680484,
+      "action_l2_from_baseline": 0.17323370277881622,
+      "layer": 30,
+      "mediation_loss_from_baseline": -0.057451593062940565,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.8572623795667141,
+      "action_l2_from_baseline": 0.21241793036460876,
+      "layer": 31,
+      "mediation_loss_from_baseline": 0.11314042113839373,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.9966399991142131,
+      "action_l2_from_baseline": 0.16795621812343597,
+      "layer": 32,
+      "mediation_loss_from_baseline": -0.02623719840910521,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 1.0018690972419437,
+      "action_l2_from_baseline": 0.14720523357391357,
+      "layer": 33,
+      "mediation_loss_from_baseline": -0.03146629653683586,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 0.9625761926109422,
+      "action_l2_from_baseline": 0.15703994035720825,
+      "layer": 34,
+      "mediation_loss_from_baseline": 0.007826608094165688,
+      "target_future_max_error": 0.018878936767578125
+    },
+    {
+      "action_donor_projection": 1.0318178057399574,
+      "action_l2_from_baseline": 0.1682596057653427,
+      "layer": 35,
+      "mediation_loss_from_baseline": -0.061415005034849535,
+      "target_future_max_error": 0.018878936767578125
+    }
+  ],
+  "native_action_l2": 0.7233333587646484,
+  "prompt": "Put the metal spoon that's in the wooden bowl in the mug",
+  "proprio_source": "noise-free recorded post-step simulator state",
+  "recipient_seed": 619,
+  "record_action_maximum_error": 0.0,
+  "recorded_hdf5": "/research/results/cosmos3_multitask_screen/cosmos3_screen_v1/SpoonInMugTask/run_0.hdf5",
+  "repeat_target_future_max_error": 0.018878936767578125,
+  "scope": "excluded token-count-preserving future-K/V content mediation scan",
+  "self_action_donor_projection": -0.052206019584337064,
+  "self_patch_interface": {
+    "action_tokens": 33,
+    "cache_call_counts": {
+      "0": 8,
+      "1": 8,
+      "10": 8,
+      "11": 8,
+      "12": 8,
+      "13": 8,
+      "14": 8,
+      "15": 8,
+      "16": 8,
+      "17": 8,
+      "18": 8,
+      "19": 8,
+      "2": 8,
+      "20": 8,
+      "21": 8,
+      "22": 8,
+      "23": 8,
+      "24": 8,
+      "25": 8,
+      "26": 8,
+      "27": 8,
+      "28": 8,
+      "29": 8,
+      "3": 8,
+      "30": 8,
+      "31": 8,
+      "32": 8,
+      "33": 8,
+      "34": 8,
+      "35": 8,
+      "4": 8,
+      "5": 8,
+      "6": 8,
+      "7": 8,
+      "8": 8,
+      "9": 8
+    },
+    "cache_id": "cosmos3-kv-patch-process-v1-a1-spoon-self-future-kv",
+    "excluded_keys_values": "future_video",
+    "instrumented_server": true,
+    "intervention_requested": true,
+    "layers": 36,
+    "mode": "patch",
+    "scopes": {
+      "action": "exclude only for action queries",
+      "nonfuture": "exclude for current-video and action queries to block indirect future-to-current-to-action paths"
+    },
+    "text_kv_reuse": false,
+    "video_latent_frames": 9
+  },
+  "self_patch_maximum_action_error": 0.0,
+  "study_id": "cosmos3-kv-patch-process-v1-a1-spoon"
+}

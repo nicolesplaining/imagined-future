@@ -1,9 +1,10 @@
-"""Cosmos 3 action-query attention interventions.
+"""Cosmos 3 future-to-action attention interventions.
 
 The released two-way attention packs vision tokens first and action tokens last
 in the generation stream. This wrapper recomputes only the action-query rows
-after removing future-video keys/values, then uses device-resident gates to
-select layers without changing the compiled graph between requests.
+after excluding or content-patching future-video keys/values. The research
+server uses the public eager path because layer-specific Python dispatchers are
+not compatible with the released full-graph repeated-layer compiler.
 """
 
 from __future__ import annotations
@@ -51,7 +52,7 @@ def public_attention_runtime_ops() -> AttentionRuntimeOps:
 
 
 class ActionQueryFutureKVExcluder:
-    """Remove future-video K/V at direct or full non-future attention interfaces."""
+    """Exclude or content-patch future-video K/V at action interfaces."""
 
     def __init__(
         self,
@@ -70,6 +71,12 @@ class ActionQueryFutureKVExcluder:
         self.action_gates = torch.zeros(self.num_layers, device=device, dtype=torch.float32)
         self.barrier_gates = torch.zeros(self.num_layers, device=device, dtype=torch.float32)
         self.ops = ops or public_attention_runtime_ops()
+        self.mode = "exclude"
+        self.cache_id: str | None = None
+        self.kv_caches: dict[
+            str, dict[int, list[tuple[torch.Tensor, torch.Tensor]]]
+        ] = {}
+        self.call_indices: dict[int, int] = {}
 
     def set_layers(
         self, layers: tuple[int, ...] | list[int], *, scope: str = "action"
@@ -94,12 +101,43 @@ class ActionQueryFutureKVExcluder:
         }
 
     @contextmanager
-    def activate(self, layers: tuple[int, ...] | list[int], *, scope: str = "action"):
+    def activate(
+        self,
+        layers: tuple[int, ...] | list[int],
+        *,
+        scope: str = "action",
+        mode: str = "exclude",
+        cache_id: str | None = None,
+    ):
+        if mode not in {"exclude", "record", "patch"}:
+            raise ValueError("attention mode must be 'exclude', 'record', or 'patch'")
+        if mode in {"record", "patch"} and not cache_id:
+            raise ValueError(f"attention mode {mode!r} requires a cache id")
+        if mode == "record":
+            self.kv_caches = {str(cache_id): {}}
+        elif mode == "patch" and str(cache_id) not in self.kv_caches:
+            raise KeyError(f"unknown attention K/V cache: {cache_id!r}")
         self.set_layers(layers, scope=scope)
+        self.mode = mode
+        self.cache_id = str(cache_id) if cache_id is not None else None
+        self.call_indices = {int(layer): 0 for layer in layers}
         try:
             yield self
         finally:
             self.set_layers(())
+            self.mode = "exclude"
+            self.cache_id = None
+            self.call_indices = {}
+
+    def cache_summary(self, cache_id: str) -> dict[str, int]:
+        """Return recorded forward-call counts per layer for audit output."""
+
+        if cache_id not in self.kv_caches:
+            raise KeyError(f"unknown attention K/V cache: {cache_id!r}")
+        return {
+            str(layer): len(entries)
+            for layer, entries in self.kv_caches[cache_id].items()
+        }
 
     def wrap(self, layer: int, original: Callable[..., tuple[dict[str, Any], Any]]):
         """Wrap one public ``dispatch_attention_fn`` without changing its signature."""
@@ -126,8 +164,12 @@ class ActionQueryFutureKVExcluder:
                 memory_value=memory_value,
                 packed_key_states_normalized=packed_key_states_normalized,
             )
+            action_gate = bool(self.action_gates[layer].item())
+            barrier_gate = bool(self.barrier_gates[layer].item())
+            if not action_gate and not barrier_gate:
+                return native, kv_to_store
             if memory_value is not None:
-                raise ValueError("future K/V exclusion supports the released non-memory policy path only")
+                raise ValueError("future K/V intervention supports the released non-memory policy path only")
             if bool(getattr(attention_mask, "is_three_way", False)):
                 raise ValueError("future K/V exclusion requires released two-way attention")
             if getattr(attention_mask, "control_stream_token_ranges", None) is not None:
@@ -153,44 +195,91 @@ class ActionQueryFutureKVExcluder:
                 if packed_key_states_normalized is not None
                 else packed_key_states
             )
-            key_causal = sequence_without_offsets(ops.get_causal_seq(key_source))
+            key_all = ops.get_all_seq(key_source)
             key_gen = sequence_without_offsets(ops.get_full_only_seq(key_source))
-            value_causal = sequence_without_offsets(ops.get_causal_seq(packed_value_states))
+            value_all = ops.get_all_seq(packed_value_states)
             value_gen = sequence_without_offsets(ops.get_full_only_seq(packed_value_states))
-            key_nonfuture = torch.cat(
-                (key_causal, key_gen[:current_stop], key_gen[action_start:action_stop]),
-                dim=0,
+            future_gen = torch.arange(
+                current_stop,
+                action_start,
+                device=packed_query_states["_full_indices"].device,
             )
-            value_nonfuture = torch.cat(
-                (
-                    value_causal,
-                    value_gen[:current_stop],
-                    value_gen[action_start:action_stop],
-                ),
-                dim=0,
+            future_all = packed_query_states["_full_indices"][future_gen]
+            if self.mode == "record":
+                if self.cache_id is None:
+                    raise RuntimeError("record mode has no cache id")
+                layer_cache = self.kv_caches[self.cache_id].setdefault(layer, [])
+                layer_cache.append(
+                    (
+                        key_gen[current_stop:action_start].detach().clone(),
+                        value_gen[current_stop:action_start].detach().clone(),
+                    )
+                )
+                self.call_indices[layer] += 1
+                return native, kv_to_store
+
+            if self.mode == "patch":
+                if self.cache_id is None:
+                    raise RuntimeError("patch mode has no cache id")
+                reference_calls = self.kv_caches[self.cache_id].get(layer, [])
+                call_index = self.call_indices[layer]
+                if call_index >= len(reference_calls):
+                    raise RuntimeError(
+                        f"attention cache {self.cache_id!r} layer {layer} has no "
+                        f"reference for call {call_index}"
+                    )
+                reference_key, reference_value = reference_calls[call_index]
+                self.call_indices[layer] += 1
+                native_future_key = key_gen[current_stop:action_start]
+                native_future_value = value_gen[current_stop:action_start]
+                if reference_key.shape != native_future_key.shape:
+                    raise ValueError(
+                        f"cached key shape {reference_key.shape} differs from "
+                        f"native future key shape {native_future_key.shape}"
+                    )
+                if reference_value.shape != native_future_value.shape:
+                    raise ValueError(
+                        f"cached value shape {reference_value.shape} differs from "
+                        f"native future value shape {native_future_value.shape}"
+                    )
+                alternative_key = key_all.clone()
+                alternative_value = value_all.clone()
+                alternative_key[future_all] = reference_key.to(
+                    device=key_all.device, dtype=key_all.dtype
+                )
+                alternative_value[future_all] = reference_value.to(
+                    device=value_all.device, dtype=value_all.dtype
+                )
+            else:
+                keep = torch.ones(
+                    key_all.shape[0], device=key_all.device, dtype=torch.bool
+                )
+                keep[future_all] = False
+                alternative_key = key_all[keep]
+                alternative_value = value_all[keep]
+            # Preserve the native generation-query length so the attention
+            # backend uses identical row tiling. Only current/action rows are
+            # inserted below; future-query outputs remain native.
+            alternative_gen = ops.attention(
+                query_gen.unsqueeze(0),
+                alternative_key.unsqueeze(0),
+                alternative_value.unsqueeze(0),
             )
-            query_nonfuture = torch.cat(
-                (query_gen[:current_stop], query_gen[action_start:action_stop]),
-                dim=0,
-            )
-            alternative_nonfuture = ops.attention(
-                query_nonfuture.unsqueeze(0),
-                key_nonfuture.unsqueeze(0),
-                value_nonfuture.unsqueeze(0),
-            )
-            alternative_nonfuture = alternative_nonfuture.squeeze(0).flatten(-2, -1)
-            alternative_current = alternative_nonfuture[:current_stop]
-            alternative_action = alternative_nonfuture[current_stop:]
+            alternative_gen = alternative_gen.squeeze(0).flatten(-2, -1)
+            alternative_current = alternative_gen[:current_stop]
+            alternative_action = alternative_gen[action_start:action_stop]
             native_gen = sequence_without_offsets(ops.get_full_only_seq(native))
             native_current = native_gen[:current_stop]
             native_action = native_gen[action_start:action_stop]
-            action_gate = self.action_gates[layer].bool()
-            barrier_gate = self.barrier_gates[layer].bool()
             gated_current = torch.where(
-                barrier_gate, alternative_current, native_current
+                torch.tensor(barrier_gate, device=native_current.device),
+                alternative_current,
+                native_current,
             )
             gated_action = torch.where(
-                torch.logical_or(action_gate, barrier_gate), alternative_action, native_action
+                torch.tensor(action_gate or barrier_gate, device=native_action.device),
+                alternative_action,
+                native_action,
             )
             gated_gen = torch.cat(
                 (

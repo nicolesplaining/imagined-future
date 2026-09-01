@@ -65,7 +65,7 @@ def test_zero_gate_is_exact_attention_noop() -> None:
     output, _ = excluder.wrap(0, original)(pack, pack, pack, SimpleNamespace(is_three_way=False))
 
     assert torch.equal(output["full_only_seq"], native["full_only_seq"])
-    assert observed == [6]
+    assert observed == []
 
 
 def test_selected_layer_replaces_only_action_query_rows() -> None:
@@ -114,6 +114,46 @@ def test_nonfuture_scope_replaces_current_and_action_but_not_future_rows() -> No
     assert torch.equal(output["full_only_seq"][2:4], native["full_only_seq"][2:4])
     assert not torch.equal(output["full_only_seq"][4:6], native["full_only_seq"][4:6])
     assert excluder.active_layers() == {"action": [], "nonfuture": [0]}
+
+
+def test_records_and_content_patches_future_kv_without_changing_token_count() -> None:
+    observed = []
+    excluder = ActionQueryFutureKVExcluder(
+        num_layers=2,
+        action_tokens=2,
+        video_latent_frames=2,
+        device=torch.device("cpu"),
+        ops=fake_ops(observed),
+    )
+    recipient = packs()
+    recipient_native = native_output(recipient)
+
+    def recipient_original(*_args, **_kwargs):
+        return recipient_native, None
+
+    with excluder.activate([0], mode="record", cache_id="self"):
+        recorded, _ = excluder.wrap(0, recipient_original)(
+            recipient, recipient, recipient, SimpleNamespace(is_three_way=False)
+        )
+    assert torch.equal(recorded["full_only_seq"], recipient_native["full_only_seq"])
+    assert excluder.cache_summary("self") == {"0": 1}
+    assert observed == []
+
+    donor = packs()
+    donor["full_only_seq"] = donor["full_only_seq"].clone()
+    donor["full_only_seq"][2:4] += 100
+    donor_native = native_output(donor)
+
+    def donor_original(*_args, **_kwargs):
+        return donor_native, None
+
+    with excluder.activate([0], mode="patch", cache_id="self"):
+        patched, _ = excluder.wrap(0, donor_original)(
+            donor, donor, donor, SimpleNamespace(is_three_way=False)
+        )
+    assert observed == [8]
+    assert torch.equal(patched["full_only_seq"][:4], donor_native["full_only_seq"][:4])
+    assert not torch.equal(patched["full_only_seq"][4:6], donor_native["full_only_seq"][4:6])
 
 
 def test_layer_validation_rejects_duplicates_and_bounds() -> None:

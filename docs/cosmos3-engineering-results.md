@@ -321,12 +321,91 @@ drift was zero, and the repeated native continuation endpoint was bit-exact.
 Predicted robot endpoint projection was 0.973 at baseline and 0.963/0.968 under
 the two exclusions, providing no meaningful physical mediation either.
 
-The current conclusion is therefore heterogeneous necessity/sensitivity, not
-a stable single-layer causal bottleneck. Because deletion changes attention
-normalization and can be destructive, token-count-preserving future-K/V
-content patching is the required next mediation test. The compact calibration
-and held-out report is in
+The deletion result is therefore heterogeneous necessity/sensitivity, not a
+stable single-layer causal bottleneck. Because deletion changes attention
+normalization, it is used only for localization. The compact calibration and
+held-out deletion report is in
 `results/cosmos3_attention_multitask_v1/summary.json`.
+
+### Token-count-preserving future-K/V content mediation
+
+The stronger intervention records the exact future-video keys and values from
+a self-future clamp, then replaces only the donor run's future-video K/V at the
+selected interfaces. Key count, key order, current-video K/V, text K/V, action
+K/V, action noise, current observation, instruction, and final donor-future
+clamp remain unchanged. Recording was an exact action no-op, as was patching all
+36 layers with their own cached values. Each layer recorded the expected eight
+calls (four denoising steps times conditional/unconditional forwards), and the
+donor baseline recomputed bit-for-bit.
+
+On the excluded Rubik's cube, mustard, spoon, and marker calibration states,
+baseline donor action projection averaged 0.981. Replacing future K/V at all
+direct future-to-action interfaces removed 0.842 projection units on average
+(task bootstrap 95% interval 0.766 to 0.910; positive in 4/4 tasks). Adding the
+indirect future-to-current-to-action barrier removed 0.995 units (0.976 to
+1.013; 4/4). Under the frozen rule---among layers positive in all four tasks,
+choose the largest task mean---layer 16 was selected before Banana. Its mean
+single-layer mediation loss was 0.346 (0.192 to 0.501; 4/4).
+
+The prospectively held-out Banana step-64 state reproduced the action result:
+
+| future source | donor baseline | layer 16 | all direct | all barrier |
+| --- | ---: | ---: | ---: | ---: |
+| predicted | 0.900 | 0.749 | 0.122 | -0.012 |
+| executed reachable | 1.577 | 1.326 | 0.382 | -0.012 |
+
+Thus the all-direct action mediation losses were 0.778 and 1.195, and the total
+barrier losses were 0.912 and 1.589. Target-future maximum errors were identical
+across the three patch arms within each source. The corresponding robot
+endpoint projections were:
+
+| future source | donor baseline | layer 16 | all direct | all barrier |
+| --- | ---: | ---: | ---: | ---: |
+| predicted | 0.973 | 0.944 | 0.242 | -0.335 |
+| executed reachable | 1.019 | 1.014 | 0.976 | -0.335 |
+
+The predicted-future direct patch therefore changed both action and physical
+robot execution. For the executed donor, the direct patch changed the action
+strongly but the final robot endpoint changed little; only the total barrier
+redirected that endpoint. This exception is retained as evidence of nonlinear
+closed-loop execution, not discarded.
+
+These results support content mediation through the future-token K/V interface,
+not merely sensitivity to deletion or softmax renormalization. They do not yet
+establish task planning or object-consequence reasoning: the cached future
+tokens can encode visible robot motion and may support prospective inverse
+dynamics. The four calibration states are excluded and the physical holdout is
+one saved-state cluster; fresh-process/node blocks and the frozen 20-state
+confirmatory study remain required for publication-level population inference.
+Machine-readable calibration and holdout results are in
+`results/cosmos3_kv_patch_v4/summary.json`.
+
+Five fresh eager-attention process blocks then repeated all four excluded
+calibration states: one restart on the original node and two processes on each
+of two additional two-H100 nodes. All 20 task-process scans passed exact record,
+self-patch, and donor-repeat gates. Every baseline, all-direct loss, all-barrier
+loss, and layer-16 loss reproduced bit-for-bit. This establishes cross-node and
+fresh-process numerical stability for the eager instrumented path. It does not
+increase population sample size because the same four saved states and requests
+were repeated in every block. The block-aware aggregate labels them as process
+replications rather than independent experimental units.
+
+A second physical Banana replay used a newly loaded eager server process and a
+fresh RoboLab process on the original validated simulator node. Predicted-donor
+action and robot-endpoint results were bit-exact to the held-out run. For the
+executed donor, baseline/layer-16/all-direct/all-barrier action projections were
+1.579/1.321/0.381/-0.012, versus 1.577/1.326/0.382/-0.012 originally. Its robot
+endpoint projections were 1.031/1.023/0.979/-0.335, reproducing the direct-arm
+endpoint caveat and the total-barrier reversal. Exact replay, continuation,
+record, and self-patch gates all passed. This is a process replication of the
+same saved state, not a second physical population unit.
+
+RoboLab was also staged on the two added nodes, but their Isaac/PhysX processes
+did not reach `environment_created` under the pinned image and driver. No
+treatment ran there, and the attempts are retained as excluded infrastructure
+failures rather than scientific nulls. Cross-node replication therefore applies
+to the action-interface scans; physical process replication currently applies
+to the validated original simulator node.
 
 ## Server-restart reproducibility audit
 

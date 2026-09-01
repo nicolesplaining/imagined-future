@@ -36,6 +36,15 @@ parser.add_argument(
     help="Add direct-action and total-nonfuture attention mediation conditions.",
 )
 parser.add_argument(
+    "--attention-kv-patch-layers",
+    type=int,
+    nargs="+",
+    help=(
+        "Record self-future K/V and add token-count-preserving selected-layer "
+        "and all-layer content-patch conditions."
+    ),
+)
+parser.add_argument(
     "--factorize-selected-donor",
     action="store_true",
     help="Render robot/object visibility masks and transplant each content factor separately.",
@@ -620,8 +629,59 @@ def main() -> None:
                         "research_attention_exclude_scope": scope,
                     }
                     intervention_target_seeds[label] = donor_seed
+        if args.attention_kv_patch_layers is not None:
+            selected_layers = args.attention_kv_patch_layers
+            if len(set(selected_layers)) != len(selected_layers):
+                raise ValueError("attention K/V patch layers must be unique")
+            if any(layer < 0 or layer >= 36 for layer in selected_layers):
+                raise ValueError("attention K/V patch layers must be in [0,36)")
+            all_layers = list(range(36))
+            cache_id = f"{study_id}-self-future-kv"
+            intervention_specs.update(
+                {
+                    "self_kv_record": {
+                        "research_mode": "self",
+                        "research_donor_id": f"{study_id}-native-{recipient_seed}",
+                        "research_attention_mode": "record",
+                        "research_attention_cache_id": cache_id,
+                        "research_attention_exclude_layers": all_layers,
+                    },
+                    "self_kv_patch_all": {
+                        "research_mode": "self",
+                        "research_donor_id": f"{study_id}-native-{recipient_seed}",
+                        "research_attention_mode": "patch",
+                        "research_attention_cache_id": cache_id,
+                        "research_attention_exclude_layers": all_layers,
+                    },
+                }
+            )
+            intervention_target_seeds.update(
+                {"self_kv_record": None, "self_kv_patch_all": None}
+            )
+            for source, donor_id in (
+                ("predicted", f"{study_id}-native-{donor_seed}"),
+                ("executed", f"{study_id}-executed-{donor_seed}"),
+            ):
+                conditions = {
+                    f"{source}_donor_kv_patch_selected": selected_layers,
+                    f"{source}_donor_kv_patch_all_action": all_layers,
+                    f"{source}_donor_kv_patch_all_nonfuture": all_layers,
+                }
+                for label, layers in conditions.items():
+                    intervention_specs[label] = {
+                        "research_mode": "donor",
+                        "research_donor_id": donor_id,
+                        "research_attention_mode": "patch",
+                        "research_attention_cache_id": cache_id,
+                        "research_attention_exclude_layers": layers,
+                        "research_attention_exclude_scope": (
+                            "nonfuture" if label.endswith("nonfuture") else "action"
+                        ),
+                    }
+                    intervention_target_seeds[label] = donor_seed
         intervention_responses = {}
         intervention_runs = {}
+        kv_patch_identity_action_errors: dict[str, float] = {}
         for label, spec in intervention_specs.items():
             request = dict(initial_request)
             request.update(
@@ -631,6 +691,16 @@ def main() -> None:
                 **spec,
             )
             response = client.client.infer(request)
+            if label in {"self_kv_record", "self_kv_patch_all"}:
+                reference_action = np.asarray(
+                    intervention_responses["self"]["action"], dtype=np.float32
+                )
+                action_error = float(
+                    np.abs(np.asarray(response["action"], dtype=np.float32) - reference_action).max()
+                )
+                kv_patch_identity_action_errors[label] = action_error
+                if action_error != 0.0:
+                    raise RuntimeError(f"{label} changed self action by {action_error}")
             intervention_responses[label] = response
             intervention_runs[label] = execute(branch_state, initial_request, response, label)
             progress("intervention_completed", label=label)
@@ -777,6 +847,8 @@ def main() -> None:
             "fixed_current_video": str(args.fixed_current_video) if args.fixed_current_video else None,
             "timing_sweep": args.timing_sweep,
             "attention_mediation_layers": args.attention_mediation_layers,
+            "attention_kv_patch_layers": args.attention_kv_patch_layers,
+            "kv_patch_identity_action_maximum_errors": kv_patch_identity_action_errors,
             "multi_donor": args.multi_donor,
             "factorize_selected_donor": args.factorize_selected_donor,
             "factorization": factorization_report,
