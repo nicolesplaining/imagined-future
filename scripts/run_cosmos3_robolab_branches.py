@@ -27,6 +27,10 @@ parser.add_argument("--branch-seeds", type=int, nargs="+", default=[211, 223, 22
 parser.add_argument("--gaussian-seed", type=int, default=1223)
 parser.add_argument("--branch-step", type=int, default=0)
 parser.add_argument("--study-id")
+parser.add_argument(
+    "--target-object-name",
+    help="RoboLab rigid-object key used for target-object endpoint separation.",
+)
 parser.add_argument("--fixed-current-video", type=Path)
 parser.add_argument("--timing-sweep", action="store_true")
 parser.add_argument(
@@ -53,10 +57,20 @@ parser.add_argument(
     "--factorization-object-prim",
     help="Absolute USD path of the task object, required with --factorize-selected-donor.",
 )
+parser.add_argument("--factorization-mask-threshold", type=int, default=8)
+parser.add_argument("--factorization-mask-dilation", type=int, default=2)
 parser.add_argument(
     "--multi-donor",
     action="store_true",
     help="Transplant every non-recipient native future and audit donor identification.",
+)
+parser.add_argument(
+    "--native-screen-only",
+    action="store_true",
+    help=(
+        "Stop after native branch collection, exact replay auditing, and the "
+        "outcome-independent maximum-endpoint-separation donor selection."
+    ),
 )
 parser.add_argument(
     "--restore-strategy",
@@ -150,6 +164,14 @@ def state_vector(state: dict[str, Any], group: str) -> np.ndarray:
     return np.concatenate(selected)
 
 
+def target_object_position(state: dict[str, Any], object_name: str) -> np.ndarray:
+    try:
+        root_pose = state["rigid_object"][object_name]["root_pose"]
+    except KeyError as error:
+        raise ValueError(f"target object {object_name!r} is absent from scene state") from error
+    return root_pose[0].detach().cpu().double().reshape(-1).numpy()[:3]
+
+
 def projection(value: np.ndarray, recipient: np.ndarray, donor: np.ndarray) -> float:
     direction = donor.astype(np.float64) - recipient.astype(np.float64)
     denominator = float(np.square(direction).sum())
@@ -181,8 +203,17 @@ def main() -> None:
         raise ValueError("branch_step must be nonnegative")
     if args.factorize_selected_donor and not args.factorization_object_prim:
         raise ValueError("--factorization-object-prim is required for donor factorization")
+    if args.native_screen_only and not args.target_object_name:
+        raise ValueError("--target-object-name is required for a native population screen")
     study_id = args.study_id or f"{args.task.lower()}-step{args.branch_step}-{args.output_dir.parent.name}"
     args.output_dir.mkdir(parents=True, exist_ok=True)
+    recorded_env_cfg_path = args.recorded_hdf5.parent / "env_cfg.json"
+    if not recorded_env_cfg_path.exists():
+        raise FileNotFoundError(
+            f"recorded environment config is missing: {recorded_env_cfg_path}"
+        )
+    recorded_env_cfg = json.loads(recorded_env_cfg_path.read_text())
+    recorded_environment_seed = int(recorded_env_cfg["seed"])
 
     def progress(phase: str, **details: Any) -> None:
         record = {"phase": phase, **details}
@@ -380,12 +411,40 @@ def main() -> None:
             response = client.client.infer(request)
             native_responses[seed] = response
             server_state_hashes.add(response["research_state_hash"])
-            native_runs[seed] = execute(branch_state, initial_request, response, f"native_{seed}")
-            progress("native_branch_completed", seed=seed)
+            if not args.native_screen_only:
+                native_runs[seed] = execute(
+                    branch_state, initial_request, response, f"native_{seed}"
+                )
+                progress("native_branch_completed", seed=seed)
+            else:
+                progress("native_response_completed", seed=seed)
         if len(server_state_hashes) != 1:
             raise RuntimeError(f"native server state hashes differ: {server_state_hashes}")
 
-        repeat_seed = args.branch_seeds[0]
+        native_action_pair_distances = {
+            (left, right): float(
+                np.linalg.norm(
+                    np.asarray(native_responses[left]["action"], dtype=np.float32)
+                    - np.asarray(native_responses[right]["action"], dtype=np.float32)
+                )
+            )
+            for left, right in combinations(args.branch_seeds, 2)
+        }
+        if args.native_screen_only:
+            recipient_seed, donor_seed = max(
+                native_action_pair_distances,
+                key=lambda pair: (native_action_pair_distances[pair], -pair[0], -pair[1]),
+            )
+            for seed in (recipient_seed, donor_seed):
+                native_runs[seed] = execute(
+                    branch_state,
+                    initial_request,
+                    native_responses[seed],
+                    f"native_{seed}",
+                )
+                progress("selected_native_branch_completed", seed=seed)
+
+        repeat_seed = recipient_seed if args.native_screen_only else args.branch_seeds[0]
         repeat_run = execute(
             branch_state,
             initial_request,
@@ -404,10 +463,107 @@ def main() -> None:
         endpoint_vectors = {seed: state_vector(run["endpoint_state"], "all") for seed, run in native_runs.items()}
         pair_distances = {
             (left, right): float(np.linalg.norm(endpoint_vectors[left] - endpoint_vectors[right]))
-            for left, right in combinations(args.branch_seeds, 2)
+            for left, right in combinations(native_runs, 2)
         }
-        recipient_seed, donor_seed = max(pair_distances, key=pair_distances.get)
+        if not args.native_screen_only:
+            recipient_seed, donor_seed = max(pair_distances, key=pair_distances.get)
         progress("donor_pair_selected", recipient_seed=recipient_seed, donor_seed=donor_seed)
+
+        if args.native_screen_only:
+            groups = ("all", "robot", "object", "object_position", "object_orientation")
+            recipient_action = native_runs[recipient_seed]["raw_action"]
+            donor_action = native_runs[donor_seed]["raw_action"]
+            recipient_endpoints = {
+                group: state_vector(native_runs[recipient_seed]["endpoint_state"], group)
+                for group in groups
+            }
+            donor_endpoints = {
+                group: state_vector(native_runs[donor_seed]["endpoint_state"], group)
+                for group in groups
+            }
+            summary = {
+                "scope": (
+                    "native-only population screen; no future transplant or attention "
+                    "intervention was evaluated"
+                ),
+                "task": args.task,
+                "study_id": study_id,
+                "branch_step": args.branch_step,
+                "restore_strategy": args.restore_strategy,
+                "prefix_maximum_state_error": prefix_validator.max_drift,
+                "instruction": env_cfg.instruction,
+                "recorded_hdf5": str(args.recorded_hdf5),
+                "recorded_env_cfg": str(recorded_env_cfg_path),
+                "environment_seed": recorded_environment_seed,
+                "branch_seeds": args.branch_seeds,
+                "selection_rule": (
+                    "maximum native action L2 among all frozen seeds; ties use the lower "
+                    "ordered seed pair; only that pair is physically executed"
+                ),
+                "recipient_seed": recipient_seed,
+                "donor_seed": donor_seed,
+                "native_pairwise_action_l2": {
+                    f"{left}:{right}": distance
+                    for (left, right), distance in native_action_pair_distances.items()
+                },
+                "native_pairwise_endpoint_l2": {
+                    f"{left}:{right}": distance
+                    for (left, right), distance in pair_distances.items()
+                },
+                "native_action_l2": float(np.linalg.norm(donor_action - recipient_action)),
+                "native_endpoint_l2": {
+                    group: float(
+                        np.linalg.norm(donor_endpoints[group] - recipient_endpoints[group])
+                    )
+                    for group in groups
+                },
+                "native_target_object_position_l2": float(
+                    np.linalg.norm(
+                        target_object_position(
+                            native_runs[donor_seed]["endpoint_state"],
+                            args.target_object_name,
+                        )
+                        - target_object_position(
+                            native_runs[recipient_seed]["endpoint_state"],
+                            args.target_object_name,
+                        )
+                    )
+                ),
+                "target_object_name": args.target_object_name,
+                "restore_state_digests": restore_digests,
+                "restore_image_maximum_absolute_errors": restore_image_errors,
+                "continuation_repeat_audit": {
+                    "seed": repeat_seed,
+                    "reference_endpoint_state_digest": repeat_reference_digest,
+                    "repeat_endpoint_state_digest": repeat_endpoint_digest,
+                    "exact": True,
+                },
+                "server_state_hash": next(iter(server_state_hashes)),
+                "native": {
+                    str(seed): {
+                        "selected_for_physical_execution": seed in native_runs,
+                        "endpoint_state_digest": (
+                            state_digest(native_runs[seed]["endpoint_state"])
+                            if seed in native_runs
+                            else None
+                        ),
+                        "video_path": (
+                            str(native_runs[seed]["video_path"])
+                            if seed in native_runs
+                            else None
+                        ),
+                        "server": response_metadata(native_responses[seed]),
+                    }
+                    for seed in args.branch_seeds
+                },
+                "interventions_evaluated": False,
+            }
+            (args.output_dir / "summary.json").write_text(
+                json.dumps(summary, indent=2, sort_keys=True) + "\n"
+            )
+            print(json.dumps(summary, indent=2, sort_keys=True))
+            progress("completed")
+            return
 
         for seed, run in native_runs.items():
             register_request = dict(initial_request)
@@ -423,6 +579,7 @@ def main() -> None:
 
         factorization_report = None
         state_cell_donor_ids: dict[str, str] = {}
+        composite_cell_donor_ids: dict[str, str] = {}
         if args.factorize_selected_donor:
             recipient_states = native_runs[recipient_seed]["states"]
             donor_states = native_runs[donor_seed]["states"]
@@ -505,30 +662,140 @@ def main() -> None:
             for left, right in (("o0r0", "o0r1"), ("o0r0", "o1r0")):
                 if video_contrasts[f"{left}:{right}"]["maximum_absolute_rgb_difference"] == 0:
                     raise RuntimeError(f"state-factorized target videos {left} and {right} are identical")
-            for cell, audit in state_cell_audits.items():
-                record_id = f"{study_id}-state-cell-{cell}"
-                register_request = dict(initial_request)
-                register_request.update(
-                    research_mode="register_executed",
-                    research_id=record_id,
-                    research_donor_path=audit["video_path"],
+
+            recipient_video = np.load(
+                native_runs[recipient_seed]["video_path"], allow_pickle=False
+            )["video"]
+            donor_video = np.load(
+                native_runs[donor_seed]["video_path"], allow_pickle=False
+            )["video"]
+            if recipient_video.shape != donor_video.shape or recipient_video.shape != (
+                33,
+                540,
+                640,
+                3,
+            ):
+                raise RuntimeError("native videos have incompatible factorization shapes")
+            kernel_size = 2 * args.factorization_mask_dilation + 1
+            kernel = np.ones((kernel_size, kernel_size), dtype=np.uint8)
+
+            def difference_mask(left: np.ndarray, right: np.ndarray) -> np.ndarray:
+                raw = np.max(
+                    np.abs(left.astype(np.int16) - right.astype(np.int16)), axis=-1
+                ) >= args.factorization_mask_threshold
+                return np.stack(
+                    [cv2.dilate(frame.astype(np.uint8), kernel).astype(bool) for frame in raw]
                 )
-                registered = client.client.infer(register_request)
-                if registered["research_state_hash"] not in server_state_hashes:
-                    raise RuntimeError("state-factorized donor registration changed the state fingerprint")
-                state_cell_donor_ids[cell] = record_id
-                progress("state_factorized_donor_registered", cell=cell)
+
+            robot_mask = difference_mask(state_cell_videos["o0r0"], state_cell_videos["o0r1"])
+            object_mask = difference_mask(state_cell_videos["o0r0"], state_cell_videos["o1r0"])
+            robot_mask[0] = False
+            object_mask[0] = False
+            composite_cell_videos = {}
+            composite_cell_audits = {}
+            for cell, use_robot, use_object in (
+                ("o0r0", False, False),
+                ("o0r1", True, False),
+                ("o1r0", False, True),
+                ("o1r1", True, True),
+            ):
+                mask = np.zeros(robot_mask.shape, dtype=bool)
+                if use_robot:
+                    mask |= robot_mask
+                if use_object:
+                    mask |= object_mask
+                video = recipient_video.copy()
+                video[mask] = donor_video[mask]
+                if not np.array_equal(video[0], recipient_video[0]):
+                    raise RuntimeError("masked factorization changed the current frame")
+                donor_path = args.output_dir / f"target_composite_cell_{cell}.npz"
+                np.savez_compressed(
+                    donor_path,
+                    video=video,
+                    recipient_seed=np.asarray(recipient_seed),
+                    donor_seed=np.asarray(donor_seed),
+                    object_name=np.asarray(object_name),
+                )
+                composite_cell_videos[cell] = video
+                composite_cell_audits[cell] = {
+                    "robot_from_donor": use_robot,
+                    "object_from_donor": use_object,
+                    "replaced_pixel_fraction": float(mask[1:].mean()),
+                    "video_path": str(donor_path),
+                }
+
+            target_designs = {
+                "state": (state_cell_videos, state_cell_audits, state_cell_donor_ids),
+                "composite": (
+                    composite_cell_videos,
+                    composite_cell_audits,
+                    composite_cell_donor_ids,
+                ),
+            }
+            decoded_target_audits = {}
+            for design, (videos, audits, donor_ids) in target_designs.items():
+                roundtrip_videos = {}
+                for cell, audit in audits.items():
+                    record_id = f"{study_id}-{design}-cell-{cell}"
+                    register_request = dict(initial_request)
+                    register_request.update(
+                        research_mode="register_executed",
+                        research_id=record_id,
+                        research_donor_path=audit["video_path"],
+                        research_return_video=True,
+                    )
+                    registered = client.client.infer(register_request)
+                    if registered["research_state_hash"] not in server_state_hashes:
+                        raise RuntimeError(
+                            f"{design}-factorized donor registration changed the state fingerprint"
+                        )
+                    donor_ids[cell] = record_id
+                    roundtrip_videos[cell] = np.asarray(registered["video"], dtype=np.uint8)
+                    progress("factorized_donor_registered", design=design, cell=cell)
+                design_audits = {}
+                for cell, decoded in roundtrip_videos.items():
+                    if decoded.shape != videos[cell].shape:
+                        raise RuntimeError(
+                            f"decoded {design} cell {cell} has shape {decoded.shape}, "
+                            f"expected {videos[cell].shape}"
+                        )
+                    distances = {
+                        candidate: float(
+                            np.square(
+                                decoded[1:].astype(np.float32)
+                                - candidate_video[1:].astype(np.float32)
+                            ).mean()
+                        )
+                        for candidate, candidate_video in videos.items()
+                    }
+                    nearest = min(
+                        distances, key=lambda candidate: (distances[candidate], candidate)
+                    )
+                    design_audits[cell] = {
+                        "nearest_raw_target_cell": nearest,
+                        "correct_target_top1": nearest == cell,
+                        "raw_target_mean_squared_rgb_distances": distances,
+                    }
+                decoded_target_audits[design] = design_audits
 
             factorization_report = {
                 "recipient_seed": recipient_seed,
                 "donor_seed": donor_seed,
                 "object_name": object_name,
                 "state_cells": state_cell_audits,
+                "composite_cells": composite_cell_audits,
                 "target_video_contrasts": video_contrasts,
-                "pixel_factorization_status": (
-                    "unavailable: isolated Isaac/Fabric visibility toggles exited before "
-                    "producing a mask report"
-                ),
+                "decoded_target_audits": decoded_target_audits,
+                "decoded_target_top1_rate": {
+                    design: float(
+                        np.mean([audit["correct_target_top1"] for audit in audits.values()])
+                    )
+                    for design, audits in decoded_target_audits.items()
+                },
+                "mask_threshold_rgb": args.factorization_mask_threshold,
+                "mask_dilation_pixels": args.factorization_mask_dilation,
+                "robot_mask_future_pixel_fraction": float(robot_mask[1:].mean()),
+                "object_mask_future_pixel_fraction": float(object_mask[1:].mean()),
                 "state_composition": (
                     "recipient simulator state with robot and target-object subtrees replaced "
                     "factorially from the donor at every future frame; current frame held exactly fixed"
@@ -537,8 +804,7 @@ def main() -> None:
 
         intervention_specs = {
             "self": {
-                "research_mode": "self",
-                "research_donor_id": f"{study_id}-native-{recipient_seed}",
+                "research_mode": "native",
             },
             "predicted_donor": {
                 "research_mode": "donor",
@@ -574,6 +840,13 @@ def main() -> None:
                         }
                         for cell, record_id in state_cell_donor_ids.items()
                     },
+                    **{
+                        f"composite_cell_{cell}": {
+                            "research_mode": "donor",
+                            "research_donor_id": record_id,
+                        }
+                        for cell, record_id in composite_cell_donor_ids.items()
+                    },
                 }
             )
             intervention_target_seeds.update(
@@ -583,6 +856,10 @@ def main() -> None:
                     "state_cell_o0r1": donor_seed,
                     "state_cell_o1r0": donor_seed,
                     "state_cell_o1r1": donor_seed,
+                    "composite_cell_o0r0": None,
+                    "composite_cell_o0r1": donor_seed,
+                    "composite_cell_o1r0": donor_seed,
+                    "composite_cell_o1r1": donor_seed,
                 }
             )
         if args.multi_donor:
@@ -682,6 +959,8 @@ def main() -> None:
         intervention_responses = {}
         intervention_runs = {}
         kv_patch_identity_action_errors: dict[str, float] = {}
+        self_identity_action_maximum_error: float | None = None
+        self_clamp_action_maximum_error: float | None = None
         for label, spec in intervention_specs.items():
             request = dict(initial_request)
             request.update(
@@ -691,9 +970,33 @@ def main() -> None:
                 **spec,
             )
             response = client.client.infer(request)
-            if label in {"self_kv_record", "self_kv_patch_all"}:
+            if label == "self":
+                self_identity_action_maximum_error = float(
+                    np.abs(
+                        np.asarray(response["action"], dtype=np.float32)
+                        - np.asarray(native_responses[recipient_seed]["action"], dtype=np.float32)
+                    ).max()
+                )
+                if self_identity_action_maximum_error != 0.0:
+                    raise RuntimeError(
+                        "self-target recomputation changed native action by "
+                        f"{self_identity_action_maximum_error}"
+                    )
+            if label == "gaussian_executed":
+                for metric in (
+                    "research_gaussian_norm_relative_error",
+                    "research_gaussian_distance_relative_error",
+                ):
+                    if float(response[metric]) > 1e-5:
+                        raise RuntimeError(f"Gaussian matching failed: {metric}={response[metric]}")
+            if label == "self_kv_record":
+                reference_action = np.asarray(intervention_responses["self"]["action"], dtype=np.float32)
+                self_clamp_action_maximum_error = float(
+                    np.abs(np.asarray(response["action"], dtype=np.float32) - reference_action).max()
+                )
+            if label == "self_kv_patch_all":
                 reference_action = np.asarray(
-                    intervention_responses["self"]["action"], dtype=np.float32
+                    intervention_responses["self_kv_record"]["action"], dtype=np.float32
                 )
                 action_error = float(
                     np.abs(np.asarray(response["action"], dtype=np.float32) - reference_action).max()
@@ -805,6 +1108,12 @@ def main() -> None:
                     "o1r0": "state_cell_o1r0",
                     "o1r1": "state_cell_o1r1",
                 },
+                "composite": {
+                    "o0r0": "composite_cell_o0r0",
+                    "o0r1": "composite_cell_o0r1",
+                    "o1r0": "composite_cell_o1r0",
+                    "o1r1": "composite_cell_o1r1",
+                },
             }
 
             def contrast(cells: dict[str, float]) -> dict[str, float]:
@@ -849,6 +1158,8 @@ def main() -> None:
             "attention_mediation_layers": args.attention_mediation_layers,
             "attention_kv_patch_layers": args.attention_kv_patch_layers,
             "kv_patch_identity_action_maximum_errors": kv_patch_identity_action_errors,
+            "self_identity_action_maximum_error": self_identity_action_maximum_error,
+            "self_clamp_action_maximum_error": self_clamp_action_maximum_error,
             "multi_donor": args.multi_donor,
             "factorize_selected_donor": args.factorize_selected_donor,
             "factorization": factorization_report,
@@ -856,6 +1167,8 @@ def main() -> None:
             "prefix_maximum_state_error": prefix_validator.max_drift,
             "instruction": env_cfg.instruction,
             "recorded_hdf5": str(args.recorded_hdf5),
+            "recorded_env_cfg": str(recorded_env_cfg_path),
+            "environment_seed": recorded_environment_seed,
             "branch_seeds": args.branch_seeds,
             "recipient_seed": recipient_seed,
             "donor_seed": donor_seed,
@@ -867,6 +1180,21 @@ def main() -> None:
                 group: float(np.linalg.norm(donor_endpoints[group] - recipient_endpoints[group]))
                 for group in groups
             },
+            "native_target_object_position_l2": (
+                float(
+                    np.linalg.norm(
+                        target_object_position(
+                            donor_run["endpoint_state"], args.target_object_name
+                        )
+                        - target_object_position(
+                            recipient_run["endpoint_state"], args.target_object_name
+                        )
+                    )
+                )
+                if args.target_object_name
+                else None
+            ),
+            "target_object_name": args.target_object_name,
             "restore_state_digests": restore_digests,
             "restore_image_maximum_absolute_errors": restore_image_errors,
             "continuation_repeat_audit": {

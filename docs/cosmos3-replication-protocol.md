@@ -36,9 +36,11 @@ The following checks must pass before outcomes are inspected:
    four denoising steps and labels the distinction explicitly.
 3. Identity layout capture and identity sampler wrapping reproduce native
    action and vision latents bit-for-bit for a fixed request and seed.
-4. Self-target recomputation reproduces the native output under the registered
-   tolerance. Donor clamping changes only unconditioned future-vision
-   coordinates; programmatic sentinels verify zero action-coordinate mutation.
+4. Native self recomputation reproduces the native output under the registered
+   tolerance. The mechanics-matched clean-future self clamp is not treated as
+   an identity operation. Donor clamping changes only unconditioned
+   future-vision coordinates; programmatic sentinels verify zero
+   action-coordinate mutation.
 5. Donor encode/decode round trips are audited, and decoded clamped futures
    identify their target at least 90% of the time before behavioral results are
    interpreted.
@@ -56,16 +58,32 @@ a negative behavioral result.
 
 ## Outcome-independent screen
 
-The eight pilot tasks and three environment seeds are fixed in
-`configs/cosmos3_replication.toml`. Sixteen native diffusion branches are drawn
-from each saved state. Pilot units are used only to establish feasibility,
-calibrate representation interfaces, and identify tasks with both native
-success and distinct physically reachable endpoints. Intervention outcomes may
-not enter selection. Pilot states and attention-localization states are excluded
-from confirmatory inference.
+The eight pilot tasks and environment seeds are fixed in
+`configs/cosmos3_replication.toml`. The original three seeds (101, 103, and
+107) screen task feasibility. Before any population intervention was run, seed
+109 was added because the six calibration-feasible tasks yield at most 18
+states under three seeds, below the frozen 20-state minimum. All four seeds are
+therefore screened on the six calibration-feasible tasks; no further seed may
+be added after population interventions begin. Sixteen native diffusion
+branches are drawn from each saved state. All 16 action chunks are generated,
+the maximum native action-L2 pair is selected with a fixed lower-seed tie
+break, and only that pair plus an exact repeated continuation is physically
+executed. A state whose fixed pair fails the endpoint-displacement threshold is
+ineligible without testing a replacement pair. Pilot units are used only to establish
+feasibility, calibrate representation interfaces, and identify tasks with both
+native success and distinct physically reachable endpoints. Intervention
+outcomes may not enter selection. Pilot states and attention-localization states
+are excluded from confirmatory inference.
 
-Confirmatory tasks need at least one successful native rollout and one pair of
-different policy-generated endpoints reachable from the exact same state. We
+Branch times are fixed at the task level from the excluded seed-0 native
+trajectories: step 64 for banana, Rubik's cube, and smartphone; step 96 for
+mustard; step 128 for spoon; and step 320 for marker. These points precede the
+first substantive target-object displacement in the calibration trajectory and
+are not retuned on population states.
+
+Confirmatory tasks need at least one successful native rollout and a fixed
+action-divergent pair whose two policy-generated endpoints are also different
+and reachable from the exact same state. We
 retain at least five tasks and 20 independent saved-state clusters, capped at
 six states per task. If that frozen minimum is unavailable, the result is
 reported as an underpowered feasibility study rather than broadened after
@@ -77,7 +95,8 @@ For a recipient branch A and donor branch B from state S:
 
 - Native A: current(S), noise(A) -> future(A), action(A).
 - Native B: current(S), noise(B) -> future(B), action(B).
-- Self control: current(S), noise(A), clamp future(A).
+- Exact self control: recompute native A with the identical request and seed.
+- Mechanics-matched self clamp: current(S), noise(A), clamp the executed A future.
 - Donor transplant: current(S), noise(A), clamp future(B).
 - Controls: distance-matched Gaussian, a preselected non-donor natural future,
   and shuffled natural future content.
@@ -89,6 +108,12 @@ restoring S, and the same normalized projection is computed in registered
 object and robot endpoint spaces. Correct-donor top-1 identification tests
 specificity among several natural donors rather than merely movement away from
 the recipient.
+
+The exact self recomputation must reproduce native A bit-for-bit. The
+mechanics-matched self clamp is reported separately because forcing a clean
+future along a constructed rectified-flow path is not an identity operation,
+even when its endpoint came from A. K/V record-and-replay identity is audited
+against the same clamped-self trajectory before mediation is interpreted.
 
 ## Robot versus object content
 
@@ -102,6 +127,27 @@ simulator-rendered 2x2 object/robot factorization may be run as secondary
 evidence, with live current pixels preserved and hybrid targets explicitly
 labeled counterfactual. Robot-pixel masks, object-pixel masks, and view-specific
 clamps distinguish visible inverse dynamics from use of task consequences.
+
+The population factorization is a separate confirmatory family rather than a
+post hoc interpretation of the primary mediation effect. Before any factorial
+intervention, at least ten primary-population units spanning at least five tasks
+are selected round-robin by native target-object position separation, with
+environment seed as the tie break. For each unit, four exact simulator-state
+videos are first rendered from the same saved recipient/donor trajectories:
+recipient object/recipient robot, recipient object/donor robot, donor
+object/recipient robot, and donor object/donor robot. An excluded pilot found
+that a full non-Fabric rerender introduces a large common camera-domain shift.
+The confirmatory primary design therefore uses those paired rerenders only to
+derive frozen RGB-difference masks (threshold 8, two-pixel dilation), then
+copies donor pixels within the robot and/or object mask onto the native
+recipient video. The native current frame is copied exactly. Full state
+rerenders remain a secondary design. Only future frames change; the live
+current observation, instruction, proprioception, and action noise are
+identical. The robot and object main effects on action and physical execution
+are the registered contrasts. Hybrid targets are labeled counterfactual
+because their mixed sequence need not be a dynamically realizable rollout.
+Decoded four-cell target identification must clear the registered 90% gate
+before behavioral contrasts are interpreted.
 
 ## Timing and attention interface
 

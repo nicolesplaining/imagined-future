@@ -35,7 +35,25 @@ from imagined_future.cosmos3_interventions import (
 )
 from imagined_future.cosmos3_attention import ActionQueryFutureKVExcluder
 
-ALLOWED_DONOR_ROOT = Path("/lambda/nfs/imagined-future/results")
+DEFAULT_ALLOWED_DONOR_ROOTS = (
+    Path("/research/results"),
+    Path("/lambda/nfs/imagined-future/results"),
+)
+
+
+def resolve_donor_path(value: str) -> Path:
+    """Resolve a donor under one of the explicit container result mounts."""
+
+    path = Path(value).expanduser().resolve()
+    configured = os.environ.get("IMAGINED_FUTURE_DONOR_ROOTS")
+    roots = (
+        tuple(Path(item).expanduser().resolve() for item in configured.split(":"))
+        if configured
+        else tuple(root.resolve() for root in DEFAULT_ALLOWED_DONOR_ROOTS)
+    )
+    if not any(path.is_relative_to(root) for root in roots):
+        raise ValueError(f"donor path must be under one of {roots}")
+    return path
 
 
 def tensor_digest(value: torch.Tensor) -> str:
@@ -270,6 +288,29 @@ class ResearchPolicyService:
             "x0_vision_hashes": [tensor_digest(item["samples"][0]["vision_0"]) for item in x0.records],
             "x0_action_hashes": [tensor_digest(item["samples"][0]["action"]) for item in x0.records],
         }
+        if mode == "gaussian":
+            recipient_future = recipient.target[mask].double()
+            donor_future = donor.target[mask].double()
+            target_future = target[mask].double()
+            donor_norm = torch.linalg.vector_norm(donor_future)
+            donor_distance = torch.linalg.vector_norm(donor_future - recipient_future)
+            target_norm = torch.linalg.vector_norm(target_future)
+            target_distance = torch.linalg.vector_norm(target_future - recipient_future)
+            audit.update(
+                {
+                    "gaussian_donor_norm": float(donor_norm),
+                    "gaussian_target_norm": float(target_norm),
+                    "gaussian_donor_distance": float(donor_distance),
+                    "gaussian_target_distance": float(target_distance),
+                    "gaussian_norm_relative_error": float(
+                        torch.abs(target_norm - donor_norm) / torch.clamp(donor_norm, min=1e-12)
+                    ),
+                    "gaussian_distance_relative_error": float(
+                        torch.abs(target_distance - donor_distance)
+                        / torch.clamp(donor_distance, min=1e-12)
+                    ),
+                }
+            )
         return samples, audit
 
     def _encode_executed_donor(
@@ -279,9 +320,7 @@ class ResearchPolicyService:
         state_hash: str,
         record_id: str,
     ) -> FutureRecord:
-        path = Path(str(obs["research_donor_path"])).expanduser().resolve()
-        if not path.is_relative_to(ALLOWED_DONOR_ROOT.resolve()):
-            raise ValueError(f"donor path must be under {ALLOWED_DONOR_ROOT}")
+        path = resolve_donor_path(str(obs["research_donor_path"]))
         with np.load(path, allow_pickle=False) as payload:
             video = np.asarray(payload["video"])
             action = np.asarray(payload["action"], dtype=np.float32) if "action" in payload else None
@@ -370,7 +409,7 @@ class ResearchPolicyService:
             if mode == "register_executed":
                 record = self._encode_executed_donor(obs, sample, state_hash, record_id)
                 self._remember(record)
-                return {
+                outputs = {
                     "action": np.zeros((self._base.cfg.action_chunk_size, self._base.cfg.action_dim), np.float32),
                     "research_id": record_id,
                     "research_mode": mode,
@@ -381,6 +420,18 @@ class ResearchPolicyService:
                     "research_attention_exclude_layers": np.asarray(attention_layers, dtype=np.int64),
                     "research_attention_exclude_scope": attention_scope,
                 }
+                if bool(obs.get("research_return_video", False)):
+                    encoded = record.target.reshape(record.vision_shape).to(
+                        device=next(self._base.model.net.parameters()).device
+                    )
+                    decoded = self._base.model.decode(encoded)
+                    video = (
+                        ((decoded[0].clamp(-1, 1) + 1) * 127.5)
+                        .to(torch.uint8)
+                        .permute(1, 2, 3, 0)
+                    )
+                    outputs["video"] = video.cpu().numpy()
+                return outputs
 
             data_batch = self._batch(sample)
             if mode == "native":

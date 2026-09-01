@@ -58,6 +58,7 @@ pilot_tasks = [
   "SmartphoneInBinTask",
 ]
 pilot_environment_seeds = [101, 103, 107]
+confirmatory_environment_seeds = [101, 103, 107, 109]
 native_branch_seeds = [211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293]
 minimum_normalized_action_l2 = 0.01
 minimum_endpoint_displacement_m = 0.003
@@ -65,11 +66,23 @@ minimum_confirmatory_tasks = 5
 minimum_confirmatory_units = 20
 maximum_units_per_task = 6
 
+[screen.branch_points]
+# Frozen from excluded seed-0 native trajectories before any population
+# intervention.  Each point precedes the first substantive target-object
+# displacement and is reused for every confirmatory environment seed.
+BananaInBowlTask = 64
+RubiksCubeTask = 64
+MustardInLeftBinTask = 96
+SpoonInMugTask = 128
+MarkerInMugTask = 320
+SmartphoneInBinTask = 64
+
 [screen.selection]
 task_rule = "retain tasks with at least one successful native rollout and at least one reachable endpoint-divergent donor pair; rank by eligible-unit count, then task name"
 state_rule = "rank within task by native endpoint diversity, then environment seed; never use interventional outcomes"
-donor_rule = "from the same exact state, select maximally separated eligible native endpoints; ties use lower ordered seed pair"
+donor_rule = "from the same exact state, select the maximum native action-L2 pair among all 16 seeds before physical execution; ties use the lower ordered seed pair; retain only if that fixed pair passes endpoint eligibility"
 replacement_after_intervention = false
+seed_expansion_rule = "screen all four confirmatory environment seeds on the six calibration-feasible tasks; do not add seeds after population interventions begin"
 
 [interventions]
 recipient_diffusion_seeds = [1201, 1213, 1217]
@@ -82,6 +95,9 @@ primary_targets = ["self", "donor", "matched_natural", "gaussian", "shuffled_nat
 timing_windows = ["step_0", "step_1", "step_2", "step_3", "all_steps"]
 
 [factorization]
+primary_design = "native_background_masked_composite"
+difference_mask_rgb_threshold = 8
+difference_mask_dilation_pixels = 2
 robot_position_match_m = 0.003
 robot_orientation_match_rad = 0.03
 robot_gripper_match_l2 = 0.005
@@ -90,6 +106,23 @@ maximum_object_match_l2 = 0.0005
 minimum_robot_position_l2_m = 0.003
 minimum_robot_orientation_angle_rad = 0.03
 minimum_robot_gripper_l2 = 0.003
+confirmatory_minimum_units = 10
+confirmatory_minimum_tasks = 5
+selection_rule = "among primary-population units, rank within task by native target-object position separation then environment seed; select round-robin across tasks before any factorial intervention"
+primary_action_contrasts = ["robot_main_effect", "object_main_effect"]
+primary_physical_contrasts = ["robot_main_effect", "object_main_effect"]
+current_frame_is_fixed = true
+hybrid_targets_are_counterfactual = true
+full_state_rerenders_are_secondary = true
+replacement_after_intervention = false
+
+[factorization.object_prims]
+BananaInBowlTask = "/World/envs/env_0/banana"
+RubiksCubeTask = "/World/envs/env_0/rubiks_cube"
+MustardInLeftBinTask = "/World/envs/env_0/mustard"
+SpoonInMugTask = "/World/envs/env_0/spoon_big"
+MarkerInMugTask = "/World/envs/env_0/marker"
+SmartphoneInBinTask = "/World/envs/env_0/smartphone"
 
 [attention_localization]
 calibration_layers = "all 36 transformer layers"
