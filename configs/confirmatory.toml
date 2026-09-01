@@ -1,0 +1,65 @@
+[provenance]
+cosmos_policy_git = "https://github.com/NVlabs/cosmos-policy.git"
+cosmos_policy_commit = "18a2accadf4e7a3531e56754102af5a24d2316da"
+checkpoint = "nvidia/Cosmos-Policy-LIBERO-Predict2-2B"
+checkpoint_revision = "cb689ec0e3347c13667d70a78a3447388f5c3bb8"
+libero_git = "https://github.com/Lifelong-Robot-Learning/LIBERO.git"
+container_digest = "sha256:2f5ff2badf82657c82e046bff84cc754acf4a2b3973828f12ab802c751f439e0"
+
+[design]
+study_id = "libero_confirmatory_v1"
+task_suite = "libero_10"
+task_ids = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+initial_state_indices = [10, 27, 43]
+prefix_chunks = [0, 3, 6]
+prefix_seed = 307
+branch_seeds = [311, 313, 317, 319, 331, 337, 347, 349]
+continuation_seeds = [353, 359, 367]
+future_noise_seeds = [401, 409, 419]
+branches_per_state = 8
+warmup_steps = 10
+action_chunk = 16
+max_policy_steps = 520
+deterministic_tokenizer = true
+reciprocal_primary_pair = true
+
+[selection]
+pair_selection_uses_intervention_outcomes = false
+primary_pair_score = "mean_rank_action_goal_endpoint"
+minimum_normalized_action_l2 = 0.01
+control_match_fields = ["normalized_action_l2", "goal_endpoint_l2"]
+exclude_pilot_task_state_pairs = [[4, 2], [4, 9], [8, 3], [8, 8]]
+
+[semantic_interventions]
+primary_modalities = ["proprio", "wrist", "primary"]
+secondary_modalities = ["wrist", "primary", "proprio"]
+controls = [
+  "recipient_self",
+  "same_outcome_donor",
+  "within_task_shuffled_donor",
+  "norm_distance_matched_gaussian",
+  "action_transplant",
+]
+
+[attention_interventions]
+primary_layer = 27
+secondary_layer = 0
+gates = [0.25, 0.5, 0.75, 1.0]
+controls = ["all_key_recompute", "equal_count_current_keys", "equal_count_random_keys"]
+
+[outcomes]
+primary = "task_relevant_endpoint_donor_steering"
+secondary = [
+  "normalized_action_donor_steering",
+  "endpoint_proprio_donor_steering",
+  "endpoint_primary_image_preference",
+  "shared_continuation_success",
+]
+
+[inference]
+bootstrap_resamples = 10000
+familywise_alpha = 0.05
+cluster_unit = "saved_simulator_state"
+stratify_by_task = true
+primary_hypothesis = "semantic_donor_minus_recipient_self_gt_controls"
+

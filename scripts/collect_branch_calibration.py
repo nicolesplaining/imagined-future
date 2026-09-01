@@ -12,6 +12,7 @@ from PIL import Image
 
 from imagined_future.branching import BranchPoint, state_digest, tuple_actions, validate_replay_stability
 from imagined_future.cosmos_config import deterministic_tokenizer_enabled, libero_policy_config
+from imagined_future.libero_semantics import goal_predicate_snapshot
 from imagined_future.model_patch import defer_hf_config_checkpoint_resolution
 
 
@@ -44,6 +45,7 @@ def _execute_from_point(env_factory, point: BranchPoint, actions: np.ndarray):
             np.asarray(env.get_sim_state()).copy(),
             observation,
             bool(done_observed or env.check_success()),
+            goal_predicate_snapshot(env),
         )
     finally:
         env.close()
@@ -147,6 +149,7 @@ def main() -> None:
     predicted_wrist_images = []
     predicted_values = []
     successes = []
+    endpoint_predicates = []
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
     for branch_index, seed in enumerate(args.branch_seeds):
@@ -169,7 +172,7 @@ def main() -> None:
         predicted_value = float(result["value_prediction"])
         del result
 
-        endpoint_state, raw_endpoint, success = _execute_from_point(env_factory, point, actions)
+        endpoint_state, raw_endpoint, success, predicates = _execute_from_point(env_factory, point, actions)
         endpoint = prepare_observation(raw_endpoint, 256, cfg.flip_images)
         endpoint_primary = np.asarray(endpoint["primary_image"], dtype=np.uint8)
         endpoint_wrist = np.asarray(endpoint["wrist_image"], dtype=np.uint8)
@@ -185,6 +188,7 @@ def main() -> None:
         predicted_wrist_images.append(predicted_wrist)
         predicted_values.append(predicted_value)
         successes.append(success)
+        endpoint_predicates.append(predicates)
 
         label = f"branch_{branch_index:02d}_seed_{seed}"
         Image.fromarray(endpoint_primary).save(args.output_dir / f"{label}_endpoint_primary.png")
@@ -234,6 +238,19 @@ def main() -> None:
         endpoint_primary_pixel_l1=endpoint_primary_pixel_l1,
         predicted_primary_pixel_l1=predicted_primary_pixel_l1,
     )
+    (args.output_dir / "endpoint_predicates.json").write_text(
+        json.dumps(
+            [
+                {"branch_index": index, "branch_seed": int(seed), "snapshot": snapshot}
+                for index, (seed, snapshot) in enumerate(
+                    zip(args.branch_seeds, endpoint_predicates, strict=True)
+                )
+            ],
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n"
+    )
     summary: dict[str, Any] = {
         "scope": "same-state branch calibration; not a semantic intervention result",
         "suite": args.suite,
@@ -249,6 +266,7 @@ def main() -> None:
         "replay_exact": len({result.state_digest for result in replay_results}) == 1,
         "deterministic_tokenizer": deterministic_tokenizer_enabled(),
         "successes": successes,
+        "endpoint_predicates": "endpoint_predicates.json",
         "predicted_values": predicted_values,
         "pairwise_action_l2": _off_diagonal_summary(action_distances),
         "pairwise_endpoint_proprio_l2": _off_diagonal_summary(endpoint_proprio_distances),

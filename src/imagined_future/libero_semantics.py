@@ -87,3 +87,33 @@ def goal_predicate_snapshot(environment: Any) -> dict[str, Any]:
         "success": bool(all(predicate["value"] for predicate in predicates)),
         "predicates": predicates,
     }
+
+
+def goal_feature_vector(snapshot: dict[str, Any]) -> np.ndarray:
+    """Flatten task-relevant physical quantities from a predicate snapshot.
+
+    Positions and articulated-joint coordinates cover the common LIBERO
+    spatial, containment, and articulation predicates. Quaternion values are
+    added only when the predicate explicitly describes orientation. Traversal
+    follows parsed goal and argument order, so vectors are stable across
+    branches of the same task.
+    """
+
+    values: list[float] = []
+    orientation_terms = ("upright", "orient", "align", "horizontal", "vertical")
+    for predicate in snapshot.get("predicates", ()):
+        predicate_name = str(predicate.get("predicate", "")).lower()
+        include_quaternion = any(term in predicate_name for term in orientation_terms)
+        for argument in predicate.get("arguments", ()):
+            values.extend(float(value) for value in argument.get("position", ()))
+            if include_quaternion:
+                values.extend(float(value) for value in argument.get("quaternion", ()))
+            joints = argument.get("joints")
+            if joints is not None:
+                for joint in joints.get("qpos", ()):
+                    # Movable objects expose a seven-dimensional free joint
+                    # that duplicates position and quaternion. Articulated
+                    # hinge/slide joints are low-dimensional and retained.
+                    if len(joint) <= 3:
+                        values.extend(float(value) for value in joint)
+    return np.asarray(values, dtype=np.float64)

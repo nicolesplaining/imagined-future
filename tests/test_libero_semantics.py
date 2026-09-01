@@ -4,7 +4,7 @@ from types import SimpleNamespace
 
 import numpy as np
 
-from imagined_future.libero_semantics import goal_predicate_snapshot
+from imagined_future.libero_semantics import goal_feature_vector, goal_predicate_snapshot
 
 
 class FakeState:
@@ -81,3 +81,21 @@ def test_goal_predicate_snapshot_handles_objects_without_joints() -> None:
 
     assert snapshot["success"] is True
     assert "joints" not in snapshot["predicates"][0]["arguments"][0]
+
+
+def test_goal_feature_vector_uses_positions_and_joint_coordinates() -> None:
+    snapshot = {
+        "predicates": [
+            {
+                "predicate": "Open",
+                "arguments": [
+                    {
+                        "position": [1, 2, 3],
+                        "quaternion": [0, 0, 0, 1],
+                        "joints": {"qpos": [[0.4], [0.5]]},
+                    }
+                ],
+            }
+        ]
+    }
+    np.testing.assert_allclose(goal_feature_vector(snapshot), [1, 2, 3, 0.4, 0.5])

@@ -25,7 +25,9 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--suite", default="libero_10")
     parser.add_argument("--layers", type=int, nargs="+")
-    parser.add_argument("--excluded-key-group", choices=("future", "current"), default="future")
+    parser.add_argument("--excluded-key-group", choices=("future", "current", "random"), default="future")
+    parser.add_argument("--gate", type=float, default=1.0)
+    parser.add_argument("--random-frame-seed", type=int, default=431)
     args = parser.parse_args()
 
     if (args.output_dir / "summary.json").exists():
@@ -73,7 +75,17 @@ def main() -> None:
     if any(index < 0 or index >= len(model.net.blocks) for index in layer_ids):
         raise IndexError(f"layers must be within 0..{len(model.net.blocks) - 1}")
     selected_blocks = [model.net.blocks[index] for index in layer_ids]
-    excluded_frames = groups.future if args.excluded_key_group == "future" else groups.current
+    if args.excluded_key_group == "future":
+        excluded_frames = groups.future
+    elif args.excluded_key_group == "current":
+        excluded_frames = groups.current
+    else:
+        frame_count = int(baseline["orig_clean_latent_frames"].shape[2])
+        candidates = sorted(set(range(frame_count)) - set(groups.action) - set(groups.future))
+        if len(candidates) < len(groups.future):
+            raise ValueError("not enough non-action, non-future frames for equal-count random control")
+        generator = np.random.default_rng(args.random_frame_seed)
+        excluded_frames = tuple(sorted(generator.choice(candidates, len(groups.future), replace=False).tolist()))
     if args.excluded_key_group == "current" and len(excluded_frames) != len(groups.future):
         raise ValueError(
             "equal-count current-key control requires current and future groups to have the same size"
@@ -100,6 +112,7 @@ def main() -> None:
         action_frames=groups.action,
         future_frames=excluded_frames,
         exclude_future_keys=True,
+        gate=args.gate,
         block_ids=layer_ids,
     ) as blocked_stats:
         future_blocked = get_action(**common)
@@ -134,9 +147,11 @@ def main() -> None:
     )
     control_action_error = float(np.max(np.abs(normalized_actions["all_key_control"] - baseline_action)))
     summary = {
-        "scope": "future-to-action self-attention necessity ablation"
-        if args.excluded_key_group == "future"
-        else "equal-count current-key attention ablation control",
+        "scope": (
+            "future-to-action self-attention necessity ablation"
+            if args.excluded_key_group == "future"
+            else f"equal-count {args.excluded_key_group}-key attention ablation control"
+        ),
         "branch_run": str(args.branch_run_dir),
         "branch_state_digest": branch_summary["branch_state_digest"],
         "task_id": branch_summary["task_id"],
@@ -152,6 +167,8 @@ def main() -> None:
         "current_frame_indices": list(groups.current),
         "excluded_key_group": args.excluded_key_group,
         "excluded_frame_indices": list(excluded_frames),
+        "ablation_gate": args.gate,
+        "random_frame_seed": args.random_frame_seed if args.excluded_key_group == "random" else None,
         "ablated_layers": layer_ids,
         "baseline_reference_max_abs_error": baseline_reference_error,
         "all_key_control_action_max_abs_error": control_action_error,

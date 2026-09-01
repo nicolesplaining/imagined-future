@@ -63,6 +63,44 @@ def resample_frames(
     return output
 
 
+def norm_distance_matched_random_target(
+    recipient: Tensor,
+    donor: Tensor,
+    *,
+    seed: int,
+) -> Tensor:
+    """Construct a random target matching donor norm and recipient distance."""
+
+    _validate_latents(recipient, donor)
+    generator = torch.Generator(device=recipient.device)
+    generator.manual_seed(seed)
+    output = torch.empty_like(recipient)
+    for batch_index in range(recipient.shape[0]):
+        reference = recipient[batch_index].reshape(-1).double()
+        donor_flat = donor[batch_index].reshape(-1).double()
+        reference_norm_sq = torch.dot(reference, reference)
+        if reference_norm_sq == 0:
+            raise ValueError("recipient target must have nonzero norm")
+        donor_norm_sq = torch.dot(donor_flat, donor_flat)
+        distance_sq = torch.dot(donor_flat - reference, donor_flat - reference)
+        alpha = (donor_norm_sq + reference_norm_sq - distance_sq) / (2 * reference_norm_sq)
+        random = torch.randn(
+            reference.shape,
+            generator=generator,
+            device=reference.device,
+            dtype=torch.float64,
+        )
+        orthogonal = random - torch.dot(random, reference) / reference_norm_sq * reference
+        orthogonal_norm = torch.linalg.vector_norm(orthogonal)
+        if orthogonal_norm == 0:
+            raise RuntimeError("random control direction is numerically degenerate")
+        orthogonal = orthogonal / orthogonal_norm
+        beta_sq = torch.clamp(donor_norm_sq - alpha.square() * reference_norm_sq, min=0.0)
+        matched = alpha * reference + torch.sqrt(beta_sq) * orthogonal
+        output[batch_index] = matched.reshape_as(recipient[batch_index]).to(recipient.dtype)
+    return output
+
+
 def _sigma_view(sigma: Tensor, reference: Tensor) -> Tensor:
     if sigma.ndim == 1:
         if sigma.shape[0] != reference.shape[0]:

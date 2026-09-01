@@ -21,6 +21,16 @@ def temporal_token_indices(frames: Sequence[int], *, time: int, height: int, wid
     return tuple(index for frame in selected for index in range(frame * spatial, (frame + 1) * spatial))
 
 
+def gated_attention_output(original: torch.Tensor, ablated: torch.Tensor, gate: float) -> torch.Tensor:
+    """Interpolate from native attention to a key-excluded recomputation."""
+
+    if not 0.0 <= gate <= 1.0:
+        raise ValueError("attention ablation gate must be within [0, 1]")
+    if original.shape != ablated.shape:
+        raise ValueError("native and ablated attention outputs must have equal shape")
+    return original + gate * (ablated - original)
+
+
 @dataclass
 class AttentionAblationStats:
     """Numerical diagnostics collected for each patched block and denoiser call."""
@@ -47,6 +57,7 @@ def restrict_future_to_action_attention(
     action_frames: Sequence[int],
     future_frames: Sequence[int],
     exclude_future_keys: bool,
+    gate: float = 1.0,
     block_ids: Sequence[int] | None = None,
 ) -> Iterator[AttentionAblationStats]:
     """Recompute action queries with all keys or with future-frame keys removed.
@@ -60,6 +71,8 @@ def restrict_future_to_action_attention(
     future_frames = tuple(int(index) for index in future_frames)
     if set(action_frames) & set(future_frames):
         raise ValueError("action and future frames must not overlap")
+    if not 0.0 <= gate <= 1.0:
+        raise ValueError("attention ablation gate must be within [0, 1]")
     stats = AttentionAblationStats()
     labels = tuple(range(len(blocks))) if block_ids is None else tuple(int(index) for index in block_ids)
     if len(labels) != len(blocks) or len(set(labels)) != len(labels):
@@ -103,6 +116,8 @@ def restrict_future_to_action_attention(
                 replacement = _attention.attn_op(query, key, value)
                 replacement = _attention.output_dropout(_attention.output_proj(replacement))
                 original_selected = torch.index_select(full, 1, query_index)
+                if exclude_future_keys:
+                    replacement = gated_attention_output(original_selected, replacement, gate)
                 stats.record(_index, original_selected, replacement)
                 output = full.clone()
                 output[:, query_index] = replacement

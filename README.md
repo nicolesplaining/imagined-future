@@ -6,7 +6,7 @@ This project tests whether Cosmos Policy's generated future-state latents causal
 
 Cosmos Policy jointly denoises action, future proprioception, future camera images, and value in one latent sequence. Predictive probes can show that a hidden state contains future information, but not that the policy uses that information. The project therefore uses paired simulator branches, common random numbers, semantic future clamping, and eventually future-to-action path interventions.
 
-The primary pilot is preregistered in [docs/preregistration.md](docs/preregistration.md). Public papers and code used by the project are catalogued in [docs/references.md](docs/references.md).
+The primary pilot is preregistered in [docs/preregistration.md](docs/preregistration.md). The held-out multi-task study is frozen in [docs/confirmatory-protocol.md](docs/confirmatory-protocol.md) and [configs/confirmatory.toml](configs/confirmatory.toml). Public papers and code used by the project are catalogued in [docs/references.md](docs/references.md).
 
 ## Experimental ladder
 

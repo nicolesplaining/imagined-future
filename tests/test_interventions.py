@@ -1,8 +1,14 @@
 from __future__ import annotations
 
+import pytest
 import torch
 
-from imagined_future.interventions import SemanticFutureClamp, replace_frames, resample_frames
+from imagined_future.interventions import (
+    SemanticFutureClamp,
+    norm_distance_matched_random_target,
+    replace_frames,
+    resample_frames,
+)
 
 
 def test_replace_frames_is_functional_and_localized() -> None:
@@ -43,3 +49,16 @@ def test_semantic_clamp_noise_matches_sigma_and_stabilizes_output() -> None:
     assert result[0, 0, 1, 0, 0].item() == 2.0
     assert torch.all(result[:, :, (0, 2)] == 0)
     assert clamp.calls == [4.0]
+
+
+def test_random_target_matches_donor_norm_and_distance() -> None:
+    recipient = torch.arange(1, 17, dtype=torch.float64).reshape(1, 1, 1, 4, 4)
+    donor = torch.flip(recipient, dims=(-1,)) * 0.8
+
+    matched = norm_distance_matched_random_target(recipient, donor, seed=73)
+
+    assert torch.linalg.vector_norm(matched) == pytest.approx(torch.linalg.vector_norm(donor))
+    assert torch.linalg.vector_norm(matched - recipient) == pytest.approx(
+        torch.linalg.vector_norm(donor - recipient)
+    )
+    assert not torch.allclose(matched, donor)
