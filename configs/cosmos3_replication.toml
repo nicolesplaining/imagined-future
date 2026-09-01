@@ -5,6 +5,7 @@ robolab_commit = "9db0aaf09d9fe5d4f37b168320788258c7012463"
 checkpoint = "nvidia/Cosmos3-Nano-Policy-DROID"
 checkpoint_revision = "2b9f9517efcfbf26e222945b386ae9b65c0930ac"
 container_digest = "sha256:c2e321b92c692934a885702b3bbd230c8af910beebc887eb2069c148425d84bf"
+robolab_container_digest = "sha256:0ac1e96743f93315aae09daeba12fbfcc1d42d88a676e1bb2a76ee2c39ecdb77"
 license = "open-mdw-1.1"
 
 [model]

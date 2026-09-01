@@ -30,8 +30,12 @@ not planning, search, goal reasoning, or mediation of task success. See the
 [publication assessment](docs/publication-assessment.md), and
 [public foundations](docs/references.md).
 
-The Cosmos 3 cross-generation replication is now underway. Its pinned,
-outcome-independent protocol and the first exact no-op/content pilot are in the
+The Cosmos 3 cross-generation replication is now underway. Its first excluded
+RoboLab pilot is positive: a tokenizer-encoded reachable donor moved action
+0.999 and physical robot execution 0.998 toward its associated endpoint, while
+the matched Gaussian moved them only 0.032 and 0.040. This currently supports
+robot-motion/inverse-dynamics use, not object-consequence reasoning. The pinned,
+outcome-independent protocol, exact audits, and pilot are in the
 [Cosmos 3 protocol](docs/cosmos3-replication-protocol.md) and
 [engineering results](docs/cosmos3-engineering-results.md).
 

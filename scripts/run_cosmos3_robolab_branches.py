@@ -1,0 +1,351 @@
+#!/usr/bin/env python3
+"""Run same-state reachable-donor Cosmos 3 branches in public RoboLab."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import os
+import traceback
+from itertools import combinations
+from pathlib import Path
+from typing import Any
+
+import cv2  # Must precede Isaac Lab imports.
+import numpy as np
+from isaaclab.app import AppLauncher
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--task", default="BananaInBowlTask")
+parser.add_argument("--remote-host", default="localhost")
+parser.add_argument("--remote-port", type=int, default=8001)
+parser.add_argument("--output-dir", type=Path, required=True)
+parser.add_argument("--recorded-hdf5", type=Path, required=True)
+parser.add_argument("--branch-seeds", type=int, nargs="+", default=[211, 223, 227, 229])
+parser.add_argument("--gaussian-seed", type=int, default=1223)
+AppLauncher.add_app_launcher_args(parser)
+args, _unknown = parser.parse_known_args()
+args.enable_cameras = True
+args.save_videos = False
+launcher = AppLauncher(args)
+simulation_app = launcher.app
+
+import torch  # noqa: E402
+
+from policies.cosmos3.client import Cosmos3Client  # noqa: E402
+from robolab.constants import set_output_dir  # noqa: E402
+from robolab.core.environments.factory import get_envs  # noqa: E402
+from robolab.core.environments.runtime import create_env  # noqa: E402
+from robolab.core.replay.scene_state import restore_recorded_initial_state  # noqa: E402
+from robolab.core.world.world_state import get_world  # noqa: E402
+from robolab.registrations.droid.auto_env_registrations_jointpos import auto_register_droid_envs  # noqa: E402
+from robolab.registrations.droid.camera_presets import WRIST_LEFT_RIGHT_HEAD  # noqa: E402
+
+import robolab.constants  # noqa: E402
+
+
+def clone_tree(value: Any) -> Any:
+    if isinstance(value, dict):
+        return {key: clone_tree(item) for key, item in value.items()}
+    if isinstance(value, torch.Tensor):
+        return value.detach().clone()
+    return value
+
+
+def flatten_tree(value: dict[str, Any], prefix: str = "") -> dict[str, torch.Tensor]:
+    output: dict[str, torch.Tensor] = {}
+    for key, item in value.items():
+        path = f"{prefix}/{key}" if prefix else key
+        if isinstance(item, dict):
+            output.update(flatten_tree(item, path))
+        elif isinstance(item, torch.Tensor):
+            output[path] = item.detach().cpu()
+    return output
+
+
+def state_digest(state: dict[str, Any]) -> str:
+    digest = hashlib.sha256()
+    for path, tensor in sorted(flatten_tree(state).items()):
+        value = tensor.contiguous()
+        digest.update(path.encode())
+        digest.update(str(value.dtype).encode())
+        digest.update(np.asarray(value.shape, dtype=np.int64).tobytes())
+        digest.update(value.reshape(-1).view(torch.uint8).numpy().tobytes())
+    return digest.hexdigest()
+
+
+def state_vector(state: dict[str, Any], group: str) -> np.ndarray:
+    selected: list[np.ndarray] = []
+    for path, tensor in sorted(flatten_tree(state).items()):
+        if not (path.endswith("joint_position") or path.endswith("root_pose")):
+            continue
+        if group == "robot" and not path.startswith("articulation/robot/"):
+            continue
+        if group == "object" and not path.startswith("rigid_object/"):
+            continue
+        if group == "all" and not (
+            path.startswith("articulation/robot/") or path.startswith("rigid_object/")
+        ):
+            continue
+        selected.append(tensor[0].double().reshape(-1).numpy())
+    if not selected:
+        raise ValueError(f"state group has no leaves: {group}")
+    return np.concatenate(selected)
+
+
+def projection(value: np.ndarray, recipient: np.ndarray, donor: np.ndarray) -> float:
+    direction = donor.astype(np.float64) - recipient.astype(np.float64)
+    denominator = float(np.square(direction).sum())
+    if denominator == 0.0:
+        return float("nan")
+    return float(((value.astype(np.float64) - recipient.astype(np.float64)) * direction).sum() / denominator)
+
+
+def response_metadata(response: dict[str, Any]) -> dict[str, Any]:
+    metadata: dict[str, Any] = {}
+    for key, value in response.items():
+        if key in {"action", "video"}:
+            continue
+        if isinstance(value, np.ndarray):
+            metadata[key] = value.tolist()
+        elif isinstance(value, np.generic):
+            metadata[key] = value.item()
+        else:
+            metadata[key] = value
+    return metadata
+
+
+def main() -> None:
+    if len(set(args.branch_seeds)) != len(args.branch_seeds):
+        raise ValueError("branch seeds must be unique")
+    if (args.output_dir / "summary.json").exists():
+        raise FileExistsError(f"refusing to overwrite completed run: {args.output_dir}")
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+
+    def progress(phase: str, **details: Any) -> None:
+        record = {"phase": phase, **details}
+        with (args.output_dir / "progress.jsonl").open("a") as stream:
+            stream.write(json.dumps(record, sort_keys=True) + "\n")
+        print(f"BRANCH_PROGRESS {json.dumps(record, sort_keys=True)}", flush=True)
+
+    set_output_dir(str(args.output_dir / "robolab_output"))
+    robolab.constants.ENABLE_SUBTASK_PROGRESS_CHECKING = True
+    robolab.constants.RECORD_IMAGE_DATA = False
+    robolab.constants.VERBOSE = False
+
+    auto_register_droid_envs(task=args.task, cameras=WRIST_LEFT_RIGHT_HEAD)
+    task_envs = get_envs(task=args.task)
+    if task_envs != [args.task]:
+        raise ValueError(f"expected one exact registered task, got {task_envs}")
+    env, env_cfg = create_env(args.task, device=args.device, num_envs=1, use_fabric=True)
+    progress("environment_created")
+    client = Cosmos3Client(remote_host=args.remote_host, remote_port=args.remote_port)
+    progress("server_connected")
+
+    def pack(observation: dict[str, Any]) -> dict[str, Any]:
+        extracted = client._extract_observation(observation, env_id=0)
+        return client._pack_request(extracted, env_cfg.instruction)
+
+    def restore(branch_state: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
+        env.reset_eval_state()
+        ids = torch.tensor([0], device=env.device, dtype=torch.long)
+        get_world(env).reset_predicate_state(ids)
+        env.reset_to(clone_tree(branch_state), env_ids=None, is_relative=True)
+        observation = env.observation_manager.compute()
+        return observation, env.scene.get_state(is_relative=True)
+
+    def execute(
+        branch_state: dict[str, Any],
+        fixed_request: dict[str, Any],
+        response: dict[str, Any],
+        label: str,
+    ) -> dict[str, Any]:
+        _observation, restored = restore(branch_state)
+        raw_action = np.asarray(response["action"], dtype=np.float32)
+        action = client._postprocess_chunk(raw_action)
+        frames = [np.asarray(fixed_request["observation/image"], dtype=np.uint8)]
+        terminated = False
+        for action_step in action:
+            tensor = torch.from_numpy(action_step).unsqueeze(0).to(device=env.device, dtype=torch.float32)
+            observation, _reward, term, trunc, _info = env.step(tensor)
+            frames.append(np.asarray(pack(observation)["observation/image"], dtype=np.uint8))
+            terminated = bool(term[0].item() or trunc[0].item())
+            if terminated:
+                break
+        if len(frames) != 33:
+            raise RuntimeError(f"{label} terminated after {len(frames) - 1} actions; full donor video required")
+        endpoint = env.scene.get_state(is_relative=True)
+        donor_path = args.output_dir / f"{label}.npz"
+        np.savez_compressed(
+            donor_path,
+            video=np.stack(frames),
+            action=raw_action,
+            executed_action=action,
+        )
+        return {
+            "label": label,
+            "raw_action": raw_action,
+            "executed_action": action,
+            "video_path": donor_path,
+            "restored_state": restored,
+            "endpoint_state": clone_tree(endpoint),
+            "terminated": terminated,
+        }
+
+    try:
+        initial_observation, _ = env.reset()
+        restore_recorded_initial_state(env, str(args.recorded_hdf5), 0)
+        progress("recorded_state_restored")
+        branch_state = clone_tree(env.scene.get_state(is_relative=True))
+        initial_observation = env.observation_manager.compute()
+        initial_request = pack(initial_observation)
+        initial_image = np.asarray(initial_request["observation/image"], dtype=np.uint8)
+
+        restore_digests = []
+        restore_image_errors = []
+        for _ in range(3):
+            replay_observation, replay_state = restore(branch_state)
+            restore_digests.append(state_digest(replay_state))
+            replay_image = np.asarray(pack(replay_observation)["observation/image"], dtype=np.uint8)
+            restore_image_errors.append(int(np.abs(replay_image.astype(np.int16) - initial_image).max()))
+        if len(set(restore_digests)) != 1:
+            raise RuntimeError(f"branch state restore is not exact: {restore_digests}")
+        progress(
+            "restore_audit_passed",
+            state_digest=restore_digests[0],
+            rerender_image_errors=restore_image_errors,
+            model_current_observation="cached_original",
+        )
+
+        native_responses: dict[int, dict[str, Any]] = {}
+        native_runs: dict[int, dict[str, Any]] = {}
+        server_state_hashes = set()
+        for seed in args.branch_seeds:
+            request = dict(initial_request)
+            request.update(research_mode="native", research_seed=seed, research_id=f"branch-native-{seed}")
+            response = client.client.infer(request)
+            native_responses[seed] = response
+            server_state_hashes.add(response["research_state_hash"])
+            native_runs[seed] = execute(branch_state, initial_request, response, f"native_{seed}")
+            progress("native_branch_completed", seed=seed)
+        if len(server_state_hashes) != 1:
+            raise RuntimeError(f"native server state hashes differ: {server_state_hashes}")
+
+        endpoint_vectors = {seed: state_vector(run["endpoint_state"], "all") for seed, run in native_runs.items()}
+        pair_distances = {
+            (left, right): float(np.linalg.norm(endpoint_vectors[left] - endpoint_vectors[right]))
+            for left, right in combinations(args.branch_seeds, 2)
+        }
+        recipient_seed, donor_seed = max(pair_distances, key=pair_distances.get)
+        progress("donor_pair_selected", recipient_seed=recipient_seed, donor_seed=donor_seed)
+
+        for seed, run in native_runs.items():
+            register_request = dict(initial_request)
+            register_request.update(
+                research_mode="register_executed",
+                research_id=f"branch-executed-{seed}",
+                research_donor_path=str(run["video_path"]),
+            )
+            registered = client.client.infer(register_request)
+            if registered["research_state_hash"] not in server_state_hashes:
+                raise RuntimeError("executed donor registration changed the state fingerprint")
+            progress("executed_donor_registered", seed=seed)
+
+        intervention_specs = {
+            "self": {"research_mode": "self", "research_donor_id": f"branch-native-{recipient_seed}"},
+            "predicted_donor": {
+                "research_mode": "donor",
+                "research_donor_id": f"branch-native-{donor_seed}",
+            },
+            "executed_donor": {
+                "research_mode": "donor",
+                "research_donor_id": f"branch-executed-{donor_seed}",
+            },
+            "gaussian_executed": {
+                "research_mode": "gaussian",
+                "research_donor_id": f"branch-executed-{donor_seed}",
+                "research_gaussian_seed": args.gaussian_seed,
+            },
+        }
+        intervention_responses = {}
+        intervention_runs = {}
+        for label, spec in intervention_specs.items():
+            request = dict(initial_request)
+            request.update(
+                research_id=f"branch-intervention-{label}",
+                research_seed=recipient_seed,
+                research_recipient_id=f"branch-native-{recipient_seed}",
+                **spec,
+            )
+            response = client.client.infer(request)
+            intervention_responses[label] = response
+            intervention_runs[label] = execute(branch_state, initial_request, response, label)
+            progress("intervention_completed", label=label)
+
+        recipient_run = native_runs[recipient_seed]
+        donor_run = native_runs[donor_seed]
+        recipient_action = recipient_run["raw_action"]
+        donor_action = donor_run["raw_action"]
+        groups = ("all", "robot", "object")
+        recipient_endpoints = {group: state_vector(recipient_run["endpoint_state"], group) for group in groups}
+        donor_endpoints = {group: state_vector(donor_run["endpoint_state"], group) for group in groups}
+        interventions = {}
+        for label, run in intervention_runs.items():
+            response = intervention_responses[label]
+            interventions[label] = {
+                "action_donor_projection": projection(run["raw_action"], recipient_action, donor_action),
+                "action_l2_from_recipient": float(np.linalg.norm(run["raw_action"] - recipient_action)),
+                "endpoint_donor_projection": {
+                    group: projection(
+                        state_vector(run["endpoint_state"], group),
+                        recipient_endpoints[group],
+                        donor_endpoints[group],
+                    )
+                    for group in groups
+                },
+                "server": response_metadata(response),
+                "video_path": str(run["video_path"]),
+            }
+
+        summary = {
+            "scope": "same-state RoboLab engineering pilot; donor pair selected only by native endpoint separation",
+            "task": args.task,
+            "instruction": env_cfg.instruction,
+            "recorded_hdf5": str(args.recorded_hdf5),
+            "branch_seeds": args.branch_seeds,
+            "recipient_seed": recipient_seed,
+            "donor_seed": donor_seed,
+            "native_pairwise_endpoint_l2": {
+                f"{left}:{right}": distance for (left, right), distance in pair_distances.items()
+            },
+            "native_action_l2": float(np.linalg.norm(donor_action - recipient_action)),
+            "restore_state_digests": restore_digests,
+            "restore_image_maximum_absolute_errors": restore_image_errors,
+            "server_state_hash": next(iter(server_state_hashes)),
+            "native": {
+                str(seed): {
+                    "endpoint_state_digest": state_digest(run["endpoint_state"]),
+                    "video_path": str(run["video_path"]),
+                    "server": response_metadata(native_responses[seed]),
+                }
+                for seed, run in native_runs.items()
+            },
+            "interventions": interventions,
+        }
+        (args.output_dir / "summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n")
+        print(json.dumps(summary, indent=2, sort_keys=True))
+        progress("completed")
+    finally:
+        env.close()
+    simulation_app.close()
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as error:
+        print(f"RoboLab branch pilot failed: {error}", flush=True)
+        traceback.print_exc()
+        raise

@@ -1,0 +1,66 @@
+{
+  "scope": "excluded same-state RoboLab engineering pilot",
+  "task": "BananaInBowlTask",
+  "instruction": "Pick up the banana and place it in the bowl",
+  "provenance": {
+    "cosmos_framework_commit": "d4599e2e43fbd06168e9884205b9b66c3902d8f6",
+    "robolab_commit": "9db0aaf09d9fe5d4f37b168320788258c7012463",
+    "checkpoint_revision": "2b9f9517efcfbf26e222945b386ae9b65c0930ac",
+    "cosmos_container_digest": "sha256:c2e321b92c692934a885702b3bbd230c8af910beebc887eb2069c148425d84bf",
+    "robolab_container_digest": "sha256:0ac1e96743f93315aae09daeba12fbfcc1d42d88a676e1bb2a76ee2c39ecdb77"
+  },
+  "native_task_validation": {
+    "success": true,
+    "success_step": 137,
+    "grasp_step": 88,
+    "replay_success_step": 137,
+    "maximum_state_absolute_error": 0.0,
+    "mean_state_absolute_error": 0.0,
+    "state_steps": 137
+  },
+  "branch_restore": {
+    "state_repeats": 3,
+    "state_digests_equal": true,
+    "rerender_image_maximum_absolute_errors": [8, 11, 16],
+    "current_observation_handling": "one cached current observation reused for every request and donor frame zero"
+  },
+  "selection": {
+    "branch_seeds": [211, 223, 227, 229],
+    "rule": "maximum native endpoint separation before interventions",
+    "recipient_seed": 223,
+    "donor_seed": 229,
+    "native_action_l2": 4.585773944854736,
+    "native_endpoint_l2": 1.1781887291891988
+  },
+  "interventions": {
+    "self": {
+      "action_donor_projection": -0.0332867545437987,
+      "robot_endpoint_donor_projection": -0.04473418860650828,
+      "target_maximum_absolute_error": 0.01847076416015625
+    },
+    "predicted_donor": {
+      "action_donor_projection": 0.983244269781242,
+      "robot_endpoint_donor_projection": 0.9783636895764611,
+      "target_maximum_absolute_error": 0.01921224594116211
+    },
+    "executed_donor": {
+      "action_donor_projection": 0.9988135298220483,
+      "robot_endpoint_donor_projection": 0.9978333323149091,
+      "target_maximum_absolute_error": 0.021626949310302734
+    },
+    "matched_gaussian": {
+      "action_donor_projection": 0.03191516372669387,
+      "robot_endpoint_donor_projection": 0.03968044064601337,
+      "target_maximum_absolute_error": 0.019335508346557617
+    }
+  },
+  "audits": {
+    "native_action_recomputation_maximum_absolute_error": 0.0,
+    "native_future_hash_equal": true,
+    "native_per_step_x0_hashes_equal": true,
+    "maximum_direct_action_input_mutation": 0.0,
+    "maximum_direct_action_output_mutation": 0.0,
+    "server_state_fingerprints_equal": true
+  },
+  "interpretation": "positive content-specific sufficiency for prospective robot motion; object projection undefined because objects did not move"
+}

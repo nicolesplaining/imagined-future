@@ -2,10 +2,11 @@
 
 ## Status
 
-These are engineering and synthetic-observation pilot results from the released
-Cosmos3-Nano-Policy-DROID checkpoint. They validate the port and provide an
-early directional signal. They are not included in confirmatory RoboLab causal
-inference because no simulator state was restored or physically executed.
+These are engineering and excluded-pilot results from the released
+Cosmos3-Nano-Policy-DROID checkpoint. The first sections validate the port. The
+RoboLab section is a positive same-state physical pilot, but it is excluded from
+confirmatory inference because it contains one outcome-independent donor pair
+from one task and the objects do not move during the tested chunk.
 
 ## Exact no-op and token census
 
@@ -58,3 +59,76 @@ action was executed. It supports proceeding to RoboLab; it does not yet support
 a cross-task or physical causal claim.
 
 Machine-readable reports are in `results/cosmos3_noop_v1/`.
+
+## Released-policy RoboLab validation
+
+The unmodified released checkpoint completed public RoboLab
+`BananaInBowlTask`: object grasp occurred at step 88 and the banana was dropped
+into the bowl successfully at step 137. The run stored all 137 actions, its
+initial state, and per-step robot and object states. Replaying those actions in
+the pinned RoboLab image reproduced success and all three events at the same
+steps. Every saved robot, banana, bowl, and table state tensor matched the
+original at every step with maximum and mean absolute error exactly zero.
+
+RoboLab's recorded-config loader could not be used because it deserializes
+conditional callables as strings. The replay instead regenerated the config
+from the identical pinned source and container. The resulting state equality
+shows that this workaround did not change the episode. The RoboLab container
+digest is recorded in the replication config.
+
+## Research-server audit
+
+The research service uses explicit request seeds and IDs, fingerprints the
+officially transformed current image, current action state, and instruction,
+and rejects donor/recipient fingerprint mismatches. A fixed public-observation
+audit found:
+
+- two native calls with the same seed had bit-identical actions, final future
+  latent, and all four clean-video and clean-action estimate hashes;
+- all future clamps had exactly zero direct action-input and action-output
+  coordinate mutation;
+- the post-guidance sigmas were 0.999, 0.937, 0.833, and 0.624;
+- tokenizer-encoded executed videos required the official uint8-to-`[-1,1]`
+  normalization and removal of reflection-padded latent sites;
+- after that correction, predicted, self, Gaussian, and encoded-video targets
+  had final maximum latent errors between 0.0178 and 0.0217.
+
+RoboLab state restoration was bit-exact, but independently re-rendering the
+same state differed by up to 8, 11, and 16 uint8 levels in three checks. The
+pilot therefore caches and reuses one current observation for every model
+request and donor frame zero, while exact state replay determines physical
+execution. This enforces the intended intervention rather than treating
+headless renderer noise as part of the treatment.
+
+## Same-state reachable-donor pilot
+
+Four native diffusion branches (211, 223, 227, 229) were generated from the
+same recorded state. The donor pair was selected solely by maximum native
+endpoint separation before any intervention was evaluated: seed 223 was the
+recipient and seed 229 the donor. Each complete 32-action chunk was executed
+from the exact state, its 33-frame RGB trajectory was encoded by Cosmos 3's
+released Wan2.2 VAE, and only future latent frames were clamped on the
+recipient noise path.
+
+| target | action donor projection | physical robot endpoint projection |
+| --- | ---: | ---: |
+| self | -0.0333 | -0.0447 |
+| predicted donor future | **0.9832** | **0.9784** |
+| executed reachable donor future | **0.9988** | **0.9978** |
+| norm/distance-matched Gaussian | 0.0319 | 0.0397 |
+
+The native recipient/donor action L2 was 4.586. The executed-donor target's
+maximum final latent error was 0.0216, and direct action-coordinate mutation
+remained exactly zero. Thus a coherent reachable future moved both generated
+action and physical execution almost exactly to the associated donor, whereas
+a geometry-matched nonsemantic target did not.
+
+This is a strong positive content-specific sufficiency result for Cosmos 3,
+but its interpretation is deliberately narrow. The object-state projection is
+undefined because no object moved during this initial chunk. The result
+therefore establishes prospective visible robot-motion/inverse-dynamics use,
+not object-consequence reasoning, task planning, or mediation of success. The
+pilot unit and its selected seeds are excluded from confirmatory inference.
+The compact machine-readable report is in
+`results/cosmos3_robolab_pilot/summary.json`; full videos, simulator states, and
+per-denoising hashes remain in the external run directory.
