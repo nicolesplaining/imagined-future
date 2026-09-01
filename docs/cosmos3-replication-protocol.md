@@ -45,9 +45,11 @@ The following checks must pass before outcomes are inspected:
 6. Gaussian controls match both donor latent norm and recipient-to-donor
    distance within relative tolerance `1e-5`. Natural shuffled controls use a
    valid endpoint from the same task and never the selected donor.
-7. RoboLab replay restores one saved simulator state, uses one environment, and
-   reproduces repeated native action chunks and resulting scene states within
-   `1e-6` absolute error before reciprocal branches are collected.
+7. RoboLab recreates a fresh environment for every condition, restores the
+   recorded initial state, and replays the recorded prefix with zero HDF5 state
+   error. Independent reconstructions must have identical branch-state digests,
+   and one repeated native continuation must have an identical endpoint digest,
+   before reciprocal branches are collected.
 
 Any failed check blocks the associated causal claim; it is not converted into
 a negative behavioral result.

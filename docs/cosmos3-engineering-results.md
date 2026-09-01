@@ -4,9 +4,10 @@
 
 These are engineering and excluded-pilot results from the released
 Cosmos3-Nano-Policy-DROID checkpoint. The first sections validate the port. The
-RoboLab section is a positive same-state physical pilot, but it is excluded from
-confirmatory inference because it contains one outcome-independent donor pair
-from one task and the objects do not move during the tested chunk.
+RoboLab sections are positive same-state physical pilots, but they are excluded
+from confirmatory inference because they contain one outcome-independent donor
+pair each from one task. The initial-state pilot isolates robot motion; the
+pre-grasp pilot includes coupled robot and object motion.
 
 ## Exact no-op and token census
 
@@ -132,3 +133,40 @@ pilot unit and its selected seeds are excluded from confirmatory inference.
 The compact machine-readable report is in
 `results/cosmos3_robolab_pilot/summary.json`; full videos, simulator states, and
 per-denoising hashes remain in the external run directory.
+
+## Pre-grasp reachable-donor pilot
+
+A second excluded pilot branched at recorded step 64, before contact with the
+banana, and evaluated the next 32 actions through grasp formation. Every
+condition recreated the RoboLab environment, restored the public recorded
+initial state, and replayed the 64-action prefix with zero HDF5 state error.
+Three independent reconstructions produced the same bitwise branch-state
+digest. Repeating one identical native continuation in another fresh
+reconstruction also produced the same bitwise endpoint digest. This stricter
+protocol was necessary because repeated reset or snapshot restoration within
+one physics environment exposed hidden continuation state.
+
+Four native branches (307, 311, 313, 317) were collected. Maximum native
+endpoint separation selected seed 311 as recipient and 313 as donor before any
+intervention outcome was inspected.
+
+| target | action donor projection | all-state endpoint | robot endpoint | object endpoint |
+| --- | ---: | ---: | ---: | ---: |
+| self | -0.0229 | -0.4964 | -0.5184 | -0.0426 |
+| predicted donor future | **0.9751** | **0.8743** | **0.8624** | **1.1207** |
+| executed reachable donor future | **0.8190** | **0.8737** | **0.8319** | **1.7379** |
+| norm/distance-matched Gaussian | -0.0128 | -0.5946 | -0.6046 | -0.3871 |
+
+The predicted and reachable executed donor targets therefore steered both the
+action and the physically executed grasp/object outcome toward the selected
+donor, while self and geometry-matched Gaussian targets did not. Direct action
+coordinate mutation remained exactly zero, and final target latent errors were
+0.0194 and 0.0210 for predicted and executed donors respectively.
+
+This is evidence beyond the initial robot-only chunk, but it is not yet an
+object-only content result: the banana moves as part of a coupled grasp and the
+robot endpoint moves in the same donor direction. Robot-pose-matched,
+object-divergent donors and explicit robot-pixel interventions remain necessary
+to distinguish task-state consequence use from visible inverse dynamics. The
+machine-readable report is in
+`results/cosmos3_robolab_step64_v3/summary.json`.

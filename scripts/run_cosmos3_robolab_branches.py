@@ -25,6 +25,20 @@ parser.add_argument("--output-dir", type=Path, required=True)
 parser.add_argument("--recorded-hdf5", type=Path, required=True)
 parser.add_argument("--branch-seeds", type=int, nargs="+", default=[211, 223, 227, 229])
 parser.add_argument("--gaussian-seed", type=int, default=1223)
+parser.add_argument("--branch-step", type=int, default=0)
+parser.add_argument("--study-id")
+parser.add_argument(
+    "--restore-strategy",
+    choices=("replay", "snapshot", "fresh_replay"),
+    default="fresh_replay",
+    help=(
+        "How to recover the audited branch point before each condition. "
+        "'snapshot' restores the exact saved RoboLab scene state; 'replay' "
+        "reruns the recorded prefix after a full environment reset; "
+        "'fresh_replay' recreates the environment and validates the recorded "
+        "prefix before every condition."
+    ),
+)
 AppLauncher.add_app_launcher_args(parser)
 args, _unknown = parser.parse_known_args()
 args.enable_cameras = True
@@ -39,6 +53,8 @@ from robolab.constants import set_output_dir  # noqa: E402
 from robolab.core.environments.factory import get_envs  # noqa: E402
 from robolab.core.environments.runtime import create_env  # noqa: E402
 from robolab.core.replay.scene_state import restore_recorded_initial_state  # noqa: E402
+from robolab.core.replay.scene_state import StateValidator  # noqa: E402
+from robolab.core.utils.file_utils import load_hdf5_episode_data  # noqa: E402
 from robolab.core.world.world_state import get_world  # noqa: E402
 from robolab.registrations.droid.auto_env_registrations_jointpos import auto_register_droid_envs  # noqa: E402
 from robolab.registrations.droid.camera_presets import WRIST_LEFT_RIGHT_HEAD  # noqa: E402
@@ -68,6 +84,8 @@ def flatten_tree(value: dict[str, Any], prefix: str = "") -> dict[str, torch.Ten
 def state_digest(state: dict[str, Any]) -> str:
     digest = hashlib.sha256()
     for path, tensor in sorted(flatten_tree(state).items()):
+        if not (path.startswith("articulation/") or path.startswith("rigid_object/")):
+            continue
         value = tensor.contiguous()
         digest.update(path.encode())
         digest.update(str(value.dtype).encode())
@@ -122,6 +140,9 @@ def main() -> None:
         raise ValueError("branch seeds must be unique")
     if (args.output_dir / "summary.json").exists():
         raise FileExistsError(f"refusing to overwrite completed run: {args.output_dir}")
+    if args.branch_step < 0:
+        raise ValueError("branch_step must be nonnegative")
+    study_id = args.study_id or f"{args.task.lower()}-step{args.branch_step}-{args.output_dir.parent.name}"
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
     def progress(phase: str, **details: Any) -> None:
@@ -144,17 +165,68 @@ def main() -> None:
     client = Cosmos3Client(remote_host=args.remote_host, remote_port=args.remote_port)
     progress("server_connected")
 
+    base_initial_state: dict[str, Any] | None = None
+    prefix_actions = np.empty((0, 8), dtype=np.float32)
+    expected_branch_digest: str | None = None
+
     def pack(observation: dict[str, Any]) -> dict[str, Any]:
         extracted = client._extract_observation(observation, env_id=0)
         return client._pack_request(extracted, env_cfg.instruction)
 
     def restore(branch_state: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
+        nonlocal env, env_cfg
+        if args.restore_strategy == "fresh_replay":
+            env.close()
+            env, fresh_env_cfg = create_env(
+                args.task,
+                device=args.device,
+                num_envs=1,
+                use_fabric=True,
+            )
+            if fresh_env_cfg.instruction != env_cfg.instruction:
+                raise RuntimeError("fresh environment changed the task instruction")
+            env_cfg = fresh_env_cfg
+            observation, _ = env.reset()
+            restore_recorded_initial_state(env, str(args.recorded_hdf5), 0)
+            validator = StateValidator(str(args.recorded_hdf5), 0, tolerance=0.0)
+            for step, action_step in enumerate(prefix_actions):
+                tensor = torch.from_numpy(action_step).unsqueeze(0).to(
+                    device=env.device,
+                    dtype=torch.float32,
+                )
+                observation, _reward, term, trunc, _info = env.step(tensor)
+                validator.check_step(env, step)
+                if bool(term[0].item() or trunc[0].item()):
+                    raise RuntimeError("recorded prefix terminated before the requested branch point")
+            if validator.max_drift != 0.0:
+                raise RuntimeError(
+                    f"fresh recorded-prefix replay drifted by {validator.max_drift} at "
+                    f"{validator.max_drift_path} step {validator.max_drift_step}"
+                )
+            restored = env.scene.get_state(is_relative=True)
+            if expected_branch_digest is not None and state_digest(restored) != expected_branch_digest:
+                raise RuntimeError("fresh recorded-prefix replay changed the branch state")
+            return observation, restored
+
         env.reset_eval_state()
+        env.reset()
         ids = torch.tensor([0], device=env.device, dtype=torch.long)
         get_world(env).reset_predicate_state(ids)
-        env.reset_to(clone_tree(branch_state), env_ids=None, is_relative=True)
+        use_prefix_replay = args.restore_strategy == "replay" and len(prefix_actions) > 0
+        replay_state = base_initial_state if use_prefix_replay else branch_state
+        if replay_state is None:
+            raise RuntimeError("base initial state is not initialized")
+        env.reset_to(clone_tree(replay_state), env_ids=None, is_relative=True)
         observation = env.observation_manager.compute()
-        return observation, env.scene.get_state(is_relative=True)
+        for action_step in prefix_actions if use_prefix_replay else ():
+            tensor = torch.from_numpy(action_step).unsqueeze(0).to(device=env.device, dtype=torch.float32)
+            observation, _reward, term, trunc, _info = env.step(tensor)
+            if bool(term[0].item() or trunc[0].item()):
+                raise RuntimeError("recorded prefix terminated before the requested branch point")
+        restored = env.scene.get_state(is_relative=True)
+        if expected_branch_digest is not None and state_digest(restored) != expected_branch_digest:
+            raise RuntimeError(f"{args.restore_strategy} did not recover the exact branch state")
+        return observation, restored
 
     def execute(
         branch_state: dict[str, Any],
@@ -197,8 +269,32 @@ def main() -> None:
     try:
         initial_observation, _ = env.reset()
         restore_recorded_initial_state(env, str(args.recorded_hdf5), 0)
+        base_initial_state = clone_tree(env.scene.get_state(is_relative=True))
         progress("recorded_state_restored")
+        recorded_actions = np.asarray(
+            load_hdf5_episode_data(str(args.recorded_hdf5), 0, "actions"),
+            dtype=np.float32,
+        )
+        if args.branch_step > len(recorded_actions):
+            raise ValueError(
+                f"branch_step {args.branch_step} exceeds recorded trajectory length {len(recorded_actions)}"
+            )
+        prefix_actions = recorded_actions[: args.branch_step].copy()
+        prefix_validator = StateValidator(str(args.recorded_hdf5), 0, tolerance=0.0)
+        for step, action_step in enumerate(prefix_actions):
+            tensor = torch.from_numpy(action_step).unsqueeze(0).to(device=env.device, dtype=torch.float32)
+            initial_observation, _reward, term, trunc, _info = env.step(tensor)
+            prefix_validator.check_step(env, step)
+            if bool(term[0].item() or trunc[0].item()):
+                raise RuntimeError("recorded prefix terminated before the requested branch point")
         branch_state = clone_tree(env.scene.get_state(is_relative=True))
+        expected_branch_digest = state_digest(branch_state)
+        if prefix_validator.max_drift != 0.0:
+            raise RuntimeError(
+                f"recorded prefix replay drifted by {prefix_validator.max_drift} at "
+                f"{prefix_validator.max_drift_path} step {prefix_validator.max_drift_step}"
+            )
+        progress("branch_point_reached", branch_step=args.branch_step, prefix_maximum_state_error=0.0)
         initial_observation = env.observation_manager.compute()
         initial_request = pack(initial_observation)
         initial_image = np.asarray(initial_request["observation/image"], dtype=np.uint8)
@@ -214,6 +310,7 @@ def main() -> None:
             raise RuntimeError(f"branch state restore is not exact: {restore_digests}")
         progress(
             "restore_audit_passed",
+            restore_strategy=args.restore_strategy,
             state_digest=restore_digests[0],
             rerender_image_errors=restore_image_errors,
             model_current_observation="cached_original",
@@ -224,7 +321,11 @@ def main() -> None:
         server_state_hashes = set()
         for seed in args.branch_seeds:
             request = dict(initial_request)
-            request.update(research_mode="native", research_seed=seed, research_id=f"branch-native-{seed}")
+            request.update(
+                research_mode="native",
+                research_seed=seed,
+                research_id=f"{study_id}-native-{seed}",
+            )
             response = client.client.infer(request)
             native_responses[seed] = response
             server_state_hashes.add(response["research_state_hash"])
@@ -232,6 +333,22 @@ def main() -> None:
             progress("native_branch_completed", seed=seed)
         if len(server_state_hashes) != 1:
             raise RuntimeError(f"native server state hashes differ: {server_state_hashes}")
+
+        repeat_seed = args.branch_seeds[0]
+        repeat_run = execute(
+            branch_state,
+            initial_request,
+            native_responses[repeat_seed],
+            f"native_{repeat_seed}_repeat",
+        )
+        repeat_reference_digest = state_digest(native_runs[repeat_seed]["endpoint_state"])
+        repeat_endpoint_digest = state_digest(repeat_run["endpoint_state"])
+        if repeat_endpoint_digest != repeat_reference_digest:
+            raise RuntimeError(
+                "identical continuation from the restored branch state was not deterministic: "
+                f"{repeat_endpoint_digest} != {repeat_reference_digest}"
+            )
+        progress("continuation_repeat_audit_passed", seed=repeat_seed)
 
         endpoint_vectors = {seed: state_vector(run["endpoint_state"], "all") for seed, run in native_runs.items()}
         pair_distances = {
@@ -245,7 +362,7 @@ def main() -> None:
             register_request = dict(initial_request)
             register_request.update(
                 research_mode="register_executed",
-                research_id=f"branch-executed-{seed}",
+                research_id=f"{study_id}-executed-{seed}",
                 research_donor_path=str(run["video_path"]),
             )
             registered = client.client.infer(register_request)
@@ -254,18 +371,21 @@ def main() -> None:
             progress("executed_donor_registered", seed=seed)
 
         intervention_specs = {
-            "self": {"research_mode": "self", "research_donor_id": f"branch-native-{recipient_seed}"},
+            "self": {
+                "research_mode": "self",
+                "research_donor_id": f"{study_id}-native-{recipient_seed}",
+            },
             "predicted_donor": {
                 "research_mode": "donor",
-                "research_donor_id": f"branch-native-{donor_seed}",
+                "research_donor_id": f"{study_id}-native-{donor_seed}",
             },
             "executed_donor": {
                 "research_mode": "donor",
-                "research_donor_id": f"branch-executed-{donor_seed}",
+                "research_donor_id": f"{study_id}-executed-{donor_seed}",
             },
             "gaussian_executed": {
                 "research_mode": "gaussian",
-                "research_donor_id": f"branch-executed-{donor_seed}",
+                "research_donor_id": f"{study_id}-executed-{donor_seed}",
                 "research_gaussian_seed": args.gaussian_seed,
             },
         }
@@ -274,9 +394,9 @@ def main() -> None:
         for label, spec in intervention_specs.items():
             request = dict(initial_request)
             request.update(
-                research_id=f"branch-intervention-{label}",
+                research_id=f"{study_id}-intervention-{label}",
                 research_seed=recipient_seed,
-                research_recipient_id=f"branch-native-{recipient_seed}",
+                research_recipient_id=f"{study_id}-native-{recipient_seed}",
                 **spec,
             )
             response = client.client.infer(request)
@@ -312,6 +432,10 @@ def main() -> None:
         summary = {
             "scope": "same-state RoboLab engineering pilot; donor pair selected only by native endpoint separation",
             "task": args.task,
+            "study_id": study_id,
+            "branch_step": args.branch_step,
+            "restore_strategy": args.restore_strategy,
+            "prefix_maximum_state_error": prefix_validator.max_drift,
             "instruction": env_cfg.instruction,
             "recorded_hdf5": str(args.recorded_hdf5),
             "branch_seeds": args.branch_seeds,
@@ -323,6 +447,12 @@ def main() -> None:
             "native_action_l2": float(np.linalg.norm(donor_action - recipient_action)),
             "restore_state_digests": restore_digests,
             "restore_image_maximum_absolute_errors": restore_image_errors,
+            "continuation_repeat_audit": {
+                "seed": repeat_seed,
+                "reference_endpoint_state_digest": repeat_reference_digest,
+                "repeat_endpoint_state_digest": repeat_endpoint_digest,
+                "exact": True,
+            },
             "server_state_hash": next(iter(server_state_hashes)),
             "native": {
                 str(seed): {
