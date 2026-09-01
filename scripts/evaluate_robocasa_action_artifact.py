@@ -7,9 +7,11 @@ import json
 from pathlib import Path
 
 import numpy as np
+from PIL import Image
+
+from imagined_future.branching import state_digest
 from imagined_future.cosmos_config import robocasa_policy_config
 from imagined_future.robocasa import environment_action, physical_state_vector
-from PIL import Image
 
 
 def main() -> None:
@@ -50,17 +52,33 @@ def main() -> None:
         try:
             raw = env.reset()
             for _ in range(10):
-                raw, _reward, _done, _info = env.step(np.zeros(env.action_spec[0].shape))
+                raw, _reward, _done, _info = env.step(
+                    np.zeros(env.action_spec[0].shape)
+                )
             for action in prefix_actions:
-                raw, _reward, _done, _info = env.step(environment_action(action, env.action_dim))
+                raw, _reward, _done, _info = env.step(
+                    environment_action(action, env.action_dim)
+                )
+            observed_branch_digest = state_digest(
+                np.asarray(env.sim.get_state().flatten(), dtype=np.float64)
+            )
+            if observed_branch_digest != summary["branch_state_digest"]:
+                raise RuntimeError(
+                    "RoboCasa branch replay mismatch: "
+                    f"expected {summary['branch_state_digest']}, got {observed_branch_digest}"
+                )
             for action in actions[key]:
-                raw, _reward, _done, _info = env.step(environment_action(action, env.action_dim))
+                raw, _reward, _done, _info = env.step(
+                    environment_action(action, env.action_dim)
+                )
             endpoint = prepare_observation(raw, cfg.flip_images)
             physical, current_schema = physical_state_vector(raw, env.sim.data.qpos)
             if schema is None:
                 schema = current_schema
             elif schema != current_schema:
-                raise RuntimeError("RoboCasa endpoint schema changed between action conditions")
+                raise RuntimeError(
+                    "RoboCasa endpoint schema changed between action conditions"
+                )
             success = bool(env._check_success())
             endpoint_state = np.asarray(env.sim.get_state().flatten(), dtype=np.float64)
         finally:
