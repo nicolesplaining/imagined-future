@@ -4,6 +4,8 @@ The implementation extends public code rather than reconstructing Cosmos Policy 
 
 - [Cosmos Policy paper](https://arxiv.org/abs/2601.16163) and [official code](https://github.com/NVlabs/cosmos-policy), pinned to commit `18a2accadf4e7a3531e56754102af5a24d2316da` for the pilot.
 - [LIBERO paper](https://arxiv.org/abs/2306.03310) and [official benchmark code](https://github.com/Lifelong-Robot-Learning/LIBERO).
+- [Keep the Future, Drop the Rollout (RIFT)](https://arxiv.org/abs/2608.11521), whose cache masking and reassignment experiments establish future-interface necessity and positional sensitivity. Our transplantation studies ask the distinct content-specific sufficiency question.
+- [robosuite's official state-playback implementation](https://github.com/ARISE-Initiative/robosuite/blob/master/robosuite/scripts/playback_demonstrations_from_hdf5.py), which restores flattened MuJoCo states and calls `sim.forward`; the secondary factorial study reuses this state interface and robosuite's joint-address APIs.
 - [RoboCasa paper](https://arxiv.org/abs/2406.02523) and the [Cosmos Policy evaluation fork](https://github.com/moojink/robocasa-cosmos-policy), pinned to commit `edd9a328b3ec98050f42d194c1419307a79c4d87` for the cross-domain replication.
 - [Causal mediation analysis for neural networks](https://proceedings.neurips.cc/paper/2020/hash/92650b2e92217715fe312e6fa7b90d82-Abstract.html), which motivates distinguishing encoded information from information the model uses.
 - [Localizing Model Behavior with Path Patching](https://arxiv.org/abs/2304.05969), used to frame future-to-action edge tests.
