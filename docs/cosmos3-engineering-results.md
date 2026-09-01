@@ -9,6 +9,12 @@ from confirmatory inference because they contain one outcome-independent donor
 pair each from one task. The initial-state pilot isolates robot motion; the
 pre-grasp pilot includes coupled robot and object motion.
 
+The implementation is pinned to the public
+[Cosmos repository](https://github.com/NVIDIA/cosmos),
+[Cosmos Framework](https://github.com/NVIDIA/cosmos-framework), and
+[RoboLab](https://github.com/NVlabs/RoboLab); exact commits and container
+digests are recorded in `configs/cosmos3_replication.toml`.
+
 ## Exact no-op and token census
 
 The pinned 16B checkpoint was run through the official DROID request transform
@@ -134,6 +140,53 @@ The compact machine-readable report is in
 `results/cosmos3_robolab_pilot/summary.json`; full videos, simulator states, and
 per-denoising hashes remain in the external run directory.
 
+## Outcome-independent multi-task feasibility screen
+
+Before cross-task interventions, one untouched native episode was run on each
+of the eight frozen public RoboLab tasks. Six of eight completed: banana to
+bowl (148 steps), cube to bowl (173), mustard to left bin (152), spoon to mug
+(342), marker to mug (568), and smartphone to bin (196). Bagels to plate timed
+out at 900 steps and yogurt to bowl timed out at 600. No intervention outcome
+entered this screen.
+
+This establishes six feasible public task trajectories, not causal
+generalization. The compact report is in
+`results/cosmos3_multitask_screen/summary.json`. Frozen same-state causal runs
+use pre-contact branch points selected only from recorded native object motion.
+
+## Cross-task multi-donor replication
+
+Four additional tasks used one outcome-independent branch state each, frozen
+from the untouched native feasibility trajectories before intervention results
+were available: Rubik's cube at step 64, mustard at step 96, spoon at step 128,
+and marker at step 320. Every task used four native diffusion seeds. The
+recipient and primary donor were selected solely by maximum native physical
+endpoint separation, and every other non-recipient seed supplied an additional
+natural donor. Exact HDF5 prefix drift was zero for every task, and an identical
+native continuation reproduced its endpoint digest exactly in a fresh
+environment.
+
+| future source | donors | mean action projection | action top-1 | mean physical endpoint projection | endpoint top-1 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| predicted | 12 | **0.985** | **12/12** | **0.975** | **10/12** |
+| executed reachable | 12 | **1.060** | **12/12** | **1.027** | **11/12** |
+
+All 24 donor transplants had positive target-specific action and physical
+endpoint projections. Task-cluster bootstrap intervals were 0.974--0.993 for
+predicted-future action projection and 1.010--1.103 for executed-future action
+projection. For the maximum-separation donor, predicted-minus-self action
+contrasts were 1.021, 1.011, 1.008, and 0.988 across the four tasks;
+executed-minus-Gaussian contrasts were 1.063, 1.189, 1.177, and 1.133.
+
+This extends directional content-specific action and physical control beyond
+Banana to four new public RoboLab tasks and shows that the transplanted action
+usually identifies the *correct* donor among several alternatives. It is still
+an engineering replication with one frozen state per task. Donors within a
+state are repeated measures, and four task clusters do not satisfy the frozen
+20-state confirmatory minimum. The compact task-clustered report is in
+`results/cosmos3_multitask_branches/summary.json`; complete per-run videos and
+server audits remain in the external results directory.
+
 ## Pre-grasp reachable-donor pilot
 
 A second excluded pilot branched at recorded step 64, before contact with the
@@ -195,6 +248,85 @@ whereas interventions moved the object by 31--41 mm. Normalized object-position
 projections of 3--4 are therefore overshoots along a small denominator and are
 not interpreted as isolated object-semantic use. The compact report is in
 `results/cosmos3_robolab_timing_v1/summary.json`.
+
+## Robot/object state factorization
+
+An excluded Banana step-64 follow-up constructed a simulator-rendered 2x2
+factorization at every future frame: recipient/donor robot state crossed with
+recipient/donor banana state, while the live current frame remained fixed.
+Every injected simulator state restored with zero numerical error. A separate
+non-Fabric rendering environment avoided the stale-frame failure found in the
+first invalid attempt. The accepted robot-only and object-only targets differed
+from the recipient target by maximum RGB values 86 and 87 and mean absolute RGB
+values 0.726 and 0.826, respectively.
+
+The four action projections were 1.459 (recipient object/robot), 1.466
+(recipient object/donor robot), 1.428 (donor object/recipient robot), and 1.461
+(donor object/robot). The resulting object main effect was -0.0183, robot main
+effect +0.0202, and interaction +0.0260. Corresponding all-state physical
+endpoint effects were -0.0018, +0.0021, and +0.0040.
+
+These are not clean content-factor nulls. All four synthetically re-rendered
+targets drove the action strongly donorward, including the nominal
+recipient/recipient cell, whereas natural self was -0.0004. The common
+re-render shift therefore dominates the treatment and cancels only under the
+within-2x2 contrasts. Pixel-isolated masks could not be produced because the
+isolated Isaac/Fabric visibility process exited before a mask report; this is
+recorded as unavailable, not as a negative result. The defensible conclusion
+is that this one-state factorization did not resolve robot versus object use.
+The compact report is in
+`results/cosmos3_factorization_v2/compact_summary.json`; the invalid stale-frame
+attempt is excluded from all interpretation.
+
+## Future-to-action attention interface
+
+Cosmos 3 uses 36 layers of released two-way full attention, so action queries
+can read future-video keys/values directly and can also receive future content
+indirectly through updated current-video tokens. The research wrapper therefore
+implements two destructive localization tests: a direct action-query exclusion
+and a stricter current-video-plus-action-query barrier. The model's full-graph
+compiler cannot represent different Python dispatchers at repeated layers, so
+the attention-only server uses the framework's public eager configuration and
+disables request-local text K/V reuse for every arm. Weights, attention math,
+and sampling remain unchanged. Implicit and explicit zero-gate requests, repeat
+zero-gate requests, and both empty scopes all produced exactly zero action
+error.
+
+An excluded public-observation calibration initially localized a large effect
+to layer 34: donor projection fell from 0.640 to 0.177 under the direct
+exclusion and to 0.117 under the barrier. A prospectively frozen physical
+layer-34 replay failed to reproduce that direction; predicted projection rose
+from 0.900 to 1.321/1.325 and executed projection rose from 1.594 to
+2.068/2.083. This failed calibration is retained rather than discarded.
+
+Four exact RoboLab-state calibration scans then covered Rubik's cube, mustard,
+spoon, and marker. Donor-transplant baselines were 0.984, 1.003, 0.925, and
+0.977. Full direct-exclusion mediation losses were +0.363, +1.061, -0.267, and
+-0.089; full-barrier losses were +0.511, +1.284, -0.504, and +0.344. Thus
+large mediation-like effects occur in some states, but removing the entire
+future interface is non-monotonic and can increase donor steering.
+
+Before testing Banana, layer 0 was frozen by an explicit rule: among layers
+with positive single-layer mediation in all four calibration tasks, choose the
+largest task mean. Its calibration mean was +0.148 (task-bootstrap 95% interval
+0.012 to 0.328). The held-out physical result again reversed sign:
+
+| future source | baseline action | layer-0 direct | layer-0 barrier |
+| --- | ---: | ---: | ---: |
+| predicted | 0.900 | 1.088 | 1.010 |
+| executed reachable | 1.583 | 1.758 | 1.738 |
+
+Target-future clamp errors were identical within each source, exact prefix
+drift was zero, and the repeated native continuation endpoint was bit-exact.
+Predicted robot endpoint projection was 0.973 at baseline and 0.963/0.968 under
+the two exclusions, providing no meaningful physical mediation either.
+
+The current conclusion is therefore heterogeneous necessity/sensitivity, not
+a stable single-layer causal bottleneck. Because deletion changes attention
+normalization and can be destructive, token-count-preserving future-K/V
+content patching is the required next mediation test. The compact calibration
+and held-out report is in
+`results/cosmos3_attention_multitask_v1/summary.json`.
 
 ## Server-restart reproducibility audit
 

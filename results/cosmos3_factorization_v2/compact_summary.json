@@ -1,0 +1,38 @@
+{
+  "scope": "excluded one-state simulator-rendered 2x2 robot/object factorization",
+  "task": "BananaInBowlTask",
+  "branch_step": 64,
+  "recipient_seed": 313,
+  "donor_seed": 317,
+  "state_restore_maximum_error": 0.0,
+  "target_video_contrasts": {
+    "recipient_vs_robot_only_maximum_rgb": 86,
+    "recipient_vs_robot_only_mean_rgb": 0.7263854108211747,
+    "recipient_vs_object_only_maximum_rgb": 87,
+    "recipient_vs_object_only_mean_rgb": 0.8264343375888514
+  },
+  "action_donor_projection_cells": {
+    "recipient_object_recipient_robot": 1.4589815361843406,
+    "recipient_object_donor_robot": 1.4661688019658452,
+    "donor_object_recipient_robot": 1.4276881024496768,
+    "donor_object_donor_robot": 1.4608635750264327
+  },
+  "action_effects": {
+    "object_main_effect": -0.018299330337038122,
+    "robot_main_effect": 0.02018136917913027,
+    "interaction": 0.025988206795251267
+  },
+  "all_endpoint_effects": {
+    "object_main_effect": -0.0017857088534026233,
+    "robot_main_effect": 0.0021309636777746555,
+    "interaction": 0.0040191325327347815
+  },
+  "natural_controls": {
+    "self_action_projection": -0.0004117584616746221,
+    "predicted_donor_action_projection": 0.9973643419551618,
+    "executed_donor_action_projection": 1.8396443956071322,
+    "gaussian_action_projection": -0.014977693548358722
+  },
+  "pixel_factorization_status": "unavailable: isolated Isaac/Fabric visibility toggles exited before producing a mask report",
+  "interpretation": "within-factor contrasts are near zero, but every synthetic cell shares a large donorward re-render effect; this is a confounded exploratory null and does not establish that object or robot content is unused"
+}

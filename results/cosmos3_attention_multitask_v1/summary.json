@@ -1,0 +1,222 @@
+{
+  "bootstrap_replicates": 100000,
+  "bootstrap_seed": 20260901,
+  "calibration_aggregate": {
+    "all_barrier_mean_mediation_loss": 0.40841288180243795,
+    "all_barrier_positive_tasks": 3,
+    "all_barrier_task_bootstrap_95_interval": [
+      -0.250554276799263,
+      1.0486321930888418
+    ],
+    "all_direct_mean_mediation_loss": 0.26693733420232024,
+    "all_direct_positive_tasks": 2,
+    "all_direct_task_bootstrap_95_interval": [
+      -0.1778370737512016,
+      0.7731726194798053
+    ],
+    "selected_layer_mean_mediation_loss": 0.14816982327630135,
+    "selected_layer_positive_tasks": 4,
+    "selected_layer_task_bootstrap_95_interval": [
+      0.011991717423784132,
+      0.3281996948064425
+    ]
+  },
+  "calibration_tasks": [
+    "marker",
+    "mustard",
+    "rubiks",
+    "spoon"
+  ],
+  "failed_initial_layer34": {
+    "calibration": {
+      "barrier_action_projection": 0.11660253810036915,
+      "barrier_mediation_loss": 0.5232015794819281,
+      "baseline_action_projection": 0.6398041175822973,
+      "direct_action_projection": 0.17738364757335007,
+      "direct_mediation_loss": 0.4624204700089472
+    },
+    "interpretation": "excluded calibration effect reversed sign in physical replay",
+    "physical": {
+      "attention_layers": [
+        34
+      ],
+      "executed": {
+        "barrier_action_projection": 2.0833280954412254,
+        "barrier_endpoint_projection": {
+          "all": 0.5431935775436316,
+          "object": -0.0049098049478895735,
+          "object_orientation": -0.004608160439210912,
+          "object_position": -0.04826097825291542,
+          "robot": 1.0718026468503141
+        },
+        "barrier_mediation_loss": -0.48916509812402786,
+        "baseline_action_projection": 1.5941629973171976,
+        "baseline_endpoint_projection": {
+          "all": 0.48216628144242674,
+          "object": -0.07476085329790423,
+          "object_orientation": -0.07640728324608599,
+          "object_position": 0.161857642861251,
+          "robot": 1.0192852698866877
+        },
+        "direct_action_projection": 2.0680817868060712,
+        "direct_endpoint_projection": {
+          "all": 0.5469209803818014,
+          "object": 0.00472405303822797,
+          "object_orientation": 0.0018403749296827755,
+          "object_position": 0.4191550333569348,
+          "robot": 1.069833668570627
+        },
+        "direct_mediation_loss": -0.47391878948887367,
+        "target_future_max_errors": {
+          "barrier": 0.025839805603027344,
+          "baseline": 0.025839805603027344,
+          "direct": 0.025839805603027344
+        }
+      },
+      "predicted": {
+        "barrier_action_projection": 1.324844185816879,
+        "barrier_endpoint_projection": {
+          "all": 0.49234182886759004,
+          "object": -0.01797764899617653,
+          "object_orientation": -0.014502188789999973,
+          "object_position": -0.517457246263379,
+          "robot": 0.9845108481799475
+        },
+        "barrier_mediation_loss": -0.42485864232864745,
+        "baseline_action_projection": 0.8999855434882315,
+        "baseline_endpoint_projection": {
+          "all": 0.4877389350325338,
+          "object": -0.01557390940272674,
+          "object_orientation": -0.017101088997871532,
+          "object_position": 0.2039063907261544,
+          "robot": 0.9731505248271614
+        },
+        "direct_action_projection": 1.3209145392757335,
+        "direct_endpoint_projection": {
+          "all": 0.9034178778304559,
+          "object": 0.829747190913901,
+          "object_orientation": 0.8309749021529408,
+          "object_position": 0.6533053159224572,
+          "robot": 0.9744683301541037
+        },
+        "direct_mediation_loss": -0.4209289957875021,
+        "target_future_max_errors": {
+          "barrier": 0.019857168197631836,
+          "baseline": 0.019857168197631836,
+          "direct": 0.019857168197631836
+        }
+      }
+    }
+  },
+  "heldout": {
+    "attention_layers": [
+      0
+    ],
+    "branch_step": 64,
+    "continuation_repeat_exact": true,
+    "executed": {
+      "barrier_action_projection": 1.7382778414819853,
+      "barrier_endpoint_projection": {
+        "all": 0.5415216197934305,
+        "object": 0.03298604108232489,
+        "object_orientation": 0.03254138997618829,
+        "object_position": 0.09688956528980247,
+        "robot": 1.0319701876345004
+      },
+      "barrier_mediation_loss": -0.15517923417042856,
+      "baseline_action_projection": 1.5830986073115567,
+      "baseline_endpoint_projection": {
+        "all": 0.4946155928384199,
+        "object": -0.05482363039769273,
+        "object_orientation": -0.05623512506085426,
+        "object_position": 0.14803088212061508,
+        "robot": 1.0245129912364694
+      },
+      "direct_action_projection": 1.757957138884947,
+      "direct_endpoint_projection": {
+        "all": 0.6406293579077809,
+        "object": 0.23132039452307837,
+        "object_orientation": 0.23116702137383924,
+        "object_position": 0.2533625858499816,
+        "robot": 1.0353804889994005
+      },
+      "direct_mediation_loss": -0.17485853157339037,
+      "target_future_max_errors": {
+        "barrier": 0.025839805603027344,
+        "baseline": 0.025839805603027344,
+        "direct": 0.025839805603027344
+      }
+    },
+    "gaussian_action_projection": -0.010318009477855765,
+    "predicted": {
+      "barrier_action_projection": 1.0104591106084135,
+      "barrier_endpoint_projection": {
+        "all": 0.4613556029082773,
+        "object": -0.0640500327332156,
+        "object_orientation": -0.0654929388942934,
+        "object_position": 0.14331881785775735,
+        "robot": 0.9680742128216762
+      },
+      "barrier_mediation_loss": -0.11047356712018208,
+      "baseline_action_projection": 0.8999855434882315,
+      "baseline_endpoint_projection": {
+        "all": 0.4877389350325338,
+        "object": -0.01557390940272674,
+        "object_orientation": -0.017101088997871532,
+        "object_position": 0.2039063907261544,
+        "robot": 0.9731505248271614
+      },
+      "direct_action_projection": 1.0879333474159991,
+      "direct_endpoint_projection": {
+        "all": 0.4685700352459495,
+        "object": -0.04398383762272249,
+        "object_orientation": -0.045440551406276265,
+        "object_position": 0.1653693906634024,
+        "robot": 0.9628939791614675
+      },
+      "direct_mediation_loss": -0.18794780392776766,
+      "target_future_max_errors": {
+        "barrier": 0.019857168197631836,
+        "baseline": 0.019857168197631836,
+        "direct": 0.019857168197631836
+      }
+    },
+    "prefix_maximum_state_error": 0.0,
+    "self_action_projection": -0.012088761435961819,
+    "task": "BananaInBowlTask"
+  },
+  "interpretation": "the calibration-selected single layer failed with opposite-signed action mediation on the held-out physical state; no task-stable single-layer bottleneck is established",
+  "scope": "excluded four-task attention calibration plus prospectively frozen held-out Banana physical replay",
+  "selected_layer": 0,
+  "selection_rule": "among layers with positive mediation in every calibration task, select the largest task-mean single-layer mediation",
+  "task_rows": [
+    {
+      "all_barrier_mediation_loss": 0.34355149607079816,
+      "all_direct_mediation_loss": -0.08908227207318442,
+      "baseline_action_projection": 0.9772386571047239,
+      "selected_layer_mediation_loss": 0.13855324663677138,
+      "task": "marker"
+    },
+    {
+      "all_barrier_mediation_loss": 1.2836590920948563,
+      "all_direct_mediation_loss": 1.0605909166641352,
+      "baseline_action_projection": 1.002671256365703,
+      "selected_layer_mediation_loss": 0.02237094436317255,
+      "task": "mustard"
+    },
+    {
+      "all_barrier_mediation_loss": 0.5107699621646721,
+      "all_direct_mediation_loss": 0.3628325676475489,
+      "baseline_action_projection": 0.9844940899531038,
+      "selected_layer_mediation_loss": 0.0016124904843957122,
+      "task": "rubiks"
+    },
+    {
+      "all_barrier_mediation_loss": -0.5043290231205747,
+      "all_direct_mediation_loss": -0.2665918754292188,
+      "baseline_action_projection": 0.9249455624771329,
+      "selected_layer_mediation_loss": 0.4301426116208658,
+      "task": "spoon"
+    }
+  ]
+}

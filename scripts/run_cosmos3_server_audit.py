@@ -26,6 +26,12 @@ def parse_args() -> argparse.Namespace:
 
 
 def first_frame(path: Path) -> np.ndarray:
+    if path.suffix == ".npz":
+        with np.load(path, allow_pickle=False) as payload:
+            video = np.asarray(payload["video"])
+        if video.ndim != 4 or video.shape[-1] != 3 or video.dtype != np.uint8:
+            raise ValueError(f"NPZ video must be uint8 [T,H,W,3], got {video.shape} {video.dtype}")
+        return video[0].copy()
     with av.open(str(path)) as container:
         decoded = next(container.decode(video=0), None)
     if decoded is None:

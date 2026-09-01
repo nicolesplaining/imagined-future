@@ -1,0 +1,52 @@
+{
+  "scope": "outcome-independent one-episode native feasibility screen; no interventions",
+  "checkpoint": "nvidia/Cosmos3-Nano-Policy-DROID",
+  "tasks_screened": 8,
+  "successful_tasks": 6,
+  "success_rate": 0.75,
+  "tasks": [
+    {
+      "task": "BananaInBowlTask",
+      "success": true,
+      "steps": 148
+    },
+    {
+      "task": "RubiksCubeTask",
+      "success": true,
+      "steps": 173
+    },
+    {
+      "task": "MustardInLeftBinTask",
+      "success": true,
+      "steps": 152
+    },
+    {
+      "task": "SpoonInMugTask",
+      "success": true,
+      "steps": 342
+    },
+    {
+      "task": "MarkerInMugTask",
+      "success": true,
+      "steps": 568
+    },
+    {
+      "task": "BagelsOnPlateTask",
+      "success": false,
+      "steps": 900,
+      "reason": "native episode timed out before placing both bagels"
+    },
+    {
+      "task": "YogurtInBowlTask",
+      "success": false,
+      "steps": 600,
+      "reason": "native episode timed out before satisfying object-grabbed"
+    },
+    {
+      "task": "SmartphoneInBinTask",
+      "success": true,
+      "steps": 196
+    }
+  ],
+  "interpretation": "six tasks are feasible for same-state causal replication; this screen alone is not causal evidence"
+}

@@ -16,6 +16,7 @@ import os
 import socket
 import time
 from collections import OrderedDict
+from contextlib import nullcontext
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -32,6 +33,7 @@ from imagined_future.cosmos3_interventions import (
     gaussian_target_on_mask,
     temporal_mask,
 )
+from imagined_future.cosmos3_attention import ActionQueryFutureKVExcluder
 
 ALLOWED_DONOR_ROOT = Path("/lambda/nfs/imagined-future/results")
 
@@ -97,7 +99,13 @@ class FutureRecord:
 class ResearchPolicyService:
     """Thin wrapper around the pinned public RoboLab policy service."""
 
-    def __init__(self, args: Any, *, registry_limit: int = 256) -> None:
+    def __init__(
+        self,
+        args: Any,
+        *,
+        registry_limit: int = 256,
+        attention_instrumentation: bool = False,
+    ) -> None:
         from cosmos_framework.scripts.action_policy_server_robolab import RobolabPolicyService
 
         self._base = RobolabPolicyService(args)
@@ -105,6 +113,37 @@ class ResearchPolicyService:
             raise ValueError("the research server currently supports the released joint-position policy only")
         self.registry_limit = int(registry_limit)
         self.registry: OrderedDict[str, FutureRecord] = OrderedDict()
+        net = self._base.model.net
+        self.attention_excluder = None
+        if attention_instrumentation:
+            self.attention_excluder = ActionQueryFutureKVExcluder(
+                num_layers=36,
+                action_tokens=self._base.cfg.action_chunk_size + self._base.cfg.history_length,
+                video_latent_frames=9,
+                device=next(net.parameters()).device,
+            )
+            wrapped_layers = set()
+            for _name, module in net.named_modules():
+                if not hasattr(module, "dispatch_attention_fn") or not hasattr(module, "layer_idx"):
+                    continue
+                layer = int(module.layer_idx)
+                if layer in wrapped_layers:
+                    raise RuntimeError(f"multiple attention modules reported layer {layer}")
+                module.dispatch_attention_fn = self.attention_excluder.wrap(
+                    layer, module.dispatch_attention_fn
+                )
+                wrapped_layers.add(layer)
+            expected_layers = set(range(self.attention_excluder.num_layers))
+            if wrapped_layers != expected_layers:
+                raise RuntimeError(
+                    f"attention interface layer census mismatch: {sorted(wrapped_layers)}"
+                )
+            # Torch's full-graph compiled decoder cannot swap dispatch functions
+            # after its first trace. Keep the audited wrapper installed with zero
+            # gates by default and expose full text/video/action K/V on every
+            # attention-server request. This disables only request-local text K/V
+            # reuse; every experimental arm therefore follows the same graph.
+            self._base.model._can_reuse_inference_text_kv = lambda *_args, **_kwargs: False
         self.parameter_probe_hash = parameter_probe_fingerprint(self._base.model.net)
 
     def _remember(self, record: FutureRecord) -> None:
@@ -295,8 +334,26 @@ class ResearchPolicyService:
         record_id = str(obs.get("research_id", f"native-{seed}-{time.time_ns()}"))
         sample = self._base._build_sample(obs)
         state_hash = sample_fingerprint(sample)
+        attention_layers = (
+            tuple(int(item) for item in np.asarray(obs["research_attention_exclude_layers"]).reshape(-1))
+            if "research_attention_exclude_layers" in obs
+            else ()
+        )
+        attention_scope = str(obs.get("research_attention_exclude_scope", "action"))
+        attention_instrumented = "research_attention_exclude_layers" in obs
+        if attention_instrumented and self.attention_excluder is None:
+            raise ValueError("server was not started with --attention-instrumentation")
+        attention_context = (
+            self.attention_excluder.activate(attention_layers, scope=attention_scope)
+            if self.attention_excluder is not None
+            else nullcontext()
+        )
 
-        with self._base._lock, torch.inference_mode():
+        with (
+            self._base._lock,
+            torch.inference_mode(),
+            attention_context,
+        ):
             if mode == "register_executed":
                 record = self._encode_executed_donor(obs, sample, state_hash, record_id)
                 self._remember(record)
@@ -308,6 +365,8 @@ class ResearchPolicyService:
                     "research_parameter_probe_hash": self.parameter_probe_hash,
                     "research_future_hash": tensor_digest(record.target),
                     "research_source": record.source,
+                    "research_attention_exclude_layers": np.asarray(attention_layers, dtype=np.int64),
+                    "research_attention_exclude_scope": attention_scope,
                 }
 
             data_batch = self._batch(sample)
@@ -329,6 +388,8 @@ class ResearchPolicyService:
                     "research_sigmas": np.asarray(record.sigmas, dtype=np.float32),
                     "research_x0_vision_hashes": list(record.x0_vision_hashes),
                     "research_x0_action_hashes": list(record.x0_action_hashes),
+                    "research_attention_exclude_layers": np.asarray(attention_layers, dtype=np.int64),
+                    "research_attention_exclude_scope": attention_scope,
                 }
                 if bool(obs.get("research_return_video", False)):
                     decoded = self._base.model.decode(samples["vision"][0])
@@ -370,6 +431,8 @@ class ResearchPolicyService:
                     "research_recipient_id": recipient_id,
                     "research_donor_id": donor_id,
                     **{f"research_{key}": value for key, value in audit.items()},
+                    "research_attention_exclude_layers": np.asarray(attention_layers, dtype=np.int64),
+                    "research_attention_exclude_scope": attention_scope,
                 }
                 if donor.action is not None:
                     direction = donor.action.astype(np.float64) - recipient.action.astype(np.float64)
@@ -383,6 +446,28 @@ class ResearchPolicyService:
                 raise ValueError(f"unknown research_mode: {mode!r}")
 
         outputs["research_infer_ms"] = (time.monotonic() - start) * 1000.0
+        outputs["research_attention_interface"] = {
+            "layers": self.attention_excluder.num_layers if self.attention_excluder else 36,
+            "action_tokens": (
+                self.attention_excluder.action_tokens
+                if self.attention_excluder
+                else self._base.cfg.action_chunk_size + self._base.cfg.history_length
+            ),
+            "video_latent_frames": (
+                self.attention_excluder.video_latent_frames if self.attention_excluder else 9
+            ),
+            "excluded_keys_values": "future_video",
+            "instrumented_server": self.attention_excluder is not None,
+            "intervention_requested": attention_instrumented,
+            "text_kv_reuse": self.attention_excluder is None,
+            "scopes": {
+                "action": "exclude only for action queries",
+                "nonfuture": (
+                    "exclude for current-video and action queries to block indirect "
+                    "future-to-current-to-action paths"
+                ),
+            },
+        }
         return outputs
 
 
@@ -392,6 +477,7 @@ def main() -> None:
     parser.add_argument("--port", type=int, default=8001)
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--registry-limit", type=int, default=256)
+    parser.add_argument("--attention-instrumentation", action="store_true")
     args = parser.parse_args()
 
     # The public attention backend filter emits a Loguru debug call from inside
@@ -413,12 +499,16 @@ def main() -> None:
     native_build_setup_args = RobolabPolicyService._build_setup_args
 
     def build_without_guardrails(self, server_args):
-        return native_build_setup_args(self, server_args).model_copy(update={"guardrails": False})
+        updates = {"guardrails": False}
+        if args.attention_instrumentation:
+            updates.update(use_torch_compile=False, use_cuda_graphs=False)
+        return native_build_setup_args(self, server_args).model_copy(update=updates)
 
     RobolabPolicyService._build_setup_args = build_without_guardrails
     service = ResearchPolicyService(
         RobolabServerArgs(checkpoint_path=str(args.checkpoint), seed=args.seed),
         registry_limit=args.registry_limit,
+        attention_instrumentation=args.attention_instrumentation,
     )
     server_cls = _load_openpi_websocket_policy_server()
     hostname = socket.gethostname()

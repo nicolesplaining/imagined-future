@@ -30,12 +30,18 @@ not planning, search, goal reasoning, or mediation of task success. See the
 [publication assessment](docs/publication-assessment.md), and
 [public foundations](docs/references.md).
 
-The Cosmos 3 cross-generation replication is now underway. Its first excluded
-RoboLab pilot is positive: a tokenizer-encoded reachable donor moved action
-0.999 and physical robot execution 0.998 toward its associated endpoint, while
-the matched Gaussian moved them only 0.032 and 0.040. This currently supports
-robot-motion/inverse-dynamics use, not object-consequence reasoning. The pinned,
-outcome-independent protocol, exact audits, and pilot are in the
+The Cosmos 3 cross-generation replication is positive across four additional
+public RoboLab tasks. Twelve predicted-future donors produced mean action
+projection 0.985 with 12/12 correct-donor identification; twelve executed
+reachable donors produced mean projection 1.060 with 12/12 identification.
+Physical endpoint projections averaged 0.975 and 1.027. Together with Banana,
+this establishes five-task engineering generality. A one-state robot/object
+factorization was dominated by a common synthetic re-render shift and is
+inconclusive. Destructive future-to-action attention exclusions produced large
+but state-dependent, non-monotonic effects; a four-task-selected layer failed
+on held-out physical Banana. Token-count-preserving K/V patching and the frozen
+20-state confirmatory study therefore remain necessary. The pinned,
+outcome-independent protocol, exact audits, and results are in the
 [Cosmos 3 protocol](docs/cosmos3-replication-protocol.md) and
 [engineering results](docs/cosmos3-engineering-results.md).
 

@@ -107,10 +107,23 @@ clamps distinguish visible inverse dynamics from use of task consequences.
 
 All four denoising steps are tested separately and jointly. Layer localization
 scans all 36 Cosmos 3 transformer layers on excluded calibration units. The
-causal interface of interest is action-query attention receiving future-vision
-keys/values. Equal-count current-vision, text, action, and random-layer controls
-are required. The smallest best contiguous layer window is frozen before the
-confirmatory units are evaluated; no Predict2 layer number is carried over.
+direct causal interface is action-query attention receiving future-vision
+keys/values. Because full attention also permits an indirect
+future-video-to-current-video-to-action path across layers, a total-mediation
+condition excludes future-video keys/values from both current-video and action
+queries at every layer while leaving future queries intact. The direct edge and
+total barrier are reported separately. Equal-count current-vision, text,
+action, and random-layer controls are required. The smallest best contiguous
+layer window is frozen before the confirmatory units are evaluated; no Predict2
+layer number is carried over.
+
+Destructive K/V exclusion is treated only as localization. It changes softmax
+normalization and may induce non-monotonic action changes even when the clamped
+future remains exact. A content-mediation claim additionally requires
+token-count-preserving replacement of future-video K/V with a matched self or
+alternative-future cache at the frozen interface. The replacement must retain
+native current-video, text, and action K/V, preserve key order and count, and
+pass an exact self-cache no-op check.
 
 ## Statistical interpretation
 

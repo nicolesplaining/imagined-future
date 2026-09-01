@@ -30,6 +30,21 @@ parser.add_argument("--study-id")
 parser.add_argument("--fixed-current-video", type=Path)
 parser.add_argument("--timing-sweep", action="store_true")
 parser.add_argument(
+    "--attention-mediation-layers",
+    type=int,
+    nargs="+",
+    help="Add direct-action and total-nonfuture attention mediation conditions.",
+)
+parser.add_argument(
+    "--factorize-selected-donor",
+    action="store_true",
+    help="Render robot/object visibility masks and transplant each content factor separately.",
+)
+parser.add_argument(
+    "--factorization-object-prim",
+    help="Absolute USD path of the task object, required with --factorize-selected-donor.",
+)
+parser.add_argument(
     "--multi-donor",
     action="store_true",
     help="Transplant every non-recipient native future and audit donor identification.",
@@ -155,6 +170,8 @@ def main() -> None:
         raise FileExistsError(f"refusing to overwrite completed run: {args.output_dir}")
     if args.branch_step < 0:
         raise ValueError("branch_step must be nonnegative")
+    if args.factorize_selected_donor and not args.factorization_object_prim:
+        raise ValueError("--factorization-object-prim is required for donor factorization")
     study_id = args.study_id or f"{args.task.lower()}-step{args.branch_step}-{args.output_dir.parent.name}"
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -251,11 +268,14 @@ def main() -> None:
         raw_action = np.asarray(response["action"], dtype=np.float32)
         action = client._postprocess_chunk(raw_action)
         frames = [np.asarray(fixed_request["observation/image"], dtype=np.uint8)]
+        states = [clone_tree(restored)] if args.factorize_selected_donor else None
         terminated = False
         for action_step in action:
             tensor = torch.from_numpy(action_step).unsqueeze(0).to(device=env.device, dtype=torch.float32)
             observation, _reward, term, trunc, _info = env.step(tensor)
             frames.append(np.asarray(pack(observation)["observation/image"], dtype=np.uint8))
+            if states is not None:
+                states.append(clone_tree(env.scene.get_state(is_relative=True)))
             terminated = bool(term[0].item() or trunc[0].item())
             if terminated:
                 break
@@ -276,6 +296,7 @@ def main() -> None:
             "video_path": donor_path,
             "restored_state": restored,
             "endpoint_state": clone_tree(endpoint),
+            "states": states,
             "terminated": terminated,
         }
 
@@ -391,6 +412,120 @@ def main() -> None:
                 raise RuntimeError("executed donor registration changed the state fingerprint")
             progress("executed_donor_registered", seed=seed)
 
+        factorization_report = None
+        state_cell_donor_ids: dict[str, str] = {}
+        if args.factorize_selected_donor:
+            recipient_states = native_runs[recipient_seed]["states"]
+            donor_states = native_runs[donor_seed]["states"]
+            if recipient_states is None or donor_states is None:
+                raise RuntimeError("factorization requires saved native trajectory states")
+            object_name = Path(args.factorization_object_prim).name
+            if object_name not in recipient_states[0].get("rigid_object", {}):
+                raise ValueError(
+                    f"factorization object {object_name!r} is absent from the RoboLab scene state"
+                )
+            env.close()
+            env, render_env_cfg = create_env(
+                args.task,
+                device=args.device,
+                num_envs=1,
+                use_fabric=False,
+            )
+            if render_env_cfg.instruction != env_cfg.instruction:
+                raise RuntimeError("non-Fabric render environment changed the task instruction")
+            state_cell_audits = {}
+            state_cell_videos = {}
+            for cell, use_robot, use_object in (
+                ("o0r0", False, False),
+                ("o0r1", True, False),
+                ("o1r0", False, True),
+                ("o1r1", True, True),
+            ):
+                frames = [initial_image.copy()]
+                state_errors = []
+                for recipient_state, donor_state in zip(
+                    recipient_states[1:], donor_states[1:], strict=True
+                ):
+                    hybrid_state = clone_tree(recipient_state)
+                    if use_robot:
+                        hybrid_state["articulation"]["robot"] = clone_tree(
+                            donor_state["articulation"]["robot"]
+                        )
+                    if use_object:
+                        hybrid_state["rigid_object"][object_name] = clone_tree(
+                            donor_state["rigid_object"][object_name]
+                        )
+                    observation, _ = env.reset_to(
+                        hybrid_state, env_ids=None, is_relative=True
+                    )
+                    realized_state = env.scene.get_state(is_relative=True)
+                    exact = state_digest(realized_state) == state_digest(hybrid_state)
+                    state_errors.append(0.0 if exact else float("inf"))
+                    if not exact:
+                        raise RuntimeError(f"state-factorized cell {cell} did not restore exactly")
+                    frames.append(np.asarray(pack(observation)["observation/image"], dtype=np.uint8))
+                video = np.stack(frames)
+                if video.shape != (33, 540, 640, 3):
+                    raise RuntimeError(f"state-factorized cell {cell} has shape {video.shape}")
+                state_cell_videos[cell] = video
+                donor_path = args.output_dir / f"target_state_cell_{cell}.npz"
+                np.savez_compressed(
+                    donor_path,
+                    video=video,
+                    recipient_seed=np.asarray(recipient_seed),
+                    donor_seed=np.asarray(donor_seed),
+                    object_name=np.asarray(object_name),
+                )
+                state_cell_audits[cell] = {
+                    "robot_from_donor": use_robot,
+                    "object_from_donor": use_object,
+                    "maximum_state_restore_error": max(state_errors),
+                    "video_path": str(donor_path),
+                }
+
+            video_contrasts = {}
+            for left, right in combinations(state_cell_videos, 2):
+                difference = np.abs(
+                    state_cell_videos[left].astype(np.int16)
+                    - state_cell_videos[right].astype(np.int16)
+                )
+                video_contrasts[f"{left}:{right}"] = {
+                    "maximum_absolute_rgb_difference": int(difference.max()),
+                    "mean_absolute_rgb_difference": float(difference.mean()),
+                }
+            for left, right in (("o0r0", "o0r1"), ("o0r0", "o1r0")):
+                if video_contrasts[f"{left}:{right}"]["maximum_absolute_rgb_difference"] == 0:
+                    raise RuntimeError(f"state-factorized target videos {left} and {right} are identical")
+            for cell, audit in state_cell_audits.items():
+                record_id = f"{study_id}-state-cell-{cell}"
+                register_request = dict(initial_request)
+                register_request.update(
+                    research_mode="register_executed",
+                    research_id=record_id,
+                    research_donor_path=audit["video_path"],
+                )
+                registered = client.client.infer(register_request)
+                if registered["research_state_hash"] not in server_state_hashes:
+                    raise RuntimeError("state-factorized donor registration changed the state fingerprint")
+                state_cell_donor_ids[cell] = record_id
+                progress("state_factorized_donor_registered", cell=cell)
+
+            factorization_report = {
+                "recipient_seed": recipient_seed,
+                "donor_seed": donor_seed,
+                "object_name": object_name,
+                "state_cells": state_cell_audits,
+                "target_video_contrasts": video_contrasts,
+                "pixel_factorization_status": (
+                    "unavailable: isolated Isaac/Fabric visibility toggles exited before "
+                    "producing a mask report"
+                ),
+                "state_composition": (
+                    "recipient simulator state with robot and target-object subtrees replaced "
+                    "factorially from the donor at every future frame; current frame held exactly fixed"
+                ),
+            }
+
         intervention_specs = {
             "self": {
                 "research_mode": "self",
@@ -411,11 +546,36 @@ def main() -> None:
             },
         }
         intervention_target_seeds: dict[str, int | None] = {
-            "self": recipient_seed,
+            "self": None,
             "predicted_donor": donor_seed,
             "executed_donor": donor_seed,
             "gaussian_executed": None,
         }
+        if args.factorize_selected_donor:
+            intervention_specs.update(
+                {
+                    "executed_self": {
+                        "research_mode": "donor",
+                        "research_donor_id": f"{study_id}-executed-{recipient_seed}",
+                    },
+                    **{
+                        f"state_cell_{cell}": {
+                            "research_mode": "donor",
+                            "research_donor_id": record_id,
+                        }
+                        for cell, record_id in state_cell_donor_ids.items()
+                    },
+                }
+            )
+            intervention_target_seeds.update(
+                {
+                    "executed_self": None,
+                    "state_cell_o0r0": None,
+                    "state_cell_o0r1": donor_seed,
+                    "state_cell_o1r0": donor_seed,
+                    "state_cell_o1r1": donor_seed,
+                }
+            )
         if args.multi_donor:
             for candidate_seed in args.branch_seeds:
                 if candidate_seed in {recipient_seed, donor_seed}:
@@ -444,6 +604,22 @@ def main() -> None:
             intervention_target_seeds.update(
                 {f"predicted_donor_step_{step}": donor_seed for step in range(4)}
             )
+        if args.attention_mediation_layers is not None:
+            if len(set(args.attention_mediation_layers)) != len(args.attention_mediation_layers):
+                raise ValueError("attention mediation layers must be unique")
+            for source, donor_id in (
+                ("predicted", f"{study_id}-native-{donor_seed}"),
+                ("executed", f"{study_id}-executed-{donor_seed}"),
+            ):
+                for scope in ("action", "nonfuture"):
+                    label = f"{source}_donor_attention_{scope}"
+                    intervention_specs[label] = {
+                        "research_mode": "donor",
+                        "research_donor_id": donor_id,
+                        "research_attention_exclude_layers": args.attention_mediation_layers,
+                        "research_attention_exclude_scope": scope,
+                    }
+                    intervention_target_seeds[label] = donor_seed
         intervention_responses = {}
         intervention_runs = {}
         for label, spec in intervention_specs.items():
@@ -550,6 +726,48 @@ def main() -> None:
                 "video_path": str(run["video_path"]),
             }
 
+        factorial_effects = None
+        if args.factorize_selected_donor:
+            designs = {
+                "state": {
+                    "o0r0": "state_cell_o0r0",
+                    "o0r1": "state_cell_o0r1",
+                    "o1r0": "state_cell_o1r0",
+                    "o1r1": "state_cell_o1r1",
+                },
+            }
+
+            def contrast(cells: dict[str, float]) -> dict[str, float]:
+                return {
+                    "object_main_effect": 0.5
+                    * (cells["o1r0"] + cells["o1r1"] - cells["o0r0"] - cells["o0r1"]),
+                    "robot_main_effect": 0.5
+                    * (cells["o0r1"] + cells["o1r1"] - cells["o0r0"] - cells["o1r0"]),
+                    "interaction": cells["o1r1"] - cells["o1r0"] - cells["o0r1"] + cells["o0r0"],
+                }
+
+            factorial_effects = {}
+            for design, labels in designs.items():
+                action_cells = {
+                    cell: interventions[label]["action_donor_projection"]
+                    for cell, label in labels.items()
+                }
+                endpoint_cells = {
+                    group: {
+                        cell: interventions[label]["endpoint_donor_projection"][group]
+                        for cell, label in labels.items()
+                    }
+                    for group in groups
+                }
+                factorial_effects[design] = {
+                    "action_donor_projection_cells": action_cells,
+                    "action_donor_projection_effects": contrast(action_cells),
+                    "endpoint_donor_projection_cells": endpoint_cells,
+                    "endpoint_donor_projection_effects": {
+                        group: contrast(cells) for group, cells in endpoint_cells.items()
+                    },
+                }
+
         summary = {
             "scope": "same-state RoboLab engineering pilot; donor pair selected only by native endpoint separation",
             "task": args.task,
@@ -558,7 +776,11 @@ def main() -> None:
             "restore_strategy": args.restore_strategy,
             "fixed_current_video": str(args.fixed_current_video) if args.fixed_current_video else None,
             "timing_sweep": args.timing_sweep,
+            "attention_mediation_layers": args.attention_mediation_layers,
             "multi_donor": args.multi_donor,
+            "factorize_selected_donor": args.factorize_selected_donor,
+            "factorization": factorization_report,
+            "factorial_effects": factorial_effects,
             "prefix_maximum_state_error": prefix_validator.max_drift,
             "instruction": env_cfg.instruction,
             "recorded_hdf5": str(args.recorded_hdf5),
