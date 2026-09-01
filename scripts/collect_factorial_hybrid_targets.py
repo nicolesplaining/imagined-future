@@ -9,7 +9,6 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
-
 from imagined_future.branching import (
     BranchPoint,
     state_digest,
@@ -141,9 +140,9 @@ def _save_target(
             -1, 7
         ),
         branch_state=records["o0r0"]["state"],
-        current_primary_image=records["o0r0"]["primary_image"],
-        current_wrist_image=records["o0r0"]["wrist_image"],
-        current_proprio=records["o0r0"]["proprio"],
+        current_primary_image=candidate["current_primary_image"],
+        current_wrist_image=candidate["current_wrist_image"],
+        current_proprio=candidate["current_proprio"],
         cell_names=np.asarray(CELL_NAMES),
         cell_states=np.stack([records[name]["state"] for name in CELL_NAMES]),
         cell_primary_images=np.stack(
@@ -189,6 +188,33 @@ def _save_target(
         "cell_contacts": {
             name: records[name]["contacts"] for name in CELL_NAMES
         },
+        "live_current_vs_rerender": {
+            "primary_pixel_l1": float(
+                np.mean(
+                    np.abs(
+                        candidate["current_primary_image"].astype(np.int16)
+                        - records["o0r0"]["primary_image"].astype(np.int16)
+                    )
+                )
+            ),
+            "wrist_pixel_l1": float(
+                np.mean(
+                    np.abs(
+                        candidate["current_wrist_image"].astype(np.int16)
+                        - records["o0r0"]["wrist_image"].astype(np.int16)
+                    )
+                )
+            ),
+            "proprio_max_abs": float(
+                np.max(
+                    np.abs(
+                        candidate["current_proprio"]
+                        - records["o0r0"]["proprio"]
+                    ),
+                    initial=0.0,
+                )
+            ),
+        },
         "validation": validation,
     }
     (output_dir / "summary.json").write_text(
@@ -203,11 +229,14 @@ def main() -> None:
     parser.add_argument("--manifest-output", type=Path, required=True)
     parser.add_argument("--task-ids", type=int, nargs="+", required=True)
     parser.add_argument("--suite", default="libero_10")
+    parser.add_argument("--resume-existing", action="store_true")
     args = parser.parse_args()
     if args.manifest_output.exists():
         raise FileExistsError(
             f"refusing to overwrite manifest: {args.manifest_output}"
         )
+
+    from libero.libero import benchmark
 
     from cosmos_policy.experiments.robot.cosmos_utils import (
         get_action,
@@ -223,7 +252,6 @@ def main() -> None:
     from cosmos_policy.experiments.robot.libero.run_libero_eval import (
         prepare_observation,
     )
-    from libero.libero import benchmark
 
     screen = json.loads(args.screen.read_text())
     units = [unit for unit in screen["units"] if unit["task_id"] in args.task_ids]
@@ -238,6 +266,39 @@ def main() -> None:
     manifest_units = []
 
     for unit in units:
+        output_dir = args.output_dir / unit["unit_id"]
+        if output_dir.exists():
+            if not args.resume_existing:
+                raise FileExistsError(
+                    f"target already exists; pass --resume-existing: {output_dir}"
+                )
+            existing = json.loads((output_dir / "summary.json").read_text())
+            if existing["unit_id"] != unit["unit_id"]:
+                raise RuntimeError(f"existing target identity changed: {output_dir}")
+            manifest_units.append(
+                {
+                    "unit_id": unit["unit_id"],
+                    "task_id": unit["task_id"],
+                    "task_description": unit["task_description"],
+                    "initial_state_index": unit["initial_state_index"],
+                    "valid": True,
+                    "prefix_chunks": existing["prefix_chunks"],
+                    "target_dir": str(output_dir),
+                    "native_change_metrics": existing["native_change_metrics"],
+                    "artifact_sha256": {
+                        name: hashlib.sha256(
+                            (output_dir / name).read_bytes()
+                        ).hexdigest()
+                        for name in (
+                            "branches.npz",
+                            "endpoint_predicates.json",
+                            "summary.json",
+                        )
+                    },
+                    "resumed_existing": True,
+                }
+            )
+            continue
         task = suite.get_task(unit["task_id"])
         initial_state = np.asarray(
             suite.get_task_init_states(unit["task_id"])[unit["initial_state_index"]]
@@ -252,6 +313,7 @@ def main() -> None:
         candidate_set = set(unit["candidate_prefix_chunks"])
         maximum_candidate = max(candidate_set)
         candidates: dict[int, dict[str, Any]] = {}
+        selected = None
         prefix_actions: list[np.ndarray] = []
         environment = environment_factory()
         try:
@@ -282,9 +344,7 @@ def main() -> None:
                 )
                 del result
                 for action in actions:
-                    raw, _reward, done, _info = environment.step(action.tolist())
-                    if done and chunk < maximum_candidate:
-                        raise RuntimeError("candidate occurs after task success")
+                    raw, _reward, _done, _info = environment.step(action.tolist())
                 if chunk in candidate_set:
                     future_state = np.asarray(environment.get_sim_state()).copy()
                     future_predicates = goal_predicate_snapshot(environment)
@@ -312,22 +372,31 @@ def main() -> None:
                         "prefix_actions": tuple_actions(prefix_actions),
                         "current_state": current_state,
                         "future_state": future_state,
+                        "current_primary_image": np.asarray(
+                            current_observation["primary_image"], dtype=np.uint8
+                        ),
+                        "current_wrist_image": np.asarray(
+                            current_observation["wrist_image"], dtype=np.uint8
+                        ),
+                        "current_proprio": np.asarray(
+                            current_observation["proprio"], dtype=np.float64
+                        ),
                         "normalized_actions": normalized_actions,
                         "environment_actions": actions,
                         "metrics": metrics,
                     }
                 prefix_actions.extend(action.copy() for action in actions)
+                for ordered_chunk in unit["candidate_prefix_chunks"]:
+                    if ordered_chunk not in candidates:
+                        break
+                    if _candidate_valid(candidates[ordered_chunk]["metrics"]):
+                        selected = candidates[ordered_chunk]
+                        break
+                if selected is not None:
+                    break
         finally:
             environment.close()
 
-        selected = next(
-            (
-                candidates[chunk]
-                for chunk in unit["candidate_prefix_chunks"]
-                if _candidate_valid(candidates[chunk]["metrics"])
-            ),
-            None,
-        )
         if selected is None:
             manifest_units.append(
                 {
@@ -338,6 +407,7 @@ def main() -> None:
                     "candidate_metrics": {
                         str(chunk): candidates[chunk]["metrics"]
                         for chunk in unit["candidate_prefix_chunks"]
+                        if chunk in candidates
                     },
                 }
             )
@@ -389,7 +459,6 @@ def main() -> None:
             prepare_observation=prepare_observation,
         )
         validation = _validate_cells(records)
-        output_dir = args.output_dir / unit["unit_id"]
         _save_target(
             output_dir,
             unit=unit,

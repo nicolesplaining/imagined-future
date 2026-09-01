@@ -8,7 +8,6 @@ import json
 from pathlib import Path
 
 import numpy as np
-
 from imagined_future.content_factorization import (
     FactorizationThresholds,
     endpoint_distance_matrices,
@@ -23,7 +22,7 @@ def _write_csv(path: Path, rows: list[dict]) -> None:
         return
     fields = sorted({key for row in rows for key in row})
     with path.open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer = csv.DictWriter(handle, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 

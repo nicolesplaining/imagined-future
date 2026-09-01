@@ -8,7 +8,6 @@ from pathlib import Path
 
 import numpy as np
 import torch
-
 from imagined_future.libero_semantics import goal_feature_vector
 from imagined_future.metrics import donor_steering
 
@@ -81,6 +80,18 @@ def main() -> None:
         recipient, donor = pairs[metadata["context"]]
         goal = goal_feature_vector(item["endpoint"])
         robot = proprios[name]
+        goal_reference_l2 = float(
+            np.linalg.norm(reference_goal[donor] - reference_goal[recipient])
+        )
+        robot_reference_l2 = float(
+            np.linalg.norm(reference_robot[donor] - reference_robot[recipient])
+        )
+        goal_steering = _steering(
+            goal, reference_goal[recipient], reference_goal[donor]
+        )
+        robot_steering = _steering(
+            robot, reference_robot[recipient], reference_robot[donor]
+        )
         row = {
             "condition": name,
             "context": metadata["context"],
@@ -90,11 +101,17 @@ def main() -> None:
             "target_role": metadata["target_role"],
             "recipient_branch": recipient,
             "donor_branch": donor,
-            "goal_endpoint_donor_steering": _steering(
-                goal, reference_goal[recipient], reference_goal[donor]
+            "goal_endpoint_donor_steering": goal_steering,
+            "goal_endpoint_reference_l2": goal_reference_l2,
+            "goal_endpoint_projected_l2": (
+                None if goal_steering is None else goal_steering * goal_reference_l2
             ),
-            "robot_endpoint_donor_steering": _steering(
-                robot, reference_robot[recipient], reference_robot[donor]
+            "robot_endpoint_donor_steering": robot_steering,
+            "robot_endpoint_reference_l2": robot_reference_l2,
+            "robot_endpoint_projected_l2": (
+                None
+                if robot_steering is None
+                else robot_steering * robot_reference_l2
             ),
             "endpoint_success": bool(item["endpoint"]["success"]),
             "first_success_step": item["first_success_step"],

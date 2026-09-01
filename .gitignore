@@ -19,5 +19,9 @@ results/*
 !results/confirmatory_v1/**
 !results/robocasa_replication_v1/
 !results/robocasa_replication_v1/**
+!results/factorial_hybrid_v1/
+!results/factorial_hybrid_v1/**
+!results/content_factorization_v1/
+!results/content_factorization_v1/**
 wandb/
 *.log

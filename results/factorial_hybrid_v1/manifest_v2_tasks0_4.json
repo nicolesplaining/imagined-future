@@ -1,0 +1,206 @@
+{
+  "scope": "prospective 2x2 rendered targets selected without hybrid intervention outcomes",
+  "screen": "/research/artifacts/content_factorization_v1/screen_tasks0_4.json",
+  "units": [
+    {
+      "artifact_sha256": {
+        "branches.npz": "091b745ccc4dfdc5161c211049ae0748c0f095a774ebe65acf8f0c84ab0267ae",
+        "endpoint_predicates.json": "9fd14117d96afecd5f36514ab9d6177c14edb2b3d5b265897d0dbdf7d127124b",
+        "summary.json": "df1501f333e060db0b61f01ade69f379245a01611ff19eac15b29df6ac55a7c2"
+      },
+      "initial_state_index": 17,
+      "native_change_metrics": {
+        "object_goal_l2": 0.2149466293431558,
+        "robot_gripper_l2": 8.278086503953003e-05,
+        "robot_orientation_angle_rad": 0.0989107716388592,
+        "robot_position_l2_m": 0.21613761507241208
+      },
+      "prefix_chunks": 14,
+      "target_dir": "/research/artifacts/factorial_hybrid_v1/targets_v2/task00_state17",
+      "task_description": "put both the alphabet soup and the tomato sauce in the basket",
+      "task_id": 0,
+      "unit_id": "task00_state17",
+      "valid": true
+    },
+    {
+      "artifact_sha256": {
+        "branches.npz": "8d21606b4895c5aa15a51269f8f336fcd2253a18469f33b6ed0cbc114489c787",
+        "endpoint_predicates.json": "65c50db8602d776b6bb050add09d504699f372fb30120ee528c40f5d63658d19",
+        "summary.json": "4dc6c2dac1bd921cc28410b38dcb93f8b062b19ef0c588f1605629a6ac123c63"
+      },
+      "initial_state_index": 35,
+      "native_change_metrics": {
+        "object_goal_l2": 0.19764792627051836,
+        "robot_gripper_l2": 3.6927147168870976e-05,
+        "robot_orientation_angle_rad": 0.09890659089928201,
+        "robot_position_l2_m": 0.1984211532748841
+      },
+      "prefix_chunks": 13,
+      "target_dir": "/research/artifacts/factorial_hybrid_v1/targets_v2/task00_state35",
+      "task_description": "put both the alphabet soup and the tomato sauce in the basket",
+      "task_id": 0,
+      "unit_id": "task00_state35",
+      "valid": true
+    },
+    {
+      "artifact_sha256": {
+        "branches.npz": "8cefc77d979992ce8b0fdb35d7cd56c3300422df511c260addaf0454401a8026",
+        "endpoint_predicates.json": "1a0aea5176c308e9aca295d3158085cbb6b9da0af57345b1abd435775bff53e8",
+        "summary.json": "aadbb1fcc475cd43d0b30533c1fc9169989be18da62c583f97158b4947bf9723"
+      },
+      "initial_state_index": 17,
+      "native_change_metrics": {
+        "object_goal_l2": 0.18304259044696405,
+        "robot_gripper_l2": 0.0011382708358143633,
+        "robot_orientation_angle_rad": 0.02955914113075168,
+        "robot_position_l2_m": 0.18323471332082078
+      },
+      "prefix_chunks": 11,
+      "target_dir": "/research/artifacts/factorial_hybrid_v1/targets_v2/task01_state17",
+      "task_description": "put both the cream cheese box and the butter in the basket",
+      "task_id": 1,
+      "unit_id": "task01_state17",
+      "valid": true
+    },
+    {
+      "artifact_sha256": {
+        "branches.npz": "94a4ca4da429cabb39fdeb70bb042ceb92ec4403a172b17024c9b60a2a10ff25",
+        "endpoint_predicates.json": "68407410d440bdd33ddd9051cef02c54c1e75f0ad6dd07fed0739136709895f6",
+        "summary.json": "0b61d696d2abac985f4a1a793b1c777f3fe54ce4c5d4e7351d231c3c0d64f59c"
+      },
+      "initial_state_index": 35,
+      "native_change_metrics": {
+        "object_goal_l2": 0.19059119453909926,
+        "robot_gripper_l2": 0.0008315572050000318,
+        "robot_orientation_angle_rad": 0.020359588932122134,
+        "robot_position_l2_m": 0.19088422058177698
+      },
+      "prefix_chunks": 5,
+      "target_dir": "/research/artifacts/factorial_hybrid_v1/targets_v2/task01_state35",
+      "task_description": "put both the cream cheese box and the butter in the basket",
+      "task_id": 1,
+      "unit_id": "task01_state35",
+      "valid": true
+    },
+    {
+      "artifact_sha256": {
+        "branches.npz": "add05e304fd52c56a4d18df0a0433f87ac60f32393dbf60982b3b1698caf409e",
+        "endpoint_predicates.json": "c91b0c50d69ee90315827884583b7b769a827f3a06b90db51d789c843d002b10",
+        "summary.json": "97978fe1bfa8137f3bb269f28ad56c31051eff99dfcd11bf88d0dac7e0526602"
+      },
+      "initial_state_index": 17,
+      "native_change_metrics": {
+        "object_goal_l2": 0.45683191663939376,
+        "robot_gripper_l2": 0.003000294786745766,
+        "robot_orientation_angle_rad": 0.4162776937815787,
+        "robot_position_l2_m": 0.019549639308042367
+      },
+      "prefix_chunks": 6,
+      "target_dir": "/research/artifacts/factorial_hybrid_v1/targets_v2/task02_state17",
+      "task_description": "turn on the stove and put the moka pot on it",
+      "task_id": 2,
+      "unit_id": "task02_state17",
+      "valid": true
+    },
+    {
+      "artifact_sha256": {
+        "branches.npz": "a945a48ec0940fd56542a1364f754c208a2028360062e4374a408f4f42928c7e",
+        "endpoint_predicates.json": "e984a48254645ab2818a2c5289f5706a4dda0f21b704fd5ce351a37dbaa07049",
+        "summary.json": "efe2750191272c6518b6b0d9d9dde739238cf946cbc957adc6522bdf47ac9b2b"
+      },
+      "initial_state_index": 35,
+      "native_change_metrics": {
+        "object_goal_l2": 0.5069391869031099,
+        "robot_gripper_l2": 0.0030896440825371584,
+        "robot_orientation_angle_rad": 0.5053741376748213,
+        "robot_position_l2_m": 0.0206851995463885
+      },
+      "prefix_chunks": 4,
+      "target_dir": "/research/artifacts/factorial_hybrid_v1/targets_v2/task02_state35",
+      "task_description": "turn on the stove and put the moka pot on it",
+      "task_id": 2,
+      "unit_id": "task02_state35",
+      "valid": true
+    },
+    {
+      "artifact_sha256": {
+        "branches.npz": "1fd77b3e42609ad3cd9e248875e3ecd8bc6ab2806eda1aaef7f2307c249dd062",
+        "endpoint_predicates.json": "8831bdb9e95e00d0179709b8b708b642710fdd4189eb5b90668568b804fc039d",
+        "summary.json": "233683d4814cbcc3b0fbe5486ea9e0ef3ce10d71d139f5ad0a364afe10b12d67"
+      },
+      "initial_state_index": 17,
+      "native_change_metrics": {
+        "object_goal_l2": 0.1581480916971807,
+        "robot_gripper_l2": 0.00014738859628157057,
+        "robot_orientation_angle_rad": 0.0343540144648498,
+        "robot_position_l2_m": 0.06190233457474897
+      },
+      "prefix_chunks": 12,
+      "target_dir": "/research/artifacts/factorial_hybrid_v1/targets_v2/task03_state17",
+      "task_description": "put the black bowl in the bottom drawer of the cabinet and close it",
+      "task_id": 3,
+      "unit_id": "task03_state17",
+      "valid": true
+    },
+    {
+      "artifact_sha256": {
+        "branches.npz": "794a09678d1a1332daf5db69fef05b0cb30e052dab1458e5a90832109daf0826",
+        "endpoint_predicates.json": "d36e54e4928284647f0b4ba7134f060185bcd6240a439ee9e91404170ec2013e",
+        "summary.json": "5e7579d54389fcee45c655c1b615a9dd23b4f645775f2db30e70d78066f1a0e8"
+      },
+      "initial_state_index": 35,
+      "native_change_metrics": {
+        "object_goal_l2": 0.24866907184238332,
+        "robot_gripper_l2": 0.00042599068286566864,
+        "robot_orientation_angle_rad": 0.054150233342132245,
+        "robot_position_l2_m": 0.10922037638168992
+      },
+      "prefix_chunks": 13,
+      "target_dir": "/research/artifacts/factorial_hybrid_v1/targets_v2/task03_state35",
+      "task_description": "put the black bowl in the bottom drawer of the cabinet and close it",
+      "task_id": 3,
+      "unit_id": "task03_state35",
+      "valid": true
+    },
+    {
+      "artifact_sha256": {
+        "branches.npz": "b86e8f1726c58798281b698772458fe01ffb4f39e6c8b24dac14a40aa9d7ce99",
+        "endpoint_predicates.json": "efc82ab4554f849098d335522edd86d2179bcced878917a5e3d55ab3ab81ab65",
+        "summary.json": "b681e9bb115822c286918462ae092a2f70e7e7c19159ba40677cb1d80e4737ab"
+      },
+      "initial_state_index": 17,
+      "native_change_metrics": {
+        "object_goal_l2": 0.14422311171853974,
+        "robot_gripper_l2": 4.429418228649062e-05,
+        "robot_orientation_angle_rad": 0.09005952673830532,
+        "robot_position_l2_m": 0.14123422733085209
+      },
+      "prefix_chunks": 12,
+      "target_dir": "/research/artifacts/factorial_hybrid_v1/targets_v2/task04_state17",
+      "task_description": "put the white mug on the left plate and put the yellow and white mug on the right plate",
+      "task_id": 4,
+      "unit_id": "task04_state17",
+      "valid": true
+    },
+    {
+      "artifact_sha256": {
+        "branches.npz": "4e68b9a3d25173cb969b6985c3f253f8201e371c3c04bd314c9f56bc311100bf",
+        "endpoint_predicates.json": "6562d2793dec90618407ba401f2508d437708ddb9dffad8282b6da1342a693f5",
+        "summary.json": "b284885f01dd79a27a53bb9e70efb29406bcd796cc28134321a77d5be4f3cbd3"
+      },
+      "initial_state_index": 35,
+      "native_change_metrics": {
+        "object_goal_l2": 0.166023853007667,
+        "robot_gripper_l2": 3.504468566029481e-05,
+        "robot_orientation_angle_rad": 0.12342731791904873,
+        "robot_position_l2_m": 0.16056367639800673
+      },
+      "prefix_chunks": 12,
+      "target_dir": "/research/artifacts/factorial_hybrid_v1/targets_v2/task04_state35",
+      "task_description": "put the white mug on the left plate and put the yellow and white mug on the right plate",
+      "task_id": 4,
+      "unit_id": "task04_state35",
+      "valid": true
+    }
+  ]
+}

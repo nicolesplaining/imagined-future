@@ -1,0 +1,20 @@
+{
+  "candidate_pools": 56,
+  "candidate_trajectories": 20,
+  "scope": "preregistered natural-pair structural availability; no intervention outcomes",
+  "structurally_eligible_units": 4,
+  "thresholds": {
+    "maximum_object_match_l2": 0.0005,
+    "minimum_action_l2": 0.01,
+    "minimum_object_goal_l2": 0.003,
+    "minimum_robot_gripper_l2": 0.003,
+    "minimum_robot_orientation_angle_rad": 0.03,
+    "minimum_robot_position_l2_m": 0.003,
+    "robot_gripper_match_l2": 0.005,
+    "robot_orientation_match_rad": 0.03,
+    "robot_position_match_m": 0.003
+  },
+  "units_with_a_common_recipient": 4,
+  "units_with_any_object_pair": 10,
+  "units_with_any_robot_pair": 5
+}

@@ -10,7 +10,6 @@ from pathlib import Path
 
 import numpy as np
 import torch
-
 from imagined_future.metrics import donor_steering
 from imagined_future.statistics import cluster_bootstrap_mean, exact_sign_test
 
@@ -31,7 +30,7 @@ def _write_csv(path: Path, rows: list[dict]) -> None:
         return
     fields = sorted({key for row in rows for key in row})
     with path.open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer = csv.DictWriter(handle, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 
@@ -66,9 +65,11 @@ def _estimate(rows: list[dict], key: str) -> dict | None:
     }
 
 
-def _run_rows(run_dir: Path) -> tuple[list[dict], list[dict]]:
+def _run_rows(
+    run_dir: Path, execution_analysis_name: str
+) -> tuple[list[dict], list[dict]]:
     summary = json.loads((run_dir / "summary.json").read_text())
-    execution = json.loads((run_dir / "execution_analysis.json").read_text())
+    execution = json.loads((run_dir / execution_analysis_name).read_text())
     action_by_name = {
         row["condition"]: row
         for row in summary["rows"]
@@ -104,24 +105,57 @@ def _run_rows(run_dir: Path) -> tuple[list[dict], list[dict]]:
                 if modality == "all":
                     donor_endpoint = endpoint_by_name[f"{prefix}donor"]
                     recipient_endpoint = endpoint_by_name[f"{prefix}recipient"]
-                    row["goal_endpoint_donor_steering"] = _difference(
-                        donor_endpoint,
-                        recipient_endpoint,
-                        "goal_endpoint_donor_steering",
+                    endpoint_metrics = (
+                        (
+                            "goal_endpoint_donor_steering",
+                            "goal_endpoint_projected_l2",
+                        )
+                        if pair_type == "object"
+                        else (
+                            "robot_endpoint_donor_steering",
+                            "robot_endpoint_projected_l2",
+                        )
                     )
-                    row["robot_endpoint_donor_steering"] = _difference(
-                        donor_endpoint,
-                        recipient_endpoint,
-                        "robot_endpoint_donor_steering",
-                    )
+                    for metric in endpoint_metrics:
+                        row[metric] = _difference(
+                            donor_endpoint, recipient_endpoint, metric
+                        )
                 contrast_rows.append(row)
             prefix = f"{context}_n{noise_seed}_all_"
             donor = action_by_name[f"{prefix}donor"]
             gaussian = action_by_name[f"{prefix}gaussian"]
             donor_endpoint = endpoint_by_name[f"{prefix}donor"]
             gaussian_endpoint = endpoint_by_name[f"{prefix}gaussian"]
-            contrast_rows.append(
-                {
+            gaussian_row = {
+                "unit_id": summary["unit_id"],
+                "task_id": summary["task_id"],
+                "initial_state_index": summary["initial_state_index"],
+                "prefix_chunks": summary["prefix_chunks"],
+                "pair_type": pair_type,
+                "direction": direction,
+                "future_noise_seed": noise_seed,
+                "contrast": f"{pair_type}_all_donor_minus_gaussian",
+                "action_donor_steering": donor["pair_donor_steering"]
+                - gaussian["pair_donor_steering"],
+            }
+            endpoint_metrics = (
+                ("goal_endpoint_donor_steering", "goal_endpoint_projected_l2")
+                if pair_type == "object"
+                else (
+                    "robot_endpoint_donor_steering",
+                    "robot_endpoint_projected_l2",
+                )
+            )
+            for metric in endpoint_metrics:
+                gaussian_row[metric] = _difference(
+                    donor_endpoint, gaussian_endpoint, metric
+                )
+            contrast_rows.append(gaussian_row)
+            natural_name = f"{context}_n{noise_seed}_all_natural_control"
+            if natural_name in action_by_name:
+                natural = action_by_name[natural_name]
+                natural_endpoint = endpoint_by_name[natural_name]
+                natural_row = {
                     "unit_id": summary["unit_id"],
                     "task_id": summary["task_id"],
                     "initial_state_index": summary["initial_state_index"],
@@ -129,21 +163,15 @@ def _run_rows(run_dir: Path) -> tuple[list[dict], list[dict]]:
                     "pair_type": pair_type,
                     "direction": direction,
                     "future_noise_seed": noise_seed,
-                    "contrast": f"{pair_type}_all_donor_minus_gaussian",
+                    "contrast": f"{pair_type}_all_donor_minus_natural_control",
                     "action_donor_steering": donor["pair_donor_steering"]
-                    - gaussian["pair_donor_steering"],
-                    "goal_endpoint_donor_steering": _difference(
-                        donor_endpoint,
-                        gaussian_endpoint,
-                        "goal_endpoint_donor_steering",
-                    ),
-                    "robot_endpoint_donor_steering": _difference(
-                        donor_endpoint,
-                        gaussian_endpoint,
-                        "robot_endpoint_donor_steering",
-                    ),
+                    - natural["pair_donor_steering"],
                 }
-            )
+                for metric in endpoint_metrics:
+                    natural_row[metric] = _difference(
+                        donor_endpoint, natural_endpoint, metric
+                    )
+                contrast_rows.append(natural_row)
 
     selection = summary["selection"]
     branch = np.load(Path(summary["branch_run"]) / "branches.npz", allow_pickle=False)
@@ -201,6 +229,10 @@ def _run_rows(run_dir: Path) -> tuple[list[dict], list[dict]]:
                     "mean_other_alignment": float(np.mean(alternatives)),
                     "diagonal_alignment_margin": own - float(np.mean(alternatives)),
                     "correct_donor_top1": float(np.isclose(own, maximum)),
+                    "correct_donor_top1_minus_chance": float(
+                        np.isclose(own, maximum)
+                    )
+                    - 1.0 / len(alignments),
                     "alignment_matrix_row": json.dumps(alignments, sort_keys=True),
                 }
             )
@@ -212,6 +244,9 @@ def main() -> None:
     parser.add_argument("--manifests", type=Path, nargs="+", required=True)
     parser.add_argument("--run-dirs", type=Path, nargs="+", required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument(
+        "--execution-analysis-name", default="execution_analysis.json"
+    )
     args = parser.parse_args()
     if (args.output_dir / "summary.json").exists():
         raise FileExistsError(f"refusing to overwrite summary: {args.output_dir}")
@@ -222,14 +257,18 @@ def main() -> None:
     contrasts = []
     multi = []
     for run_dir in args.run_dirs:
-        run_contrasts, run_multi = _run_rows(run_dir)
+        run_contrasts, run_multi = _run_rows(
+            run_dir, args.execution_analysis_name
+        )
         contrasts.extend(run_contrasts)
         multi.extend(run_multi)
     estimates = {}
     metrics = (
         "action_donor_steering",
         "goal_endpoint_donor_steering",
+        "goal_endpoint_projected_l2",
         "robot_endpoint_donor_steering",
+        "robot_endpoint_projected_l2",
     )
     for contrast in sorted({row["contrast"] for row in contrasts}):
         selected = [row for row in contrasts if row["contrast"] == contrast]
@@ -241,6 +280,9 @@ def main() -> None:
     multi_estimates = {
         "diagonal_alignment_margin": _estimate(multi, "diagonal_alignment_margin"),
         "correct_donor_top1": _estimate(multi, "correct_donor_top1"),
+        "correct_donor_top1_minus_chance": _estimate(
+            multi, "correct_donor_top1_minus_chance"
+        ),
     }
     result = {
         "scope": "held-out saved-state-clustered robot-versus-object estimates",

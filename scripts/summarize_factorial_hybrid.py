@@ -9,7 +9,6 @@ from collections import defaultdict
 from pathlib import Path
 
 import numpy as np
-
 from imagined_future.factorial import two_by_two_effects
 from imagined_future.statistics import cluster_bootstrap_mean, exact_sign_test
 
@@ -22,7 +21,7 @@ def _write_csv(path: Path, rows: list[dict]) -> None:
         return
     fields = sorted({key for row in rows for key in row})
     with path.open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer = csv.DictWriter(handle, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 
@@ -163,6 +162,18 @@ def _run_rows(run_dir: Path) -> tuple[list[dict], list[dict]]:
                             "decoded_wrist_l1_to_target": action_by_name[name][
                                 "decoded_wrist_l1_to_target"
                             ],
+                            "decoded_primary_target_top1": action_by_name[name][
+                                "decoded_primary_target_top1"
+                            ],
+                            "decoded_wrist_target_top1": action_by_name[name][
+                                "decoded_wrist_target_top1"
+                            ],
+                            "decoded_primary_target_margin": action_by_name[name][
+                                "decoded_primary_target_margin"
+                            ],
+                            "decoded_wrist_target_margin": action_by_name[name][
+                                "decoded_wrist_target_margin"
+                            ],
                         }
                     )
     return effect_rows, cell_rows
@@ -198,6 +209,10 @@ def main() -> None:
             "target_coordinate_distance",
             "decoded_primary_l1_to_target",
             "decoded_wrist_l1_to_target",
+            "decoded_primary_target_top1",
+            "decoded_wrist_target_top1",
+            "decoded_primary_target_margin",
+            "decoded_wrist_target_margin",
         )
         if (estimate := _estimate(cells, key)) is not None
     }

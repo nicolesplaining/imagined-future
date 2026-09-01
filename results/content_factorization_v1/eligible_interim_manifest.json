@@ -1,0 +1,121 @@
+{
+  "scope": "first natural units eligible under frozen outcome-blind selection",
+  "units": [
+    {
+      "initial_state_index": 17,
+      "selected": {
+        "branch_run_dir": "/research/artifacts/content_factorization_v1/branches/task01_state17_prefix13_stage1",
+        "prefix_chunks": 13,
+        "selection": {
+          "eligible_common_recipient_triples": 8,
+          "joint_donor": null,
+          "natural_control": 10,
+          "object_donor": 31,
+          "pair_metrics": {
+            "joint": null,
+            "natural_control": {
+              "action_l2": 1.7265523932639935,
+              "object_goal_l2": 0.002957966122105083,
+              "robot_gripper_l2": 0.00013040392104873803,
+              "robot_orientation_angle_rad": 0.0005274134698963806,
+              "robot_position_l2_m": 0.0008953856328531948
+            },
+            "object": {
+              "action_l2": 1.8959829863322022,
+              "object_goal_l2": 0.003486055905139246,
+              "robot_gripper_l2": 0.00013031728021105704,
+              "robot_orientation_angle_rad": 0.001441972372742151,
+              "robot_position_l2_m": 0.0008113962890327742
+            },
+            "robot": {
+              "action_l2": 0.12275258021119302,
+              "object_goal_l2": 0.0003112608242814662,
+              "robot_gripper_l2": 3.3311905375190316e-06,
+              "robot_orientation_angle_rad": 0.002857423317468814,
+              "robot_position_l2_m": 0.0034400514295089826
+            }
+          },
+          "recipient": 18,
+          "robot_donor": 8,
+          "selection_score": 36.5,
+          "thresholds": {
+            "maximum_object_match_l2": 0.0005,
+            "minimum_action_l2": 0.01,
+            "minimum_object_goal_l2": 0.003,
+            "minimum_robot_gripper_l2": 0.003,
+            "minimum_robot_orientation_angle_rad": 0.03,
+            "minimum_robot_position_l2_m": 0.003,
+            "robot_gripper_match_l2": 0.005,
+            "robot_orientation_match_rad": 0.03,
+            "robot_position_match_m": 0.003
+          }
+        }
+      },
+      "structurally_eligible": true,
+      "task_description": "put both the cream cheese box and the butter in the basket",
+      "task_id": 1,
+      "unit_id": "task01_state17"
+    },
+    {
+      "initial_state_index": 17,
+      "selected": {
+        "branch_run_dir": "/research/artifacts/content_factorization_v1/branches/task02_state17_prefix07_stage1",
+        "prefix_chunks": 7,
+        "selection": {
+          "eligible_common_recipient_triples": 149,
+          "joint_donor": 4,
+          "natural_control": 28,
+          "object_donor": 18,
+          "pair_metrics": {
+            "joint": {
+              "action_l2": 0.18164111430243898,
+              "object_goal_l2": 0.0032494451935446422,
+              "robot_gripper_l2": 5.132456104847799e-06,
+              "robot_orientation_angle_rad": 0.005315342709971233,
+              "robot_position_l2_m": 0.0050867143743829795
+            },
+            "natural_control": {
+              "action_l2": 0.07123245260503043,
+              "object_goal_l2": 0.004183326825651035,
+              "robot_gripper_l2": 1.9579668777152636e-06,
+              "robot_orientation_angle_rad": 0.005016064946647024,
+              "robot_position_l2_m": 0.0014926419053286684
+            },
+            "object": {
+              "action_l2": 0.08732850534011109,
+              "object_goal_l2": 0.004054120325017507,
+              "robot_gripper_l2": 5.21869424279222e-07,
+              "robot_orientation_angle_rad": 0.0009921004203184678,
+              "robot_position_l2_m": 0.0014984649993160285
+            },
+            "robot": {
+              "action_l2": 0.1706923140546577,
+              "object_goal_l2": 5.7979695174070756e-05,
+              "robot_gripper_l2": 2.0225420528164934e-06,
+              "robot_orientation_angle_rad": 0.003952935712225903,
+              "robot_position_l2_m": 0.00502729366011678
+            }
+          },
+          "recipient": 31,
+          "robot_donor": 30,
+          "selection_score": 914.0,
+          "thresholds": {
+            "maximum_object_match_l2": 0.0005,
+            "minimum_action_l2": 0.01,
+            "minimum_object_goal_l2": 0.003,
+            "minimum_robot_gripper_l2": 0.003,
+            "minimum_robot_orientation_angle_rad": 0.03,
+            "minimum_robot_position_l2_m": 0.003,
+            "robot_gripper_match_l2": 0.005,
+            "robot_orientation_match_rad": 0.03,
+            "robot_position_match_m": 0.003
+          }
+        }
+      },
+      "structurally_eligible": true,
+      "task_description": "turn on the stove and put the moka pot on it",
+      "task_id": 2,
+      "unit_id": "task02_state17"
+    }
+  ]
+}

@@ -8,7 +8,6 @@ from pathlib import Path
 
 import numpy as np
 import torch
-
 from imagined_future.cosmos_config import (
     deterministic_tokenizer_enabled,
     libero_policy_config,
@@ -38,6 +37,14 @@ def _cell_observation(artifact: np.lib.npyio.NpzFile, name: str) -> dict:
         "primary_image": artifact["cell_primary_images"][index],
         "wrist_image": artifact["cell_wrist_images"][index],
         "proprio": artifact["cell_proprios"][index],
+    }
+
+
+def _current_observation(artifact: np.lib.npyio.NpzFile) -> dict:
+    return {
+        "primary_image": artifact["current_primary_image"],
+        "wrist_image": artifact["current_wrist_image"],
+        "proprio": artifact["current_proprio"],
     }
 
 
@@ -100,6 +107,7 @@ def main() -> None:
         observations = {
             name: _cell_observation(artifact, name) for name in CELL_NAMES
         }
+        current_observation = _current_observation(artifact)
         common = {
             "cfg": cfg,
             "model": model,
@@ -110,7 +118,7 @@ def main() -> None:
             "num_denoising_steps_action": cfg.num_denoising_steps_action,
             "generate_future_state_and_value_in_parallel": True,
         }
-        baseline = get_action(obs=observations["o0r0"], **common)
+        baseline = get_action(obs=current_observation, **common)
         baseline_action = np.asarray(baseline["actions"])
         native_action = np.asarray(artifact["normalized_native_actions"])
         baseline_error = float(
@@ -120,14 +128,10 @@ def main() -> None:
             raise RuntimeError(
                 f"{unit['unit_id']} native baseline mismatch: {baseline_error}"
             )
-        target_batches = {"o0r0": baseline}
-        target_batches.update(
-            {
-                name: get_action(obs=observations[name], **common)
-                for name in CELL_NAMES
-                if name != "o0r0"
-            }
-        )
+        target_batches = {
+            name: get_action(obs=observations[name], **common)
+            for name in CELL_NAMES
+        }
         groups = LatentFrameGroups.from_batch(baseline["data_batch"])
         modality_groups = future_frame_modalities(baseline["data_batch"])
         all_frames = tuple(groups.future)
@@ -213,7 +217,7 @@ def main() -> None:
                     transform_model_initial_noise(model, initial_transform),
                     transform_model_x0_factory(model, clamp.wrap),
                 ):
-                    result = get_action(obs=observations["o0r0"], **common)
+                    result = get_action(obs=current_observation, **common)
                 name = f"n{noise_seed}_{modality}_{target_cell}"
                 normalized_action = np.asarray(result["actions"])
                 environment_action = unnormalize_actions(
@@ -232,19 +236,51 @@ def main() -> None:
                 wrist_shape = decoded_wrist.shape[:2]
                 target_primary_l1 = None
                 target_wrist_l1 = None
+                primary_target_top1 = None
+                wrist_target_top1 = None
+                primary_target_margin = None
+                wrist_target_margin = None
+                primary_distances = None
+                wrist_distances = None
                 if target_cell in observations:
-                    target_primary_l1 = pixel_l1(
-                        decoded_primary,
-                        resize_uint8_image(
-                            observations[target_cell]["primary_image"],
-                            primary_shape,
-                        ),
+                    primary_distances = {
+                        cell: pixel_l1(
+                            decoded_primary,
+                            resize_uint8_image(
+                                observations[cell]["primary_image"],
+                                primary_shape,
+                            ),
+                        )
+                        for cell in CELL_NAMES
+                    }
+                    wrist_distances = {
+                        cell: pixel_l1(
+                            decoded_wrist,
+                            resize_uint8_image(
+                                observations[cell]["wrist_image"], wrist_shape
+                            ),
+                        )
+                        for cell in CELL_NAMES
+                    }
+                    target_primary_l1 = primary_distances[target_cell]
+                    target_wrist_l1 = wrist_distances[target_cell]
+                    primary_other = min(
+                        value
+                        for cell, value in primary_distances.items()
+                        if cell != target_cell
                     )
-                    target_wrist_l1 = pixel_l1(
-                        decoded_wrist,
-                        resize_uint8_image(
-                            observations[target_cell]["wrist_image"], wrist_shape
-                        ),
+                    wrist_other = min(
+                        value
+                        for cell, value in wrist_distances.items()
+                        if cell != target_cell
+                    )
+                    primary_target_margin = primary_other - target_primary_l1
+                    wrist_target_margin = wrist_other - target_wrist_l1
+                    primary_target_top1 = float(
+                        np.isclose(target_primary_l1, min(primary_distances.values()))
+                    )
+                    wrist_target_top1 = float(
+                        np.isclose(target_wrist_l1, min(wrist_distances.values()))
                     )
                 rows.append(
                     {
@@ -260,6 +296,12 @@ def main() -> None:
                         ),
                         "decoded_primary_l1_to_target": target_primary_l1,
                         "decoded_wrist_l1_to_target": target_wrist_l1,
+                        "decoded_primary_target_top1": primary_target_top1,
+                        "decoded_wrist_target_top1": wrist_target_top1,
+                        "decoded_primary_target_margin": primary_target_margin,
+                        "decoded_wrist_target_margin": wrist_target_margin,
+                        "decoded_primary_l1_by_cell": primary_distances,
+                        "decoded_wrist_l1_by_cell": wrist_distances,
                         "denoiser_sigmas": clamp.calls,
                     }
                 )
