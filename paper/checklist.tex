@@ -5,7 +5,7 @@
 \item {\bf Claims}
     \item[] Question: Do the main claims made in the abstract and introduction accurately reflect the paper's contributions and scope?
     \item[] Answer: \answerYes{}
-    \item[] Justification: The abstract and Sections 1, 4--7 state the directional steering claim, its state dependence, and the boundary against planning or success mediation.
+    \item[] Justification: The abstract, Introduction, Results, and Discussion state the future-transplantation result, its variation across decision points, and the limits on claims about planning and task success.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the abstract and introduction do not include the claims made in the paper.
@@ -17,7 +17,7 @@
 \item {\bf Limitations}
     \item[] Question: Does the paper discuss the limitations of the work performed by the authors?
     \item[] Answer: \answerYes{}
-    \item[] Justification: Sections 4--6 discuss limitations where each result is interpreted: model and state coverage, timing confounding, object-factorization distribution shift, pathway interactions, and the absent binary-success estimand.
+    \item[] Justification: Result-specific qualifications appear beside the relevant findings, and the Discussion and Limitations section addresses model and state coverage, the later-state comparison, the factorized object intervention, the internal replacement experiment, and the absence of task-success results.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the paper has no limitation while the answer \answerNo{} means that the paper has limitations, but those are not discussed in the paper. 
@@ -46,8 +46,8 @@
 
     \item {\bf Experimental result reproducibility}
     \item[] Question: Does the paper fully disclose all the information needed to reproduce the main experimental results of the paper to the extent that it affects the main claims and/or conclusions of the paper (regardless of whether the code and data are provided or not)?
-    \item[] Answer: \answerYes{}
-    \item[] Justification: Sections 3--6 and Appendix A specify the experimental units, estimands, controls, clustering, bootstrap, public checkpoints, pinned revisions, seeds, and exactness gates needed to reproduce the main findings.
+    \item[] Answer: \answerNo{}
+    \item[] Justification: The Methods, Results, and Appendix A specify the estimands, experimental units, controls, clustering, public checkpoints, and exactness gates. The complete seed list, all repository hashes and container digests, intervention code, and run logs are not yet included.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the paper does not include experiments.
@@ -67,7 +67,7 @@
 \item {\bf Open access to data and code}
     \item[] Question: Does the paper provide open access to the data and code, with sufficient instructions to faithfully reproduce the main experimental results, as described in supplemental material?
     \item[] Answer: \answerNo{}
-    \item[] Justification: The intervention code and machine-readable results are organized for release, but an anonymous public artifact is not yet attached to this manuscript draft.
+    \item[] Justification: The source package includes machine-readable values for the paper figures, but not the intervention code, raw logs, or an anonymous public reproduction artifact.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that paper does not include experiments requiring code.
@@ -84,7 +84,7 @@
 \item {\bf Experimental setting/details}
     \item[] Question: Does the paper specify all the training and test details (e.g., data splits, hyperparameters, how they were chosen, type of optimizer) necessary to understand the results?
     \item[] Answer: \answerYes{}
-    \item[] Justification: Sections 3--6 provide the state grid, branch construction, intervention targets, controls, action horizons, model interfaces, and statistical analysis; exact revisions and seeds are summarized in Appendix A.
+    \item[] Justification: The Methods and Results provide the state grid, branch construction, intervention targets, controls, action horizons, model interfaces, and statistical analysis needed to interpret the results. Appendix A states which exact environment details are available and which remain unreported.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the paper does not include experiments.
@@ -95,7 +95,7 @@
 \item {\bf Experiment statistical significance}
     \item[] Question: Does the paper report error bars suitably and correctly defined or other appropriate information about the statistical significance of the experiments?
     \item[] Answer: \answerYes{}
-    \item[] Justification: All central means have explicitly defined 95\% cluster-bootstrap intervals, the independent clustering unit and 10,000-resample procedure are stated in Section 3.4, and exact sign counts are reported where central.
+    \item[] Justification: Principal estimates have explicitly defined 95\% cluster-bootstrap intervals, the independent unit and 10,000-resample procedure are stated in the Methods, and exact sign counts are reported where relevant. The text identifies controls and secondary means for which exact intervals were not available.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the paper does not include experiments.
@@ -136,7 +136,7 @@
 \item {\bf Broader impacts}
     \item[] Question: Does the paper discuss both potential positive societal impacts and negative societal impacts of the work performed?
     \item[] Answer: \answerYes{}
-    \item[] Justification: Section 7 discusses auditability benefits, action-redirection misuse, false confidence from narrow simulation, and corresponding validation and safety-monitoring needs.
+    \item[] Justification: The Discussion and Limitations section discusses auditability benefits, action-redirection misuse, false confidence from narrow simulation, and corresponding validation and safety-monitoring needs.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that there is no societal impact of the work performed.

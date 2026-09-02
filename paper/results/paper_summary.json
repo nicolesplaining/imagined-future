@@ -1,0 +1,75 @@
+{
+  "cosmos_policy": {
+    "directionality_metric": "donor_minus_self_projection_difference",
+    "independent_states": {"first_query": 10, "all_timepoints": 30},
+    "timing": [
+      {
+        "label": "First query",
+        "action": {"mean": 0.499, "ci": [0.336, 0.679]},
+        "endpoint": {"mean": 0.552, "ci": [0.387, 0.728]}
+      },
+      {
+        "label": "After 3 chunks",
+        "action": {"mean": 0.031},
+        "endpoint": {"mean": 0.004}
+      },
+      {
+        "label": "After 6 chunks",
+        "action": {"mean": 0.027},
+        "endpoint": {"mean": 0.025}
+      }
+    ],
+    "modalities": {
+      "wrist": {"mean": 0.435, "ci": [0.284, 0.605]},
+      "primary": {"mean": 0.101, "ci": [0.057, 0.144]},
+      "proprioception": {"mean": 0.001, "ci": [-0.004, 0.008]}
+    },
+    "object_main_effect": {
+      "action": {"mean": 0.00015, "ci": [-0.00012, 0.00049]},
+      "endpoint": {"mean": 0.00018, "ci": [-0.00040, 0.00102]}
+    },
+    "natural_robot_only": {
+      "action": {"mean": 0.291, "ci": [0.060, 0.521]},
+      "endpoint": {"mean": 0.315, "ci": [0.059, 0.571]}
+    },
+    "attention_key_removal": {
+      "gate": [0.25, 0.50, 0.75, 1.00],
+      "normalized_l2": [0.022, 0.035, 0.054, 0.068],
+      "full_minus_random": 0.016,
+      "full_minus_early_block": 0.048,
+      "current_minus_full": 0.024
+    }
+  },
+  "cosmos3": {
+    "directionality_metric": "donor_minus_self_projection_difference",
+    "registered_states": 24,
+    "completed_states": 22,
+    "tasks": 6,
+    "directionality": {
+      "predicted_action": {"mean": 0.992, "ci": [0.972, 1.010]},
+      "predicted_minus_natural": {"mean": 0.433, "ci": [0.332, 0.538]},
+      "executed_action": {"mean": 0.983, "ci": [0.890, 1.064]},
+      "executed_endpoint": {"mean": 1.003, "ci": [0.950, 1.050]},
+      "executed_minus_gaussian": {"mean": 0.941, "ci": [0.837, 1.032]},
+      "executed_minus_natural": {"mean": 0.391, "ci": [0.246, 0.533]}
+    },
+    "kv_replacement_loss": {
+      "predicted_action": {"mean": 0.877, "ci": [0.842, 0.910]},
+      "executed_action": {"mean": 0.814, "ci": [0.723, 0.900]},
+      "executed_endpoint": {"mean": 0.851, "ci": [0.766, 0.922]}
+    },
+    "factor_study": {
+      "registered_states": 12,
+      "completed_states": 10,
+      "tasks": 6,
+      "robot_action": {"mean": 0.0022, "ci": [-0.0016, 0.0060]},
+      "robot_endpoint": {"mean": 0.0102, "ci": [-0.0067, 0.0275]},
+      "object_action": {"mean": 0.0061, "ci": [0.0009, 0.0119]},
+      "object_endpoint": {"mean": -0.0001, "ci": [-0.0254, 0.0239]}
+    },
+    "calibration": {
+      "states": 4,
+      "direct_action_loss": {"mean": 0.842, "ci": [0.766, 0.910]}
+    }
+  }
+}
