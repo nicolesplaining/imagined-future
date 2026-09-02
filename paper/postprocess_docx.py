@@ -12,7 +12,8 @@ from docx.oxml.ns import qn
 
 
 TABLE_ONE_CAPTION = "Method and controls on one scale."
-MECHANISM_TABLE_CAPTION = "Two complementary Cosmos 3 mechanism tests in one table."
+CONTENT_TABLE_CAPTION = "Cosmos 3 isolated-content interventions"
+PATHWAY_TABLE_CAPTION = "Cosmos 3 future-token pathway intervention"
 
 
 def keep_row_together(row) -> None:
@@ -39,13 +40,20 @@ def main(path: Path) -> None:
     caption.paragraph_format.page_break_before = True
     caption.paragraph_format.keep_with_next = True
 
-    mechanism_caption = next(
+    content_caption = next(
         paragraph
         for paragraph in document.paragraphs
-        if paragraph.text.startswith(MECHANISM_TABLE_CAPTION)
+        if paragraph.text.startswith(CONTENT_TABLE_CAPTION)
     )
-    mechanism_caption.paragraph_format.page_break_before = True
-    mechanism_caption.paragraph_format.keep_with_next = True
+    content_caption.paragraph_format.page_break_before = True
+    content_caption.paragraph_format.keep_with_next = True
+
+    pathway_caption = next(
+        paragraph
+        for paragraph in document.paragraphs
+        if paragraph.text.startswith(PATHWAY_TABLE_CAPTION)
+    )
+    pathway_caption.paragraph_format.keep_with_next = True
 
     primary_table = document.tables[0]
     primary_table.autofit = False
@@ -63,11 +71,11 @@ def main(path: Path) -> None:
     for row in primary_table.rows:
         keep_row_together(row)
 
-    mechanism_table = document.tables[1]
-    mechanism_table.autofit = False
-    mechanism_widths = (1.50, 1.50, 1.00, 1.65, 0.85)
-    for row in mechanism_table.rows:
-        for cell, width in zip(row.cells, mechanism_widths):
+    content_table = document.tables[1]
+    content_table.autofit = False
+    content_widths = (1.50, 2.50, 2.50)
+    for row in content_table.rows:
+        for cell, width in zip(row.cells, content_widths):
             cell.width = Inches(width)
             for paragraph in cell.paragraphs:
                 paragraph.paragraph_format.space_before = Pt(0)
@@ -75,8 +83,24 @@ def main(path: Path) -> None:
                 paragraph.paragraph_format.line_spacing = 1
                 for run in paragraph.runs:
                     run.font.size = Pt(8)
-    repeat_header(mechanism_table.rows[0])
-    for row in mechanism_table.rows:
+    repeat_header(content_table.rows[0])
+    for row in content_table.rows:
+        keep_row_together(row)
+
+    pathway_table = document.tables[2]
+    pathway_table.autofit = False
+    pathway_widths = (1.35, 1.20, 2.65, 1.30)
+    for row in pathway_table.rows:
+        for cell, width in zip(row.cells, pathway_widths):
+            cell.width = Inches(width)
+            for paragraph in cell.paragraphs:
+                paragraph.paragraph_format.space_before = Pt(0)
+                paragraph.paragraph_format.space_after = Pt(0)
+                paragraph.paragraph_format.line_spacing = 1
+                for run in paragraph.runs:
+                    run.font.size = Pt(8)
+    repeat_header(pathway_table.rows[0])
+    for row in pathway_table.rows:
         keep_row_together(row)
 
     document.save(path)
