@@ -243,7 +243,7 @@ def make_directionality(summary: dict) -> None:
             control_label_alignment = "left" if control_name == "Self" else "center"
             ax.text(control_label_x, y - 0.18, f"{control_name} {control['mean']:.3f}",
                     ha=control_label_alignment, va="top", fontsize=6.1, color=GRAY)
-            ax.text(donor["mean"], y + 0.18, f"Ours {donor['mean']:.3f}",
+            ax.text(donor["mean"], y + 0.18, f"Donor {donor['mean']:.3f}",
                     ha="center", va="bottom", fontsize=6.1, color=ORANGE, weight="bold")
         labels = [f"{outcome}\nadvantage +{advantage:.3f}" for outcome, _, _, _, advantage in rows]
         ax.set_yticks(range(len(rows)), labels)
@@ -259,7 +259,7 @@ def make_directionality(summary: dict) -> None:
         Line2D([0], [0], marker="o", color=GRAY, linestyle="none",
                markerfacecolor=GRAY, label="Strongest available control"),
         Line2D([0], [0], marker="D", color=ORANGE, linestyle="none",
-               markerfacecolor=ORANGE, label="Paired donor (ours)"),
+               markerfacecolor=ORANGE, label="Paired donor"),
     ]
     fig.legend(handles=legend, loc="lower center", bbox_to_anchor=(0.5, -0.015),
                ncol=2, frameon=False, fontsize=6.7, columnspacing=2.2)
