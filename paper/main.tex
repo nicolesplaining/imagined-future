@@ -1,0 +1,238 @@
+\documentclass{article}
+
+\PassOptionsToPackage{numbers,sort&compress}{natbib}
+\usepackage[main,nonanonymous]{neurips_2026}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{nicefrac}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{array}
+
+\definecolor{recipientblue}{HTML}{4C78A8}
+\definecolor{donororange}{HTML}{E07A3F}
+\definecolor{softgray}{HTML}{F2F2F2}
+\hypersetup{colorlinks=true,linkcolor=recipientblue,citecolor=recipientblue,urlcolor=recipientblue}
+
+\newcommand{\ours}{reachable-donor future transplantation}
+\newcommand{\proj}{\operatorname{proj}}
+\newcommand{\kv}{K/V}
+
+\title{How Do World Action Models Use Their Futures? Evidence from Mechanistic Interventions}
+
+\author{Nicole Ma}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+World action models jointly generate future observations and robot actions, but the functional role of their imagined futures remains unclear. Recent destructive interventions establish that these policies causally use future-position representations; they do not show what a particular coherent future tells the policy to do. We introduce reachable-donor future transplantation, which exchanges natural future representations between alternative continuations of the same physical state while fixing the current observation, instruction, action noise, and denoising schedule. The resulting signed estimand asks whether action and physical execution move toward the donor continuation. In Cosmos Policy, donor futures steer actions and executed endpoints at early states across all ten LIBERO-10 tasks. The effect is visual and state dependent: wrist and primary-camera futures steer action, future proprioception does not, and effects attenuate sharply at later registered states. Factorized content interventions and naturally occurring matched pairs support prospective visible robot motion, while providing no evidence of meaningful isolated object-state use. In Cosmos 3, natural donor transplants reproduce directional action and physical steering across five RoboLab tasks, including multi-donor specificity on four. Token-count-preserving activation patching of future-token keys and values largely suppresses donor steering, identifying a mediating internal pathway. These results go beyond future sensitivity to show how imagined content controls action, while not establishing general planning over task-object consequences.
+\end{abstract}
+
+\section{Introduction}
+
+World action models (WAMs) couple prediction and control: a shared model generates a possible visual future and the robot action to take next \citep{guo2024pad,hu2025vpp,li2025uva,kim2026cosmospolicy,ye2026dreamzero}. This architecture invites a planning-like interpretation. The policy appears to imagine how the scene could evolve and then act using the anticipated consequences. Joint generation alone, however, does not identify this computation. The future could be behaviorally irrelevant, could act as an undifferentiated latent workspace, or could mainly encode the robot motion already paired with the action.
+
+RIFT substantially narrows this ambiguity \citep{zhang2026rift}. Across four WAMs and all 40 LIBERO tasks, masking or reassigning future-cache values changes executed trajectories and reduces success. RIFT therefore establishes that WAM action experts causally use meaningful, position-bound future representations. It does not show what a particular coherent future tells the policy to do. Its principal intervention outcomes are deviation from the original execution and task success: they reveal dependence, but do not associate an edited future with a specific alternative behavior and ask whether the robot moves toward it.
+
+We make that question directional. From one exactly restored physical state, two native policy branches define a recipient and donor: alternative generated futures, actions, and executed endpoints that are all reachable from the same state. We insert the donor future into the recipient computation and score the result on the signed recipient-to-donor axis. If the future merely perturbs computation, behavior may change without aligning to the donor. If its content controls action, the patched action and endpoint should move toward the particular behavior associated with the donor. Multiple donors further test whether the intervention selects the correct alternative.
+
+This distinction can be stated compactly: \emph{RIFT establishes future dependence; we test semantic directionality.} Figure~\ref{fig:overview} summarizes the design. We combine representation transplantation with modality and object/robot content interventions, destructive attention localization, and token-count-preserving activation patching of future-token keys and values. This yields three linked questions: (i) can coherent future content directionally select behavior, (ii) what content carries that effect, and (iii) through which internal interface does it act?
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/method_overview.pdf}
+  \caption{Reachable-donor future transplantation gives a destructive intervention a semantic direction. (a) Two policy-native continuations start at the exact same state. (b) The recipient run retains its current observation, instruction, noise, and schedule, but receives the donor future. (c) signed projections test movement toward that donor; activation patching then tests whether future-token \kv{} content mediates the effect.}
+  \label{fig:overview}
+\end{figure}
+
+We find strong but bounded future use. At the first decision state in Cosmos Policy, donor futures steer action and physical execution in all ten LIBERO-10 tasks. Wrist imagery carries most of the effect, primary-camera imagery carries a smaller effect, and future proprioception is null. The effect falls sharply at later registered states. A separate 20-state $2\times2$ intervention changes decoded robot and object futures with high target specificity but produces essentially no object-content effect. Rare natural robot-only pairs steer strongly; matched object-only pairs do not reliably identify their donor. In the released Cosmos 3 policy, predicted and physically executed donor futures steer action and robot execution across five RoboLab tasks. Finally, replacing donor-run future-token \kv{} with self-future \kv{} suppresses donor steering across four calibration tasks and a prospectively held-out physical state, with exact identity controls and repeated-process checks.
+
+The result is mechanistic at the representation and pathway level, not a complete circuit account. The studied policies use imagined visual futures to steer action, chiefly through prospective visible robot-motion content at the states we can identify. We do not find evidence that they generally evaluate task-object consequences, search over plans, or select successful futures.
+
+\section{Related work}
+
+\paragraph{World action models.}
+Joint image/action denoising and predictive visual policies learn futures alongside controls \citep{guo2024pad,hu2025vpp,li2025uva}. Cosmos Policy fine-tunes a pretrained video model for future prediction and visuomotor control \citep{kim2026cosmospolicy}; Cosmos 3 provides a later omnimodal architecture and released DROID policy \citep{nvidia2026cosmos3}. These architectures establish that future and action can be generated together, not what downstream computation uses the future for.
+
+Recent efficiency work exposes the same ambiguity. Fast-WAM shows that explicit test-time rollout can be removed while retaining competitive performance \citep{yuan2026fastwam}; Faster-WAM retains efficient future conditioning for robustness \citep{zhao2026fasterwam}. AGRA argues that visually plausible foresight need not be action-grounded and modifies training to improve representation alignment \citep{qiu2026agra}. These results distinguish the benefits of future-prediction training from the use of a particular generated future at inference.
+
+\paragraph{Closest comparison: RIFT.}
+RIFT records and edits the action-independent future-position \kv{} interface \citep{zhang2026rift}. Masking, norm-matched noise, frozen-present values, and spatial or temporal reassignment cause large trajectory drift and success loss. Replaying one final-clean cache nearly preserves execution in supported architectures, establishing consumption-side sufficiency of a fixed interface. Our question begins after that result. RIFT asks whether meaningful future values and their positions are required; we ask whether a coherent alternative future selects its associated alternative action and physical endpoint. Its EE-ADE is an unsigned deviation from the original trajectory. Our donor projection is signed by an independently generated alternative.
+
+\paragraph{Mechanistic interventions.}
+Causal mediation distinguishes information that is encoded from information actually used downstream \citep{pearl2001direct,vig2020causalmediation}. Causal tracing and path patching localize behavior by replacing internal activations or computational routes \citep{meng2022rome,goldowskydill2023pathpatching}. Activation-patching methodology motivates clean/corrupted pairing, explicit metrics, no-op controls, and held-out validation \citep{zhang2024activationpatching}. Because patched components can interact with unpatched mediators, we interpret layer and group effects as bounded pathway evidence rather than additive circuit decomposition \citep{vaidyanathan2026multiplemediators}.
+
+\section{Experimental logic}
+
+\subsection{Reachable-donor transplantation}
+
+Let state $S$ admit two native branches $A$ and $B$. Their generated action chunks are $a_A,a_B$, their future representations are $F_A,F_B$, and physical execution yields endpoints $e_A,e_B$. We rerun recipient $A$ while holding fixed $S$, the language instruction, recipient action noise, future-noise path, solver, and denoising schedule. Only the clean future target changes from $F_A$ to $F_B$.
+
+For an intervened action $\hat a$, normalized donor projection is
+\begin{equation}
+  \pi_a(\hat a;A,B)=
+  \frac{(\hat a-a_A)^\top(a_B-a_A)}{\lVert a_B-a_A\rVert_2^2}.
+  \label{eq:projection}
+\end{equation}
+Thus native recipient $A$ is 0 and native donor $B$ is 1; negative values move away from $B$, and values above 1 overshoot it. We define $\pi_e$ analogously for registered physical endpoints. The principal contrast is donor clamp minus self clamp, averaged over reciprocal branch directions and future-noise draws within saved state. This signed estimand is the central difference from generic disruption.
+
+Pairs are selected using only native action and endpoint separation, never intervention outcomes. Controls include an exact self clamp, an exact norm- and recipient-distance-matched Gaussian target, a prespecified natural control, a within-task shuffled future, and bitwise no-op recomputations. We separately clamp wrist video, primary video, and future proprioception. Every saved action condition is executed from the exact simulator state.
+
+\subsection{What content is used?}
+
+The initial transplant contains several correlated signals: robot pose, object state, camera motion, and potentially task progress. We therefore use two complementary designs. A natural-pair screen searches for robot-divergent/object-matched and object-divergent/robot-matched futures from a common recipient. These are policy-native but structurally rare. A separately frozen $2\times2$ study re-renders object state $O\in\{0,1\}$ crossed with robot state $R\in\{0,1\}$ at 20 held-out LIBERO states. This achieves broad coverage and exact factor preservation, but its hybrid videos may be off the native future manifold. We report both rather than treating one as definitive.
+
+\subsection{Pathway interventions}
+
+In Predict2-based Cosmos Policy, action queries can attend to future keys. We remove future keys at a prespecified late transformer block with a continuous gate, alongside all-key identity, random-key, current-key, and early-block controls. This is a necessity/localization test and changes attention normalization.
+
+Cosmos 3 permits a cleaner content-mediation test. We first record future-video keys and values from a self-future run. During a donor-future run, we replace only future-token \kv{} at selected layers; token count, token order, current-video \kv{}, text \kv{}, action \kv{}, current observation, instruction, and noise remain unchanged. Record/replay and self-patch arms must be bitwise exact. If donor projection falls after the patch, the replaced future content mediates that donor-directed effect. We report the absolute reduction in donor projection (``mediation loss''), not a population natural indirect effect.
+
+\begin{table}[t]
+  \caption{Each intervention answers a different causal question. The donor experiment adds a signed semantic target that destructive tests do not provide.}
+  \label{tab:logic}
+  \centering
+  \small
+  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.21\linewidth}>{\raggedright\arraybackslash}p{0.30\linewidth}>{\raggedright\arraybackslash}X@{}}
+    \toprule
+    Intervention & Primary readout & Supported conclusion \\
+    \midrule
+    Mask/noise/shuffle & trajectory drift; success & future-interface dependence \\
+    Reachable donor & signed action and endpoint projection & content-specific directional sufficiency \\
+    Modality/$2\times2$ content & donor projection under isolated content & functional content used by the policy \\
+    Self-\kv{} patch into donor run & loss of donor-directed projection & pathway-level content mediation \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\subsection{Statistical inference}
+
+The independent unit is an exactly restored simulator state. Reciprocal directions, multiple donors, noise draws, and process repeats are repeated measurements. Unless stated otherwise, intervals are 10,000-resample cluster bootstraps over saved states (or tasks for the four-task Cosmos 3 engineering study). We preregistered 0.10 donor-projection units---ten percent of the native recipient-to-donor displacement---as the smallest effect of interest for the Predict2 confirmatory family.
+
+\section{Do alternative futures directionally steer actions?}
+
+\subsection{Cosmos Policy: population-level test}
+
+We first study the released \texttt{Cosmos-Policy-LIBERO-Predict2-2B} checkpoint \citep{kim2026cosmospolicy} on LIBERO-10 \citep{liu2023libero}. The frozen grid contains 30 unseen units: ten tasks crossed with a first query, a state after three open-loop chunks, and a state after six chunks. Eight native branches determine one reciprocal donor pair per state. Three future-noise draws are repeated within direction. Physical endpoints concatenate goal-relevant simulator coordinates with the official nine-dimensional proprioceptive endpoint. Pair selection, controls, attention block, outcome construction, and bootstrap are frozen before intervention outcomes.
+
+At the first query, donor-minus-self action steering is $0.499$ (95\% CI $[0.336,0.679]$), positive in all ten tasks. Executed endpoint steering is $0.552$ ($[0.387,0.728]$), also positive in all ten. The action contrast remains positive against Gaussian ($0.497$), prespecified natural ($0.103$), and shuffled-future ($0.255$) controls. Physical contrasts are respectively $0.549$, $0.110$, and $0.277$. This is not merely an action-vector change: the simulator endpoint moves in the independently defined donor direction.
+
+The effect is state dependent (Figure~\ref{fig:predict2}a). After three chunks, mean action steering falls to $0.031$ and physical steering to $0.004$. After six chunks they are $0.027$ and $0.025$. Across all 30 registered states, action steering is $0.186$ ($[0.095,0.290]$) and physical steering is $0.194$ ($[0.091,0.305]$), but the lower intervals narrowly miss the 0.10 practical threshold. Because each timing stratum uses a different initial-state index, this is a state/timing association rather than a pure causal effect of elapsed time. The supported claim is strong steering at identifiable early states, not uniform future mediation throughout an episode.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/predict2_results.pdf}
+  \caption{Predict2-based Cosmos Policy uses visual futures strongly at early states. Points are saved-state means and bars are 95\% cluster-bootstrap intervals. (a) action and executed endpoint steering are large at the first query and sharply attenuate at later registered states. (b) wrist video carries most first-query action steering, primary video carries a smaller effect, and future proprioception is null. SEOI: preregistered smallest effect of interest (0.10).}
+  \label{fig:predict2}
+\end{figure}
+
+\subsection{Cosmos 3: cross-generation replication}
+
+We port the same reachable-donor logic to the released 16B \texttt{Cosmos3-Nano-Policy-DROID} checkpoint \citep{nvidia2026cosmos3} and public RoboLab tasks \citep{yang2026robolab}. Cosmos 3 uses 36 two-way full-attention layers, four UniPC denoising calls, 33 raw video frames mapped to nine VAE latent frames, and 32 absolute joint-position actions. The intervention targets only unconditioned future-video coordinates at the final guided sampler boundary. Identity layout capture, identity sampler wrapping, cache record/replay, and self patches reproduce actions bitwise; sentinels verify zero direct mutation of action coordinates. Each physical condition reconstructs the environment, restores the same initial state, and replays the prefix exactly.
+
+Across four multi-donor tasks, predicted futures yield mean action projection $0.985$ (task-bootstrap 95\% CI $[0.974,0.993]$) and physical endpoint projection $0.975$ ($[0.833,1.079]$). Futures encoded from physically executed reachable branches yield action projection $1.060$ ($[1.010,1.103]$) and endpoint projection $1.027$ ($[0.824,1.204]$). All 24 donor transplants---12 donors crossed with predicted or executed future sources---are positive. Action identifies the correct donor in 12/12 cases for each source; endpoints do so in 10/12 predicted and 11/12 executed cases. Self and geometry-matched Gaussian controls remain near zero.
+
+This result reproduces directional steering in a later, substantially different policy, but its scope is narrower than the Cosmos Policy population test. The four multi-donor tasks---Rubik's cube, mustard, spoon, and marker---provide one outcome-independent branch state each; one Banana state supplies an additional feasibility and held-out pathway test. Thus Cosmos 3 currently establishes cross-model and multi-donor specificity across five tasks, not population-level state coverage. Repeating a saved state verifies intervention exactness, not generality. No screened branch pair in either policy retained a robust binary success/failure label across continuation seeds, so directional steering should not be interpreted as demonstrated mediation of task success.
+
+\begin{table}[t]
+  \caption{Main signed effects organized by scientific question rather than model. Intervals cluster on saved state, except the four-task Cosmos 3 study, which bootstraps tasks.}
+  \label{tab:results}
+  \centering
+  \small
+  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.22\linewidth}>{\raggedright\arraybackslash}p{0.14\linewidth}>{\raggedright\arraybackslash}p{0.27\linewidth}>{\raggedright\arraybackslash}X@{}}
+    \toprule
+    Study & Units & Effect (95\% CI) & Main reading \\
+    \midrule
+    Predict2 first query & 10 states & action: $0.499$ $[0.336,0.679]$ & coherent donor selects action \\
+    Predict2 first query & 10 states & endpoint: $0.552$ $[0.387,0.728]$ & direction survives execution \\
+    Cosmos 3 multi-donor & 4 tasks, 12 donors & action: $0.985$ $[0.974,0.993]$ & all predicted donors steer \\
+    Predict2 visual content & 10 states & wrist: $0.435$ $[0.284,0.605]$ & visual robot motion dominates \\
+    Predict2 $2\times2$ object & 20 states & action: $0.00015$ $[-0.00012,0.00049]$ & isolated object content is null \\
+    Natural robot-only & 4 states & action: $0.291$ $[0.060,0.521]$ & strong but exploratory \\
+    Cosmos 3 all-direct \kv{} patch & 4 calibration tasks & loss: $0.842$ $[0.766,0.910]$ & future \kv{} mediates direction \\
+    Cosmos 3 held-out Banana & 1 state & action: $0.900\!\rightarrow\!0.122$ & direct patch suppresses steering \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{What information in the future causes the steering?}
+
+\subsection{Visual modalities}
+
+Modality clamps localize the early result to vision (Figure~\ref{fig:predict2}b). Wrist-future action steering is $0.435$ ($[0.284,0.605]$), primary-camera steering is $0.101$ ($[0.057,0.144]$), and future-proprioception steering is $0.001$ ($[-0.004,0.008]$). Because the wrist view tightly tracks the manipulator, this pattern predicts a prospective visible-motion or inverse-dynamics-like role.
+
+\subsection{Robot-motion versus object-state content}
+
+The content studies support that interpretation while exposing its limits. In the 20-state $2\times2$ study, decoded futures identify the intended target cell with 92.5\% primary-camera and 98.75\% wrist-camera top-1 accuracy. Nevertheless, the object main effect is $0.00015$ on action similarity ($[-0.00012,0.00049]$) and $0.00018$ on executed goal-state steering ($[-0.00040,0.00102]$), far below 0.10. Endpoint target-cell identification is exactly chance (0.25). The manipulation changes the decoded object future, but execution does not follow it.
+
+Natural matching avoids rendered hybrids but yields only four eligible units, below the frozen minimum of ten. In those units, robot-only future transplantation gives action steering $0.291$ ($[0.060,0.521]$) and executed robot-endpoint steering $0.315$ ($[0.059,0.571]$). Object-only effects are much weaker: action $0.021$ and goal endpoint $0.021$ with an interval crossing zero; correct-donor top-1 is at each unit's chance rate. We therefore do not infer that object consequences are universally unused. We infer that the observed steering is best explained by prospective visible robot motion, while meaningful isolated object-state use is unsupported in these experiments.
+
+This content conclusion is deliberately narrower than the directional result. Natural object-only alternatives are rare, whereas rendered $2\times2$ hybrids may lie off the policy's native future manifold. Donor videos also contain robot pose and correlated visual changes. ``Prospective visible robot motion'' is therefore the best-supported functional description at the studied Cosmos Policy states, not a fully decoded latent variable or a universal claim that WAMs ignore object consequences. Equivalent factorized content interventions have not yet been completed for Cosmos 3.
+
+\section{Through what internal pathway does the future affect action?}
+
+\subsection{Cosmos Policy: an active future-to-action attention edge}
+
+Removing future keys from action queries at block 27 yields a monotonic action-disruption curve: normalized L2 is 0.022, 0.035, 0.054, and 0.068 at gates 0.25, 0.50, 0.75, and 1.00. The all-key recomputation is bitwise exact. Full removal is more disruptive than equal-count random-key removal by $0.016$ and than block-0 future removal by $0.048$. Equal-count current-key removal is larger by $0.024$. Executed endpoints show the same bounded conclusion: the late future edge is causally active, but neither the only nor the largest route through the block.
+
+\subsection{Cosmos 3: future-token K/V content mediates steering}
+
+On four excluded calibration tasks, unpatched donor projection averages $0.981$. Patching self-future \kv{} into only the selected layer 16 removes $0.346$ projection units ($[0.192,0.501]$). Patching self-future \kv{} across the direct future-to-action interface removes $0.842$ ($[0.766,0.910]$), positive in 4/4 tasks. A stricter barrier that also blocks indirect future-to-current-to-action transmission removes $0.995$ ($[0.976,1.013]$). All record, replay, and self-patch controls are exact.
+
+We freeze layer 16 and evaluate a prospectively held-out Banana state (Figure~\ref{fig:cosmos3}c). For the predicted donor future, action projection changes $0.900\rightarrow0.749\rightarrow0.122\rightarrow-0.012$ under layer 16, all-direct, and full-barrier patches. For the executed reachable future it changes $1.577\rightarrow1.326\rightarrow0.382\rightarrow-0.012$. Predicted-future robot endpoint projection also falls $0.973\rightarrow0.242$ under all-direct patching and to $-0.335$ under the barrier. The executed-future physical endpoint remains high under the direct patch ($1.019\rightarrow0.976$), despite strong action suppression, and should not be hidden: physical mediation is less consistent than action mediation for that arm. Five fresh process blocks reproduce every calibration action effect bitwise, demonstrating numerical stability but not adding independent population units.
+
+Together, the two models provide complementary pathway evidence rather than identical circuit analyses. Cosmos Policy shows that a late future-to-action attention edge is necessary enough to measurably affect behavior. Cosmos 3 preserves token count and attention normalization while replacing future-token content, giving stronger evidence that donor-directed information is mediated through future-token \kv{}. Layerwise and grouped patches can still interact with unpatched mediators \citep{vaidyanathan2026multiplemediators}; they identify an active internal pathway, not a complete or uniquely necessary circuit.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/cosmos3_results.pdf}
+  \caption{Cosmos 3 reproduces directional steering and localizes it to future-token \kv{} content. (a) all 24 predicted/executed donor transplants across four multi-donor tasks are positive; points show means and task-bootstrap 95\% intervals. (b) self-future \kv{} patching removes donor projection on four calibration tasks. (c) the prospectively held-out Banana state shows graded suppression under the frozen layer, direct-interface, and full-barrier patches.}
+  \label{fig:cosmos3}
+\end{figure}
+
+\section{Discussion}
+
+\paragraph{What is the imagined future for?}
+The simplest account consistent with all results is prospective visual action conditioning. A particular coherent future specifies a corresponding action direction; the policy reads this relation through future-token content. The strongest modality is the wrist camera, natural robot-only donors steer strongly, and future proprioception and isolated object-state content do not. This resembles visually mediated inverse dynamics more than explicit evaluation of task consequences \citep{hu2025vpp}.
+
+This interpretation is stronger than saying that future prediction is a useful auxiliary loss, and more specific than saying that corruption hurts. It is weaker than planning. We do not observe search over possible futures, comparison of values, stable success/failure mediation, or meaningful isolated control by predicted object outcomes. ``Imagined'' describes the generated representation; it does not imply deliberation.
+
+\paragraph{Relationship to RIFT.}
+The papers answer adjacent questions. RIFT shows that the future interface is read and that its values and positions are necessary for normal execution \citep{zhang2026rift}. We show that a coherent donor future supplies a signed control signal: action and execution move toward the behavior paired with that donor. Content isolation then asks what that signal represents, and activation patching asks where donor-directed influence is mediated. The correct contrast is dependence versus semantic directionality, not performance versus steering.
+
+\paragraph{Broader impact.}
+Mechanistic tests can make embodied policies more auditable by separating plausible-looking predictions from representations that actually control behavior. The same steering interfaces could also be misused to redirect robot actions or could create false confidence if validated only on narrow simulators. Deployment should therefore require state-distribution coverage, physical safety constraints, and monitoring beyond latent intervention success.
+
+\section{Conclusion}
+
+World action models do not merely react when their future cache is damaged. At identifiable states, the semantic content of a coherent imagined future controls which action they take. Reachable-donor transplantation makes that claim directional; modality and content interventions show that the useful signal is chiefly prospective visible robot motion; and token-count-preserving \kv{} patching localizes donor steering to the future-token pathway. The resulting account is mechanistic but bounded: these policies use imagined futures to steer robot motion, without current evidence that they generally plan over task-object consequences.
+
+{\small
+\bibliographystyle{plainnat}
+\bibliography{references}
+}
+
+\appendix
+
+\section{Reproducibility details}
+
+The Predict2 study uses public Cosmos Policy commit \texttt{18a2acca}, checkpoint revision \texttt{cb689ec0}, the public LIBERO benchmark, PyTorch 2.7/CUDA 12.8, and two NVIDIA H100 80GB GPUs. Its frozen seeds, state grid, pair-selection rule, controls, intervention coordinates, and 10,000-resample bootstrap are stored in the accompanying configuration. The Cosmos 3 study pins public Cosmos, Cosmos Framework, and RoboLab commits; checkpoint revision \texttt{2b9f9517}; container digests; all branch seeds; the 36-layer token census; and exact identity gates. Full per-run timing and aggregate compute accounting remain to be added before submission.
+
+\section{Additional result boundaries}
+
+The six-state RoboCasa replication \citep{nasiriany2024robocasa} is exploratory and is not pooled with LIBERO. Its donor-minus-self physical endpoint effect is $0.0287$ (95\% CI $[0.0101,0.0492]$), positive in 6/6 states; action steering is smaller and does not reliably beat the Gaussian control. The Predict2 continuation screen yields no robust binary success/failure pair after registered replication seeds. The unfinished 20-state Cosmos 3 population study is not included in any estimate in this draft.
+
+\newpage
+\input{checklist.tex}
+
+\end{document}
