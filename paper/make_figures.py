@@ -202,77 +202,68 @@ def horizontal_error_point(ax, y, stat, color, marker="o", label=None):
 
 
 def make_directionality(summary: dict) -> None:
-    """Compare every future condition on one donor-directed scale, by model."""
-    fig, axes = plt.subplots(1, 2, figsize=(7.2, 3.05), gridspec_kw={"width_ratios": [1.15, 0.85]})
+    """Show the paired donor against the strongest available control."""
+    fig, axes = plt.subplots(1, 2, figsize=(7.2, 2.65), sharex=True,
+                             gridspec_kw={"width_ratios": [1.05, 0.95]})
 
-    styles = {
-        "self": (BLUE, "s", "Self baseline"),
-        "gaussian": ("#A9A9A9", "^", "Matched Gaussian"),
-        "natural": (GRAY, "o", "Natural future"),
-        "shuffled": ("#444444", "x", "Shuffled future"),
-        "donor": (ORANGE, "D", "Paired donor (ours)"),
-    }
-    offsets = {"self": -0.26, "gaussian": -0.13, "natural": 0.0, "shuffled": 0.13, "donor": 0.26}
-
+    cosmos3 = summary["cosmos3"]
+    policy = summary["cosmos_policy"]
     panels = [
         (
             axes[0],
             "a  Cosmos 3",
-            summary["cosmos3"]["condition_projections"],
-            [("predicted_action", "Predicted\naction"),
-             ("executed_action", "Executed\naction"),
-             ("executed_endpoint", "Executed\nendpoint")],
+            [
+                ("Predicted action", cosmos3["condition_projections"]["predicted_action"]["natural"],
+                 "Natural", cosmos3["condition_projections"]["predicted_action"]["donor"], 0.433),
+                ("Executed action", cosmos3["condition_projections"]["executed_action"]["natural"],
+                 "Natural", cosmos3["condition_projections"]["executed_action"]["donor"], 0.391),
+                ("Executed endpoint", cosmos3["condition_projections"]["executed_endpoint"]["self"],
+                 "Self", cosmos3["condition_projections"]["executed_endpoint"]["donor"], 1.003),
+            ],
         ),
         (
             axes[1],
             "b  Cosmos Policy",
-            summary["cosmos_policy"]["condition_projections"],
-            [("predicted_action", "Predicted\naction"),
-             ("predicted_endpoint", "Predicted\nendpoint")],
+            [
+                ("Predicted action", policy["condition_projections"]["predicted_action"]["natural"],
+                 "Natural", policy["condition_projections"]["predicted_action"]["donor"], 0.103),
+                ("Predicted endpoint", policy["condition_projections"]["predicted_endpoint"]["natural"],
+                 "Natural", policy["condition_projections"]["predicted_endpoint"]["donor"], 0.110),
+            ],
         ),
     ]
 
-    for ax, title, conditions, groups in panels:
-        for group_index, (group_key, group_label) in enumerate(groups):
-            for condition, stat in conditions[group_key].items():
-                color, marker, _ = styles[condition]
-                x = group_index + offsets[condition]
-                mean = stat["mean"]
-                low, high = stat["ci"]
-                yerr = None if low == high == mean else [[mean - low], [high - mean]]
-                ax.errorbar(
-                    [x], [mean], yerr=yerr, fmt=marker, color=color,
-                    markerfacecolor="none" if condition == "gaussian" else color,
-                    markeredgecolor=color, markeredgewidth=1.1, markersize=6,
-                    linewidth=1.2, capsize=2.3, zorder=3,
-                )
-                if condition != "self":
-                    if condition == "shuffled":
-                        label_y, vertical_alignment = low - 0.025, "top"
-                    else:
-                        label_y, vertical_alignment = high + 0.025, "bottom"
-                    ax.text(x, label_y, f"{mean:.3f}", ha="center", va=vertical_alignment,
-                            fontsize=5.7, color=color,
-                            weight="bold" if condition == "donor" else "normal")
-        ax.axhline(0, color=BLUE, linewidth=0.75)
-        ax.axhline(0.10, color="#AAAAAA", linewidth=0.7, linestyle="--")
-        ax.axhline(1.0, color=ORANGE, linewidth=0.75, linestyle=":")
-        ax.set_xticks(range(len(groups)), [label for _, label in groups])
-        ax.set_xlim(-0.48, len(groups) - 0.52)
-        ax.set_ylim(-0.08, 1.18)
+    for ax, title, rows in panels:
+        for y, (outcome, control, control_name, donor, advantage) in enumerate(rows):
+            ax.plot([control["mean"], donor["mean"]], [y, y], color="#C8C8C8",
+                    linewidth=2.2, solid_capstyle="round", zorder=1)
+            horizontal_error_point(ax, y, control, GRAY, "o")
+            horizontal_error_point(ax, y, donor, ORANGE, "D")
+            control_label_x = 0.025 if control_name == "Self" else control["mean"]
+            control_label_alignment = "left" if control_name == "Self" else "center"
+            ax.text(control_label_x, y - 0.18, f"{control_name} {control['mean']:.3f}",
+                    ha=control_label_alignment, va="top", fontsize=6.1, color=GRAY)
+            ax.text(donor["mean"], y + 0.18, f"Ours {donor['mean']:.3f}",
+                    ha="center", va="bottom", fontsize=6.1, color=ORANGE, weight="bold")
+        labels = [f"{outcome}\nadvantage +{advantage:.3f}" for outcome, _, _, _, advantage in rows]
+        ax.set_yticks(range(len(rows)), labels)
+        ax.set_ylim(len(rows) - 0.45, -0.55)
+        ax.axvline(0, color="#777777", linewidth=0.7)
+        ax.axvline(1.0, color=ORANGE, linewidth=0.75, linestyle=":")
+        ax.set_xlim(-0.05, 1.13)
         ax.set_title(title, loc="left", weight="bold")
-        ax.grid(axis="y", color="#DDDDDD", linewidth=0.5)
-    axes[0].set_ylabel("Donor-directed projection\n0 = self, 1 = paired donor")
+        ax.grid(axis="x", color="#E1E1E1", linewidth=0.5)
+        ax.set_xlabel("Donor-directed projection\n0 = self, 1 = paired donor")
 
     legend = [
-        Line2D([0], [0], marker=marker, color=color, linestyle="none",
-               markerfacecolor="none" if key == "gaussian" else color,
-               markeredgecolor=color, label=label)
-        for key, (color, marker, label) in styles.items()
+        Line2D([0], [0], marker="o", color=GRAY, linestyle="none",
+               markerfacecolor=GRAY, label="Strongest available control"),
+        Line2D([0], [0], marker="D", color=ORANGE, linestyle="none",
+               markerfacecolor=ORANGE, label="Paired donor (ours)"),
     ]
     fig.legend(handles=legend, loc="lower center", bbox_to_anchor=(0.5, -0.015),
-               ncol=5, frameon=False, fontsize=6.3, columnspacing=1.2, handletextpad=0.35)
-    fig.subplots_adjust(wspace=0.22, bottom=0.25)
+               ncol=2, frameon=False, fontsize=6.7, columnspacing=2.2)
+    fig.subplots_adjust(wspace=0.42, bottom=0.29, left=0.18, right=0.98)
     save(fig, "directionality_results")
 
 
