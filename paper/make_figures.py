@@ -202,62 +202,77 @@ def horizontal_error_point(ax, y, stat, color, marker="o", label=None):
 
 
 def make_directionality(summary: dict) -> None:
-    """Core claim: donor futures steer behavior and beat controls."""
-    fig, axes = plt.subplots(1, 2, figsize=(7.2, 3.15), gridspec_kw={"width_ratios": [0.98, 1.22]})
+    """Compare every future condition on one donor-directed scale, by model."""
+    fig, axes = plt.subplots(1, 2, figsize=(7.2, 3.05), gridspec_kw={"width_ratios": [1.15, 0.85]})
 
-    ax = axes[0]
-    policy = summary["cosmos_policy"]
-    cosmos3 = summary["cosmos3"]
-    primary_rows = [
-        ("Cosmos 3\npredicted future — action", cosmos3["directionality"]["predicted_action"], "o"),
-        ("Cosmos 3\nexecuted future — action", cosmos3["directionality"]["executed_action"], "o"),
-        ("Cosmos 3\nexecuted future — endpoint", cosmos3["directionality"]["executed_endpoint"], "s"),
-        ("Cosmos Policy\nfirst query — action", policy["timing"][0]["action"], "o"),
-        ("Cosmos Policy\nfirst query — endpoint", policy["timing"][0]["endpoint"], "s"),
-    ]
-    for y, (_, stat, marker) in enumerate(reversed(primary_rows)):
-        horizontal_error_point(ax, y, stat, ORANGE, marker)
-        ax.text(min(stat["mean"] + 0.035, 1.08), y, f"{stat['mean']:.3f}", va="center", fontsize=6.4)
-    ax.axvline(0, color="#555555", linewidth=0.8)
-    ax.axvline(0.10, color=GRAY, linewidth=0.8, linestyle="--")
-    ax.axvline(1.0, color=ORANGE, linewidth=0.8, linestyle=":")
-    ax.set_yticks(range(len(primary_rows)), [r[0] for r in reversed(primary_rows)])
-    ax.set_xlim(-0.06, 1.16)
-    ax.set_xlabel("Movement toward donor\n0 = no effect, 1 = reaches donor")
-    ax.set_title("a  All primary tests pass", loc="left", weight="bold")
-    ax.grid(axis="x", color="#DDDDDD", linewidth=0.5)
+    styles = {
+        "self": (BLUE, "s", "Self baseline"),
+        "gaussian": ("#A9A9A9", "^", "Matched Gaussian"),
+        "natural": (GRAY, "o", "Natural future"),
+        "shuffled": ("#444444", "x", "Shuffled future"),
+        "donor": (ORANGE, "D", "Paired donor (ours)"),
+    }
+    offsets = {"self": -0.26, "gaussian": -0.13, "natural": 0.0, "shuffled": 0.13, "donor": 0.26}
 
-    ax = axes[1]
-    controls = policy["first_query_controls"]
-    control_rows = [
-        ("C3 predicted action\nvs natural future", cosmos3["directionality"]["predicted_minus_natural"], "o"),
-        ("C3 executed action\nvs matched Gaussian", cosmos3["directionality"]["executed_minus_gaussian"], "o"),
-        ("C3 executed action\nvs natural future", cosmos3["directionality"]["executed_minus_natural"], "o"),
-        ("Policy action\nvs Gaussian", controls["gaussian"]["action"], "o"),
-        ("Policy endpoint\nvs Gaussian", controls["gaussian"]["endpoint"], "s"),
-        ("Policy action\nvs natural future", controls["natural"]["action"], "o"),
-        ("Policy endpoint\nvs natural future", controls["natural"]["endpoint"], "s"),
-        ("Policy action\nvs shuffled future", controls["shuffled"]["action"], "o"),
-        ("Policy endpoint\nvs shuffled future", controls["shuffled"]["endpoint"], "s"),
+    panels = [
+        (
+            axes[0],
+            "a  Cosmos 3",
+            summary["cosmos3"]["condition_projections"],
+            [("predicted_action", "Predicted\naction"),
+             ("executed_action", "Executed\naction"),
+             ("executed_endpoint", "Executed\nendpoint")],
+        ),
+        (
+            axes[1],
+            "b  Cosmos Policy",
+            summary["cosmos_policy"]["condition_projections"],
+            [("predicted_action", "Predicted\naction"),
+             ("predicted_endpoint", "Predicted\nendpoint")],
+        ),
     ]
-    for y, (_, stat, marker) in enumerate(reversed(control_rows)):
-        horizontal_error_point(ax, y, stat, ORANGE, marker)
-        ax.text(min(stat["mean"] + 0.035, 1.01), y, f"{stat['mean']:.3f}", va="center", fontsize=6.2)
-    ax.axvline(0, color="#555555", linewidth=0.8)
-    ax.set_yticks(range(len(control_rows)), [r[0] for r in reversed(control_rows)])
-    ax.set_xlim(-0.05, 1.08)
-    ax.set_xlabel("Extra donor-directed movement\nrelative to named control")
-    ax.set_title("b  Donor future beats every control", loc="left", weight="bold")
-    ax.grid(axis="x", color="#DDDDDD", linewidth=0.5)
+
+    for ax, title, conditions, groups in panels:
+        for group_index, (group_key, group_label) in enumerate(groups):
+            for condition, stat in conditions[group_key].items():
+                color, marker, _ = styles[condition]
+                x = group_index + offsets[condition]
+                mean = stat["mean"]
+                low, high = stat["ci"]
+                yerr = None if low == high == mean else [[mean - low], [high - mean]]
+                ax.errorbar(
+                    [x], [mean], yerr=yerr, fmt=marker, color=color,
+                    markerfacecolor="none" if condition == "gaussian" else color,
+                    markeredgecolor=color, markeredgewidth=1.1, markersize=6,
+                    linewidth=1.2, capsize=2.3, zorder=3,
+                )
+                if condition != "self":
+                    if condition == "shuffled":
+                        label_y, vertical_alignment = low - 0.025, "top"
+                    else:
+                        label_y, vertical_alignment = high + 0.025, "bottom"
+                    ax.text(x, label_y, f"{mean:.3f}", ha="center", va=vertical_alignment,
+                            fontsize=5.7, color=color,
+                            weight="bold" if condition == "donor" else "normal")
+        ax.axhline(0, color=BLUE, linewidth=0.75)
+        ax.axhline(0.10, color="#AAAAAA", linewidth=0.7, linestyle="--")
+        ax.axhline(1.0, color=ORANGE, linewidth=0.75, linestyle=":")
+        ax.set_xticks(range(len(groups)), [label for _, label in groups])
+        ax.set_xlim(-0.48, len(groups) - 0.52)
+        ax.set_ylim(-0.08, 1.18)
+        ax.set_title(title, loc="left", weight="bold")
+        ax.grid(axis="y", color="#DDDDDD", linewidth=0.5)
+    axes[0].set_ylabel("Donor-directed projection\n0 = self, 1 = paired donor")
 
     legend = [
-        Line2D([0], [0], marker="o", color=ORANGE, linestyle="none", label="Action outcome"),
-        Line2D([0], [0], marker="s", color=ORANGE, linestyle="none", label="Executed endpoint"),
-        Patch(facecolor=LIGHT_ORANGE, edgecolor=ORANGE, label="Orange = donor-future result"),
+        Line2D([0], [0], marker=marker, color=color, linestyle="none",
+               markerfacecolor="none" if key == "gaussian" else color,
+               markeredgecolor=color, label=label)
+        for key, (color, marker, label) in styles.items()
     ]
-    fig.legend(handles=legend, loc="lower center", bbox_to_anchor=(0.5, -0.005),
-               ncol=3, frameon=False, fontsize=6.6)
-    fig.subplots_adjust(wspace=0.62, bottom=0.22)
+    fig.legend(handles=legend, loc="lower center", bbox_to_anchor=(0.5, -0.015),
+               ncol=5, frameon=False, fontsize=6.3, columnspacing=1.2, handletextpad=0.35)
+    fig.subplots_adjust(wspace=0.22, bottom=0.25)
     save(fig, "directionality_results")
 
 

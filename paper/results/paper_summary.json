@@ -37,6 +37,22 @@
         "endpoint": {"mean": 0.2773, "ci": [0.1986, 0.3569], "positive_units": 10, "units": 10}
       }
     },
+    "condition_projections": {
+      "predicted_action": {
+        "self": {"mean": 0.0, "ci": [0.0, 0.0]},
+        "gaussian": {"mean": 0.001339, "ci": [-0.003645, 0.006444]},
+        "natural": {"mean": 0.395495, "ci": [0.268863, 0.552662]},
+        "shuffled": {"mean": 0.243603, "ci": [0.151743, 0.347418]},
+        "donor": {"mean": 0.499, "ci": [0.336, 0.679]}
+      },
+      "predicted_endpoint": {
+        "self": {"mean": 0.0, "ci": [0.0, 0.0]},
+        "gaussian": {"mean": 0.002896, "ci": [-0.002564, 0.008404]},
+        "natural": {"mean": 0.441694, "ci": [0.310671, 0.597668]},
+        "shuffled": {"mean": 0.274750, "ci": [0.185237, 0.374957]},
+        "donor": {"mean": 0.552, "ci": [0.387, 0.728]}
+      }
+    },
     "modalities": {
       "wrist": {"mean": 0.435, "ci": [0.284, 0.605], "positive_units": 10, "units": 10},
       "primary": {"mean": 0.101, "ci": [0.057, 0.144], "positive_units": 10, "units": 10},
@@ -70,6 +86,23 @@
       "executed_endpoint": {"mean": 1.003, "ci": [0.950, 1.050], "positive_units": 22, "units": 22},
       "executed_minus_gaussian": {"mean": 0.941, "ci": [0.837, 1.032], "positive_units": 22, "units": 22},
       "executed_minus_natural": {"mean": 0.391, "ci": [0.246, 0.533], "positive_units": 18, "units": 22}
+    },
+    "condition_projections": {
+      "predicted_action": {
+        "self": {"mean": 0.0, "ci": [0.0, 0.0]},
+        "natural": {"mean": 0.558962, "ci": [0.464974, 0.651011]},
+        "donor": {"mean": 0.992, "ci": [0.972, 1.010]}
+      },
+      "executed_action": {
+        "self": {"mean": 0.0, "ci": [0.0, 0.0]},
+        "gaussian": {"mean": 0.041411, "ci": [0.003243, 0.076319]},
+        "natural": {"mean": 0.591496, "ci": [0.490807, 0.686831]},
+        "donor": {"mean": 0.983, "ci": [0.890, 1.064]}
+      },
+      "executed_endpoint": {
+        "self": {"mean": 0.0, "ci": [0.0, 0.0]},
+        "donor": {"mean": 1.003, "ci": [0.950, 1.050]}
+      }
     },
     "kv_replacement_loss": {
       "predicted_action": {"mean": 0.877, "ci": [0.842, 0.910], "positive_units": 22, "units": 22, "fraction_of_unpatched": 0.884},

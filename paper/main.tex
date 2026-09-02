@@ -110,7 +110,7 @@ Cosmos 3 permits the stronger replacement test. We record future-video keys and 
 
 \subsection{Statistical analysis}
 
-The independent unit is a restored simulator state, not an individual noise draw or transplant direction. We first average reciprocal directions, donors, noise draws, and process repeats within state, then form 95\% percentile intervals from 10,000 bootstrap resamples of states \citep{field2007clusterbootstrap}. Task-balanced sensitivity analyses average states within task before resampling tasks. We prespecified $0.10$ projection units---10\% of the native recipient-to-donor displacement---as the smallest effect of interest for the Cosmos Policy confirmatory family and the Cosmos 3 population and factor families \citep{lakens2017equivalence}. An interval contained within $[-0.10,0.10]$ supports practical equivalence to zero at that scale. Prespecified primary sign-test $p$-values use Holm correction.
+The independent unit is a restored simulator state, not an individual noise draw or transplant direction. We first average reciprocal directions, donors, noise draws, and process repeats within state, then form 95\% percentile intervals from 10,000 bootstrap resamples of states \citep{field2007clusterbootstrap}. For the common-scale condition estimates in Table~\ref{tab:directionality}, we reconstruct each control's projection within unit from the registered pairwise contrasts before bootstrapping; these are not differences of aggregate means. Task-balanced sensitivity analyses average states within task before resampling tasks. We prespecified $0.10$ projection units---10\% of the native recipient-to-donor displacement---as the smallest effect of interest for the Cosmos Policy confirmatory family and the Cosmos 3 population and factor families \citep{lakens2017equivalence}. An interval contained within $[-0.10,0.10]$ supports practical equivalence to zero at that scale. Prespecified primary sign-test $p$-values use Holm correction.
 
 \section{Results}
 \label{sec:results}
@@ -118,60 +118,55 @@ The independent unit is a restored simulator state, not an individual noise draw
 \subsection{Do coherent futures steer behavior?}
 \label{sec:steering}
 
-The method succeeds if three things happen: inserting a donor future moves behavior toward that donor, the shift survives simulator execution, and the paired donor outperforms non-donor controls. Table~\ref{tab:primary} shows that all five primary directional tests pass the prespecified criterion. Table~\ref{tab:controls} shows that every available donor-versus-control interval is positive. Figure~\ref{fig:directionality} visualizes these two claims. On every steering scale, 0 means no donor-directed effect and 1 means the full recipient-to-donor distance.
+The method succeeds if three things happen: inserting a donor future moves behavior toward that donor, the shift survives simulator execution, and the paired donor outperforms non-donor controls. Table~\ref{tab:directionality} puts the method and every applicable control on one scale, organized by model, future source, and outcome. Figure~\ref{fig:directionality} shows the same comparison visually. On this scale, 0 is the self-future result and 1 is the paired donor behavior.
 
 \paragraph{Cosmos 3.}
-Across 22 completed states and all six tasks, a predicted donor future produces action steering of $0.992$ ($[0.972,1.010]$; 22/22 states positive; Table~\ref{tab:primary}). Executed donor videos give nearly the same result: action steering is $0.983$ ($[0.890,1.064]$; 22/22), and executing that action yields endpoint steering of $1.003$ ($[0.950,1.050]$; 22/22). The paired donor also beats the natural-future and geometry-matched Gaussian controls (Table~\ref{tab:controls}). Thus, the effect is not explained by recomputation, an equally large unstructured displacement, or merely supplying a different valid continuation. Endpoint projection shows that the donor-directed component survives simulator execution; it does not imply equality of the full endpoint vectors. Task-balanced analyses preserve these conclusions.
+Across 22 completed states and all six tasks, a predicted paired-donor future produces action steering of $0.992$ ($[0.972,1.010]$; 22/22 states positive), compared with $0.559$ for the natural-future control (Table~\ref{tab:directionality}). Executed paired-donor videos produce action steering of $0.983$, compared with $0.591$ for the natural control and $0.041$ for the geometry-matched Gaussian control. Executing the paired-donor-conditioned action yields endpoint steering of $1.003$ ($[0.950,1.050]$; 22/22). Thus, the effect is not explained by recomputation, an equally large unstructured displacement, or merely supplying a different valid continuation. Endpoint projection shows that the donor-directed component survives simulator execution; it does not imply equality of the full endpoint vectors. Task-balanced analyses preserve these conclusions.
 
 \begin{table}[t]
-  \caption{Primary directional tests: all pass. Steering is donor-future minus self-future projection. A value of 0 means no donor-directed movement; 1 means the recomputed behavior reaches the donor along the measured direction. ``Pass'' means the entire 95\% bootstrap CI exceeds the prespecified 0.10 criterion.}
-  \label{tab:primary}
+  \caption{Method and controls on one scale. Each row reports donor-directed projection after inserting the named future: 0 is the self-future result and 1 is the paired donor behavior. Within each model--source--outcome block, bold marks the largest estimate, always the paired donor (ours). The rightmost column gives its paired advantage over the strongest available control; all five intervals exclude zero. Control projections are reconstructed within independent unit before bootstrapping.}
+  \label{tab:directionality}
   \centering
-  \small
-  \setlength{\tabcolsep}{4.5pt}
-  \begin{tabular}{@{}lllcc@{}}
+  \footnotesize
+  \setlength{\tabcolsep}{2.8pt}
+  \begin{tabular}{@{}llllll@{}}
     \toprule
-    Model and future source & Outcome & Steering [95\% CI] & Positive units & Test \\
+    Model & Source & Outcome & Future inserted & Projection [95\% CI] & Best-control advantage [95\% CI] \\
     \midrule
-    Cosmos 3, predicted & Action & 0.992 [0.972, 1.010] & 22/22 states & \textbf{Pass} \\
-    Cosmos 3, executed & Action & 0.983 [0.890, 1.064] & 22/22 states & \textbf{Pass} \\
-    Cosmos 3, executed & Endpoint & 1.003 [0.950, 1.050] & 22/22 states & \textbf{Pass} \\
-    Cosmos Policy, predicted & Action & 0.499 [0.336, 0.679] & 10/10 tasks & \textbf{Pass} \\
-    Cosmos Policy, predicted & Endpoint & 0.552 [0.387, 0.728] & 10/10 tasks & \textbf{Pass} \\
+    Cosmos 3 & Predicted & Action & Self & 0.000 (reference) & --- \\
+    Cosmos 3 & Predicted & Action & Natural control & 0.559 [0.465, 0.651] & --- \\
+    Cosmos 3 & Predicted & Action & \textbf{Paired donor (ours)} & \textbf{0.992 [0.972, 1.010]} & \textbf{0.433 [0.332, 0.538]} \\
+    \midrule
+    Cosmos 3 & Executed & Action & Self & 0.000 (reference) & --- \\
+    Cosmos 3 & Executed & Action & Matched Gaussian & 0.041 [0.003, 0.076] & --- \\
+    Cosmos 3 & Executed & Action & Natural control & 0.591 [0.491, 0.687] & --- \\
+    Cosmos 3 & Executed & Action & \textbf{Paired donor (ours)} & \textbf{0.983 [0.890, 1.064]} & \textbf{0.391 [0.246, 0.533]} \\
+    \midrule
+    Cosmos 3 & Executed & Endpoint & Self & 0.000 (reference) & --- \\
+    Cosmos 3 & Executed & Endpoint & \textbf{Paired donor (ours)} & \textbf{1.003 [0.950, 1.050]} & \textbf{1.003 [0.950, 1.050]} \\
+    \midrule
+    Cosmos Policy & Predicted & Action & Self & 0.000 (reference) & --- \\
+    Cosmos Policy & Predicted & Action & Matched Gaussian & 0.001 [$-0.004$, 0.006] & --- \\
+    Cosmos Policy & Predicted & Action & Natural control & 0.395 [0.269, 0.553] & --- \\
+    Cosmos Policy & Predicted & Action & Shuffled control & 0.244 [0.152, 0.347] & --- \\
+    Cosmos Policy & Predicted & Action & \textbf{Paired donor (ours)} & \textbf{0.499 [0.336, 0.679]} & \textbf{0.103 [0.048, 0.161]} \\
+    \midrule
+    Cosmos Policy & Predicted & Endpoint & Self & 0.000 (reference) & --- \\
+    Cosmos Policy & Predicted & Endpoint & Matched Gaussian & 0.003 [$-0.003$, 0.008] & --- \\
+    Cosmos Policy & Predicted & Endpoint & Natural control & 0.442 [0.311, 0.598] & --- \\
+    Cosmos Policy & Predicted & Endpoint & Shuffled control & 0.275 [0.185, 0.375] & --- \\
+    Cosmos Policy & Predicted & Endpoint & \textbf{Paired donor (ours)} & \textbf{0.552 [0.387, 0.728]} & \textbf{0.110 [0.054, 0.166]} \\
     \bottomrule
   \end{tabular}
 \end{table}
 
 \paragraph{Cosmos Policy.}
-At the first query, donor-minus-self steering is $0.499$ for actions and $0.552$ for endpoints, positive in all ten tasks (Table~\ref{tab:primary}). The donor also exceeds Gaussian, natural, and shuffled controls for both outcomes. The natural-future contrast is the hardest comparison: $0.103$ ($[0.048,0.161]$; 8/10) for actions and $0.110$ ($[0.054,0.166]$; 8/10) for endpoints. This rules out the weak explanation that any different tokenizer-consistent future causes the same movement. Effects are much smaller at the separately sampled later states: after three chunks, action steering is $0.031$ ($[0.006,0.066]$) and endpoint steering is $0.004$ ($[-0.043,0.038]$); after six, they are $0.027$ ($[-0.010,0.092]$) and $0.025$ ($[0.005,0.044]$). Because each time point is a different physical state, this is state dependence associated with time, not a causal estimate of temporal decay.
-
-\begin{table}[t]
-  \caption{Specificity controls: the paired donor beats every tested alternative. ``Donor advantage'' is donor-future projection minus control-future projection, so a positive value means behavior follows the paired donor more strongly. ``Pass'' means the 95\% bootstrap CI excludes zero.}
-  \label{tab:controls}
-  \centering
-  \small
-  \setlength{\tabcolsep}{4pt}
-  \begin{tabular}{@{}lllcc@{}}
-    \toprule
-    Model and future source & Control future & Outcome & Donor advantage [95\% CI] & Test \\
-    \midrule
-    Cosmos 3, predicted & Natural & Action & 0.433 [0.332, 0.538] & \textbf{Pass} \\
-    Cosmos 3, executed & Matched Gaussian & Action & 0.941 [0.837, 1.032] & \textbf{Pass} \\
-    Cosmos 3, executed & Natural & Action & 0.391 [0.246, 0.533] & \textbf{Pass} \\
-    Cosmos Policy & Matched Gaussian & Action & 0.497 [0.334, 0.679] & \textbf{Pass} \\
-    Cosmos Policy & Matched Gaussian & Endpoint & 0.549 [0.383, 0.728] & \textbf{Pass} \\
-    Cosmos Policy & Natural & Action & 0.103 [0.048, 0.161] & \textbf{Pass} \\
-    Cosmos Policy & Natural & Endpoint & 0.110 [0.054, 0.166] & \textbf{Pass} \\
-    Cosmos Policy & Shuffled & Action & 0.255 [0.180, 0.338] & \textbf{Pass} \\
-    Cosmos Policy & Shuffled & Endpoint & 0.277 [0.199, 0.357] & \textbf{Pass} \\
-    \bottomrule
-  \end{tabular}
-\end{table}
+At the first query, the paired donor produces action steering of $0.499$ and endpoint steering of $0.552$, positive in all ten tasks (Table~\ref{tab:directionality}). The natural control reaches $0.395$ and $0.442$, respectively, while the shuffled control reaches $0.244$ and $0.275$ and the matched Gaussian remains near zero. The natural future is the hardest control: the paired donor exceeds it by $0.103$ ($[0.048,0.161]$; 8/10) for actions and $0.110$ ($[0.054,0.166]$; 8/10) for endpoints. This rules out the weak explanation that any different tokenizer-consistent future causes the same movement. Effects are much smaller at the separately sampled later states: after three chunks, action steering is $0.031$ ($[0.006,0.066]$) and endpoint steering is $0.004$ ($[-0.043,0.038]$); after six, they are $0.027$ ($[-0.010,0.092]$) and $0.025$ ($[0.005,0.044]$). Because each time point is a different physical state, this is state dependence associated with time, not a causal estimate of temporal decay.
 
 \begin{figure}[t]
   \centering
   \includegraphics[width=\linewidth]{figures/directionality_results.pdf}
-  \caption{Does the method work? Orange always denotes a donor-future result; circles denote actions and squares denote executed endpoints. (a) All five primary donor-minus-self effects point toward the donor and their 95\% bootstrap CIs exceed the prespecified 0.10 criterion. The dotted orange line marks the donor location at 1. (b) Every donor-minus-control contrast is positive: the paired donor steers more than Gaussian, natural, and shuffled alternatives. Values are printed beside each estimate.}
+  \caption{Method and controls on the same donor-directed scale, separated by model. Blue squares are self-future baselines; gray marks are Gaussian, natural, and shuffled controls; orange diamonds are paired donor futures (ours). Action and endpoint are separate x-axis groups, not marker meanings. Points show means and whiskers show 95\% state-bootstrap intervals. In every group, the paired donor has the largest projection. The dotted orange line marks the paired donor behavior at 1.}
   \label{fig:directionality}
 \end{figure}
 
