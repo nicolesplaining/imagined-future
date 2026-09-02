@@ -89,14 +89,16 @@ def arrow(ax, start, end, color="#333333"):
 
 
 def make_overview() -> None:
-    fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.15))
+    """Four-step schematic with one question per panel."""
+    fig, axes = plt.subplots(2, 2, figsize=(7.2, 3.65))
+    axes = axes.ravel()
     for ax in axes:
         ax.set_xlim(0, 1)
         ax.set_ylim(0, 1)
         ax.axis("off")
 
     ax = axes[0]
-    ax.set_title("a  Alternative runs", loc="left", weight="bold", fontsize=7.5)
+    ax.set_title("a  Generate two reachable alternatives", loc="left", weight="bold", fontsize=8)
     rounded_box(ax, (0.04, 0.39), 0.18, 0.22, "saved\nstate $S$", LIGHT_GRAY, GRAY, fontsize=6.3, weight="bold")
     rounded_box(ax, (0.42, 0.63), 0.28, 0.20, "recipient future\n$F_A$", LIGHT_BLUE, BLUE, fontsize=5.8)
     rounded_box(ax, (0.42, 0.17), 0.28, 0.20, "donor future\n$F_B$", LIGHT_ORANGE, ORANGE, fontsize=5.8)
@@ -106,10 +108,10 @@ def make_overview() -> None:
     arrow(ax, (0.22, 0.48), (0.42, 0.27), ORANGE)
     arrow(ax, (0.70, 0.73), (0.79, 0.73), BLUE)
     arrow(ax, (0.70, 0.27), (0.79, 0.27), ORANGE)
-    ax.text(0.49, 0.93, "Two runs from the same state", ha="center", va="center", fontsize=7)
+    ax.text(0.49, 0.93, "Same state and instruction; different native draws", ha="center", va="center", fontsize=6.8)
 
     ax = axes[1]
-    ax.set_title("b  Replace the future", loc="left", weight="bold", fontsize=7.5)
+    ax.set_title("b  Transplant only the donor future", loc="left", weight="bold", fontsize=8)
     rounded_box(ax, (0.02, 0.66), 0.28, 0.16, "state $S$", LIGHT_GRAY, GRAY, fontsize=7)
     rounded_box(ax, (0.02, 0.42), 0.28, 0.16, "noise from\nrun $A$", LIGHT_BLUE, BLUE, fontsize=7)
     rounded_box(ax, (0.02, 0.18), 0.28, 0.16, "donor future\n$F_B$ only", LIGHT_ORANGE, ORANGE, fontsize=7)
@@ -118,10 +120,10 @@ def make_overview() -> None:
     for y in (0.74, 0.50, 0.26):
         arrow(ax, (0.30, y), (0.43, 0.50), GRAY if y != 0.26 else ORANGE)
     arrow(ax, (0.65, 0.49), (0.77, 0.49), ORANGE)
-    ax.text(0.50, 0.09, "Recipient inputs and noise stay fixed", ha="center", fontsize=6.5, color="#333333")
+    ax.text(0.50, 0.09, "Observation, instruction, and recipient noise stay fixed", ha="center", fontsize=6.3, color="#333333")
 
     ax = axes[2]
-    ax.set_title("c  Measure the effect", loc="left", weight="bold", fontsize=7.5)
+    ax.set_title("c  Score the direction of the change", loc="left", weight="bold", fontsize=8)
     ax.plot([0.10, 0.88], [0.72, 0.72], color="#444444", linewidth=1.5)
     ax.scatter([0.10], [0.72], s=34, color=BLUE, zorder=3)
     ax.scatter([0.88], [0.72], s=34, color=ORANGE, zorder=3)
@@ -129,12 +131,20 @@ def make_overview() -> None:
     ax.text(0.10, 0.61, "recipient $A$\n0", ha="center", va="top", fontsize=7)
     ax.text(0.88, 0.61, "donor $B$\n1", ha="center", va="top", fontsize=7)
     ax.text(0.70, 0.83, "action after replacement", ha="center", fontsize=6.5, color=TEAL, weight="bold")
-    rounded_box(ax, (0.08, 0.15), 0.34, 0.18, "future K/V\nfrom run $B$", LIGHT_ORANGE, ORANGE, fontsize=7)
-    rounded_box(ax, (0.57, 0.15), 0.34, 0.18, "replace with K/V\nfrom run $A$", LIGHT_BLUE, BLUE, fontsize=7)
-    arrow(ax, (0.42, 0.24), (0.57, 0.24), NAVY)
-    ax.text(0.50, 0.04, "Donor action is used only for scoring", ha="center", fontsize=6.4)
+    ax.text(0.50, 0.25, "Projection = 0: recipient\nProjection = 1: donor", ha="center", va="center", fontsize=7)
+    ax.text(0.50, 0.05, "The donor action is never given to the policy", ha="center", fontsize=6.4, weight="bold")
 
-    fig.subplots_adjust(wspace=0.17)
+    ax = axes[3]
+    ax.set_title("d  Test the future-to-action pathway", loc="left", weight="bold", fontsize=8)
+    rounded_box(ax, (0.05, 0.61), 0.34, 0.18, "donor-future K/V", LIGHT_ORANGE, ORANGE, fontsize=7)
+    rounded_box(ax, (0.61, 0.61), 0.34, 0.18, "donor-directed\naction", LIGHT_ORANGE, ORANGE, fontsize=7)
+    arrow(ax, (0.39, 0.70), (0.61, 0.70), ORANGE)
+    rounded_box(ax, (0.05, 0.23), 0.34, 0.18, "self-future K/V", LIGHT_BLUE, BLUE, fontsize=7)
+    rounded_box(ax, (0.61, 0.23), 0.34, 0.18, "reduced donor\nprojection", LIGHT_BLUE, BLUE, fontsize=7)
+    arrow(ax, (0.39, 0.32), (0.61, 0.32), BLUE)
+    ax.text(0.50, 0.06, "Only future-token keys and values are replaced", ha="center", fontsize=6.4)
+
+    fig.subplots_adjust(wspace=0.15, hspace=0.34)
     save(fig, "method_overview")
 
 
@@ -162,39 +172,79 @@ def error_point(ax, x, stat, color, marker="o", label=None):
     )
 
 
+def horizontal_error_point(ax, y, stat, color, marker="o", label=None):
+    mean = stat["mean"]
+    low, high = stat["ci"]
+    ax.errorbar(
+        [mean],
+        [y],
+        xerr=[[mean - low], [high - mean]],
+        fmt=marker,
+        color=color,
+        markerfacecolor=color,
+        markeredgecolor="white",
+        markeredgewidth=0.5,
+        markersize=5.5,
+        linewidth=1.3,
+        capsize=2.3,
+        label=label,
+        zorder=3,
+    )
+
+
 def make_directionality(summary: dict) -> None:
-    """Cosmos Policy: state dependence and modality localization."""
-    fig, axes = plt.subplots(1, 2, figsize=(7.2, 2.28), gridspec_kw={"width_ratios": [1.25, 1.0]})
+    """Cosmos Policy: timing, explicit controls, and modality localization."""
+    fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.85), gridspec_kw={"width_ratios": [1.22, 1.12, 0.92]})
 
     ax = axes[0]
     timing = summary["cosmos_policy"]["timing"]
-    for i, cell in enumerate(timing):
-        error_point(ax, i - 0.08, cell["action"], BLUE, "o", "Action chunk" if i == 0 else None)
-        error_point(ax, i + 0.08, cell["endpoint"], ORANGE, "s", "Executed endpoint" if i == 0 else None)
-    ax.axhline(0, color="#555555", linewidth=0.8)
-    ax.axhline(0.10, color=GRAY, linewidth=0.8, linestyle="--")
-    ax.text(2.43, 0.107, "Prespecified 0.10 threshold", fontsize=5.8, color=GRAY, ha="right", va="bottom")
-    ax.set_xticks(range(3), ["First decision", "After 3 action chunks", "After 6 action chunks"])
-    ax.set_ylabel("Projection difference\n(donor future $-$ self future)")
-    ax.set_title("a  Steering is strongest at the first query", loc="left", weight="bold")
-    ax.set_ylim(-0.12, 0.82)
-    ax.legend(frameon=False, loc="upper right")
-    ax.grid(axis="y", color="#DDDDDD", linewidth=0.5)
+    rows = []
+    for cell in timing:
+        rows.extend([(f"{cell['label']} — action", cell["action"], BLUE, "o"),
+                     (f"{cell['label']} — endpoint", cell["endpoint"], ORANGE, "s")])
+    for y, (_, stat, color, marker) in enumerate(reversed(rows)):
+        horizontal_error_point(ax, y, stat, color, marker)
+    ax.axvline(0, color="#555555", linewidth=0.8)
+    ax.axvline(0.10, color=GRAY, linewidth=0.8, linestyle="--")
+    ax.set_yticks(range(len(rows)), [r[0] for r in reversed(rows)])
+    ax.set_xlim(-0.09, 0.78)
+    ax.set_xlabel("Donor $-$ self projection")
+    ax.set_title("a  Effect by sampled state", loc="left", weight="bold")
+    ax.grid(axis="x", color="#DDDDDD", linewidth=0.5)
 
     ax = axes[1]
-    all_future = summary["cosmos_policy"]["timing"][0]["action"]
-    modalities = summary["cosmos_policy"]["modalities"]
-    for i, stat in enumerate([all_future, *modalities.values()]):
-        error_point(ax, i, stat, [TEAL, ORANGE, BLUE, GRAY][i])
-    ax.axhline(0, color="#555555", linewidth=0.8)
-    ax.axhline(0.10, color=GRAY, linewidth=0.8, linestyle="--")
-    ax.set_xticks(range(4), ["All\nfuture", "Wrist\nvideo", "Primary\nvideo", "Future\nproprio."])
-    ax.set_ylim(-0.08, 0.68)
-    ax.set_ylabel("Difference in action projection")
-    ax.set_title("b  Steering is carried by visual futures", loc="left", weight="bold")
-    ax.grid(axis="y", color="#DDDDDD", linewidth=0.5)
+    controls = summary["cosmos_policy"]["first_query_controls"]
+    control_rows = [("Self recomputation", controls["self"]),
+                    ("Matched Gaussian", controls["gaussian"]),
+                    ("Natural future", controls["natural"]),
+                    ("Shuffled future", controls["shuffled"])]
+    for y, (_, vals) in enumerate(reversed(control_rows)):
+        horizontal_error_point(ax, y - 0.10, vals["action"], BLUE, "o", "Action" if y == 0 else None)
+        horizontal_error_point(ax, y + 0.10, vals["endpoint"], ORANGE, "s", "Endpoint" if y == 0 else None)
+    ax.axvline(0, color="#555555", linewidth=0.8)
+    ax.axvline(0.10, color=GRAY, linewidth=0.8, linestyle="--")
+    ax.set_yticks(range(len(control_rows)), [r[0] for r in reversed(control_rows)])
+    ax.set_xlim(-0.04, 0.79)
+    ax.set_xlabel("Donor $-$ comparator")
+    ax.set_title("b  Donor beats all controls", loc="left", weight="bold")
+    ax.grid(axis="x", color="#DDDDDD", linewidth=0.5)
 
-    fig.subplots_adjust(wspace=0.35, bottom=0.20)
+    ax = axes[2]
+    modalities = summary["cosmos_policy"]["modalities"]
+    modality_rows = [("Wrist video", modalities["wrist"], ORANGE),
+                     ("Primary video", modalities["primary"], BLUE),
+                     ("Proprioception", modalities["proprioception"], GRAY)]
+    for y, (_, stat, color) in enumerate(reversed(modality_rows)):
+        horizontal_error_point(ax, y, stat, color)
+    ax.axvline(0, color="#555555", linewidth=0.8)
+    ax.axvline(0.10, color=GRAY, linewidth=0.8, linestyle="--")
+    ax.set_yticks(range(len(modality_rows)), [r[0] for r in reversed(modality_rows)])
+    ax.set_xlim(-0.05, 0.68)
+    ax.set_xlabel("Action projection")
+    ax.set_title("c  Visual modality", loc="left", weight="bold")
+    ax.grid(axis="x", color="#DDDDDD", linewidth=0.5)
+
+    fig.subplots_adjust(wspace=0.66, bottom=0.20)
     save(fig, "directionality_results")
 
 
@@ -245,55 +295,63 @@ def make_content(summary: dict) -> None:
 def make_pathway(summary: dict) -> None:
     """Cosmos 3: steering, K/V replacement, and isolated pixel factors."""
     data = summary["cosmos3"]
-    fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.35), gridspec_kw={"width_ratios": [1.15, 1.0, 1.0]})
+    fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.85), gridspec_kw={"width_ratios": [1.42, 1.0, 1.0]})
 
     ax = axes[0]
     steering = data["directionality"]
-    primary = [steering["predicted_action"], steering["executed_action"], steering["executed_endpoint"]]
-    for i, stat in enumerate(primary):
-        error_point(ax, i - 0.08, stat, BLUE if i < 2 else ORANGE, "o" if i < 2 else "s")
-    for i, stat in enumerate([steering["predicted_minus_natural"], steering["executed_minus_natural"]]):
-        error_point(ax, i + 0.10, stat, TEAL, "D")
-    ax.axhline(0, color="#555555", linewidth=0.8)
-    ax.axhline(1, color=GRAY, linewidth=0.8, linestyle="--")
-    ax.set_xticks(range(3), ["Predicted\naction", "Executed\naction", "Executed\nendpoint"])
-    ax.set_ylim(-0.08, 1.17)
-    ax.set_ylabel("Donor-directed projection")
-    ax.set_title("a  Coherent futures steer", loc="left", weight="bold")
-    ax.plot([], [], color=BLUE, marker="o", linestyle="none", label="Donor $-$ self")
-    ax.plot([], [], color=TEAL, marker="D", linestyle="none", label="Donor $-$ natural")
-    ax.legend(frameon=False, loc="lower left")
-    ax.grid(axis="y", color="#DDDDDD", linewidth=0.5)
+    rows = [
+        ("Predicted action — self", steering["predicted_action"], BLUE, "o"),
+        ("Predicted action — natural", steering["predicted_minus_natural"], TEAL, "D"),
+        ("Executed action — self", steering["executed_action"], BLUE, "o"),
+        ("Executed action — Gaussian", steering["executed_minus_gaussian"], TEAL, "D"),
+        ("Executed action — natural", steering["executed_minus_natural"], TEAL, "D"),
+        ("Executed endpoint — self", steering["executed_endpoint"], ORANGE, "s"),
+    ]
+    for y, (_, stat, color, marker) in enumerate(reversed(rows)):
+        horizontal_error_point(ax, y, stat, color, marker)
+    ax.axvline(0, color="#555555", linewidth=0.8)
+    ax.axvline(1, color=GRAY, linewidth=0.8, linestyle="--")
+    ax.set_yticks(range(len(rows)), [r[0] for r in reversed(rows)])
+    ax.set_xlim(-0.06, 1.16)
+    ax.set_xlabel("Donor $-$ comparator projection")
+    ax.set_title("a  Steering and controls", loc="left", weight="bold")
+    ax.grid(axis="x", color="#DDDDDD", linewidth=0.5)
 
     ax = axes[1]
     losses = data["kv_replacement_loss"]
-    for i, stat in enumerate(losses.values()):
-        error_point(ax, i, stat, [BLUE, TEAL, ORANGE][i], "s" if i == 2 else "o")
-    ax.axhline(0, color="#555555", linewidth=0.8)
-    ax.axhline(0.10, color=GRAY, linewidth=0.8, linestyle="--")
-    ax.set_xticks(range(3), ["Predicted\naction", "Executed\naction", "Executed\nendpoint"])
-    ax.set_ylim(-0.05, 1.02)
-    ax.set_ylabel("Reduction in donor projection")
-    ax.set_title("b  Future K/V carries steering", loc="left", weight="bold", fontsize=8)
-    ax.grid(axis="y", color="#DDDDDD", linewidth=0.5)
+    unpatched = [steering["predicted_action"], steering["executed_action"], steering["executed_endpoint"]]
+    removed = [losses["predicted_action"], losses["executed_action"], losses["executed_endpoint"]]
+    labels = ["Predicted action", "Executed action", "Executed endpoint"]
+    for y, (base, loss) in enumerate(zip(reversed(unpatched), reversed(removed))):
+        ax.barh(y + 0.13, base["mean"], height=0.22, color=LIGHT_ORANGE, edgecolor=ORANGE, label="Unpatched" if y == 0 else None)
+        ax.barh(y - 0.13, loss["mean"], height=0.22, color=TEAL, label="Removed by self K/V" if y == 0 else None)
+        ax.text(loss["mean"] + 0.025, y - 0.13, f"{100 * loss['fraction_of_unpatched']:.0f}%", va="center", fontsize=6.3, weight="bold")
+    ax.axvline(0, color="#555555", linewidth=0.8)
+    ax.set_yticks(range(3), list(reversed(labels)))
+    ax.set_xlim(0, 1.16)
+    ax.set_xlabel("Projection units")
+    ax.set_title("b  K/V removes 83--88%", loc="left", weight="bold")
+    ax.grid(axis="x", color="#DDDDDD", linewidth=0.5)
 
     ax = axes[2]
     factors = data["factor_study"]
-    for i, name in enumerate(("robot", "object")):
-        error_point(ax, i - 0.08, factors[f"{name}_action"], BLUE, "o", "Action" if i == 0 else None)
-        error_point(ax, i + 0.08, factors[f"{name}_endpoint"], ORANGE, "s", "Endpoint" if i == 0 else None)
-    ax.axhspan(-0.10, 0.10, color=LIGHT_GRAY, zorder=0)
-    ax.axhline(0, color="#555555", linewidth=0.8)
-    ax.axhline(-0.10, color=GRAY, linewidth=0.8, linestyle="--")
-    ax.axhline(0.10, color=GRAY, linewidth=0.8, linestyle="--")
-    ax.set_xticks(range(2), ["Robot pixels", "Object pixels"])
-    ax.set_ylim(-0.14, 0.14)
-    ax.set_ylabel("Isolated-factor effect")
+    factor_rows = [("Robot — action", factors["robot_action"], BLUE, "o"),
+                   ("Robot — endpoint", factors["robot_endpoint"], ORANGE, "s"),
+                   ("Object — action", factors["object_action"], BLUE, "o"),
+                   ("Object — endpoint", factors["object_endpoint"], ORANGE, "s")]
+    ax.axvspan(-0.10, 0.10, color=LIGHT_GRAY, zorder=0)
+    for y, (_, stat, color, marker) in enumerate(reversed(factor_rows)):
+        horizontal_error_point(ax, y, stat, color, marker)
+    ax.axvline(0, color="#555555", linewidth=0.8)
+    ax.axvline(-0.10, color=GRAY, linewidth=0.8, linestyle="--")
+    ax.axvline(0.10, color=GRAY, linewidth=0.8, linestyle="--")
+    ax.set_yticks(range(len(factor_rows)), [r[0] for r in reversed(factor_rows)])
+    ax.set_xlim(-0.14, 0.14)
+    ax.set_xlabel("Isolated-factor effect")
     ax.set_title("c  Isolated factors are negligible", loc="left", weight="bold", fontsize=8)
-    ax.legend(frameon=False, loc="upper center")
-    ax.grid(axis="y", color="#DDDDDD", linewidth=0.5)
+    ax.grid(axis="x", color="#DDDDDD", linewidth=0.5)
 
-    fig.subplots_adjust(wspace=0.48, bottom=0.22)
+    fig.subplots_adjust(wspace=0.67, bottom=0.20)
     save(fig, "pathway_results")
 
 

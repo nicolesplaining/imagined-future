@@ -5,24 +5,42 @@
     "timing": [
       {
         "label": "First query",
-        "action": {"mean": 0.499, "ci": [0.336, 0.679]},
-        "endpoint": {"mean": 0.552, "ci": [0.387, 0.728]}
+        "action": {"mean": 0.499, "ci": [0.336, 0.679], "positive_units": 10, "units": 10},
+        "endpoint": {"mean": 0.552, "ci": [0.387, 0.728], "positive_units": 10, "units": 10}
       },
       {
         "label": "After 3 chunks",
-        "action": {"mean": 0.031},
-        "endpoint": {"mean": 0.004}
+        "action": {"mean": 0.031, "ci": [0.006, 0.066], "positive_units": 8, "units": 10},
+        "endpoint": {"mean": 0.004, "ci": [-0.043, 0.038], "positive_units": 8, "units": 10}
       },
       {
         "label": "After 6 chunks",
-        "action": {"mean": 0.027},
-        "endpoint": {"mean": 0.025}
+        "action": {"mean": 0.027, "ci": [-0.010, 0.092], "positive_units": 6, "units": 10},
+        "endpoint": {"mean": 0.025, "ci": [0.005, 0.044], "positive_units": 8, "units": 10}
       }
     ],
+    "first_query_controls": {
+      "self": {
+        "action": {"mean": 0.4986, "ci": [0.3360, 0.6785], "positive_units": 10, "units": 10},
+        "endpoint": {"mean": 0.5520, "ci": [0.3875, 0.7279], "positive_units": 10, "units": 10}
+      },
+      "gaussian": {
+        "action": {"mean": 0.4973, "ci": [0.3343, 0.6786], "positive_units": 10, "units": 10},
+        "endpoint": {"mean": 0.5491, "ci": [0.3830, 0.7282], "positive_units": 10, "units": 10}
+      },
+      "natural": {
+        "action": {"mean": 0.1031, "ci": [0.0482, 0.1609], "positive_units": 8, "units": 10},
+        "endpoint": {"mean": 0.1103, "ci": [0.0541, 0.1665], "positive_units": 8, "units": 10}
+      },
+      "shuffled": {
+        "action": {"mean": 0.2550, "ci": [0.1795, 0.3379], "positive_units": 10, "units": 10},
+        "endpoint": {"mean": 0.2773, "ci": [0.1986, 0.3569], "positive_units": 10, "units": 10}
+      }
+    },
     "modalities": {
-      "wrist": {"mean": 0.435, "ci": [0.284, 0.605]},
-      "primary": {"mean": 0.101, "ci": [0.057, 0.144]},
-      "proprioception": {"mean": 0.001, "ci": [-0.004, 0.008]}
+      "wrist": {"mean": 0.435, "ci": [0.284, 0.605], "positive_units": 10, "units": 10},
+      "primary": {"mean": 0.101, "ci": [0.057, 0.144], "positive_units": 10, "units": 10},
+      "proprioception": {"mean": 0.001, "ci": [-0.004, 0.008], "positive_units": 5, "units": 10}
     },
     "object_main_effect": {
       "action": {"mean": 0.00015, "ci": [-0.00012, 0.00049]},
@@ -46,17 +64,17 @@
     "completed_states": 22,
     "tasks": 6,
     "directionality": {
-      "predicted_action": {"mean": 0.992, "ci": [0.972, 1.010]},
-      "predicted_minus_natural": {"mean": 0.433, "ci": [0.332, 0.538]},
-      "executed_action": {"mean": 0.983, "ci": [0.890, 1.064]},
-      "executed_endpoint": {"mean": 1.003, "ci": [0.950, 1.050]},
-      "executed_minus_gaussian": {"mean": 0.941, "ci": [0.837, 1.032]},
-      "executed_minus_natural": {"mean": 0.391, "ci": [0.246, 0.533]}
+      "predicted_action": {"mean": 0.992, "ci": [0.972, 1.010], "positive_units": 22, "units": 22},
+      "predicted_minus_natural": {"mean": 0.433, "ci": [0.332, 0.538], "positive_units": 21, "units": 22},
+      "executed_action": {"mean": 0.983, "ci": [0.890, 1.064], "positive_units": 22, "units": 22},
+      "executed_endpoint": {"mean": 1.003, "ci": [0.950, 1.050], "positive_units": 22, "units": 22},
+      "executed_minus_gaussian": {"mean": 0.941, "ci": [0.837, 1.032], "positive_units": 22, "units": 22},
+      "executed_minus_natural": {"mean": 0.391, "ci": [0.246, 0.533], "positive_units": 18, "units": 22}
     },
     "kv_replacement_loss": {
-      "predicted_action": {"mean": 0.877, "ci": [0.842, 0.910]},
-      "executed_action": {"mean": 0.814, "ci": [0.723, 0.900]},
-      "executed_endpoint": {"mean": 0.851, "ci": [0.766, 0.922]}
+      "predicted_action": {"mean": 0.877, "ci": [0.842, 0.910], "positive_units": 22, "units": 22, "fraction_of_unpatched": 0.884},
+      "executed_action": {"mean": 0.814, "ci": [0.723, 0.900], "positive_units": 22, "units": 22, "fraction_of_unpatched": 0.828},
+      "executed_endpoint": {"mean": 0.851, "ci": [0.766, 0.922], "positive_units": 22, "units": 22, "fraction_of_unpatched": 0.848}
     },
     "factor_study": {
       "registered_states": 12,
