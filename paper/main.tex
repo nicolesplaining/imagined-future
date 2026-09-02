@@ -181,25 +181,7 @@ The content that drives steering differs across checkpoints. Cosmos Policy respo
 Wrist-future action steering is $0.435$ ($[0.284,0.605]$), compared with $0.101$ ($[0.057,0.144]$) for the primary camera and $0.001$ ($[-0.004,0.008]$) for future proprioception (Figure~\ref{fig:mechanisms}a). In the 20-state $2\times2$ study, decoded futures identify the intended cell with 92.5\% primary-camera and 98.75\% wrist-camera accuracy. The intended object manipulation is therefore visible in the rendered futures, yet the object-state main effect is $0.00015$ ($[-0.00012,0.00049]$) for action and $0.00018$ ($[-0.00040,0.00102]$) for the executed goal-state endpoint. The available analysis does not report the robot-state main effect. Four exploratory natural pairs provide a complementary comparison: robot-motion futures yield action steering of $0.291$ ($[0.060,0.521]$) and robot-endpoint steering of $0.315$ ($[0.059,0.571]$), whereas the object-only effects are $0.021$ for both action and goal endpoint, with intervals crossing zero. At these sampled early states, the pattern is most consistent with an inverse-dynamics-like role for camera-visible robot motion. It does not show that Cosmos Policy generally ignores object consequences.
 
 \paragraph{Cosmos 3.}
-Across ten factor-study states and all six tasks, every isolated-factor interval lies inside the prespecified $[-0.10,0.10]$ equivalence region (Table~\ref{tab:content}; Figure~\ref{fig:mechanisms}b). Robot-pixel effects are $0.0022$ for actions and $0.0102$ for endpoints; object-pixel effects are $0.0061$ and $-0.0001$. Neither factor alone recreates a meaningful fraction of the roughly one-unit whole-future effect. The useful signal may be distributed across the image, require robot--object coherence, depend on camera or temporal structure, or interact nonlinearly with masking and tokenization. Hybrid videos may also be off distribution. The experiment establishes insufficiency of each isolated pixel factor, not irrelevance of robot or object information and not joint necessity.
-
-\begin{table}[t]
-  \caption{Cosmos 3 isolated content factors across ten states. Each row is a main effect in the disjoint $2\times2$ pixel transplant. Every 95\% state-bootstrap CI is contained within the prespecified equivalence region.}
-  \label{tab:content}
-  \centering
-  \small
-  \setlength{\tabcolsep}{7pt}
-  \begin{tabular}{@{}llcc@{}}
-    \toprule
-    Factor & Outcome & Effect [95\% CI] & Equivalent to zero \\
-    \midrule
-    Robot pixels & Action & 0.0022 [$-0.0016$, 0.0060] & Yes \\
-    Robot pixels & Endpoint & 0.0102 [$-0.0067$, 0.0275] & Yes \\
-    Object pixels & Action & 0.0061 [0.0009, 0.0119] & Yes \\
-    Object pixels & Endpoint & $-0.0001$ [$-0.0254$, 0.0239] & Yes \\
-    \bottomrule
-  \end{tabular}
-\end{table}
+Across ten factor-study states and all six tasks, every isolated-factor interval lies inside the prespecified $[-0.10,0.10]$ equivalence region (Table~\ref{tab:mechanisms}; Figure~\ref{fig:mechanisms}b). Robot-pixel effects are $0.0022$ for actions and $0.0102$ for endpoints; object-pixel effects are $0.0061$ and $-0.0001$. Neither factor alone recreates a meaningful fraction of the roughly one-unit whole-future effect. The useful signal may be distributed across the image, require robot--object coherence, depend on camera or temporal structure, or interact nonlinearly with masking and tokenization. Hybrid videos may also be off distribution. The experiment establishes insufficiency of each isolated pixel factor, not irrelevance of robot or object information and not joint necessity.
 
 \subsection{Which internal pathway carries the effect?}
 \label{sec:pathway}
@@ -210,21 +192,26 @@ Future-token attention provides an active route from generated futures to action
 Block-27 future-key removal produces a monotonic action-disruption curve: normalized $L_2$ change is $0.022$, $0.035$, $0.054$, and $0.068$ at gates $0.25$, $0.50$, $0.75$, and $1.00$. All-key recomputation is bitwise exact. Full removal is $0.016$ more disruptive than equal-count random-key removal and $0.048$ more disruptive than block-0 future-key removal; equal-count current-key removal is $0.024$ larger. Executed endpoints support the same bounded conclusion, although state counts and intervals are not available for this analysis. The late future-to-action edge is active, but it is neither the only nor the largest route through the block.
 
 \paragraph{Cosmos 3.}
-The interface was selected on excluded calibration tasks and frozen before population testing. Replacing donor-run future-token \kv{} with self-future \kv{} removes $0.877$ of the $0.992$ predicted-action shift, $0.814$ of the $0.983$ executed-action shift, and $0.851$ of the $1.003$ endpoint shift (Table~\ref{tab:pathway}; Figure~\ref{fig:mechanisms}c). These losses correspond to 88\%, 83\%, and 85\% of the respective unpatched point estimates and are positive in 22/22 states. Task-balanced point estimates are $0.877$, $0.812$, and $0.853$; all prespecified primary sign tests remain significant after Holm correction. Because token count and attention positions remain fixed, donor-specific information travels through this future-token \kv{} interface. The experiment does not identify every head or feature, exclude interacting unpatched routes, or establish a complete circuit.
+The interface was selected on excluded calibration tasks and frozen before population testing. Replacing donor-run future-token \kv{} with self-future \kv{} removes $0.877$ of the $0.992$ predicted-action shift, $0.814$ of the $0.983$ executed-action shift, and $0.851$ of the $1.003$ endpoint shift (Table~\ref{tab:mechanisms}; Figure~\ref{fig:mechanisms}c). These losses correspond to 88\%, 83\%, and 85\% of the respective unpatched point estimates and are positive in 22/22 states. Task-balanced point estimates are $0.877$, $0.812$, and $0.853$; all prespecified primary sign tests remain significant after Holm correction. Because token count and attention positions remain fixed, donor-specific information travels through this future-token \kv{} interface. The experiment does not identify every head or feature, exclude interacting unpatched routes, or establish a complete circuit.
 
 \begin{table}[t]
-  \caption{Cosmos 3 future-token pathway across 22 states. Each unpatched donor-minus-self effect is shown beside the reduction caused by replacing donor-future \kv{} with self-future \kv{}. ``Removed'' is the ratio of point estimates, not an independently estimated mediation proportion.}
-  \label{tab:pathway}
+  \caption{Two complementary Cosmos 3 mechanism tests in one table. For content sufficiency (10 states), the effect is donor steering recreated by isolated pixels; ``No'' means the entire interval lies within the prespecified $[-0.10,0.10]$ equivalence region. For pathway dependence (22 states), the effect is donor steering lost after replacing donor-future \kv{} with self-future \kv{}; percentages compare point estimates with unpatched steering. Isolated robot or object pixels are insufficient, while the complete future-token \kv{} interface carries most of the effect.}
+  \label{tab:mechanisms}
   \centering
-  \small
-  \setlength{\tabcolsep}{5pt}
-  \begin{tabular}{@{}lccc@{}}
+  \footnotesize
+  \setlength{\tabcolsep}{3pt}
+  \begin{tabular}{@{}lllll@{}}
     \toprule
-    Outcome & Unpatched steering & \kv{} replacement loss & Point estimate removed \\
+    Question & Intervention & Outcome & Effect [95\% CI] & Answer \\
     \midrule
-    Predicted action & 0.992 [0.972, 1.010] & 0.877 [0.842, 0.910] & 88\% \\
-    Executed action & 0.983 [0.890, 1.064] & 0.814 [0.723, 0.900] & 83\% \\
-    Executed endpoint & 1.003 [0.950, 1.050] & 0.851 [0.766, 0.922] & 85\% \\
+    Content sufficient? & Robot pixels & Action & 0.0022 [$-0.0016$, 0.0060] & \textbf{No} \\
+    Content sufficient? & Robot pixels & Endpoint & 0.0102 [$-0.0067$, 0.0275] & \textbf{No} \\
+    Content sufficient? & Object pixels & Action & 0.0061 [0.0009, 0.0119] & \textbf{No} \\
+    Content sufficient? & Object pixels & Endpoint & $-0.0001$ [$-0.0254$, 0.0239] & \textbf{No} \\
+    \midrule
+    Future \kv{} carries effect? & Self \kv{} replacement & Predicted action & 0.877 [0.842, 0.910] & \textbf{Yes (88\%)} \\
+    Future \kv{} carries effect? & Self \kv{} replacement & Executed action & 0.814 [0.723, 0.900] & \textbf{Yes (83\%)} \\
+    Future \kv{} carries effect? & Self \kv{} replacement & Executed endpoint & 0.851 [0.766, 0.922] & \textbf{Yes (85\%)} \\
     \bottomrule
   \end{tabular}
 \end{table}

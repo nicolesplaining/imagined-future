@@ -12,6 +12,7 @@ from docx.oxml.ns import qn
 
 
 TABLE_ONE_CAPTION = "Method and controls on one scale."
+MECHANISM_TABLE_CAPTION = "Two complementary Cosmos 3 mechanism tests in one table."
 
 
 def keep_row_together(row) -> None:
@@ -38,6 +39,14 @@ def main(path: Path) -> None:
     caption.paragraph_format.page_break_before = True
     caption.paragraph_format.keep_with_next = True
 
+    mechanism_caption = next(
+        paragraph
+        for paragraph in document.paragraphs
+        if paragraph.text.startswith(MECHANISM_TABLE_CAPTION)
+    )
+    mechanism_caption.paragraph_format.page_break_before = True
+    mechanism_caption.paragraph_format.keep_with_next = True
+
     primary_table = document.tables[0]
     primary_table.autofit = False
     column_widths = (1.10, 0.85, 0.75, 1.35, 2.45)
@@ -52,6 +61,22 @@ def main(path: Path) -> None:
                     run.font.size = Pt(8)
     repeat_header(primary_table.rows[0])
     for row in primary_table.rows:
+        keep_row_together(row)
+
+    mechanism_table = document.tables[1]
+    mechanism_table.autofit = False
+    mechanism_widths = (1.50, 1.50, 1.00, 1.65, 0.85)
+    for row in mechanism_table.rows:
+        for cell, width in zip(row.cells, mechanism_widths):
+            cell.width = Inches(width)
+            for paragraph in cell.paragraphs:
+                paragraph.paragraph_format.space_before = Pt(0)
+                paragraph.paragraph_format.space_after = Pt(0)
+                paragraph.paragraph_format.line_spacing = 1
+                for run in paragraph.runs:
+                    run.font.size = Pt(8)
+    repeat_header(mechanism_table.rows[0])
+    for row in mechanism_table.rows:
         keep_row_together(row)
 
     document.save(path)
