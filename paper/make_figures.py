@@ -274,7 +274,7 @@ def make_pathway(summary: dict) -> None:
     ax.set_xticks(range(3), ["Predicted\naction", "Executed\naction", "Executed\nendpoint"])
     ax.set_ylim(-0.05, 1.02)
     ax.set_ylabel("Reduction in donor projection")
-    ax.set_title("b  Self-future K/V suppresses steering", loc="left", weight="bold")
+    ax.set_title("b  Future K/V carries steering", loc="left", weight="bold", fontsize=8)
     ax.grid(axis="y", color="#DDDDDD", linewidth=0.5)
 
     ax = axes[2]
@@ -289,11 +289,11 @@ def make_pathway(summary: dict) -> None:
     ax.set_xticks(range(2), ["Robot pixels", "Object pixels"])
     ax.set_ylim(-0.14, 0.14)
     ax.set_ylabel("Isolated-factor effect")
-    ax.set_title("c  Isolated factors are negligible", loc="left", weight="bold")
+    ax.set_title("c  Isolated factors are negligible", loc="left", weight="bold", fontsize=8)
     ax.legend(frameon=False, loc="upper center")
     ax.grid(axis="y", color="#DDDDDD", linewidth=0.5)
 
-    fig.subplots_adjust(wspace=0.43, bottom=0.22)
+    fig.subplots_adjust(wspace=0.48, bottom=0.22)
     save(fig, "pathway_results")
 
 
