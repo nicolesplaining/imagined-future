@@ -64,6 +64,16 @@ The following checks must pass before outcomes are inspected:
    error. Independent reconstructions must have identical branch-state digests,
    and one repeated native continuation must have an identical endpoint digest,
    before reciprocal branches are collected.
+8. Native recipient and donor branches must execute all 32 actions because
+   their 33-frame videos are later registered as intervention sources. An
+   intervention that reaches RoboLab's official terminal condition earlier is
+   instead scored at that physically reached terminal state; its termination
+   flag and executed-action count are reported. This distinction was fixed
+   during confirmatory execution after a K/V-patched Mustard intervention
+   terminated successfully after 29 actions and exposed that the original
+   runner incorrectly applied the donor-video requirement to outcome-only
+   intervention branches. The frozen units, pairs, masks, and estimands were
+   unchanged, and the affected unit was restarted from its original state.
 
 Any failed check blocks the associated causal claim; it is not converted into
 a negative behavioral result.

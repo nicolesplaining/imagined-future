@@ -13,6 +13,8 @@ import numpy as np
 
 from imagined_future.statistics import cluster_bootstrap_mean, exact_sign_test, holm_adjust
 
+SMALLEST_EFFECT_OF_INTEREST = 0.10
+
 
 def unit_id(report: dict[str, Any]) -> str:
     return f"{report['task']}-seed-{int(report['environment_seed'])}"
@@ -20,13 +22,29 @@ def unit_id(report: dict[str, Any]) -> str:
 
 def effect_summary(values: dict[str, float], *, seed: int) -> dict[str, Any]:
     ordered = {key: float(values[key]) for key in sorted(values)}
-    return {
+    estimate = {
         **cluster_bootstrap_mean(ordered, resamples=10_000, seed=seed),
         "median": float(np.median(list(ordered.values()))),
         "positive_fraction": float(np.mean(np.asarray(list(ordered.values())) > 0.0)),
         "sign_test": exact_sign_test(list(ordered.values())),
         "unit_effects": ordered,
     }
+    estimate.update(
+        {
+            "smallest_effect_of_interest": SMALLEST_EFFECT_OF_INTEREST,
+            "ci_excludes_zero": bool(
+                estimate["lower"] > 0.0 or estimate["upper"] < 0.0
+            ),
+            "ci_above_positive_smallest_effect": bool(
+                estimate["lower"] > SMALLEST_EFFECT_OF_INTEREST
+            ),
+            "ci_within_zero_equivalence_margin": bool(
+                estimate["lower"] > -SMALLEST_EFFECT_OF_INTEREST
+                and estimate["upper"] < SMALLEST_EFFECT_OF_INTEREST
+            ),
+        }
+    )
+    return estimate
 
 
 def contrast(
@@ -65,6 +83,10 @@ def main() -> None:
     parser.add_argument("--summaries", type=Path, nargs="+", required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--bootstrap-seed", type=int, default=20260901)
+    parser.add_argument("--population-minimum-units", type=int, default=20)
+    parser.add_argument("--population-minimum-tasks", type=int, default=5)
+    parser.add_argument("--factor-minimum-units", type=int, default=10)
+    parser.add_argument("--factor-minimum-tasks", type=int, default=5)
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError(f"refusing to overwrite population summary: {args.output}")
@@ -101,6 +123,11 @@ def main() -> None:
             raise ValueError(f"result failed exact continuation repeat for {key}")
         if len(set(report["restore_state_digests"])) != 1:
             raise ValueError(f"result failed exact branch-state restoration for {key}")
+        if any(
+            int(native.get("executed_action_count", 32)) != 32
+            for native in report["native"].values()
+        ):
+            raise ValueError(f"result used an incomplete native donor video for {key}")
         if any(float(value) != 0.0 for value in report["kv_patch_identity_action_maximum_errors"].values()):
             raise ValueError(f"result failed K/V identity recomputation for {key}")
         gaussian_server = report["interventions"]["gaussian_executed"]["server"]
@@ -187,6 +214,9 @@ def main() -> None:
             continue
         estimate = effect_summary(values, seed=args.bootstrap_seed + offset)
         estimate["task_means"] = task_means(values, manifest_rows)
+        estimate["task_balanced_sensitivity"] = effect_summary(
+            estimate["task_means"], seed=args.bootstrap_seed + 1_000 + offset
+        )
         effects[name] = estimate
         names.append(name)
         raw_sign_p.append(float(estimate["sign_test"]["p_value"]))
@@ -237,23 +267,57 @@ def main() -> None:
                     values, seed=args.bootstrap_seed + 100 + len(factor_effects)
                 )
                 estimate["task_means"] = task_means(values, manifest_rows)
+                estimate["task_balanced_sensitivity"] = effect_summary(
+                    estimate["task_means"],
+                    seed=args.bootstrap_seed + 2_000 + len(factor_effects),
+                )
                 factor_effects[name] = estimate
 
     factor_observed = set(factor_reports)
+    observed_tasks = {str(manifest_rows[key]["task"]) for key in observed}
+    factor_observed_tasks = {
+        str(manifest_rows[key]["task"]) for key in factor_observed
+    }
+    early_terminations = {
+        key: {
+            label: int(intervention["executed_action_count"])
+            for label, intervention in report["interventions"].items()
+            if int(intervention.get("executed_action_count", 32)) < 32
+        }
+        for key, report in reports.items()
+    }
+    early_terminations = {
+        key: labels for key, labels in early_terminations.items() if labels
+    }
     report = {
         "scope": "frozen saved-state-clustered Cosmos 3 population estimates",
         "manifest_status": manifest["status"],
         "selection_uses_intervention_outcomes": False,
         "expected_units": len(expected),
         "observed_units": len(observed),
+        "observed_tasks": len(observed_tasks),
         "complete": not missing,
+        "minimum_units": args.population_minimum_units,
+        "minimum_tasks": args.population_minimum_tasks,
+        "minimum_achieved": bool(
+            len(observed) >= args.population_minimum_units
+            and len(observed_tasks) >= args.population_minimum_tasks
+        ),
         "missing_unit_ids": missing,
+        "early_terminal_interventions": early_terminations,
         "effects": effects,
         "factorization": {
             "manifest_status": manifest["factorization_status"],
             "expected_units": len(factor_expected),
             "observed_units": len(factor_observed & factor_expected),
+            "observed_tasks": len(factor_observed_tasks),
             "complete": factor_expected <= factor_observed,
+            "minimum_units": args.factor_minimum_units,
+            "minimum_tasks": args.factor_minimum_tasks,
+            "minimum_achieved": bool(
+                len(factor_observed & factor_expected) >= args.factor_minimum_units
+                and len(factor_observed_tasks) >= args.factor_minimum_tasks
+            ),
             "missing_unit_ids": sorted(factor_expected - factor_observed),
             "effects": factor_effects,
         },

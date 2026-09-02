@@ -212,91 +212,86 @@ def make_predict2_results() -> None:
 
 
 def make_cosmos3_results() -> None:
-    branches = load_json("results/cosmos3_multitask_branches/summary.json")
-    kv = load_json("results/cosmos3_kv_patch_v4/summary.json")
-    fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.35), gridspec_kw={"width_ratios": [1.1, 1.0, 1.2]})
+    summary = load_json("results/cosmos3_population_confirmatory_v1/aggregate_summary.json")
+    effects = summary["effects"]
+    factor = summary["factorization"]["effects"]
+    fig, axes = plt.subplots(
+        1,
+        3,
+        figsize=(7.2, 2.35),
+        gridspec_kw={"width_ratios": [1.3, 1.0, 1.1]},
+    )
 
     ax = axes[0]
-    labels = ["Predicted", "Executed"]
-    for i, source in enumerate(("predicted", "executed")):
-        stat = branches["source_summaries"][source]
-        for j, (metric, color, marker) in enumerate(
-            (("action", BLUE, "o"), ("endpoint", ORANGE, "s"))
-        ):
-            mean = stat[f"{metric}_projection_mean"]
-            lo, hi = stat[f"{metric}_projection_task_bootstrap_95ci"]
-            x = i + (-0.08 if j == 0 else 0.08)
-            ax.errorbar(
-                [x],
-                [mean],
-                yerr=[[mean - lo], [hi - mean]],
-                fmt=marker,
-                color=color,
-                markersize=6,
-                markeredgecolor="white",
-                markeredgewidth=0.5,
-                capsize=2.5,
-                linewidth=1.3,
-                label=metric.capitalize() if i == 0 else None,
-            )
+    groups = [
+        (
+            "Predicted\naction",
+            (
+                ("predicted_donor_minus_self_action", BLUE, "o", "Donor - self"),
+                ("predicted_donor_minus_natural_control_action", ORANGE, "s", "Donor - natural"),
+            ),
+        ),
+        (
+            "Executed\naction",
+            (
+                ("executed_donor_minus_executed_self_action", BLUE, "o", None),
+                ("executed_donor_minus_natural_control_action", ORANGE, "s", None),
+            ),
+        ),
+        (
+            "Executed\nendpoint",
+            (("executed_donor_minus_executed_self_physical", TEAL, "D", "Physical"),),
+        ),
+    ]
+    for i, (_, points) in enumerate(groups):
+        offsets = [0.0] if len(points) == 1 else [-0.09, 0.09]
+        for offset, (key, color, marker, label) in zip(offsets, points):
+            ci_point(ax, i + offset, effects[key], color, marker, label=label)
     ax.axhline(0, color="#555555", linewidth=0.8)
     ax.axhline(1, color=GRAY, linewidth=0.8, linestyle="--")
-    ax.set_xticks(range(2), labels)
-    ax.set_ylim(-0.12, 1.30)
-    ax.set_ylabel("Donor projection")
-    ax.set_title("a  All 24 transplants steer", loc="left", weight="bold", fontsize=8.5)
-    ax.legend(frameon=False, loc="lower right")
+    ax.set_xticks(range(3), [group[0] for group in groups])
+    ax.set_ylim(-0.10, 1.16)
+    ax.set_ylabel("Directional effect")
+    ax.set_title("a  Coherent futures steer", loc="left", weight="bold", fontsize=8.5)
+    ax.legend(frameon=False, loc="lower left", fontsize=6.3)
     ax.grid(axis="y", color="#DDDDDD", linewidth=0.5)
 
     ax = axes[1]
-    metrics = kv["calibration"]["metrics"]
-    names = ["Layer 16", "All direct", "Full barrier"]
-    keys = ["layer16_mediation_loss", "all_direct_mediation_loss", "all_barrier_mediation_loss"]
-    colors = [BLUE, TEAL, ORANGE]
-    for i, (key, color) in enumerate(zip(keys, colors)):
-        stat = metrics[key]
-        lo, hi = stat["task_bootstrap_95_interval"]
-        ax.errorbar(
-            [i],
-            [stat["mean"]],
-            yerr=[[stat["mean"] - lo], [hi - stat["mean"]]],
-            fmt="o",
-            color=color,
-            markersize=6,
-            markeredgecolor="white",
-            markeredgewidth=0.5,
-            capsize=2.5,
-            linewidth=1.3,
-        )
+    mediation = [
+        ("Predicted\naction", "predicted_future_kv_mediation_action", BLUE, "o"),
+        ("Executed\naction", "executed_future_kv_mediation_action", ORANGE, "s"),
+        ("Executed\nendpoint", "executed_future_kv_mediation_physical", TEAL, "D"),
+    ]
+    for i, (_, key, color, marker) in enumerate(mediation):
+        ci_point(ax, i, effects[key], color, marker)
     ax.axhline(0, color="#555555", linewidth=0.8)
     ax.axhline(1, color=GRAY, linewidth=0.8, linestyle="--")
-    ax.set_xticks(range(3), names, rotation=18, ha="right")
-    ax.set_ylim(-0.12, 1.15)
+    ax.set_xticks(range(3), [item[0] for item in mediation])
+    ax.set_ylim(-0.10, 1.08)
     ax.set_ylabel("Mediation loss")
     ax.set_title("b  Future K/V mediates", loc="left", weight="bold", fontsize=8.5)
     ax.grid(axis="y", color="#DDDDDD", linewidth=0.5)
 
     ax = axes[2]
-    holdout = kv["holdout"]["arms"]
-    conditions = ["Donor", "Layer 16", "All direct", "Barrier"]
-    for source, color, marker in (("predicted", BLUE, "o"), ("executed", ORANGE, "s")):
-        arm = holdout[source]
-        vals = [
-            arm["baseline_action_projection"],
-            arm["patches"]["selected"]["action_projection"],
-            arm["patches"]["all_direct"]["action_projection"],
-            arm["patches"]["all_barrier"]["action_projection"],
-        ]
-        ax.plot(range(4), vals, color=color, marker=marker, linewidth=1.4, markersize=5, label=source.capitalize())
+    factor_groups = [
+        ("Robot", "action_robot_main_effect", "physical_all_robot_main_effect"),
+        ("Object", "action_object_main_effect", "physical_all_object_main_effect"),
+    ]
+    ax.axhspan(-0.10, 0.10, color=LIGHT_GRAY, zorder=0)
+    for i, (_, action_key, physical_key) in enumerate(factor_groups):
+        ci_point(ax, i - 0.08, factor[action_key], BLUE, "o", label="Action" if i == 0 else None)
+        ci_point(ax, i + 0.08, factor[physical_key], TEAL, "D", label="Physical" if i == 0 else None)
     ax.axhline(0, color="#555555", linewidth=0.8)
-    ax.set_xticks(range(4), conditions, rotation=18, ha="right")
-    ax.set_ylim(-0.18, 1.78)
-    ax.set_ylabel("Held-out action projection")
-    ax.set_title("c  Held-out suppression", loc="left", weight="bold", fontsize=8.5)
-    ax.legend(frameon=False, loc="upper right")
+    ax.axhline(0.10, color=GRAY, linewidth=0.7, linestyle="--")
+    ax.axhline(-0.10, color=GRAY, linewidth=0.7, linestyle="--")
+    ax.set_xticks(range(2), [item[0] for item in factor_groups])
+    ax.set_ylim(-0.13, 0.13)
+    ax.set_ylabel("Isolated-factor effect")
+    ax.set_title("c  Isolated factors are negligible", loc="left", weight="bold", fontsize=8.2)
+    ax.legend(frameon=False, loc="upper right", fontsize=6.3)
     ax.grid(axis="y", color="#DDDDDD", linewidth=0.5)
 
-    fig.subplots_adjust(wspace=0.43, bottom=0.24)
+    fig.subplots_adjust(wspace=0.43, bottom=0.20)
     save(fig, "cosmos3_results")
 
 

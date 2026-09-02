@@ -25,5 +25,19 @@ results/*
 !results/content_factorization_v1/**
 !results/cosmos3_noop_v1/
 !results/cosmos3_noop_v1/**
+!results/cosmos3_population/
+!results/cosmos3_population/manifest.json
+!results/cosmos3_population_confirmatory_v1/
+!results/cosmos3_population_confirmatory_v1/**/
+!results/cosmos3_population_confirmatory_v1/**/summary.json
+!results/cosmos3_population_confirmatory_v1/aggregate_summary.json
+!results/cosmos3_population_confirmatory_v1/failure_report.json
 wandb/
 *.log
+
+# LaTeX build intermediates; keep the rendered paper PDF.
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.out
+paper/*.synctex.gz

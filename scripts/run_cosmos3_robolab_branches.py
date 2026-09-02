@@ -328,6 +328,8 @@ def main() -> None:
         fixed_request: dict[str, Any],
         response: dict[str, Any],
         label: str,
+        *,
+        require_full_video: bool = True,
     ) -> dict[str, Any]:
         _observation, restored = restore(branch_state)
         raw_action = np.asarray(response["action"], dtype=np.float32)
@@ -344,7 +346,7 @@ def main() -> None:
             terminated = bool(term[0].item() or trunc[0].item())
             if terminated:
                 break
-        if len(frames) != 33:
+        if require_full_video and len(frames) != 33:
             raise RuntimeError(f"{label} terminated after {len(frames) - 1} actions; full donor video required")
         endpoint = env.scene.get_state(is_relative=True)
         donor_path = args.output_dir / f"{label}.npz"
@@ -363,6 +365,7 @@ def main() -> None:
             "endpoint_state": clone_tree(endpoint),
             "states": states,
             "terminated": terminated,
+            "executed_action_count": len(frames) - 1,
         }
 
     try:
@@ -1116,7 +1119,13 @@ def main() -> None:
                 if action_error != 0.0:
                     raise RuntimeError(f"{label} changed self action by {action_error}")
             intervention_responses[label] = response
-            intervention_runs[label] = execute(branch_state, initial_request, response, label)
+            intervention_runs[label] = execute(
+                branch_state,
+                initial_request,
+                response,
+                label,
+                require_full_video=False,
+            )
             progress("intervention_completed", label=label)
 
         recipient_run = native_runs[recipient_seed]
@@ -1211,6 +1220,8 @@ def main() -> None:
                 },
                 "server": response_metadata(response),
                 "video_path": str(run["video_path"]),
+                "terminated": bool(run["terminated"]),
+                "executed_action_count": int(run["executed_action_count"]),
             }
 
         factorial_effects = None
@@ -1333,6 +1344,8 @@ def main() -> None:
                 str(seed): {
                     "endpoint_state_digest": state_digest(run["endpoint_state"]),
                     "video_path": str(run["video_path"]),
+                    "terminated": bool(run["terminated"]),
+                    "executed_action_count": int(run["executed_action_count"]),
                     "server": response_metadata(native_responses[seed]),
                 }
                 for seed, run in native_runs.items()

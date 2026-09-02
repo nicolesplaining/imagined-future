@@ -1,0 +1,27 @@
+{
+  "scope": "frozen Cosmos 3 confirmatory units without valid native 33-frame intervention sources",
+  "replacement_units_added": false,
+  "intervention_outcomes_inspected_for_replacement": false,
+  "failed_units": [
+    {
+      "unit_id": "MarkerInMugTask-seed-103",
+      "stage": "native_video_reexecution",
+      "branch_role": "recipient",
+      "native_diffusion_seed": 229,
+      "required_actions": 32,
+      "executed_actions": 21,
+      "reason": "the policy-native branch reached RoboLab's terminal condition before producing the complete registered intervention-source video"
+    },
+    {
+      "unit_id": "MustardInLeftBinTask-seed-101",
+      "stage": "native_video_reexecution",
+      "branch_role": "donor",
+      "native_diffusion_seed": 257,
+      "required_actions": 32,
+      "executed_actions": 29,
+      "independent_process_confirmation": true,
+      "reason": "the policy-native branch reached RoboLab's terminal condition before producing the complete registered intervention-source video"
+    }
+  ],
+  "analysis_disposition": "both frozen units are retained as missing; the prespecified minimum of 20 units across five tasks remains achieved with 22 units across six tasks"
+}

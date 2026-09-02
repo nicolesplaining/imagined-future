@@ -57,13 +57,15 @@ A compact statement of the gap is:
 
 ## Central claim
 
-At early decision states in the studied Cosmos policies, imagined visual
-futures are not merely correlated auxiliary predictions. Their content can
-directionally control generated actions and executed robot motion. This effect
-is carried predominantly by prospective visible robot-motion information,
-rather than future proprioception or isolated task-object state, and is
-mediated by future-token K/V content. Future use is strongly state dependent
-and should not be described as general planning over task consequences.
+At identifiable decision states in two generations of Cosmos policies,
+imagined visual futures are not merely correlated auxiliary predictions. Their
+coherent content can directionally control generated actions and executed
+robot motion, and future-token K/V content mediates the Cosmos 3 population
+effect. The semantic carrier is not universal: Cosmos Policy interventions
+favor prospective visible robot motion, whereas neither isolated robot pixels
+nor isolated object pixels reproduce a meaningful fraction of Cosmos 3's
+whole-future effect. Future use is state dependent and should not be described
+as general planning over task consequences.
 
 ## What is genuinely new relative to RIFT
 
@@ -75,8 +77,8 @@ and should not be described as general planning over task consequences.
 | Can coherent alternative future content select a corresponding action? | Not tested directionally. | Yes: natural donor futures steer actions toward donor actions. |
 | Does the effect survive physical execution in the predicted direction? | Execution divergence is measured relative to the original trajectory. | Yes: signed physical endpoints move toward donor endpoints. |
 | Can the policy distinguish among several coherent alternatives? | Not tested. | Yes in the Cosmos 3 multi-donor experiments. |
-| What semantic content is used? | Not isolated beyond positional cache organization. | Primarily visible robot-motion content in the tested states; isolated object-state use is unsupported. |
-| Does future K/V content mediate semantic steering without deleting tokens? | Not tested for a donor-directed effect. | Yes: token-count-preserving self-K/V patching suppresses donor steering. |
+| What semantic content is used? | Not isolated beyond positional cache organization. | Cosmos Policy favors visible robot motion; Cosmos 3 requires a compositional or distributed account because both isolated pixel factors are negligible. |
+| Does future K/V content mediate semantic steering without deleting tokens? | Not tested for a donor-directed effect. | Yes: token-count-preserving self-K/V patching suppresses donor steering across 22 Cosmos 3 clusters and six tasks. |
 
 ## Recommended introduction arc
 
@@ -130,16 +132,15 @@ registered states.
 
 The released Cosmos 3 policy provides cross-generation evidence. Reachable
 predicted and executed futures directionally steer actions and physical robot
-endpoints across five RoboLab tasks, and actions generally identify the correct
-donor among several alternatives. Token-count-preserving activation patching
-then replaces donor-run future-token keys and values with their self-future
-counterparts. This largely removes donor-directed action steering across four
-calibration tasks and a prospectively held-out physical state, localizing the
-effect to future-content mediation rather than token deletion or attention
-renormalization. Together, the results support a bounded mechanistic account:
-in these states, imagined futures steer action chiefly by representing
-prospective visible robot motion, not by demonstrably evaluating task-object
-consequences.
+endpoints across 22 saved-state clusters and six RoboLab tasks.
+Token-count-preserving activation patching then replaces donor-run future-token
+keys and values with their self-future counterparts and removes most
+donor-directed action and physical steering in every cluster. A separate
+10-cluster factor study finds that neither isolated robot pixels nor isolated
+object pixels produce a meaningful fraction of the coherent-future effect.
+Together, the models support directional future use while cautioning against a
+single universal semantic carrier or an interpretation as task-consequence
+planning.
 
 ## Abstract draft
 
@@ -155,15 +156,17 @@ noise, and denoising schedule fixed. We then measure whether generated actions
 and executed endpoints move toward the donor continuation. In Cosmos Policy,
 donor futures steer both action and physical execution at early states across
 all ten LIBERO-10 tasks. Camera-specific and factorial interventions indicate
-that the effective content is predominantly prospective visible robot motion:
-wrist and primary-camera futures steer action, future proprioception does not,
-and isolated object-state effects are negligible in the tested states. The
-effect attenuates sharply later in episodes. In Cosmos 3, natural multi-donor
-transplants reproduce directional action and physical steering across five
-RoboLab tasks. Token-count-preserving activation patching of future-token keys
-and values largely suppresses donor steering, identifying a mediating internal
-pathway. These results go beyond future sensitivity to show how imagined
-content controls action, while providing no evidence that the studied policies
+that Cosmos Policy's effective content is predominantly prospective visible
+robot motion: wrist and primary-camera futures steer action, future
+proprioception does not, and isolated object-state effects are negligible in
+the tested states. The effect attenuates sharply later in episodes. In Cosmos
+3, natural transplants reproduce directional action and physical steering
+across 22 clusters and six RoboLab tasks. Token-count-preserving activation
+patching of future-token keys and values largely suppresses donor steering. Yet
+a masked factor study finds practically negligible effects from isolated robot
+and object pixels, implying a more distributed or contextual carrier. These
+results go beyond future sensitivity to show how coherent imagined content
+controls action, while providing no evidence that the studied policies
 generally plan over task-object consequences.
 
 ## Claim language to use consistently
@@ -175,8 +178,10 @@ Prefer:
 - "We establish directional, content-specific, or semantic steering toward a
   coherent donor alternative."
 - "Future-token K/V content mediates donor-induced action steering."
-- "The evidence is most consistent with prospective visible robot motion or an
-  inverse-dynamics-like role."
+- "Cosmos Policy's content evidence is most consistent with prospective visible
+  robot motion or an inverse-dynamics-like role."
+- "Cosmos 3's coherent whole-future effect is not reproduced by either isolated
+  robot-motion or isolated object-state pixels."
 - "The effect is state dependent."
 
 Avoid:
@@ -189,4 +194,3 @@ Avoid:
 - "Object consequences are unused" as a universal claim.
 - "We identify the complete circuit." The present mechanism is localized at
   the representation and pathway level.
-
