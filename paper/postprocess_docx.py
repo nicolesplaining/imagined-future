@@ -40,7 +40,7 @@ def main(path: Path) -> None:
 
     primary_table = document.tables[0]
     primary_table.autofit = False
-    column_widths = (0.95, 0.75, 0.65, 1.10, 1.45, 1.60)
+    column_widths = (1.10, 0.85, 0.75, 1.35, 2.45)
     for row in primary_table.rows:
         for cell, width in zip(row.cells, column_widths):
             cell.width = Inches(width)
@@ -49,7 +49,7 @@ def main(path: Path) -> None:
                 paragraph.paragraph_format.space_after = Pt(0)
                 paragraph.paragraph_format.line_spacing = 1
                 for run in paragraph.runs:
-                    run.font.size = Pt(7.5)
+                    run.font.size = Pt(8)
     repeat_header(primary_table.rows[0])
     for row in primary_table.rows:
         keep_row_together(row)

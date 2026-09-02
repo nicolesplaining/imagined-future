@@ -124,38 +124,38 @@ The method succeeds if three things happen: inserting a donor future moves behav
 Across 22 completed states and all six tasks, a predicted paired-donor future produces action steering of $0.992$ ($[0.972,1.010]$; 22/22 states positive), compared with $0.559$ for the natural-future control (Table~\ref{tab:directionality}). Executed paired-donor videos produce action steering of $0.983$, compared with $0.591$ for the natural control and $0.041$ for the geometry-matched Gaussian control. Executing the paired-donor-conditioned action yields endpoint steering of $1.003$ ($[0.950,1.050]$; 22/22). Thus, the effect is not explained by recomputation, an equally large unstructured displacement, or merely supplying a different valid continuation. Endpoint projection shows that the donor-directed component survives simulator execution; it does not imply equality of the full endpoint vectors. Task-balanced analyses preserve these conclusions.
 
 \begin{table}[t]
-  \caption{Method and controls on one scale. Each row reports donor-directed projection after inserting the named future: 0 is the self-future result and 1 is the paired donor behavior. Within each model--source--outcome block, bold marks the largest estimate, always the paired donor (ours). The rightmost column gives its paired advantage over the strongest available control; all five intervals exclude zero. Control projections are reconstructed within independent unit before bootstrapping.}
+  \caption{Method and controls on one scale. Each row reports donor-directed projection after inserting the named future: 0 is the self-future result and 1 is the paired donor behavior. Within each model--source--outcome block, bold marks the largest estimate, always the paired donor (ours). The paired donor exceeds the strongest available control in all five comparisons. Control projections are reconstructed within independent unit before bootstrapping.}
   \label{tab:directionality}
   \centering
   \footnotesize
-  \setlength{\tabcolsep}{2.8pt}
-  \begin{tabular}{@{}llllll@{}}
+  \setlength{\tabcolsep}{4pt}
+  \begin{tabular}{@{}lllll@{}}
     \toprule
-    Model & Source & Outcome & Future inserted & Projection [95\% CI] & Best-control advantage [95\% CI] \\
+    Model & Source & Outcome & Future inserted & Projection [95\% CI] \\
     \midrule
-    Cosmos 3 & Predicted & Action & Self & 0.000 (reference) & --- \\
-    Cosmos 3 & Predicted & Action & Natural control & 0.559 [0.465, 0.651] & --- \\
-    Cosmos 3 & Predicted & Action & \textbf{Paired donor (ours)} & \textbf{0.992 [0.972, 1.010]} & \textbf{0.433 [0.332, 0.538]} \\
+    Cosmos 3 & Predicted & Action & Self & 0.000 (reference) \\
+    Cosmos 3 & Predicted & Action & Natural control & 0.559 [0.465, 0.651] \\
+    Cosmos 3 & Predicted & Action & \textbf{Paired donor (ours)} & \textbf{0.992 [0.972, 1.010]} \\
     \midrule
-    Cosmos 3 & Executed & Action & Self & 0.000 (reference) & --- \\
-    Cosmos 3 & Executed & Action & Matched Gaussian & 0.041 [0.003, 0.076] & --- \\
-    Cosmos 3 & Executed & Action & Natural control & 0.591 [0.491, 0.687] & --- \\
-    Cosmos 3 & Executed & Action & \textbf{Paired donor (ours)} & \textbf{0.983 [0.890, 1.064]} & \textbf{0.391 [0.246, 0.533]} \\
+    Cosmos 3 & Executed & Action & Self & 0.000 (reference) \\
+    Cosmos 3 & Executed & Action & Matched Gaussian & 0.041 [0.003, 0.076] \\
+    Cosmos 3 & Executed & Action & Natural control & 0.591 [0.491, 0.687] \\
+    Cosmos 3 & Executed & Action & \textbf{Paired donor (ours)} & \textbf{0.983 [0.890, 1.064]} \\
     \midrule
-    Cosmos 3 & Executed & Endpoint & Self & 0.000 (reference) & --- \\
-    Cosmos 3 & Executed & Endpoint & \textbf{Paired donor (ours)} & \textbf{1.003 [0.950, 1.050]} & \textbf{1.003 [0.950, 1.050]} \\
+    Cosmos 3 & Executed & Endpoint & Self & 0.000 (reference) \\
+    Cosmos 3 & Executed & Endpoint & \textbf{Paired donor (ours)} & \textbf{1.003 [0.950, 1.050]} \\
     \midrule
-    Cosmos Policy & Predicted & Action & Self & 0.000 (reference) & --- \\
-    Cosmos Policy & Predicted & Action & Matched Gaussian & 0.001 [$-0.004$, 0.006] & --- \\
-    Cosmos Policy & Predicted & Action & Natural control & 0.395 [0.269, 0.553] & --- \\
-    Cosmos Policy & Predicted & Action & Shuffled control & 0.244 [0.152, 0.347] & --- \\
-    Cosmos Policy & Predicted & Action & \textbf{Paired donor (ours)} & \textbf{0.499 [0.336, 0.679]} & \textbf{0.103 [0.048, 0.161]} \\
+    Cosmos Policy & Predicted & Action & Self & 0.000 (reference) \\
+    Cosmos Policy & Predicted & Action & Matched Gaussian & 0.001 [$-0.004$, 0.006] \\
+    Cosmos Policy & Predicted & Action & Natural control & 0.395 [0.269, 0.553] \\
+    Cosmos Policy & Predicted & Action & Shuffled control & 0.244 [0.152, 0.347] \\
+    Cosmos Policy & Predicted & Action & \textbf{Paired donor (ours)} & \textbf{0.499 [0.336, 0.679]} \\
     \midrule
-    Cosmos Policy & Predicted & Endpoint & Self & 0.000 (reference) & --- \\
-    Cosmos Policy & Predicted & Endpoint & Matched Gaussian & 0.003 [$-0.003$, 0.008] & --- \\
-    Cosmos Policy & Predicted & Endpoint & Natural control & 0.442 [0.311, 0.598] & --- \\
-    Cosmos Policy & Predicted & Endpoint & Shuffled control & 0.275 [0.185, 0.375] & --- \\
-    Cosmos Policy & Predicted & Endpoint & \textbf{Paired donor (ours)} & \textbf{0.552 [0.387, 0.728]} & \textbf{0.110 [0.054, 0.166]} \\
+    Cosmos Policy & Predicted & Endpoint & Self & 0.000 (reference) \\
+    Cosmos Policy & Predicted & Endpoint & Matched Gaussian & 0.003 [$-0.003$, 0.008] \\
+    Cosmos Policy & Predicted & Endpoint & Natural control & 0.442 [0.311, 0.598] \\
+    Cosmos Policy & Predicted & Endpoint & Shuffled control & 0.275 [0.185, 0.375] \\
+    Cosmos Policy & Predicted & Endpoint & \textbf{Paired donor (ours)} & \textbf{0.552 [0.387, 0.728]} \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -166,7 +166,7 @@ At the first query, the paired donor produces action steering of $0.499$ and end
 \begin{figure}[t]
   \centering
   \includegraphics[width=\linewidth]{figures/directionality_results.pdf}
-  \caption{Paired donor versus the strongest available control, separated by model. Each row is one future-source--outcome comparison. Gray circles show the strongest control; orange diamonds show the paired donor (ours); thin lines connect the two means. Row labels report the paired donor-minus-control advantage. Whiskers show 95\% state-bootstrap intervals. All five paired-advantage intervals exclude zero; Table~\ref{tab:directionality} reports those intervals and the complete control set.}
+  \caption{Paired donor versus the strongest available control, separated by model. Each row is one future-source--outcome comparison. Gray circles show the strongest control; orange diamonds show the paired donor (ours); thin lines connect the two means. Row labels report the paired donor-minus-control advantage. Whiskers show 95\% state-bootstrap intervals. All five paired-advantage intervals exclude zero; Table~\ref{tab:directionality} reports the complete control set.}
   \label{fig:directionality}
 \end{figure}
 
