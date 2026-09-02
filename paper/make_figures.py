@@ -7,7 +7,8 @@ from pathlib import Path
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
+from matplotlib.lines import Line2D
+from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Patch
 
 
 ROOT = Path(__file__).resolve().parent
@@ -144,7 +145,15 @@ def make_overview() -> None:
     arrow(ax, (0.39, 0.32), (0.61, 0.32), BLUE)
     ax.text(0.50, 0.06, "Only future-token keys and values are replaced", ha="center", fontsize=6.4)
 
-    fig.subplots_adjust(wspace=0.15, hspace=0.34)
+    legend = [
+        Patch(facecolor=LIGHT_BLUE, edgecolor=BLUE, label="Blue = recipient / self information"),
+        Patch(facecolor=LIGHT_ORANGE, edgecolor=ORANGE, label="Orange = donor information"),
+        Line2D([0], [0], marker="D", color="none", markerfacecolor=TEAL,
+               markeredgecolor=TEAL, label="Teal = action after intervention"),
+    ]
+    fig.legend(handles=legend, loc="lower center", bbox_to_anchor=(0.5, -0.01),
+               ncol=3, frameon=False, fontsize=6.5)
+    fig.subplots_adjust(wspace=0.15, hspace=0.34, bottom=0.10)
     save(fig, "method_overview")
 
 
@@ -193,58 +202,62 @@ def horizontal_error_point(ax, y, stat, color, marker="o", label=None):
 
 
 def make_directionality(summary: dict) -> None:
-    """Cosmos Policy: timing, explicit controls, and modality localization."""
-    fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.85), gridspec_kw={"width_ratios": [1.22, 1.12, 0.92]})
+    """Core claim: donor futures steer behavior and beat controls."""
+    fig, axes = plt.subplots(1, 2, figsize=(7.2, 3.15), gridspec_kw={"width_ratios": [0.98, 1.22]})
 
     ax = axes[0]
-    timing = summary["cosmos_policy"]["timing"]
-    rows = []
-    for cell in timing:
-        rows.extend([(f"{cell['label']} — action", cell["action"], BLUE, "o"),
-                     (f"{cell['label']} — endpoint", cell["endpoint"], ORANGE, "s")])
-    for y, (_, stat, color, marker) in enumerate(reversed(rows)):
-        horizontal_error_point(ax, y, stat, color, marker)
+    policy = summary["cosmos_policy"]
+    cosmos3 = summary["cosmos3"]
+    primary_rows = [
+        ("Cosmos 3\npredicted future — action", cosmos3["directionality"]["predicted_action"], "o"),
+        ("Cosmos 3\nexecuted future — action", cosmos3["directionality"]["executed_action"], "o"),
+        ("Cosmos 3\nexecuted future — endpoint", cosmos3["directionality"]["executed_endpoint"], "s"),
+        ("Cosmos Policy\nfirst query — action", policy["timing"][0]["action"], "o"),
+        ("Cosmos Policy\nfirst query — endpoint", policy["timing"][0]["endpoint"], "s"),
+    ]
+    for y, (_, stat, marker) in enumerate(reversed(primary_rows)):
+        horizontal_error_point(ax, y, stat, ORANGE, marker)
+        ax.text(min(stat["mean"] + 0.035, 1.08), y, f"{stat['mean']:.3f}", va="center", fontsize=6.4)
     ax.axvline(0, color="#555555", linewidth=0.8)
     ax.axvline(0.10, color=GRAY, linewidth=0.8, linestyle="--")
-    ax.set_yticks(range(len(rows)), [r[0] for r in reversed(rows)])
-    ax.set_xlim(-0.09, 0.78)
-    ax.set_xlabel("Donor $-$ self projection")
-    ax.set_title("a  Effect by sampled state", loc="left", weight="bold")
+    ax.axvline(1.0, color=ORANGE, linewidth=0.8, linestyle=":")
+    ax.set_yticks(range(len(primary_rows)), [r[0] for r in reversed(primary_rows)])
+    ax.set_xlim(-0.06, 1.16)
+    ax.set_xlabel("Movement toward donor\n0 = no effect, 1 = reaches donor")
+    ax.set_title("a  All primary tests pass", loc="left", weight="bold")
     ax.grid(axis="x", color="#DDDDDD", linewidth=0.5)
 
     ax = axes[1]
-    controls = summary["cosmos_policy"]["first_query_controls"]
-    control_rows = [("Self recomputation", controls["self"]),
-                    ("Matched Gaussian", controls["gaussian"]),
-                    ("Natural future", controls["natural"]),
-                    ("Shuffled future", controls["shuffled"])]
-    for y, (_, vals) in enumerate(reversed(control_rows)):
-        horizontal_error_point(ax, y - 0.10, vals["action"], BLUE, "o", "Action" if y == 0 else None)
-        horizontal_error_point(ax, y + 0.10, vals["endpoint"], ORANGE, "s", "Endpoint" if y == 0 else None)
+    controls = policy["first_query_controls"]
+    control_rows = [
+        ("C3 predicted action\nvs natural future", cosmos3["directionality"]["predicted_minus_natural"], "o"),
+        ("C3 executed action\nvs matched Gaussian", cosmos3["directionality"]["executed_minus_gaussian"], "o"),
+        ("C3 executed action\nvs natural future", cosmos3["directionality"]["executed_minus_natural"], "o"),
+        ("Policy action\nvs Gaussian", controls["gaussian"]["action"], "o"),
+        ("Policy endpoint\nvs Gaussian", controls["gaussian"]["endpoint"], "s"),
+        ("Policy action\nvs natural future", controls["natural"]["action"], "o"),
+        ("Policy endpoint\nvs natural future", controls["natural"]["endpoint"], "s"),
+        ("Policy action\nvs shuffled future", controls["shuffled"]["action"], "o"),
+        ("Policy endpoint\nvs shuffled future", controls["shuffled"]["endpoint"], "s"),
+    ]
+    for y, (_, stat, marker) in enumerate(reversed(control_rows)):
+        horizontal_error_point(ax, y, stat, ORANGE, marker)
+        ax.text(min(stat["mean"] + 0.035, 1.01), y, f"{stat['mean']:.3f}", va="center", fontsize=6.2)
     ax.axvline(0, color="#555555", linewidth=0.8)
-    ax.axvline(0.10, color=GRAY, linewidth=0.8, linestyle="--")
     ax.set_yticks(range(len(control_rows)), [r[0] for r in reversed(control_rows)])
-    ax.set_xlim(-0.04, 0.79)
-    ax.set_xlabel("Donor $-$ comparator")
-    ax.set_title("b  Donor beats all controls", loc="left", weight="bold")
+    ax.set_xlim(-0.05, 1.08)
+    ax.set_xlabel("Extra donor-directed movement\nrelative to named control")
+    ax.set_title("b  Donor future beats every control", loc="left", weight="bold")
     ax.grid(axis="x", color="#DDDDDD", linewidth=0.5)
 
-    ax = axes[2]
-    modalities = summary["cosmos_policy"]["modalities"]
-    modality_rows = [("Wrist video", modalities["wrist"], ORANGE),
-                     ("Primary video", modalities["primary"], BLUE),
-                     ("Proprioception", modalities["proprioception"], GRAY)]
-    for y, (_, stat, color) in enumerate(reversed(modality_rows)):
-        horizontal_error_point(ax, y, stat, color)
-    ax.axvline(0, color="#555555", linewidth=0.8)
-    ax.axvline(0.10, color=GRAY, linewidth=0.8, linestyle="--")
-    ax.set_yticks(range(len(modality_rows)), [r[0] for r in reversed(modality_rows)])
-    ax.set_xlim(-0.05, 0.68)
-    ax.set_xlabel("Action projection")
-    ax.set_title("c  Visual modality", loc="left", weight="bold")
-    ax.grid(axis="x", color="#DDDDDD", linewidth=0.5)
-
-    fig.subplots_adjust(wspace=0.66, bottom=0.20)
+    legend = [
+        Line2D([0], [0], marker="o", color=ORANGE, linestyle="none", label="Action outcome"),
+        Line2D([0], [0], marker="s", color=ORANGE, linestyle="none", label="Executed endpoint"),
+        Patch(facecolor=LIGHT_ORANGE, edgecolor=ORANGE, label="Orange = donor-future result"),
+    ]
+    fig.legend(handles=legend, loc="lower center", bbox_to_anchor=(0.5, -0.005),
+               ncol=3, frameon=False, fontsize=6.6)
+    fig.subplots_adjust(wspace=0.62, bottom=0.22)
     save(fig, "directionality_results")
 
 
@@ -293,52 +306,36 @@ def make_content(summary: dict) -> None:
 
 
 def make_pathway(summary: dict) -> None:
-    """Cosmos 3: steering, K/V replacement, and isolated pixel factors."""
+    """Which content and pathway carry the effect?"""
     data = summary["cosmos3"]
-    fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.85), gridspec_kw={"width_ratios": [1.42, 1.0, 1.0]})
+    policy = summary["cosmos_policy"]
+    fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.80), gridspec_kw={"width_ratios": [1.0, 1.08, 1.08]})
 
     ax = axes[0]
-    steering = data["directionality"]
-    rows = [
-        ("Predicted action — self", steering["predicted_action"], BLUE, "o"),
-        ("Predicted action — natural", steering["predicted_minus_natural"], TEAL, "D"),
-        ("Executed action — self", steering["executed_action"], BLUE, "o"),
-        ("Executed action — Gaussian", steering["executed_minus_gaussian"], TEAL, "D"),
-        ("Executed action — natural", steering["executed_minus_natural"], TEAL, "D"),
-        ("Executed endpoint — self", steering["executed_endpoint"], ORANGE, "s"),
+    modalities = policy["modalities"]
+    policy_rows = [
+        ("Whole future", policy["timing"][0]["action"]),
+        ("Wrist video only", modalities["wrist"]),
+        ("Primary video only", modalities["primary"]),
+        ("Proprioception only", modalities["proprioception"]),
     ]
-    for y, (_, stat, color, marker) in enumerate(reversed(rows)):
-        horizontal_error_point(ax, y, stat, color, marker)
+    for y, (_, stat) in enumerate(reversed(policy_rows)):
+        horizontal_error_point(ax, y, stat, ORANGE)
+        ax.text(stat["mean"] + 0.025, y, f"{stat['mean']:.3f}", va="center", fontsize=6.1)
     ax.axvline(0, color="#555555", linewidth=0.8)
-    ax.axvline(1, color=GRAY, linewidth=0.8, linestyle="--")
-    ax.set_yticks(range(len(rows)), [r[0] for r in reversed(rows)])
-    ax.set_xlim(-0.06, 1.16)
-    ax.set_xlabel("Donor $-$ comparator projection")
-    ax.set_title("a  Steering and controls", loc="left", weight="bold")
+    ax.axvline(0.10, color=GRAY, linewidth=0.8, linestyle="--")
+    ax.set_yticks(range(len(policy_rows)), [r[0] for r in reversed(policy_rows)])
+    ax.set_xlim(-0.05, 0.69)
+    ax.set_xlabel("Action steering")
+    ax.set_title("a  Cosmos Policy\nWrist video carries the effect", loc="left", weight="bold", fontsize=7.6)
     ax.grid(axis="x", color="#DDDDDD", linewidth=0.5)
 
     ax = axes[1]
-    losses = data["kv_replacement_loss"]
-    unpatched = [steering["predicted_action"], steering["executed_action"], steering["executed_endpoint"]]
-    removed = [losses["predicted_action"], losses["executed_action"], losses["executed_endpoint"]]
-    labels = ["Predicted action", "Executed action", "Executed endpoint"]
-    for y, (base, loss) in enumerate(zip(reversed(unpatched), reversed(removed))):
-        ax.barh(y + 0.13, base["mean"], height=0.22, color=LIGHT_ORANGE, edgecolor=ORANGE, label="Unpatched" if y == 0 else None)
-        ax.barh(y - 0.13, loss["mean"], height=0.22, color=TEAL, label="Removed by self K/V" if y == 0 else None)
-        ax.text(loss["mean"] + 0.025, y - 0.13, f"{100 * loss['fraction_of_unpatched']:.0f}%", va="center", fontsize=6.3, weight="bold")
-    ax.axvline(0, color="#555555", linewidth=0.8)
-    ax.set_yticks(range(3), list(reversed(labels)))
-    ax.set_xlim(0, 1.16)
-    ax.set_xlabel("Projection units")
-    ax.set_title("b  K/V removes 83--88%", loc="left", weight="bold")
-    ax.grid(axis="x", color="#DDDDDD", linewidth=0.5)
-
-    ax = axes[2]
     factors = data["factor_study"]
-    factor_rows = [("Robot — action", factors["robot_action"], BLUE, "o"),
-                   ("Robot — endpoint", factors["robot_endpoint"], ORANGE, "s"),
-                   ("Object — action", factors["object_action"], BLUE, "o"),
-                   ("Object — endpoint", factors["object_endpoint"], ORANGE, "s")]
+    factor_rows = [("Robot — action", factors["robot_action"], GRAY, "o"),
+                   ("Robot — endpoint", factors["robot_endpoint"], GRAY, "s"),
+                   ("Object — action", factors["object_action"], GRAY, "o"),
+                   ("Object — endpoint", factors["object_endpoint"], GRAY, "s")]
     ax.axvspan(-0.10, 0.10, color=LIGHT_GRAY, zorder=0)
     for y, (_, stat, color, marker) in enumerate(reversed(factor_rows)):
         horizontal_error_point(ax, y, stat, color, marker)
@@ -347,11 +344,30 @@ def make_pathway(summary: dict) -> None:
     ax.axvline(0.10, color=GRAY, linewidth=0.8, linestyle="--")
     ax.set_yticks(range(len(factor_rows)), [r[0] for r in reversed(factor_rows)])
     ax.set_xlim(-0.14, 0.14)
-    ax.set_xlabel("Isolated-factor effect")
-    ax.set_title("c  Isolated factors are negligible", loc="left", weight="bold", fontsize=8)
+    ax.set_xlabel("Isolated-factor effect\nGray = robot/object-only transplant")
+    ax.set_title("b  Cosmos 3 content\nIsolated pixels are insufficient", loc="left", weight="bold", fontsize=7.6)
     ax.grid(axis="x", color="#DDDDDD", linewidth=0.5)
 
-    fig.subplots_adjust(wspace=0.67, bottom=0.20)
+    ax = axes[2]
+    losses = data["kv_replacement_loss"]
+    labels = ["Predicted action", "Executed action", "Executed endpoint"]
+    fractions = [losses["predicted_action"]["fraction_of_unpatched"],
+                 losses["executed_action"]["fraction_of_unpatched"],
+                 losses["executed_endpoint"]["fraction_of_unpatched"]]
+    for y, frac in enumerate(reversed(fractions)):
+        ax.barh(y, frac, height=0.45, color=BLUE, label="Removed by self-future K/V" if y == 0 else None)
+        ax.barh(y, 1 - frac, left=frac, height=0.45, color=LIGHT_GRAY, edgecolor=GRAY,
+                label="Remaining donor effect" if y == 0 else None)
+        ax.text(frac / 2, y, f"{100 * frac:.0f}% removed", ha="center", va="center",
+                color="white", fontsize=6.2, weight="bold")
+    ax.set_yticks(range(3), list(reversed(labels)))
+    ax.set_xlim(0, 1)
+    ax.set_xticks([0, 0.5, 1], ["0%", "50%", "100%"])
+    ax.set_xlabel("Fraction of donor effect\nBlue = removed; gray = remaining")
+    ax.set_title("c  Cosmos 3 pathway\nSelf-future K/V removes most effect", loc="left", weight="bold", fontsize=7.6)
+    ax.grid(axis="x", color="#FFFFFF", linewidth=0.6)
+
+    fig.subplots_adjust(wspace=0.68, bottom=0.20)
     save(fig, "pathway_results")
 
 
