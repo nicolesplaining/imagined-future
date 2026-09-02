@@ -1,7 +1,8 @@
 \documentclass{article}
 
 \PassOptionsToPackage{numbers,sort&compress}{natbib}
-\usepackage[main,nonanonymous]{neurips_2026}
+\usepackage[dblblindworkshop]{neurips_2026}
+\workshoptitle{Trustworthy AI for Good}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -14,6 +15,7 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{float}
+\usepackage{placeins}
 \renewcommand{\ttdefault}{pcr}
 
 \definecolor{recipientblue}{HTML}{4C78A8}
@@ -31,7 +33,7 @@ Evidence from Mechanistic Interventions}
 \maketitle
 
 \begin{abstract}
-Do world action models actually use the futures they generate? Jointly producing future observations and robot actions does not answer this question: the action may bypass the predicted future. We test future use with reachable-donor transplantation. Two native policy runs begin from the same restored simulator state and produce different futures, actions, and endpoints. We call the run being recomputed the recipient and the run supplying the alternative future the donor. Holding the recipient's observation, instruction, sampling noise, and denoising schedule fixed, we ask not merely whether its action changes, but whether it moves specifically toward the donor action. In Cosmos 3, a frozen study across 22 states and six RoboLab tasks finds predicted-future action steering of $0.992$ and executed-future endpoint steering of $1.003$ on a scale where 0 is the recipient and 1 is the donor. Replacing donor-run future-token keys and values with self-future counterparts removes $0.877$ of the predicted-action shift, with positive action and endpoint reductions in all 22 states. Isolated robot- and object-pixel interventions, however, each have effects below $0.011$. Cosmos Policy shows a related early-state effect across all ten LIBERO-Long tasks, carried mainly by visual content. These results show that both direct policies use coherent futures to condition action, but do not establish candidate search or planning over predicted outcomes.
+World action models generate future observations alongside robot actions, but the causal role of these generated futures remains unclear: they may guide action selection or merely accompany actions computed through another route. Prior work finds that corrupting future features degrades performance, but destructive perturbations cannot establish whether coherent future content directionally controls behavior rather than causing generic distribution shift. We investigate this problem through three questions. First, do coherent alternative futures directionally steer actions and their resulting simulator endpoints? Second, what information within those futures is sufficient to produce this effect? Third, through which internal pathway does future information influence action? We introduce reachable-donor future transplantation, which exchanges policy-generated futures between two continuations from the same restored state while holding the recipient's observation, instruction, and random draws fixed. Unlike destructive ablations, this intervention predicts a specific direction in which behavior should change. Donor futures nearly completely redirect Cosmos 3 actions and endpoints toward the donor continuation across 22 states and six RoboLab tasks; Cosmos Policy shows related early-state steering across all ten LIBERO-Long tasks. Cosmos Policy responds primarily to camera-visible robot motion, whereas neither robot-only nor object-only pixels are sufficient to reproduce Cosmos 3's whole-future effect. Finally, replacing donor-future attention keys and values with self-future counterparts removes 83--88\% of Cosmos 3 steering in every tested state. Together, these results establish content-specific future conditioning in both policies while revealing different mechanistic signatures: camera-visible robot motion is the leading account for Cosmos Policy, whereas Cosmos 3 requires more than either isolated robot or object pixels and transmits most donor-specific influence through future-token attention keys and values.
 \end{abstract}
 
 \section{Introduction}
@@ -49,7 +51,7 @@ We ask three questions: Do coherent donor futures steer behavior? Which parts of
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\linewidth]{figures/method_overview.pdf}
+  \includegraphics[width=0.78\linewidth]{figures/method_overview.pdf}
   \caption{Reachable-donor future transplantation. (a) Two native continuations start from the same restored state. (b) The recipient is recomputed with only the donor future substituted. (c) The donor action is withheld and used afterward to score signed movement from recipient (0) toward donor (1). (d) Replacing donor-future \kv{} with self-future \kv{} tests whether that interface carries the directional shift.}
   \label{fig:overview}
 \end{figure}
@@ -119,13 +121,13 @@ The independent unit is a restored simulator state, not an individual noise draw
 \subsection{Do coherent futures steer behavior?}
 \label{sec:steering}
 
-The method succeeds if three things happen: inserting a donor future moves behavior toward that donor, the shift survives simulator execution, and the paired donor outperforms non-donor controls. Table~\ref{tab:directionality} puts the method and every applicable control on one scale, organized by model, future source, and outcome. Figure~\ref{fig:directionality} shows the same comparison visually. On this scale, 0 is the self-future result and 1 is the paired donor behavior.
+The method succeeds if three things happen: inserting a donor future moves behavior toward that donor, the shift survives simulator execution, and the paired donor outperforms non-donor controls. Table~\ref{tab:directionality} puts the method and every applicable control on one scale, organized by model, future source, and outcome. Figure~\ref{fig:directionality} separates the two statistical questions. Panel~a reports donor-minus-self steering, for which positive values indicate movement toward the paired donor and 1 denotes the full native recipient-to-donor displacement. Panel~b reports donor-minus-control contrasts, for which positive values mean that the paired donor steers behavior more strongly than the stated control.
 
 \paragraph{Cosmos 3.}
-Across 22 completed states and all six tasks, a predicted paired-donor future produces action steering of $0.992$ ($[0.972,1.010]$; 22/22 states positive), compared with $0.559$ for the natural-future control (Table~\ref{tab:directionality}). Executed paired-donor videos produce action steering of $0.983$, compared with $0.591$ for the natural control and $0.041$ for the geometry-matched Gaussian control. Executing the paired-donor-conditioned action yields endpoint steering of $1.003$ ($[0.950,1.050]$; 22/22). Thus, the effect is not explained by recomputation, an equally large unstructured displacement, or merely supplying a different valid continuation. Endpoint projection shows that the donor-directed component survives simulator execution; it does not imply equality of the full endpoint vectors. Task-balanced analyses preserve these conclusions.
+Across 22 completed states and all six tasks, a predicted paired-donor future produces action steering of $0.992$ ($[0.972,1.010]$; 22/22 states positive), compared with $0.559$ for the natural-future control (Table~\ref{tab:directionality}). Executed paired-donor videos produce action steering of $0.983$, compared with $0.591$ for the natural control and $0.041$ for the geometry-matched Gaussian control. Executing the paired-donor-conditioned action yields endpoint steering of $1.003$ ($[0.950,1.050]$; 22/22). The corresponding endpoint projections are $0.514$ ($[0.387,0.642]$) for the natural control and $-0.041$ ($[-0.168,0.054]$) for the matched Gaussian. In paired secondary analyses, the donor therefore exceeds the natural endpoint control by $0.488$ ($[0.348,0.631]$; 21/22 states positive) and the Gaussian endpoint control by $1.043$ ($[0.946,1.168]$; 22/22). Thus, the result is not explained by recomputation, an equally large unstructured displacement, or merely supplying a different valid continuation. Endpoint projection shows that the donor-directed component survives simulator execution; it does not imply equality of the full endpoint vectors. Task-balanced analyses preserve these conclusions.
 
 \begin{table}[t]
-  \caption{Method and controls on one scale. Each row reports donor-directed projection after inserting the named future: 0 is the self-future result and 1 is the paired donor behavior. Within each model--source--outcome block, bold marks the largest estimate, always the paired donor. The paired donor exceeds the strongest available control in all five comparisons. Control projections are reconstructed within independent unit before bootstrapping.}
+  \caption{Method and controls on one scale. Each row reports donor-directed projection after inserting the named future: 0 is the self-future result and 1 is the paired donor behavior. Within each model--source--outcome block, bold marks the largest estimate, always the paired donor. Control projections are reconstructed within independent unit before bootstrapping; the two Cosmos 3 endpoint-control rows are secondary analyses.}
   \label{tab:directionality}
   \centering
   \footnotesize
@@ -144,6 +146,8 @@ Across 22 completed states and all six tasks, a predicted paired-donor future pr
     Cosmos 3 & Executed & Action & \textbf{Paired donor} & \textbf{0.983 [0.890, 1.064]} \\
     \midrule
     Cosmos 3 & Executed & Endpoint & Self & 0.000 (reference) \\
+    Cosmos 3 & Executed & Endpoint & Matched Gaussian & $-0.041$ [$-0.168$, 0.054] \\
+    Cosmos 3 & Executed & Endpoint & Natural control & 0.514 [0.387, 0.642] \\
     Cosmos 3 & Executed & Endpoint & \textbf{Paired donor} & \textbf{1.003 [0.950, 1.050]} \\
     \midrule
     Cosmos Policy & Predicted & Action & Self & 0.000 (reference) \\
@@ -162,12 +166,12 @@ Across 22 completed states and all six tasks, a predicted paired-donor future pr
 \end{table}
 
 \paragraph{Cosmos Policy.}
-At the first query, the paired donor produces action steering of $0.499$ and endpoint steering of $0.552$, positive in all ten tasks (Table~\ref{tab:directionality}). The natural control reaches $0.395$ and $0.442$, respectively, while the shuffled control reaches $0.244$ and $0.275$ and the matched Gaussian remains near zero. The natural future is the hardest control: the paired donor exceeds it by $0.103$ ($[0.048,0.161]$; 8/10) for actions and $0.110$ ($[0.054,0.166]$; 8/10) for endpoints. This rules out the weak explanation that any different tokenizer-consistent future causes the same movement. Effects are much smaller at the separately sampled later states: after three chunks, action steering is $0.031$ ($[0.006,0.066]$) and endpoint steering is $0.004$ ($[-0.043,0.038]$); after six, they are $0.027$ ($[-0.010,0.092]$) and $0.025$ ($[0.005,0.044]$). Because each time point is a different physical state, this is state dependence associated with time, not a causal estimate of temporal decay.
+At the first query, the paired donor produces action steering of $0.499$ and endpoint steering of $0.552$, positive in all ten tasks (Table~\ref{tab:directionality}). The natural control reaches $0.395$ and $0.442$, respectively, while the shuffled control reaches $0.244$ and $0.275$ and the matched Gaussian remains near zero. The natural future is the hardest control: the paired donor exceeds it by $0.103$ ($[0.048,0.161]$; 8/10) for actions and $0.110$ ($[0.054,0.166]$; 8/10) for endpoints. This rules out the weak explanation that any different tokenizer-consistent future causes the same movement. Figure~\ref{fig:policy_scope} examines how this effect varies across state cohorts and future components.
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\linewidth]{figures/directionality_results.pdf}
-  \caption{Paired donor versus the strongest available control, separated by model. Each row is one future-source--outcome comparison. Gray circles show the strongest control; orange diamonds show the paired donor; thin lines connect the two means. Row labels report the paired donor-minus-control advantage. Whiskers show 95\% state-bootstrap intervals. All five paired-advantage intervals exclude zero; Table~\ref{tab:directionality} reports the complete control set.}
+  \includegraphics[width=0.72\linewidth]{figures/figure2_directional_tests.pdf}
+  \caption{Directional steering and specificity controls. (a) Donor-minus-self steering. Values near 1 mean that the intervention reproduces the donor-directed component of the native action or endpoint displacement; the dashed line marks the prespecified $0.10$ smallest effect of interest. (b) Paired donor minus the stated control. Positive values mean that the paired donor has greater directional influence than an unstructured, natural, or shuffled alternative. Small symbols are independent states for Cosmos 3 and tasks for Cosmos Policy; large symbols and whiskers are means and 95\% independent-unit bootstrap intervals. Blue circles denote actions and open orange squares denote executed endpoints.}
   \label{fig:directionality}
 \end{figure}
 
@@ -178,11 +182,18 @@ No screened branch pair in either policy retained a stable success/failure label
 
 The content that drives steering differs across checkpoints. Cosmos Policy responds mainly to camera-visible robot motion at early states, whereas neither isolated pixel factor recreates Cosmos 3's whole-future effect.
 
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=0.72\linewidth]{figures/figure3_cosmos3_factorization.pdf}
+  \caption{Cosmos 3 robot/object pixel factorization. Panels (a) and (b) show the four hybrid-video cells for action and executed endpoint projection. The horizontal axis indicates whether robot pixels come from the recipient or donor; gray and green traces indicate recipient and donor object pixels. Panel (c) compares the resulting robot- and object-pixel main effects with transplantation of the complete donor future. Blue circles denote actions and open orange squares denote executed endpoints; small symbols are states and large symbols with whiskers are means and 95\% state-bootstrap intervals. The gray band is the prespecified $[-0.10,0.10]$ equivalence region. Isolated robot or object pixels have near-zero effects even though the complete future strongly steers both outcomes.}
+  \label{fig:cosmos3_factorization}
+\end{figure}
+
 \paragraph{Cosmos Policy.}
-Wrist-future action steering is $0.435$ ($[0.284,0.605]$), compared with $0.101$ ($[0.057,0.144]$) for the primary camera and $0.001$ ($[-0.004,0.008]$) for future proprioception (Figure~\ref{fig:mechanisms}a). In the 20-state $2\times2$ study, decoded futures identify the intended cell with 92.5\% primary-camera and 98.75\% wrist-camera accuracy. The intended object manipulation is therefore visible in the rendered futures, yet the object-state main effect is $0.00015$ ($[-0.00012,0.00049]$) for action and $0.00018$ ($[-0.00040,0.00102]$) for the executed goal-state endpoint. The available analysis does not report the robot-state main effect. Four exploratory natural pairs provide a complementary comparison: robot-motion futures yield action steering of $0.291$ ($[0.060,0.521]$) and robot-endpoint steering of $0.315$ ($[0.059,0.571]$), whereas the object-only effects are $0.021$ for both action and goal endpoint, with intervals crossing zero. At these sampled early states, the pattern is most consistent with an inverse-dynamics-like role for camera-visible robot motion. It does not show that Cosmos Policy generally ignores object consequences.
+Wrist-future action steering is $0.435$ ($[0.284,0.605]$), compared with $0.101$ ($[0.057,0.144]$) for the primary camera and $0.001$ ($[-0.004,0.008]$) for future proprioception (Figure~\ref{fig:policy_scope}b). In the 20-state $2\times2$ study, decoded futures identify the intended cell with 92.5\% primary-camera and 98.75\% wrist-camera accuracy. The intended object manipulation is therefore visible in the rendered futures, yet the object-state main effect is $0.00015$ ($[-0.00012,0.00049]$) for action and $0.00018$ ($[-0.00040,0.00102]$) for the executed goal-state endpoint. The available analysis does not report the robot-state main effect. Four exploratory natural pairs provide a complementary comparison: robot-motion futures yield action steering of $0.291$ ($[0.060,0.521]$) and robot-endpoint steering of $0.315$ ($[0.059,0.571]$), whereas the object-only effects are $0.021$ for both action and goal endpoint, with intervals crossing zero. At these sampled early states, the pattern is most consistent with an inverse-dynamics-like role for camera-visible robot motion. It does not show that Cosmos Policy generally ignores object consequences.
 
 \paragraph{Cosmos 3.}
-Across ten factor-study states and all six tasks, every isolated-factor interval lies inside the prespecified $[-0.10,0.10]$ equivalence region (Table~\ref{tab:content_factors}; Figure~\ref{fig:mechanisms}b). Robot-pixel effects are $0.0022$ for actions and $0.0102$ for endpoints; object-pixel effects are $0.0061$ and $-0.0001$. Neither factor alone recreates a meaningful fraction of the roughly one-unit whole-future effect. The useful signal may be distributed across the image, require robot--object coherence, depend on camera or temporal structure, or interact nonlinearly with masking and tokenization. Hybrid videos may also be off distribution. The experiment establishes insufficiency of each isolated pixel factor, not irrelevance of robot or object information and not joint necessity.
+Across ten factor-study states and all six tasks, every isolated-factor interval lies inside the prespecified $[-0.10,0.10]$ equivalence region (Table~\ref{tab:content_factors}; Figure~\ref{fig:cosmos3_factorization}). Panels~a and b show all four cells of the $2\times2$ hybrid intervention: swapping robot pixels, object pixels, or both changes neither the action nor the executed endpoint appreciably. Panel~c places the factor effects beside the whole-future intervention on the same axis. Whole-future steering is approximately one unit, whereas robot-pixel effects are $0.0022$ for actions and $0.0102$ for endpoints, and object-pixel effects are $0.0061$ and $-0.0001$. Neither isolated factor therefore recreates a meaningful fraction of the whole-future effect. The useful signal may be distributed across the image, require robot--object coherence, depend on camera or temporal structure, or interact nonlinearly with masking and tokenization. Hybrid videos may also be off distribution. The experiment establishes insufficiency of each isolated pixel factor, not irrelevance of robot or object information and not joint necessity.
 
 \begin{table}[H]
   \caption{Cosmos 3 isolated-content interventions across 10 states from six tasks. Entries are mean donor-directed projections with 95\% state-bootstrap intervals; 0 denotes the recipient and 1 the paired donor. Robot and object masks are disjoint. The prespecified practical-equivalence region is $[-0.10,0.10]$.}
@@ -209,7 +220,7 @@ Future-token attention provides an active route from generated futures to action
 Block-27 future-key removal produces a monotonic action-disruption curve: normalized $L_2$ change is $0.022$, $0.035$, $0.054$, and $0.068$ at gates $0.25$, $0.50$, $0.75$, and $1.00$. All-key recomputation is bitwise exact. Full removal is $0.016$ more disruptive than equal-count random-key removal and $0.048$ more disruptive than block-0 future-key removal; equal-count current-key removal is $0.024$ larger. Executed endpoints support the same bounded conclusion, although state counts and intervals are not available for this analysis. The late future-to-action edge is active, but it is neither the only nor the largest route through the block.
 
 \paragraph{Cosmos 3.}
-The interface was selected on excluded calibration tasks and frozen before population testing. Replacing donor-run future-token \kv{} with self-future \kv{} removes $0.877$ of the $0.992$ predicted-action shift, $0.814$ of the $0.983$ executed-action shift, and $0.851$ of the $1.003$ endpoint shift (Table~\ref{tab:kv_pathway}; Figure~\ref{fig:mechanisms}c). These losses correspond to 88\%, 83\%, and 85\% of the respective unpatched point estimates and are positive in 22/22 states. Task-balanced point estimates are $0.877$, $0.812$, and $0.853$; all prespecified primary sign tests remain significant after Holm correction. Because token count and attention positions remain fixed, donor-specific information travels through this future-token \kv{} interface. The experiment does not identify every head or feature, exclude interacting unpatched routes, or establish a complete circuit.
+The interface was selected on excluded calibration tasks and frozen before population testing. Replacing donor-run future-token \kv{} with self-future \kv{} removes $0.877$ of the $0.992$ predicted-action shift, $0.814$ of the $0.983$ executed-action shift, and $0.851$ of the $1.003$ endpoint shift (Table~\ref{tab:kv_pathway}; Figure~\ref{fig:cosmos3_kv}). These losses correspond to 88\%, 83\%, and 85\% of the respective unpatched point estimates and are positive in 22/22 states. The remaining mean steering after replacement is $0.115$, $0.169$, and $0.152$, respectively (Figure~\ref{fig:cosmos3_kv}a--c). Thus, this interface carries most, but not all, of the donor-directed effect. Task-balanced loss estimates are $0.877$, $0.812$, and $0.853$; all prespecified primary sign tests remain significant after Holm correction. Because token count and attention positions remain fixed, donor-specific information travels through this future-token \kv{} interface. The experiment does not identify every head or feature, exclude interacting unpatched routes, or establish a complete circuit.
 
 \begin{table}[H]
   \caption{Cosmos 3 future-token pathway intervention across 22 states from six tasks. Donor steering is the unpatched donor-directed projection. Replacement loss is the reduction in that projection after replacing donor-future \kv{} with self-future \kv{}; intervals are 95\% state-bootstrap intervals. Relative reduction is the replacement-loss point estimate divided by unpatched donor steering.}
@@ -228,13 +239,26 @@ The interface was selected on excluded calibration tasks and frozen before popul
   \end{tabular}
 \end{table}
 
-\begin{figure}[t]
+\begin{figure}[!t]
   \centering
-  \includegraphics[width=\linewidth]{figures/pathway_results.pdf}
-  \caption{What carries the effect? Orange denotes donor-future steering, gray denotes isolated pixel-factor effects, and blue denotes the fraction removed by restoring self-future \kv{}. (a) In Cosmos Policy, the wrist-video future reproduces most of the whole-future action effect; future proprioception reproduces none. (b) In Cosmos 3, neither robot-only nor object-only pixels reproduce the whole-future effect; the shaded band is the prespecified equivalence region. (c) Replacing the donor-future \kv{} pathway with self-future \kv{} removes 83--88\% of donor steering.}
-  \label{fig:mechanisms}
+  \includegraphics[width=0.70\linewidth]{figures/figure4_cosmos3_kv_pathway.pdf}
+  \caption{Cosmos 3 future-token \kv{} replacement. Panels (a)--(c) connect each state's unpatched donor steering to its value after donor-future keys and values are replaced by self-future keys and values. The black diamonds and whiskers are means and 95\% state-bootstrap intervals; colored points identify the six RoboLab tasks. Replacement reduces predicted-action, executed-action, and executed-endpoint steering in all 22 states, leaving mean residual steering of $0.115$, $0.169$, and $0.152$. Panel (d) reports the same intervention as replacement loss (unpatched minus replaced); positive values indicate that the pathway carries donor-specific influence.}
+  \label{fig:cosmos3_kv}
 \end{figure}
 
+\subsection{Where is the Cosmos Policy effect concentrated?}
+\label{sec:policy_scope}
+
+Figure~\ref{fig:policy_scope} summarizes three scope checks for Cosmos Policy. Panel~a shows a strong first-query effect, followed by near-zero estimates in the separately sampled states after three and six open-loop chunks: action and endpoint steering are $0.031$ and $0.004$ after three chunks, and $0.027$ and $0.025$ after six. This demonstrates state dependence associated with query time, not causal decay within a fixed state. Panel~b shows that the early action effect is concentrated in the wrist-camera future ($0.435$), with a smaller primary-camera effect ($0.101$) and no measurable proprioceptive effect ($0.001$). Panel~c asks how much more strongly the paired donor steers than each control. Its roughly $0.5$ donor-minus-self and donor-minus-Gaussian values reflect the primary effect and the ineffectiveness of matched noise; the smaller natural-control advantage ($0.103$ for action and $0.110$ for endpoint, each positive in 8/10 tasks) is the more stringent content-specific comparison. The shuffled-control advantage is intermediate. Together, these panels localize the Cosmos Policy result to early visual futures while retaining an advantage over other valid futures.
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=0.70\linewidth]{figures/figure5_cosmos_policy_scope.pdf}
+  \caption{Scope of the Cosmos Policy effect. (a) Paired-donor steering for the first query and for distinct states sampled after three and six open-loop chunks. (b) First-query action steering when all future inputs, only the wrist-camera future, only the primary-camera future, or only future proprioception is transplanted. (c) First-query donor advantage over self, matched-Gaussian, natural-future, and shuffled-future controls. Blue circles denote actions and open orange squares denote executed endpoints; small symbols are tasks and large symbols with whiskers are means and 95\% task-bootstrap intervals. The dashed line marks the prespecified $0.10$ smallest effect of interest.}
+  \label{fig:policy_scope}
+\end{figure}
+
+\FloatBarrier
 \section{Discussion and Limitations}
 \label{sec:discussion}
 
@@ -252,7 +276,7 @@ Mechanistic tests can help distinguish plausible-looking predictions from repres
 
 \section{Conclusion}
 
-The central result is directional: we do not merely damage a model's future and observe that behavior changes; we supply a different coherent future and find that behavior follows that particular alternative. Cosmos 3 shows this across 22 sampled states, with future-token \kv{} carrying most of the action and endpoint shift. Cosmos Policy shows a related, more state-dependent effect dominated by visual robot-motion information, while neither isolated robot nor object pixels reproduce Cosmos 3's whole-future effect. These models use generated futures to condition action. Whether they compare alternative predicted outcomes in order to plan remains unanswered.
+Reachable-donor transplantation turns the broad question of whether a world action model ``uses'' its future into a directional causal test. In Cosmos 3, predicted and physically executed donor futures produce nearly complete donor-directed action steering across 22 states and six tasks, and the resulting one-chunk endpoints move in the same direction. Replacing donor-future keys and values with self-future counterparts removes 83--88\% of this steering in every state. Cosmos Policy shows a smaller but related early-state effect that survives execution and exceeds natural, shuffled, and geometry-matched controls.
 
 {\small
 \bibliographystyle{plainnat}
@@ -261,19 +285,80 @@ The central result is directional: we do not merely damage a model's future and 
 
 \appendix
 
-\section{Reproducibility Details}
+\section{Reproducibility and Protocol Details}
 \label{app:reproducibility}
 
-The Cosmos Policy experiments use public commit \texttt{18a2acca}, checkpoint revision \texttt{cb689ec0}, LIBERO, PyTorch 2.7 with CUDA 12.8, and two NVIDIA H100 80GB GPUs. The frozen design contains ten tasks, three state indices, eight native policy runs per state, one reciprocal donor pair per state, and three future-noise draws per direction. Confidence intervals use 10,000 bootstrap resamples of simulator states.
+\subsection{Experimental settings and frozen designs}
 
-The Cosmos 3 experiments pin Cosmos commit \texttt{9aa98e5a}, Cosmos Framework commit \texttt{d4599e2e}, RoboLab commit \texttt{9db0aaf0}, and checkpoint revision \texttt{2b9f9517}. The frozen manifest has SHA-256 \texttt{46b6fe3d6abb07712d0926361587b853b2e8313a10c7faeeccb0150d030e986b}. Endpoint evaluation reconstructs the environment, restores the saved state, and replays the observation prefix. Separate controls test token layout, sampler wrapping, cache record and replay, self replacement, and the action-coordinate boundary. Complete timing and aggregate compute accounting remain to be added before submission.
+The Cosmos Policy experiments use the public \texttt{Cosmos-Policy-LIBERO-Predict2-2B} checkpoint, LIBERO-Long, PyTorch 2.7 with CUDA 12.8, and two NVIDIA H100 80GB GPUs. The frozen design contains ten tasks, three state indices, eight native policy runs per state, one reciprocal donor pair per state, and three future-noise draws per direction. The observation prefix, instruction, recipient action noise, future-noise schedule, tokenizer settings, and denoising schedule are held fixed within an intervention comparison.
 
-\section{Additional Results and Boundaries}
+The Cosmos 3 experiments use the public 16B \texttt{Cosmos3-Nano-Policy-DROID} checkpoint with the released Cosmos, Cosmos Framework, and RoboLab evaluation stack. The frozen population screen selected 24 state clusters across six eligible tasks, capped at four clusters per task, using only native success, donor separation, and replay-validity information. Twenty-two clusters completed. The separate robot/object factor study selected 12 clusters by native object-position separation and completed its prespecified minimum of ten across all six tasks.
+
+\subsection{State restoration, execution, and missingness}
+
+Each endpoint comparison begins from an identical saved simulator state. Evaluation reconstructs the environment, restores that state, replays the observation prefix, verifies the restored observation, and then executes one recomputed action chunk. Recipient and donor endpoints are produced by the same restoration and execution procedure. This design makes the endpoint projection a comparison between reachable continuations of one physical state rather than between unrelated trajectories.
+
+Two frozen Cosmos 3 population units were unavailable because their registered source branches ended after 21 and 29 actions, before producing the required 32-action, 33-frame intervention source. Neither unit was replaced, and no intervention outcome entered the decision to retain or omit a state. The completed population therefore exceeds the prespecified minimum of 20 states across at least five tasks. The factor study likewise meets its minimum of ten states across at least five tasks.
+
+\subsection{Intervention validity and controls}
+
+The self-future condition passes the recipient's own future through the complete intervention machinery. For Cosmos 3, identity token-layout capture, sampler wrapping, cache record/replay, and self-patching reproduce baseline actions bitwise. Sentinels at the sampler boundary confirm that future transplantation does not write directly into action coordinates. The future-token pathway experiment preserves token count and order while leaving current-video, language, action, and all non-targeted key/value states unchanged.
+
+The geometry-matched Gaussian control has the same norm and recipient distance as the donor displacement but no coherent content. Natural controls are valid unpaired continuations selected without intervention outcomes, and shuffled controls use another future from the same task. These comparisons distinguish exact recomputation, perturbation magnitude, generic alternative-future effects, and pair-specific content. Executed-future conditions add a separate realizability check by encoding frames generated when a native donor action is physically replayed in the simulator.
+
+\subsection{Statistical conventions}
+
+The independent unit is the restored simulator state. Reciprocal directions, donor choices, noise draws, and repeated processes are averaged within state before any population summary. Reported 95\% intervals use 10,000 percentile-bootstrap resamples of states; task-balanced checks first average within task and then resample tasks. The $0.10$ smallest effect of interest was fixed before the Cosmos Policy confirmatory family and the Cosmos 3 population and factor families were evaluated. Sign tests use state-level directions and Holm correction for each prespecified family.
+
+\section{Additional Experiments and Diagnostics}
 \label{app:additional}
 
-Across all 30 Cosmos Policy states, mean donor-minus-self steering is $0.186$ ($[0.095,0.290]$) for actions and $0.194$ ($[0.091,0.305]$) for endpoints. Because the three state indices may be nested within task trajectories, the first-query analysis is the cleaner confirmatory result.
+\subsection{Condition-level Cosmos 3 projections}
 
-The six-state RoboCasa replication is exploratory and is not pooled with LIBERO \citep{nasiriany2024robocasa}. Its donor-minus-self endpoint effect is $0.0287$ ($[0.0101,0.0492]$), positive in 6/6 states; action steering is smaller and does not reliably exceed the Gaussian control. In the Cosmos 3 population, the two missing frozen states ended after 21 and 29 actions, before producing the 33-frame source video. Neither was replaced. The prespecified minimum of 20 states across five tasks and the factor-study minimum of ten states across five tasks were both met across six tasks.
+Figure~\ref{fig:app_cosmos3_conditions} shows the condition estimates before they are converted into donor-minus-control contrasts. Predicted self-future recomputation stays at zero, natural futures produce partial donor-directed movement, and paired donors cluster near one. For executed futures, the matched Gaussian remains near zero while both action and endpoint effects preserve the same ordering. The state-level display also makes clear that the endpoint conclusion is not produced by a single task or a single extreme unit.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/appendix_cosmos3_condition_projections.pdf}
+  \caption{Cosmos 3 condition-level projections across 22 restored states. Panels show predicted-future action, executed-future action, and executed-future endpoint results. Colored points are states grouped by task; black diamonds and whiskers are means and 95\% state-bootstrap intervals. Zero denotes the recipient and one the paired donor. Natural controls retain partial donor-aligned content, whereas matched Gaussian targets remain near the recipient and paired donors lie near the native donor.}
+  \label{fig:app_cosmos3_conditions}
+\end{figure}
+
+\subsection{Displacement-magnitude diagnostic}
+
+Directional projection could be misleading if a large normalized estimate arose from an extremely small native denominator or from a negligible transplanted displacement. Figure~\ref{fig:app_cosmos3_magnitudes} therefore compares unnormalized recipient-to-donor separation with the magnitude induced by transplantation. Predicted-action and executed-endpoint displacements lie close to the identity line across the observed range; executed-action displacement is more variable but remains on the scale of the native difference. This diagnostic supports the interpretation that the intervention recreates a substantial behavioral displacement, not merely a tiny change that happens to align with the donor axis.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/appendix_cosmos3_magnitude_checks.pdf}
+  \caption{Cosmos 3 magnitude checks. Native recipient-to-donor separation is plotted against the unnormalized displacement caused by donor-future transplantation for predicted actions, executed-future actions, and executed endpoints. The dashed identity line denotes equality of magnitudes; colors identify tasks. These plots complement normalized projection by showing the absolute scale of the induced change.}
+  \label{fig:app_cosmos3_magnitudes}
+\end{figure}
+
+\subsection{Cosmos Policy timing and cross-domain checks}
+
+Across all 30 registered Cosmos Policy states, mean donor-minus-self steering is $0.186$ ($[0.095,0.290]$) for actions and $0.194$ ($[0.091,0.305]$) for endpoints. The first-query, after-three-chunk, and after-six-chunk action estimates are $0.499$, $0.031$, and $0.027$; the corresponding endpoint estimates are $0.552$, $0.004$, and $0.025$. Because the three indices represent different physical states that may be nested within task trajectories, the first-query analysis is the cleaner confirmatory result and the differences should not be read as causal temporal decay.
+
+The six-state RoboCasa replication is exploratory and is not pooled with LIBERO \citep{nasiriany2024robocasa}. Donor-minus-self action steering is $0.0144$ ($[0.0034,0.0276]$), but its donor-minus-Gaussian contrast is only $0.0025$ and has an interval crossing zero. Endpoint steering is $0.0287$ ($[0.0101,0.0492]$), positive in 6/6 states; donor-minus-Gaussian endpoint steering is $0.0187$ ($[0.0063,0.0329]$), also positive in 6/6. The replication therefore supports a small executed-state effect while leaving action-space specificity uncertain.
+
+\subsection{Within-task relationships in Cosmos Policy}
+
+Figure~\ref{fig:app_policy_relationships} provides two task-level diagnostics at the first query. Action and executed-endpoint steering generally rise together, supporting the use of simulator execution as a behavioral continuation of the action result. Wrist-future steering also tracks all-future steering across tasks, consistent with the aggregate modality decomposition while showing that the wrist view does not reproduce the entire effect uniformly.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.82\linewidth]{figures/appendix_cosmos_policy_relationships.pdf}
+  \caption{Cosmos Policy task-level relationships at the first query. (a) Donor-minus-self action steering versus executed-endpoint steering. (b) All-future action steering versus wrist-future action steering. Each point is one LIBERO-Long task and the dashed line is identity.}
+  \label{fig:app_policy_relationships}
+\end{figure}
+
+\subsection{Additional content and pathway checks}
+
+The Cosmos Policy rendered $2\times2$ study supplies a manipulation check for the object-content null. Decoded futures identify the intended hybrid cell with 92.5\% accuracy in the primary camera and 98.75\% in the wrist camera, while executed endpoints identify the four cells at the 25\% chance rate. Thus, the future representation visibly contains the imposed distinction even though the preregistered object main effect on action and goal-state endpoint is approximately zero. The complementary natural-pair search found only four states with both an object-divergent/robot-matched and a robot-divergent/object-matched donor at a common recipient; these exploratory data favor the robot-motion donor, but the available population is below the planned minimum of ten.
+
+The block-27 Cosmos Policy key-removal analysis includes two additional checks beyond the action-space dose curve reported in the main text. Full future-key removal changes the executed endpoint by an absolute mean projection of $0.281$ ($[0.164,0.430]$; 10/10 first-query states) and exceeds equal-count random-key removal by $0.169$ ($[0.058,0.322]$; 9/10). Its difference from equal-count current-key removal is $-0.035$ with an interval crossing zero. The endpoint analysis therefore supports an active future route at the first query while reinforcing the conclusion that this route is not uniquely dominant over current-state information.
+
+For Cosmos 3, task-balanced pathway-loss estimates are $0.877$ for predicted actions, $0.812$ for executed-future actions, and $0.853$ for executed endpoints, closely matching the state-weighted estimates. The remaining steering after self-future \kv{} replacement is $0.115$, $0.169$, and $0.152$, respectively. This residual motivates finer-grained tests of parallel attention heads, non-attention routes, and interactions between patched and unpatched components rather than a claim that the selected interface is the complete mechanism.
 
 \newpage
 % \input{checklist.tex}

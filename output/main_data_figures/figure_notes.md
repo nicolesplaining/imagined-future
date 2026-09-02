@@ -12,9 +12,10 @@ Primary directional and specificity-control contrasts. (a) Donor-minus-self
 steering for the five primary model/source/outcome combinations. Zero denotes no
 donor-directed effect, the dashed line marks the prespecified 0.10 criterion, and
 the dotted line marks the full recipient-to-donor displacement at 1. (b) Paired
-donor projection minus the named control projection. Individual marks are restored
-simulator states for Cosmos 3 and task-level first-query units for Cosmos Policy;
-large marks and bars are means and 95% state-bootstrap intervals.
+donor projection minus the named control projection, including Cosmos 3 action and
+executed-endpoint comparisons. Individual marks are restored simulator states for
+Cosmos 3 and task-level first-query units for Cosmos Policy; large marks and bars
+are means and 95% independent-unit bootstrap intervals.
 
 ## Figure 3 — Cosmos 3 pixel factors
 

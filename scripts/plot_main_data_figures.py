@@ -514,6 +514,20 @@ def figure2_steering(
             (population["exec_donor"] - population["exec_natural"]).to_numpy(),
             "action",
         ),
+        (
+            "C3 executed vs Gaussian\nEndpoint",
+            (
+                population["endpoint_donor"] - population["endpoint_gaussian"]
+            ).to_numpy(),
+            "endpoint",
+        ),
+        (
+            "C3 executed vs natural\nEndpoint",
+            (
+                population["endpoint_donor"] - population["endpoint_natural"]
+            ).to_numpy(),
+            "endpoint",
+        ),
     ]
     for label, contrast in (
         ("Policy vs Gaussian", "semantic_all_donor_minus_gaussian"),
@@ -538,8 +552,8 @@ def figure2_steering(
     figure, axes = plt.subplots(
         1,
         2,
-        figsize=(10.725, 4.35),
-        gridspec_kw={"width_ratios": [0.92, 1.25]},
+        figsize=(7.15, 4.75),
+        gridspec_kw={"width_ratios": [0.88, 1.32]},
         constrained_layout=True,
     )
     effect_rows_axis(
@@ -562,7 +576,7 @@ def figure2_steering(
     axes[1].set_xlim(-0.08, 1.12)
     for label, panel in zip("ab", axes):
         panel.text(
-            -0.04,
+            -0.10,
             1.02,
             label,
             transform=panel.transAxes,

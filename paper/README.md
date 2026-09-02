@@ -4,7 +4,7 @@ This folder contains the concise paper revision, the NeurIPS 2026 style file sup
 
 ## Submission mode
 
-The source currently preserves the uploaded draft's `main,nonanonymous` style options. This is useful for an internal author-visible draft, but it is not a valid anonymous main-track submission and it does not identify a workshop.
+The source currently uses the official `dblblindworkshop` option and identifies Trustworthy AI for Good as the target workshop. The compiled submission PDF is anonymous.
 
 - For a double-blind workshop, use `dblblindworkshop` and add `\workshoptitle{WORKSHOP NAME}` after loading the style.
 - For a single-blind workshop, use `sglblindworkshop` and add the workshop title.

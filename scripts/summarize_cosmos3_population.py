@@ -224,6 +224,49 @@ def main() -> None:
         for name, adjusted in zip(names, holm_adjust(raw_sign_p), strict=True):
             effects[name]["sign_test"]["holm_adjusted_p_value"] = adjusted
 
+    # These endpoint-control contrasts were added after the primary analysis was
+    # frozen. Report them as a separate secondary family so that adding them does
+    # not retroactively alter the confirmatory Holm corrections above.
+    secondary_definitions = {
+        "executed_natural_control_minus_executed_self_physical": (
+            "natural_control",
+            "executed_self",
+            "endpoint_donor_projection",
+            "all",
+        ),
+        "executed_gaussian_minus_executed_self_physical": (
+            "gaussian_executed",
+            "executed_self",
+            "endpoint_donor_projection",
+            "all",
+        ),
+        "executed_donor_minus_natural_control_physical": (
+            "executed_donor",
+            "natural_control",
+            "endpoint_donor_projection",
+            "all",
+        ),
+        "executed_donor_minus_gaussian_physical": (
+            "executed_donor",
+            "gaussian_executed",
+            "endpoint_donor_projection",
+            "all",
+        ),
+    }
+    secondary_effects: dict[str, Any] = {}
+    for offset, (name, (left, right, field, group)) in enumerate(
+        secondary_definitions.items()
+    ):
+        values = contrast(reports, left, right, field, endpoint_group=group)
+        if not values:
+            continue
+        estimate = effect_summary(values, seed=args.bootstrap_seed + 10_000 + offset)
+        estimate["task_means"] = task_means(values, manifest_rows)
+        estimate["task_balanced_sensitivity"] = effect_summary(
+            estimate["task_means"], seed=args.bootstrap_seed + 11_000 + offset
+        )
+        secondary_effects[name] = estimate
+
     factor_expected = set(manifest["factorization_selected_unit_ids"])
     unexpected_factor_reports = {
         key
@@ -306,6 +349,7 @@ def main() -> None:
         "missing_unit_ids": missing,
         "early_terminal_interventions": early_terminations,
         "effects": effects,
+        "secondary_effects": secondary_effects,
         "factorization": {
             "manifest_status": manifest["factorization_status"],
             "expected_units": len(factor_expected),
