@@ -98,8 +98,8 @@ def make_overview() -> None:
     ax = axes[0]
     ax.set_title("a  Alternative runs", loc="left", weight="bold", fontsize=7.5)
     rounded_box(ax, (0.04, 0.39), 0.18, 0.22, "saved\nstate $S$", LIGHT_GRAY, GRAY, fontsize=6.3, weight="bold")
-    rounded_box(ax, (0.42, 0.63), 0.28, 0.20, "predicted future\n$F_A$", LIGHT_BLUE, BLUE, fontsize=5.8)
-    rounded_box(ax, (0.42, 0.17), 0.28, 0.20, "predicted future\n$F_B$", LIGHT_ORANGE, ORANGE, fontsize=5.8)
+    rounded_box(ax, (0.42, 0.63), 0.28, 0.20, "recipient future\n$F_A$", LIGHT_BLUE, BLUE, fontsize=5.8)
+    rounded_box(ax, (0.42, 0.17), 0.28, 0.20, "donor future\n$F_B$", LIGHT_ORANGE, ORANGE, fontsize=5.8)
     rounded_box(ax, (0.79, 0.63), 0.17, 0.20, "action\n$a_A$", "white", BLUE, fontsize=6.3)
     rounded_box(ax, (0.79, 0.17), 0.17, 0.20, "action\n$a_B$", "white", ORANGE, fontsize=6.3)
     arrow(ax, (0.22, 0.52), (0.42, 0.73), BLUE)
@@ -112,13 +112,13 @@ def make_overview() -> None:
     ax.set_title("b  Replace the future", loc="left", weight="bold", fontsize=7.5)
     rounded_box(ax, (0.02, 0.66), 0.28, 0.16, "state $S$", LIGHT_GRAY, GRAY, fontsize=7)
     rounded_box(ax, (0.02, 0.42), 0.28, 0.16, "noise from\nrun $A$", LIGHT_BLUE, BLUE, fontsize=7)
-    rounded_box(ax, (0.02, 0.18), 0.28, 0.16, "future $F_B$\nfrom run $B$", LIGHT_ORANGE, ORANGE, fontsize=7)
+    rounded_box(ax, (0.02, 0.18), 0.28, 0.16, "donor future\n$F_B$ only", LIGHT_ORANGE, ORANGE, fontsize=7)
     rounded_box(ax, (0.43, 0.34), 0.22, 0.30, "same\npolicy", "white", NAVY, weight="bold")
     rounded_box(ax, (0.77, 0.40), 0.20, 0.18, "action after\nreplacement", LIGHT_ORANGE, ORANGE, fontsize=5.7)
     for y in (0.74, 0.50, 0.26):
         arrow(ax, (0.30, y), (0.43, 0.50), GRAY if y != 0.26 else ORANGE)
     arrow(ax, (0.65, 0.49), (0.77, 0.49), ORANGE)
-    ax.text(0.50, 0.09, "All other inputs are held fixed", ha="center", fontsize=7, color="#333333")
+    ax.text(0.50, 0.09, "Recipient inputs and noise stay fixed", ha="center", fontsize=6.5, color="#333333")
 
     ax = axes[2]
     ax.set_title("c  Measure the effect", loc="left", weight="bold", fontsize=7.5)
@@ -126,13 +126,13 @@ def make_overview() -> None:
     ax.scatter([0.10], [0.72], s=34, color=BLUE, zorder=3)
     ax.scatter([0.88], [0.72], s=34, color=ORANGE, zorder=3)
     ax.scatter([0.70], [0.72], s=42, marker="D", color=TEAL, zorder=4)
-    ax.text(0.10, 0.61, "run $A$\n0", ha="center", va="top", fontsize=7)
-    ax.text(0.88, 0.61, "run $B$\n1", ha="center", va="top", fontsize=7)
+    ax.text(0.10, 0.61, "recipient $A$\n0", ha="center", va="top", fontsize=7)
+    ax.text(0.88, 0.61, "donor $B$\n1", ha="center", va="top", fontsize=7)
     ax.text(0.70, 0.83, "action after replacement", ha="center", fontsize=6.5, color=TEAL, weight="bold")
     rounded_box(ax, (0.08, 0.15), 0.34, 0.18, "future K/V\nfrom run $B$", LIGHT_ORANGE, ORANGE, fontsize=7)
     rounded_box(ax, (0.57, 0.15), 0.34, 0.18, "replace with K/V\nfrom run $A$", LIGHT_BLUE, BLUE, fontsize=7)
     arrow(ax, (0.42, 0.24), (0.57, 0.24), NAVY)
-    ax.text(0.50, 0.04, "Measure the reduction in projection", ha="center", fontsize=7)
+    ax.text(0.50, 0.04, "Donor action is used only for scoring", ha="center", fontsize=6.4)
 
     fig.subplots_adjust(wspace=0.17)
     save(fig, "method_overview")
