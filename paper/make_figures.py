@@ -111,24 +111,24 @@ def make_overview() -> None:
     frame(data["start"], (0.02, 0.19, 0.34, 0.79), "same start", NAVY)
     ax.text(0.105, 0.305, "same observation\nand instruction", ha="center", va="top", fontsize=6.1)
 
-    frame(data["future_a"], (0.28, 0.405, 0.60, 0.87), "Future A", BLUE)
-    frame(data["endpoint_a"], (0.47, 0.595, 0.60, 0.87), "Action A executed", BLUE)
-    frame(data["future_b"], (0.28, 0.405, 0.20, 0.47), "Future B", ORANGE)
-    frame(data["endpoint_b"], (0.47, 0.595, 0.20, 0.47), "Action B executed", ORANGE)
+    frame(data["future_a"], (0.28, 0.405, 0.60, 0.87), "Recipient future", BLUE)
+    frame(data["endpoint_a"], (0.47, 0.595, 0.60, 0.87), "Recipient action", BLUE)
+    frame(data["future_b"], (0.28, 0.405, 0.20, 0.47), "Donor future", ORANGE)
+    frame(data["endpoint_b"], (0.47, 0.595, 0.20, 0.47), "Donor action", ORANGE)
     arrow(ax, (0.19, 0.58), (0.28, 0.735), BLUE)
     arrow(ax, (0.19, 0.52), (0.28, 0.335), ORANGE)
     arrow(ax, (0.405, 0.735), (0.47, 0.735), BLUE)
     arrow(ax, (0.405, 0.335), (0.47, 0.335), ORANGE)
-    ax.text(0.438, 0.765, "+ action A", ha="center", fontsize=5.8, color=BLUE)
-    ax.text(0.438, 0.365, "+ action B", ha="center", fontsize=5.8, color=ORANGE)
+    ax.text(0.438, 0.765, "+ recipient action", ha="center", fontsize=5.4, color=BLUE)
+    ax.text(0.438, 0.365, "+ donor action", ha="center", fontsize=5.4, color=ORANGE)
     ax.text(0.435, 0.09, "Agreement within each rollout is only correlation.",
             ha="center", fontsize=6.7, weight="bold")
 
     ax.plot([0.625, 0.625], [0.06, 0.94], color="#C8C8C8", linewidth=0.9)
-    ax.text(0.65, 0.965, "b  Causal test: insert Future B into rollout A", weight="bold", fontsize=8.3)
-    rounded_box(ax, (0.65, 0.72), 0.15, 0.13, "held fixed\nstart, instruction,\nA's noise + solver", LIGHT_GRAY, GRAY,
+    ax.text(0.65, 0.965, "b  Stage 1: insert donor future into recipient", weight="bold", fontsize=8.0)
+    rounded_box(ax, (0.65, 0.72), 0.15, 0.13, "held fixed\nstart, instruction,\noriginal noise + solver", LIGHT_GRAY, GRAY,
                 fontsize=5.5, weight="bold")
-    frame(data["future_b"], (0.83, 0.965, 0.70, 0.87), "only Future B changes", ORANGE)
+    frame(data["future_b"], (0.83, 0.965, 0.70, 0.87), "only the inserted future changes", ORANGE)
     arrow(ax, (0.80, 0.785), (0.83, 0.785), ORANGE)
 
     # Project the three observed action chunks into a common two-dimensional
@@ -145,9 +145,9 @@ def make_overview() -> None:
                  for action in (action_a, action_b, action_patch)]
     trajectory_ax = fig.add_axes([0.655, 0.31, 0.19, 0.29])
     for points, color, label, width in (
-        (projected[0], BLUE, "Action A", 1.2),
-        (projected[1], ORANGE, "Action B", 1.2),
-        (projected[2], TEAL, "after inserting B", 2.0),
+        (projected[0], BLUE, "Recipient action", 1.2),
+        (projected[1], ORANGE, "Donor action", 1.2),
+        (projected[2], TEAL, "after donor insert", 2.0),
     ):
         trajectory_ax.plot(points[:, 0], points[:, 1], color=color, linewidth=width, label=label)
         trajectory_ax.scatter(points[0, 0], points[0, 1], s=9, color=color, zorder=3)
@@ -169,12 +169,12 @@ def make_overview() -> None:
     scale = lambda value: 0.67 + 0.29 * value
     ax.scatter([scale(self_projection)], [0.17], marker="|", s=85, color=BLUE, linewidths=2, zorder=4)
     ax.scatter([scale(patch_projection)], [0.17], marker="D", s=30, color=TEAL, zorder=4)
-    ax.text(0.67, 0.13, "Action A\n0", ha="center", va="top", fontsize=5.8, color=BLUE)
-    ax.text(0.96, 0.13, "Action B\n1", ha="center", va="top", fontsize=5.8, color=ORANGE)
+    ax.text(0.67, 0.13, "Original action\n(recipient)  0", ha="center", va="top", fontsize=5.8, color=BLUE)
+    ax.text(0.96, 0.13, "Reference action\n(donor)  1", ha="center", va="top", fontsize=5.8, color=ORANGE)
     ax.text(scale(self_projection), 0.205, "self rerun", ha="center", va="bottom", fontsize=5.6, color=BLUE)
     ax.text(scale(patch_projection), 0.205, f"new action {patch_projection:.2f}", ha="center", va="bottom",
             fontsize=5.8, color=TEAL, weight="bold")
-    ax.text(0.815, 0.035, "Action B is never given to the model; it only defines the scoring direction.",
+    ax.text(0.815, 0.035, "The reference action is never given to the model; it is used only for scoring.",
             ha="center", fontsize=6.2, weight="bold")
     save(fig, "method_overview")
 
@@ -372,7 +372,7 @@ def make_pathway(summary: dict) -> None:
     ax.axvline(0.10, color=GRAY, linewidth=0.8, linestyle="--")
     ax.set_yticks(range(len(factor_rows)), [r[0] for r in reversed(factor_rows)])
     ax.set_xlim(-0.14, 0.14)
-    ax.set_xlabel("Isolated-factor effect\nGray = robot/object-only transplant")
+    ax.set_xlabel("Isolated-factor effect\nGray = only donor robot/object pixels inserted")
     ax.set_title("b  Cosmos 3 content\nIsolated pixels are insufficient", loc="left", weight="bold", fontsize=7.6)
     ax.grid(axis="x", color="#DDDDDD", linewidth=0.5)
 

@@ -663,7 +663,7 @@ def appendix_magnitude_checks(population: pd.DataFrame, output: Path) -> None:
         "pred_l2",
         limit=(0, 9),
         xlabel=r"Native action separation, $\|a_B-a_A\|_2$",
-        ylabel=r"Transplanted displacement, $\|\hat a-a_A\|_2$",
+        ylabel=r"Displacement after inserting donor future, $\|\hat a-a_A\|_2$",
     )
     identity_axis(
         axes[1],
@@ -672,7 +672,7 @@ def appendix_magnitude_checks(population: pd.DataFrame, output: Path) -> None:
         "exec_l2",
         limit=(0, 9),
         xlabel=r"Native action separation, $\|a_B-a_A\|_2$",
-        ylabel=r"Transplanted displacement, $\|\hat a-a_A\|_2$",
+        ylabel=r"Displacement after inserting donor future, $\|\hat a-a_A\|_2$",
     )
     identity_axis(
         axes[2],
@@ -681,7 +681,7 @@ def appendix_magnitude_checks(population: pd.DataFrame, output: Path) -> None:
         "endpoint_l2",
         limit=(0, 2.6),
         xlabel=r"Native endpoint separation, $\|e_B-e_A\|_2$",
-        ylabel=r"Transplanted displacement, $\|\hat e-e_A\|_2$",
+        ylabel=r"Displacement after inserting donor future, $\|\hat e-e_A\|_2$",
     )
     axes[0].set_title("Predicted future: action", pad=4)
     axes[1].set_title("Executed future: action", pad=4)
@@ -741,7 +741,7 @@ def factor_cell_axis(
     ax.axhline(0, color="black", linewidth=0.65)
     ax.axhline(1, color=REFERENCE_GREY, linestyle="--", linewidth=0.7)
     ax.set_xticks(range(len(cells)), [label for label, _ in cells])
-    ax.set_xlabel("Future pixels transplanted")
+    ax.set_xlabel("Recipient pixels replaced with donor pixels")
     ax.set_ylim(-0.25, 1.35)
     ax.set_title(title, pad=4)
     horizontal_grid(ax)
@@ -1203,7 +1203,7 @@ def figure5_policy(policy: pd.DataFrame, output: Path) -> None:
         seed=202720,
         include_endpoint=False,
     )
-    axes[1].set_xlabel("Future component transplanted")
+    axes[1].set_xlabel("Recipient future component replaced with donor's")
 
     policy_distribution_axis(
         axes[2],
