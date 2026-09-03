@@ -473,12 +473,12 @@ def figure2_steering(
             "action",
         ),
         (
-            "Cosmos 3, executed future\nAction",
+            "Cosmos 3, executed video\nAction",
             population["exec_steering"].to_numpy(dtype=float),
             "action",
         ),
         (
-            "Cosmos 3, executed future\nEndpoint",
+            "Cosmos 3, executed video\nEndpoint",
             population["endpoint_steering"].to_numpy(dtype=float),
             "endpoint",
         ),
@@ -614,7 +614,7 @@ def appendix_cosmos3_conditions(population: pd.DataFrame, output: Path) -> None:
             ("Natural", "exec_natural"),
             ("Donor", "exec_donor"),
         ],
-        title="Executed future: action",
+        title="Executed video: action",
         seed=202630,
     )
     cosmos_condition_axis(
@@ -626,7 +626,7 @@ def appendix_cosmos3_conditions(population: pd.DataFrame, output: Path) -> None:
             ("Natural", "endpoint_natural"),
             ("Donor", "endpoint_donor"),
         ],
-        title="Executed future: endpoint",
+        title="Executed video: endpoint",
         seed=202640,
     )
     axes[0].set_ylabel(r"Normalized donor projection, $\pi_x$")
@@ -663,7 +663,7 @@ def appendix_magnitude_checks(population: pd.DataFrame, output: Path) -> None:
         "pred_l2",
         limit=(0, 9),
         xlabel=r"Native action separation, $\|a_B-a_A\|_2$",
-        ylabel=r"Displacement after inserting donor future, $\|\hat a-a_A\|_2$",
+        ylabel=r"Displacement after inserting donor's predicted future, $\|\hat a-a_A\|_2$",
     )
     identity_axis(
         axes[1],
@@ -672,7 +672,7 @@ def appendix_magnitude_checks(population: pd.DataFrame, output: Path) -> None:
         "exec_l2",
         limit=(0, 9),
         xlabel=r"Native action separation, $\|a_B-a_A\|_2$",
-        ylabel=r"Displacement after inserting donor future, $\|\hat a-a_A\|_2$",
+        ylabel=r"Displacement after inserting donor's predicted future, $\|\hat a-a_A\|_2$",
     )
     identity_axis(
         axes[2],
@@ -681,11 +681,11 @@ def appendix_magnitude_checks(population: pd.DataFrame, output: Path) -> None:
         "endpoint_l2",
         limit=(0, 2.6),
         xlabel=r"Native endpoint separation, $\|e_B-e_A\|_2$",
-        ylabel=r"Displacement after inserting donor future, $\|\hat e-e_A\|_2$",
+        ylabel=r"Displacement after inserting donor's predicted future, $\|\hat e-e_A\|_2$",
     )
     axes[0].set_title("Predicted future: action", pad=4)
-    axes[1].set_title("Executed future: action", pad=4)
-    axes[2].set_title("Executed future: endpoint", pad=4)
+    axes[1].set_title("Executed video: action", pad=4)
+    axes[2].set_title("Executed video: endpoint", pad=4)
     for label, ax in zip("abc", axes):
         ax.text(
             -0.02,
@@ -721,7 +721,7 @@ def factor_cell_axis(
         ("Robot", f"{prefix}_o0r1"),
         ("Object", f"{prefix}_o1r0"),
         ("Both", f"{prefix}_o1r1"),
-        ("Whole\nfuture", f"full_{prefix}"),
+        ("Full predicted\nfuture", f"full_{prefix}"),
     ]
     for position, (_label, column) in enumerate(cells):
         values = frame[column].to_numpy(dtype=float)
@@ -858,7 +858,7 @@ def factorial_cells_axis(
 def factor_reference_axis(ax: plt.Axes, frame: pd.DataFrame, *, seed: int) -> None:
     effects = [
         (
-            "Whole-future\nsteering",
+            "Full predicted-future\nsteering",
             "full_action_steering",
             "full_endpoint_steering",
         ),
@@ -905,7 +905,7 @@ def factor_reference_axis(ax: plt.Axes, frame: pd.DataFrame, *, seed: int) -> No
     ax.set_xticks(range(len(effects)), [label for label, _a, _e in effects])
     ax.set_ylim(-0.18, 1.18)
     ax.set_ylabel("Effect on donor projection")
-    ax.set_title("Whole future and pixel factors", pad=4)
+    ax.set_title("Full predicted future and pixel factors", pad=4)
     horizontal_grid(ax)
 
 
@@ -994,10 +994,10 @@ def kv_paired_axis(
     ax.set_ylim(-0.20, 1.30)
     ax.set_xticks(
         [0, 1],
-        ["Unpatched", "Self-future K/V\nreplacement"],
+        ["Unpatched", "Recipient predicted-future\nK/V"],
     )
     ax.set_title(title, pad=4)
-    ax.set_xlabel("Future-token K/V condition")
+    ax.set_xlabel("Predicted-future K/V condition")
     ax.set_ylabel(r"Donor $-$ self steering, $\Delta_x$")
     horizontal_grid(ax)
 
@@ -1016,20 +1016,20 @@ def figure4_kv(population: pd.DataFrame, output: Path) -> None:
         population,
         before="exec_steering",
         after="exec_patch_steering",
-        title="Executed future → action",
+        title="Executed video → action",
     )
     kv_paired_axis(
         axes[1, 0],
         population,
         before="endpoint_steering",
         after="endpoint_patch_steering",
-        title="Executed future → endpoint",
+        title="Executed video → endpoint",
     )
     ax = axes[1, 1]
     losses = [
         ("Predicted future\n→ action", "pred_loss"),
-        ("Executed future\n→ action", "exec_loss"),
-        ("Executed future\n→ endpoint", "endpoint_loss"),
+        ("Executed video\n→ action", "exec_loss"),
+        ("Executed video\n→ endpoint", "endpoint_loss"),
     ]
     for position, (_label, column) in enumerate(losses):
         values = population[column].to_numpy(dtype=float)
@@ -1203,7 +1203,7 @@ def figure5_policy(policy: pd.DataFrame, output: Path) -> None:
         seed=202720,
         include_endpoint=False,
     )
-    axes[1].set_xlabel("Recipient future component replaced with donor's")
+    axes[1].set_xlabel("Recipient predicted-future component\nreplaced with donor's")
 
     policy_distribution_axis(
         axes[2],
@@ -1235,7 +1235,7 @@ def figure5_policy(policy: pd.DataFrame, output: Path) -> None:
         seed=202730,
         reference=None,
     )
-    axes[2].set_xlabel("Control future")
+    axes[2].set_xlabel("Control predicted future")
 
     for label, panel in zip("abc", axes):
         panel_label(panel, label)
@@ -1306,9 +1306,9 @@ def appendix_policy_relationships(policy: pd.DataFrame, output: Path) -> None:
         axes[1],
         joined["action_donor_steering"].to_numpy(dtype=float),
         joined["wrist"].to_numpy(dtype=float),
-        xlabel="All-future action steering",
-        ylabel="Wrist-future action steering",
-        title="All future–wrist relation",
+        xlabel="Full predicted-future action steering",
+        ylabel="Wrist-camera-component action steering",
+        title="Full predicted future–wrist relation",
     )
     for label, panel in zip("ab", axes):
         panel_label(panel, label)

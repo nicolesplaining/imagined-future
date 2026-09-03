@@ -107,28 +107,31 @@ def make_overview() -> None:
         ax.text((x0 + x1) / 2, y1 + 0.018, title, ha="center", va="bottom",
                 fontsize=6.8, weight="bold", color=color)
 
-    ax.text(0.01, 0.965, "a  Two normal rollouts from exactly the same state", weight="bold", fontsize=8.3)
-    frame(data["start"], (0.02, 0.19, 0.34, 0.79), "same start", NAVY)
-    ax.text(0.105, 0.305, "same observation\nand instruction", ha="center", va="top", fontsize=6.1)
+    ax.text(0.01, 0.965, "a  Original recipient and donor rollouts", weight="bold", fontsize=8.3)
+    frame(data["start"], (0.02, 0.19, 0.34, 0.79), "same saved state", NAVY)
+    ax.text(0.105, 0.305, "same observation $o_t$\nand instruction $\\ell$", ha="center", va="top", fontsize=6.1)
 
-    frame(data["future_a"], (0.28, 0.405, 0.60, 0.87), "Recipient future", BLUE)
-    frame(data["endpoint_a"], (0.47, 0.595, 0.60, 0.87), "Recipient action", BLUE)
-    frame(data["future_b"], (0.28, 0.405, 0.20, 0.47), "Donor future", ORANGE)
-    frame(data["endpoint_b"], (0.47, 0.595, 0.20, 0.47), "Donor action", ORANGE)
+    frame(data["future_a"], (0.28, 0.405, 0.60, 0.87), r"Recipient predicted future $F_A$", BLUE)
+    frame(data["endpoint_a"], (0.47, 0.595, 0.60, 0.87), r"Endpoint $e_A$", BLUE)
+    frame(data["future_b"], (0.28, 0.405, 0.20, 0.47), r"Donor predicted future $F_B$", ORANGE)
+    frame(data["endpoint_b"], (0.47, 0.595, 0.20, 0.47), r"Endpoint $e_B$", ORANGE)
     arrow(ax, (0.19, 0.58), (0.28, 0.735), BLUE)
     arrow(ax, (0.19, 0.52), (0.28, 0.335), ORANGE)
     arrow(ax, (0.405, 0.735), (0.47, 0.735), BLUE)
     arrow(ax, (0.405, 0.335), (0.47, 0.335), ORANGE)
-    ax.text(0.438, 0.765, "+ recipient action", ha="center", fontsize=5.4, color=BLUE)
-    ax.text(0.438, 0.365, "+ donor action", ha="center", fontsize=5.4, color=ORANGE)
+    ax.text(0.438, 0.765, r"action $a_A$", ha="center", fontsize=5.7, color=BLUE)
+    ax.text(0.438, 0.365, r"action $a_B$", ha="center", fontsize=5.7, color=ORANGE)
     ax.text(0.435, 0.09, "Agreement within each rollout is only correlation.",
             ha="center", fontsize=6.7, weight="bold")
 
     ax.plot([0.625, 0.625], [0.06, 0.94], color="#C8C8C8", linewidth=0.9)
-    ax.text(0.65, 0.965, "b  Stage 1: insert donor future into recipient", weight="bold", fontsize=8.0)
-    rounded_box(ax, (0.65, 0.72), 0.15, 0.13, "held fixed\nstart, instruction,\noriginal noise + solver", LIGHT_GRAY, GRAY,
-                fontsize=5.5, weight="bold")
-    frame(data["future_b"], (0.83, 0.965, 0.70, 0.87), "only the inserted future changes", ORANGE)
+    ax.text(0.65, 0.965, "b  Recompute the recipient with the donor's predicted future", weight="bold", fontsize=8.0)
+    rounded_box(ax, (0.65, 0.705), 0.15, 0.15,
+                "recomputed recipient $A$\nsame $o_t$, instruction,\n$\\epsilon_A$, and solver",
+                LIGHT_GRAY, GRAY, fontsize=5.35, weight="bold")
+    frame(data["future_b"], (0.83, 0.965, 0.70, 0.87), r"insert donor predicted future $F_B$", ORANGE)
+    ax.text(0.8975, 0.675, "replace recipient predicted-future coordinates\nat every denoising step",
+            ha="center", va="top", fontsize=5.0, color=ORANGE, weight="bold")
     arrow(ax, (0.80, 0.785), (0.83, 0.785), ORANGE)
 
     # Project the three observed action chunks into a common two-dimensional
@@ -143,22 +146,25 @@ def make_overview() -> None:
     basis = vt[:2].T
     projected = [(action - all_steps.mean(axis=0, keepdims=True)) @ basis
                  for action in (action_a, action_b, action_patch)]
-    trajectory_ax = fig.add_axes([0.655, 0.31, 0.19, 0.29])
+    trajectory_ax = fig.add_axes([0.655, 0.27, 0.19, 0.27])
     for points, color, label, width in (
-        (projected[0], BLUE, "Recipient action", 1.2),
-        (projected[1], ORANGE, "Donor action", 1.2),
-        (projected[2], TEAL, "after donor insert", 2.0),
+        (projected[0], BLUE, r"recipient $a_A$", 1.2),
+        (projected[1], ORANGE, r"donor $a_B$", 1.2),
+        (projected[2], TEAL, r"recomputed $\hat a_{A\leftarrow B}$", 2.0),
     ):
         trajectory_ax.plot(points[:, 0], points[:, 1], color=color, linewidth=width, label=label)
         trajectory_ax.scatter(points[0, 0], points[0, 1], s=9, color=color, zorder=3)
     trajectory_ax.set_xticks([])
     trajectory_ax.set_yticks([])
     trajectory_ax.set_title("actual 16-step actions (PCA)", fontsize=6.2, pad=2)
+    trajectory_ax.legend(loc="upper right", fontsize=4.45, frameon=False,
+                         handlelength=1.3, borderaxespad=0.35)
     trajectory_ax.spines[["top", "right", "bottom", "left"]].set_visible(True)
     trajectory_ax.spines[["top", "right", "bottom", "left"]].set_color("#BBBBBB")
 
-    frame(data["endpoint_patch"], (0.865, 0.985, 0.32, 0.59), "new action executed", TEAL)
-    arrow(ax, (0.845, 0.455), (0.865, 0.455), TEAL)
+    frame(data["endpoint_patch"], (0.865, 0.985, 0.27, 0.54),
+          r"execute $\hat a_{A\leftarrow B}$", TEAL)
+    arrow(ax, (0.845, 0.405), (0.865, 0.405), TEAL)
 
     direction = action_b - action_a
     denom = float(np.sum(direction * direction))
@@ -169,13 +175,16 @@ def make_overview() -> None:
     scale = lambda value: 0.67 + 0.29 * value
     ax.scatter([scale(self_projection)], [0.17], marker="|", s=85, color=BLUE, linewidths=2, zorder=4)
     ax.scatter([scale(patch_projection)], [0.17], marker="D", s=30, color=TEAL, zorder=4)
-    ax.text(0.67, 0.13, "Original action\n(recipient)  0", ha="center", va="top", fontsize=5.8, color=BLUE)
-    ax.text(0.96, 0.13, "Reference action\n(donor)  1", ha="center", va="top", fontsize=5.8, color=ORANGE)
+    ax.text(0.67, 0.13, "Recipient action $a_A$\n0", ha="center", va="top", fontsize=5.8, color=BLUE)
+    ax.text(0.96, 0.13, "Donor action $a_B$\n1", ha="center", va="top", fontsize=5.8, color=ORANGE)
     ax.text(scale(self_projection), 0.205, "self rerun", ha="center", va="bottom", fontsize=5.6, color=BLUE)
-    ax.text(scale(patch_projection), 0.205, f"new action {patch_projection:.2f}", ha="center", va="bottom",
+    ax.text(scale(patch_projection), 0.205, rf"$\hat a_{{A\leftarrow B}}$  {patch_projection:.2f}", ha="center", va="bottom",
             fontsize=5.8, color=TEAL, weight="bold")
-    ax.text(0.815, 0.035, "The reference action is never given to the model; it is used only for scoring.",
-            ha="center", fontsize=6.2, weight="bold")
+    ax.text(0.815, 0.045,
+            r"Causal test: does $\hat a_{A\leftarrow B}$ move from recipient $a_A$ toward donor $a_B$?",
+            ha="center", fontsize=6.15, weight="bold")
+    ax.text(0.815, 0.012, r"The model never receives $a_B$; it is used only after inference as the reference direction.",
+            ha="center", fontsize=5.25)
     save(fig, "method_overview")
 
 
@@ -342,7 +351,7 @@ def make_pathway(summary: dict) -> None:
     ax = axes[0]
     modalities = policy["modalities"]
     policy_rows = [
-        ("Whole future", policy["timing"][0]["action"]),
+        ("Full predicted future", policy["timing"][0]["action"]),
         ("Wrist video only", modalities["wrist"]),
         ("Primary video only", modalities["primary"]),
         ("Proprioception only", modalities["proprioception"]),
@@ -383,7 +392,7 @@ def make_pathway(summary: dict) -> None:
                  losses["executed_action"]["fraction_of_unpatched"],
                  losses["executed_endpoint"]["fraction_of_unpatched"]]
     for y, frac in enumerate(reversed(fractions)):
-        ax.barh(y, frac, height=0.45, color=BLUE, label="Removed by self-future K/V" if y == 0 else None)
+        ax.barh(y, frac, height=0.45, color=BLUE, label="Removed by recipient predicted-future K/V" if y == 0 else None)
         ax.barh(y, 1 - frac, left=frac, height=0.45, color=LIGHT_GRAY, edgecolor=GRAY,
                 label="Remaining donor effect" if y == 0 else None)
         ax.text(frac / 2, y, f"{100 * frac:.0f}% removed", ha="center", va="center",
@@ -392,7 +401,7 @@ def make_pathway(summary: dict) -> None:
     ax.set_xlim(0, 1)
     ax.set_xticks([0, 0.5, 1], ["0%", "50%", "100%"])
     ax.set_xlabel("Fraction of donor effect\nBlue = removed; gray = remaining")
-    ax.set_title("c  Cosmos 3 pathway\nSelf-future K/V removes most effect", loc="left", weight="bold", fontsize=7.6)
+    ax.set_title("c  Cosmos 3 pathway\nRecipient predicted-future K/V removes most effect", loc="left", weight="bold", fontsize=7.6)
     ax.grid(axis="x", color="#FFFFFF", linewidth=0.6)
 
     fig.subplots_adjust(wspace=0.68, bottom=0.20)
