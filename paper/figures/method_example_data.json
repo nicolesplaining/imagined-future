@@ -1,0 +1,23 @@
+{
+  "study": "libero_confirmatory_v1",
+  "unit_id": "task02_state10_prefix00",
+  "task": "turn on the stove and put the moka pot on it",
+  "rollout_a": {
+    "branch_index": 1,
+    "model_seed": 313
+  },
+  "rollout_b": {
+    "branch_index": 6,
+    "model_seed": 347
+  },
+  "intervention": {
+    "direction": "forward",
+    "future_noise_seed": 419,
+    "condition": "all_donor",
+    "raw_action_projection": 1.0419208036847274,
+    "self_recomputation_projection": 0.1398031300333398,
+    "donor_minus_self_action_projection": 0.9021176736513878,
+    "donor_minus_self_endpoint_projection": 0.8462698611800623
+  },
+  "display": "The action curves in Figure 1 are the three observed 16-by-7 action chunks projected onto the first two principal components fitted jointly to their 48 time steps. PCA is used only for visualization; inference uses the full flattened action vector."
+}

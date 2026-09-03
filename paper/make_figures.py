@@ -7,6 +7,7 @@ from pathlib import Path
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import numpy as np
 from matplotlib.lines import Line2D
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Patch
 
@@ -90,70 +91,91 @@ def arrow(ax, start, end, color="#333333"):
 
 
 def make_overview() -> None:
-    """Four-step schematic with one question per panel."""
-    fig, axes = plt.subplots(2, 2, figsize=(7.2, 3.65))
-    axes = axes.ravel()
-    for ax in axes:
-        ax.set_xlim(0, 1)
-        ax.set_ylim(0, 1)
-        ax.axis("off")
+    """Plain-language causal test illustrated with one held-out LIBERO trace."""
+    data = np.load(OUT / "method_example_data.npz")
+    fig = plt.figure(figsize=(7.2, 3.15))
+    ax = fig.add_axes([0, 0, 1, 1])
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
+    ax.axis("off")
 
-    ax = axes[0]
-    ax.set_title("a  Generate two reachable alternatives", loc="left", weight="bold", fontsize=8)
-    rounded_box(ax, (0.04, 0.39), 0.18, 0.22, "saved\nstate $S$", LIGHT_GRAY, GRAY, fontsize=6.3, weight="bold")
-    rounded_box(ax, (0.42, 0.63), 0.28, 0.20, "recipient future\n$F_A$", LIGHT_BLUE, BLUE, fontsize=5.8)
-    rounded_box(ax, (0.42, 0.17), 0.28, 0.20, "donor future\n$F_B$", LIGHT_ORANGE, ORANGE, fontsize=5.8)
-    rounded_box(ax, (0.79, 0.63), 0.17, 0.20, "action\n$a_A$", "white", BLUE, fontsize=6.3)
-    rounded_box(ax, (0.79, 0.17), 0.17, 0.20, "action\n$a_B$", "white", ORANGE, fontsize=6.3)
-    arrow(ax, (0.22, 0.52), (0.42, 0.73), BLUE)
-    arrow(ax, (0.22, 0.48), (0.42, 0.27), ORANGE)
-    arrow(ax, (0.70, 0.73), (0.79, 0.73), BLUE)
-    arrow(ax, (0.70, 0.27), (0.79, 0.27), ORANGE)
-    ax.text(0.49, 0.93, "Same state and instruction; different native draws", ha="center", va="center", fontsize=6.8)
+    def frame(image, extent, title, color=GRAY):
+        x0, x1, y0, y1 = extent
+        ax.imshow(image, extent=extent, aspect="auto", zorder=1)
+        ax.add_patch(plt.Rectangle((x0, y0), x1 - x0, y1 - y0,
+                                   fill=False, edgecolor=color, linewidth=1.6, zorder=2))
+        ax.text((x0 + x1) / 2, y1 + 0.018, title, ha="center", va="bottom",
+                fontsize=6.8, weight="bold", color=color)
 
-    ax = axes[1]
-    ax.set_title("b  Transplant only the donor future", loc="left", weight="bold", fontsize=8)
-    rounded_box(ax, (0.02, 0.66), 0.28, 0.16, "state $S$", LIGHT_GRAY, GRAY, fontsize=7)
-    rounded_box(ax, (0.02, 0.42), 0.28, 0.16, "noise from\nrun $A$", LIGHT_BLUE, BLUE, fontsize=7)
-    rounded_box(ax, (0.02, 0.18), 0.28, 0.16, "donor future\n$F_B$ only", LIGHT_ORANGE, ORANGE, fontsize=7)
-    rounded_box(ax, (0.43, 0.34), 0.22, 0.30, "same\npolicy", "white", NAVY, weight="bold")
-    rounded_box(ax, (0.77, 0.40), 0.20, 0.18, "action after\nreplacement", LIGHT_ORANGE, ORANGE, fontsize=5.7)
-    for y in (0.74, 0.50, 0.26):
-        arrow(ax, (0.30, y), (0.43, 0.50), GRAY if y != 0.26 else ORANGE)
-    arrow(ax, (0.65, 0.49), (0.77, 0.49), ORANGE)
-    ax.text(0.50, 0.09, "Observation, instruction, and recipient noise stay fixed", ha="center", fontsize=6.3, color="#333333")
+    ax.text(0.01, 0.965, "a  Two normal rollouts from exactly the same state", weight="bold", fontsize=8.3)
+    frame(data["start"], (0.02, 0.19, 0.34, 0.79), "same start", NAVY)
+    ax.text(0.105, 0.305, "same observation\nand instruction", ha="center", va="top", fontsize=6.1)
 
-    ax = axes[2]
-    ax.set_title("c  Score the direction of the change", loc="left", weight="bold", fontsize=8)
-    ax.plot([0.10, 0.88], [0.72, 0.72], color="#444444", linewidth=1.5)
-    ax.scatter([0.10], [0.72], s=34, color=BLUE, zorder=3)
-    ax.scatter([0.88], [0.72], s=34, color=ORANGE, zorder=3)
-    ax.scatter([0.70], [0.72], s=42, marker="D", color=TEAL, zorder=4)
-    ax.text(0.10, 0.61, "recipient $A$\n0", ha="center", va="top", fontsize=7)
-    ax.text(0.88, 0.61, "donor $B$\n1", ha="center", va="top", fontsize=7)
-    ax.text(0.70, 0.83, "action after replacement", ha="center", fontsize=6.5, color=TEAL, weight="bold")
-    ax.text(0.50, 0.25, "Projection = 0: recipient\nProjection = 1: donor", ha="center", va="center", fontsize=7)
-    ax.text(0.50, 0.05, "The donor action is never given to the policy", ha="center", fontsize=6.4, weight="bold")
+    frame(data["future_a"], (0.28, 0.405, 0.60, 0.87), "Future A", BLUE)
+    frame(data["endpoint_a"], (0.47, 0.595, 0.60, 0.87), "Action A executed", BLUE)
+    frame(data["future_b"], (0.28, 0.405, 0.20, 0.47), "Future B", ORANGE)
+    frame(data["endpoint_b"], (0.47, 0.595, 0.20, 0.47), "Action B executed", ORANGE)
+    arrow(ax, (0.19, 0.58), (0.28, 0.735), BLUE)
+    arrow(ax, (0.19, 0.52), (0.28, 0.335), ORANGE)
+    arrow(ax, (0.405, 0.735), (0.47, 0.735), BLUE)
+    arrow(ax, (0.405, 0.335), (0.47, 0.335), ORANGE)
+    ax.text(0.438, 0.765, "+ action A", ha="center", fontsize=5.8, color=BLUE)
+    ax.text(0.438, 0.365, "+ action B", ha="center", fontsize=5.8, color=ORANGE)
+    ax.text(0.435, 0.09, "Agreement within each rollout is only correlation.",
+            ha="center", fontsize=6.7, weight="bold")
 
-    ax = axes[3]
-    ax.set_title("d  Test the future-to-action pathway", loc="left", weight="bold", fontsize=8)
-    rounded_box(ax, (0.05, 0.61), 0.34, 0.18, "donor-future K/V", LIGHT_ORANGE, ORANGE, fontsize=7)
-    rounded_box(ax, (0.61, 0.61), 0.34, 0.18, "donor-directed\naction", LIGHT_ORANGE, ORANGE, fontsize=7)
-    arrow(ax, (0.39, 0.70), (0.61, 0.70), ORANGE)
-    rounded_box(ax, (0.05, 0.23), 0.34, 0.18, "self-future K/V", LIGHT_BLUE, BLUE, fontsize=7)
-    rounded_box(ax, (0.61, 0.23), 0.34, 0.18, "reduced donor\nprojection", LIGHT_BLUE, BLUE, fontsize=7)
-    arrow(ax, (0.39, 0.32), (0.61, 0.32), BLUE)
-    ax.text(0.50, 0.06, "Only future-token keys and values are replaced", ha="center", fontsize=6.4)
+    ax.plot([0.625, 0.625], [0.06, 0.94], color="#C8C8C8", linewidth=0.9)
+    ax.text(0.65, 0.965, "b  Causal test: insert Future B into rollout A", weight="bold", fontsize=8.3)
+    rounded_box(ax, (0.65, 0.72), 0.15, 0.13, "held fixed\nstart, instruction,\nA's noise + solver", LIGHT_GRAY, GRAY,
+                fontsize=5.5, weight="bold")
+    frame(data["future_b"], (0.83, 0.965, 0.70, 0.87), "only Future B changes", ORANGE)
+    arrow(ax, (0.80, 0.785), (0.83, 0.785), ORANGE)
 
-    legend = [
-        Patch(facecolor=LIGHT_BLUE, edgecolor=BLUE, label="Blue = recipient / self information"),
-        Patch(facecolor=LIGHT_ORANGE, edgecolor=ORANGE, label="Orange = donor information"),
-        Line2D([0], [0], marker="D", color="none", markerfacecolor=TEAL,
-               markeredgecolor=TEAL, label="Teal = action after intervention"),
-    ]
-    fig.legend(handles=legend, loc="lower center", bbox_to_anchor=(0.5, -0.01),
-               ncol=3, frameon=False, fontsize=6.5)
-    fig.subplots_adjust(wspace=0.15, hspace=0.34, bottom=0.10)
+    # Project the three observed action chunks into a common two-dimensional
+    # PCA plane. This is a display of the actual 16-step action sequences, not
+    # the metric used for inference.
+    action_a = data["action_a"]
+    action_b = data["action_b"]
+    action_patch = data["action_patch"]
+    all_steps = np.concatenate([action_a, action_b, action_patch], axis=0)
+    centered = all_steps - all_steps.mean(axis=0, keepdims=True)
+    _, _, vt = np.linalg.svd(centered, full_matrices=False)
+    basis = vt[:2].T
+    projected = [(action - all_steps.mean(axis=0, keepdims=True)) @ basis
+                 for action in (action_a, action_b, action_patch)]
+    trajectory_ax = fig.add_axes([0.655, 0.31, 0.19, 0.29])
+    for points, color, label, width in (
+        (projected[0], BLUE, "Action A", 1.2),
+        (projected[1], ORANGE, "Action B", 1.2),
+        (projected[2], TEAL, "after inserting B", 2.0),
+    ):
+        trajectory_ax.plot(points[:, 0], points[:, 1], color=color, linewidth=width, label=label)
+        trajectory_ax.scatter(points[0, 0], points[0, 1], s=9, color=color, zorder=3)
+    trajectory_ax.set_xticks([])
+    trajectory_ax.set_yticks([])
+    trajectory_ax.set_title("actual 16-step actions (PCA)", fontsize=6.2, pad=2)
+    trajectory_ax.spines[["top", "right", "bottom", "left"]].set_visible(True)
+    trajectory_ax.spines[["top", "right", "bottom", "left"]].set_color("#BBBBBB")
+
+    frame(data["endpoint_patch"], (0.865, 0.985, 0.32, 0.59), "new action executed", TEAL)
+    arrow(ax, (0.845, 0.455), (0.865, 0.455), TEAL)
+
+    direction = action_b - action_a
+    denom = float(np.sum(direction * direction))
+    self_projection = float(np.sum((data["action_self"] - action_a) * direction) / denom)
+    patch_projection = float(np.sum((action_patch - action_a) * direction) / denom)
+    ax.plot([0.67, 0.96], [0.17, 0.17], color="#444444", linewidth=1.3)
+    ax.scatter([0.67, 0.96], [0.17, 0.17], s=22, color=[BLUE, ORANGE], zorder=3)
+    scale = lambda value: 0.67 + 0.29 * value
+    ax.scatter([scale(self_projection)], [0.17], marker="|", s=85, color=BLUE, linewidths=2, zorder=4)
+    ax.scatter([scale(patch_projection)], [0.17], marker="D", s=30, color=TEAL, zorder=4)
+    ax.text(0.67, 0.13, "Action A\n0", ha="center", va="top", fontsize=5.8, color=BLUE)
+    ax.text(0.96, 0.13, "Action B\n1", ha="center", va="top", fontsize=5.8, color=ORANGE)
+    ax.text(scale(self_projection), 0.205, "self rerun", ha="center", va="bottom", fontsize=5.6, color=BLUE)
+    ax.text(scale(patch_projection), 0.205, f"new action {patch_projection:.2f}", ha="center", va="bottom",
+            fontsize=5.8, color=TEAL, weight="bold")
+    ax.text(0.815, 0.035, "Action B is never given to the model; it only defines the scoring direction.",
+            ha="center", fontsize=6.2, weight="bold")
     save(fig, "method_overview")
 
 
