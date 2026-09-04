@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="650" viewBox="0 0 1800 650">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#4b5563"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#277da1"/>
+    </marker>
+    <marker id="arrowCoral" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#e76f51"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#7c3aed"/>
+    </marker>
+    <style>
+      .title { font: 700 27px Arial, sans-serif; fill: #111827; }
+      .paneltitle { font: 700 22px Arial, sans-serif; fill: #111827; }
+      .label { font: 600 16px Arial, sans-serif; fill: #1f2937; }
+      .body { font: 15px Arial, sans-serif; fill: #374151; }
+      .small { font: 13px Arial, sans-serif; fill: #4b5563; }
+      .tiny { font: 11px Arial, sans-serif; fill: #4b5563; }
+      .mono { font: 14px Menlo, Consolas, monospace; fill: #1f2937; }
+      .panel { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.5; rx: 16; }
+    </style>
+  </defs>
+
+  <rect width="1800" height="650" fill="#f8fafc"/>
+  <text x="900" y="38" text-anchor="middle" class="title">From sampled futures to a causal future→action pathway</text>
+
+  <!-- Panel A -->
+  <rect x="20" y="58" width="500" height="565" class="panel"/>
+  <circle cx="48" cy="91" r="17" fill="#111827"/>
+  <text x="48" y="97" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="white">A</text>
+  <text x="76" y="98" class="paneltitle">Sample natural alternatives</text>
+
+  <rect x="52" y="210" width="150" height="124" rx="9" fill="#eef2f7" stroke="#64748b"/>
+  <image href="causal_overview_v2/assets/start.png" x="58" y="216" width="138" height="88" preserveAspectRatio="xMidYMid slice"/>
+  <text x="127" y="324" text-anchor="middle" class="label">same state S</text>
+  <text x="127" y="351" text-anchor="middle" class="small">observation + instruction</text>
+
+  <path d="M205 260 C245 260, 245 168, 280 168" fill="none" stroke="#277da1" stroke-width="3" marker-end="url(#arrowBlue)"/>
+  <path d="M205 284 C245 284, 245 411, 280 411" fill="none" stroke="#e76f51" stroke-width="3" marker-end="url(#arrowCoral)"/>
+
+  <rect x="285" y="115" width="195" height="130" rx="9" fill="#eff8fb" stroke="#277da1" stroke-width="2"/>
+  <image href="causal_overview_v2/assets/future_a.png" x="292" y="122" width="181" height="81" preserveAspectRatio="xMidYMid slice"/>
+  <text x="382" y="225" text-anchor="middle" class="label" fill="#277da1">future F<tspan baseline-shift="sub" font-size="11">A</tspan> + action a<tspan baseline-shift="sub" font-size="11">A</tspan></text>
+
+  <rect x="285" y="357" width="195" height="130" rx="9" fill="#fff3ef" stroke="#e76f51" stroke-width="2"/>
+  <image href="causal_overview_v2/assets/future_b.png" x="292" y="364" width="181" height="81" preserveAspectRatio="xMidYMid slice"/>
+  <text x="382" y="467" text-anchor="middle" class="label" fill="#e76f51">future F<tspan baseline-shift="sub" font-size="11">B</tspan> + action a<tspan baseline-shift="sub" font-size="11">B</tspan></text>
+
+  <rect x="73" y="520" width="394" height="65" rx="10" fill="#f1f5f9"/>
+  <text x="270" y="546" text-anchor="middle" class="label">16 seeded joint video–action samples</text>
+  <text x="270" y="569" text-anchor="middle" class="small">freeze an action-divergent pair before intervention</text>
+
+  <!-- Panel B -->
+  <rect x="535" y="58" width="720" height="565" class="panel"/>
+  <circle cx="563" cy="91" r="17" fill="#111827"/>
+  <text x="563" y="97" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="white">B</text>
+  <text x="591" y="98" class="paneltitle">Patch the future→action attention route</text>
+  <text x="565" y="128" class="small">Zoom into one generator layer; the same operation is repeated throughout the model.</text>
+
+  <text x="565" y="170" class="label">Donor-future run</text>
+  <rect x="565" y="184" width="72" height="48" rx="7" fill="#e5e7eb" stroke="#9ca3af"/>
+  <text x="601" y="205" text-anchor="middle" class="tiny">text</text><text x="601" y="220" text-anchor="middle" class="tiny">tokens</text>
+  <rect x="644" y="184" width="82" height="48" rx="7" fill="#dbeafe" stroke="#3b82f6"/>
+  <text x="685" y="205" text-anchor="middle" class="tiny">current</text><text x="685" y="220" text-anchor="middle" class="tiny">video v₀</text>
+  <rect x="733" y="176" width="212" height="64" rx="8" fill="#fff0e8" stroke="#e76f51" stroke-width="2.5"/>
+  <text x="839" y="201" text-anchor="middle" class="label" fill="#e76f51">future-video tokens F<tspan baseline-shift="sub" font-size="11">B</tspan></text>
+  <text x="839" y="222" text-anchor="middle" class="tiny">latent frames 1–8</text>
+  <rect x="952" y="184" width="144" height="48" rx="7" fill="#e8f5e9" stroke="#5b8e55" stroke-dasharray="6 4"/>
+  <text x="1024" y="205" text-anchor="middle" class="tiny">noisy action</text><text x="1024" y="220" text-anchor="middle" class="tiny">tokens z<tspan baseline-shift="sub">A</tspan></text>
+  <rect x="1103" y="184" width="116" height="48" rx="7" fill="#fafafa" stroke="#9ca3af"/>
+  <text x="1161" y="205" text-anchor="middle" class="tiny">other K/V</text><text x="1161" y="220" text-anchor="middle" class="tiny">🔒 unchanged</text>
+
+  <text x="575" y="286" class="label" fill="#277da1">Self-future cache</text>
+  <rect x="575" y="300" width="112" height="42" rx="7" fill="#eff8fb" stroke="#277da1" stroke-width="2"/>
+  <text x="631" y="326" text-anchor="middle" class="mono">K<tspan baseline-shift="sub" font-size="10">F,A</tspan></text>
+  <rect x="575" y="349" width="112" height="42" rx="7" fill="#eff8fb" stroke="#277da1" stroke-width="2"/>
+  <text x="631" y="375" text-anchor="middle" class="mono">V<tspan baseline-shift="sub" font-size="10">F,A</tspan></text>
+  <path d="M690 345 C725 345, 718 312, 752 312" fill="none" stroke="#7c3aed" stroke-width="4" marker-end="url(#arrowPurple)"/>
+  <text x="719" y="366" class="tiny" fill="#7c3aed">replace</text>
+
+  <!-- attention matrix -->
+  <text x="782" y="276" class="label">Joint attention at layer ℓ</text>
+  <text x="834" y="306" text-anchor="middle" class="tiny">KEYS / VALUES</text>
+  <text x="739" y="400" text-anchor="middle" class="tiny" transform="rotate(-90 739 400)">QUERIES</text>
+  <rect x="760" y="320" width="304" height="178" fill="white" stroke="#6b7280" stroke-width="1.5"/>
+  <line x1="836" y1="320" x2="836" y2="498" stroke="#d1d5db"/><line x1="912" y1="320" x2="912" y2="498" stroke="#d1d5db"/><line x1="988" y1="320" x2="988" y2="498" stroke="#d1d5db"/>
+  <line x1="760" y1="379" x2="1064" y2="379" stroke="#d1d5db"/><line x1="760" y1="438" x2="1064" y2="438" stroke="#d1d5db"/>
+  <rect x="912" y="438" width="76" height="60" fill="#ede9fe" stroke="#7c3aed" stroke-width="3"/>
+  <text x="798" y="311" text-anchor="middle" class="tiny">text</text>
+  <text x="874" y="311" text-anchor="middle" class="tiny">current</text>
+  <text x="950" y="311" text-anchor="middle" class="tiny" fill="#e76f51">future</text>
+  <text x="1026" y="311" text-anchor="middle" class="tiny">action</text>
+  <text x="751" y="354" text-anchor="end" class="tiny">current Q</text>
+  <text x="751" y="414" text-anchor="end" class="tiny">future Q</text>
+  <text x="751" y="474" text-anchor="end" class="tiny" fill="#5b8e55">action Q</text>
+  <text x="950" y="465" text-anchor="middle" class="label" fill="#7c3aed">PATCH</text>
+  <text x="950" y="484" text-anchor="middle" class="tiny" fill="#7c3aed">K,V only</text>
+
+  <g transform="translate(1094 308)">
+    <rect x="24" y="0" width="102" height="44" rx="6" fill="#f3f4f6" stroke="#9ca3af"/>
+    <rect x="18" y="7" width="102" height="44" rx="6" fill="#f3f4f6" stroke="#9ca3af"/>
+    <rect x="12" y="14" width="102" height="44" rx="6" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+    <text x="63" y="42" text-anchor="middle" class="label">×36 layers</text>
+    <path d="M63 69 L63 105" stroke="#4b5563" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="0" y="112" width="138" height="60" rx="8" fill="#f1f5f9"/>
+    <text x="69" y="136" text-anchor="middle" class="small">4 denoise calls</text>
+    <text x="69" y="157" text-anchor="middle" class="small">× CFG = 8 forwards</text>
+  </g>
+
+  <rect x="568" y="533" width="650" height="61" rx="10" fill="#f5f3ff" stroke="#c4b5fd"/>
+  <text x="893" y="557" text-anchor="middle" class="label" fill="#6d28d9">Question: does donor-specific influence survive without donor future K/V?</text>
+  <text x="893" y="580" text-anchor="middle" class="small">positions, token count, donor clamp, current observation, text, and action noise stay fixed</text>
+
+  <!-- Panel C -->
+  <rect x="1270" y="58" width="510" height="565" class="panel"/>
+  <circle cx="1298" cy="91" r="17" fill="#111827"/>
+  <text x="1298" y="97" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="white">C</text>
+  <text x="1326" y="98" class="paneltitle">Read out causal steering</text>
+
+  <rect x="1302" y="136" width="144" height="112" rx="9" fill="#fff3ef" stroke="#e76f51" stroke-width="2"/>
+  <image href="causal_overview_v2/assets/future_b.png" x="1309" y="143" width="130" height="72" preserveAspectRatio="xMidYMid slice"/>
+  <text x="1374" y="235" text-anchor="middle" class="small" fill="#e76f51">insert F<tspan baseline-shift="sub">B</tspan> into A</text>
+  <path d="M1449 193 C1480 193, 1482 208, 1510 214" fill="none" stroke="#e76f51" stroke-width="3" marker-end="url(#arrowCoral)"/>
+
+  <rect x="1511" y="130" width="228" height="242" rx="9" fill="#fbfdff" stroke="#cbd5e1"/>
+  <text x="1625" y="155" text-anchor="middle" class="small">action / endpoint space</text>
+  <circle cx="1600" cy="328" r="7" fill="#111827"/><text x="1590" y="351" class="tiny">same start S</text>
+  <path d="M1598 326 C1567 297, 1549 254, 1540 205" fill="none" stroke="#277da1" stroke-width="4" marker-end="url(#arrowBlue)"/>
+  <circle cx="1539" cy="201" r="7" fill="#277da1"/><text x="1527" y="190" class="small" fill="#277da1">A</text>
+  <path d="M1602 326 C1641 294, 1682 249, 1709 194" fill="none" stroke="#e76f51" stroke-width="4" marker-end="url(#arrowCoral)"/>
+  <circle cx="1710" cy="190" r="7" fill="#e76f51"/><text x="1718" y="188" class="small" fill="#e76f51">B</text>
+  <path d="M1602 326 C1640 299, 1676 260, 1697 213" fill="none" stroke="#7c3aed" stroke-width="5" stroke-dasharray="8 5" marker-end="url(#arrowPurple)"/>
+  <circle cx="1697" cy="210" r="7" fill="#7c3aed"/>
+  <text x="1660" y="235" class="small" fill="#7c3aed">A | F<tspan baseline-shift="sub">B</tspan></text>
+
+  <text x="1303" y="407" class="label">Donor-directed projection</text>
+  <text x="1303" y="442" class="small">self future</text>
+  <rect x="1408" y="426" width="4" height="20" fill="#277da1"/>
+  <text x="1422" y="442" class="mono">0.00</text>
+  <text x="1303" y="480" class="small">donor future</text>
+  <rect x="1408" y="464" width="268" height="20" rx="4" fill="#e76f51"/>
+  <text x="1687" y="480" class="mono">0.99</text>
+  <text x="1303" y="518" class="small">+ self K/V</text>
+  <rect x="1408" y="502" width="32" height="20" rx="4" fill="#7c3aed"/>
+  <text x="1451" y="518" class="mono">0.12</text>
+
+  <rect x="1302" y="548" width="436" height="47" rx="10" fill="#ecfdf5" stroke="#86efac"/>
+  <text x="1520" y="578" text-anchor="middle" class="label" fill="#166534">future K/V carries 83–88% of donor steering</text>
+</svg>

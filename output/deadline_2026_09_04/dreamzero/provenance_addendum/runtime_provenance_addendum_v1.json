@@ -1,0 +1,93 @@
+{
+  "schema": "dreamzero-runtime-provenance-addendum-v1",
+  "created_utc": "2026-09-04T17:33:48Z",
+  "purpose": "Correct the server-log binding in the immutable runtime receipt without modifying that receipt, and record a postrun environment snapshot.",
+  "supersedes": {
+    "artifact": "../provenance/final_runtime_receipt.json",
+    "sha256": "57b89a7a98b3326812fa6652fff1f000f9bbe6940cd82a4e1a72b7983eaa06e5",
+    "scope": "runtime.server_log_post_call_snapshot and runtime.server_log_prefix_at_receipt only"
+  },
+  "correction": {
+    "incorrect_source_path_in_raw_receipt": "/home/ubuntu/if_external/logs/dreamzero_server.log",
+    "incorrect_snapshot_sha256": "2dcba279f149e583045af6b25c50d5abc45516b3f0c8b695632d664d89e59a6a",
+    "incorrect_snapshot_size_bytes": 17663,
+    "diagnosis": "The referenced file is the terminal log of a failed torchrun launch begun at 2026-09-04T08:33:15Z; it ends in ChildFailedError and is not stdout/stderr for the evaluated server.",
+    "actual_source_path": "/home/ubuntu/if_external/logs/dreamzero_intervention_server_20260904T090417Z.log",
+    "actual_local_snapshot": "actual_intervention_server_snapshot.log",
+    "actual_snapshot_sha256": "a01f759f9ef18022df7aeb4d543eac5626b08a15ffc80389533538ed24f4c07e",
+    "actual_snapshot_size_bytes": 1199124,
+    "actual_source_mtime_utc": "2026-09-04T10:39:25.484243149Z",
+    "snapshot_scope": "Complete live-server log through the final postanalysis representative-video request; it was copied after all frozen result grids and analyses were complete. It is not asserted to be the exact log prefix at the instant the core grid finished."
+  },
+  "live_process_binding_observed_utc": "2026-09-04T17:31:36Z",
+  "live_processes": [
+    {
+      "pid": 69619,
+      "role": "torchrun parent",
+      "start_time_utc": "2026-09-04T09:04:17Z",
+      "cwd": "/home/ubuntu/if_external/dreamzero",
+      "executable": "/usr/bin/python3.12",
+      "command": "/home/ubuntu/if_external/envs/dreamzero/bin/python /home/ubuntu/if_external/envs/dreamzero/bin/torchrun --standalone --nproc_per_node=2 socket_test_optimized_AR.py --port 5000 --model-path /home/ubuntu/if_external/checkpoints/DreamZero-DROID",
+      "stdout_target": "/home/ubuntu/if_external/logs/dreamzero_intervention_server_20260904T090417Z.log",
+      "stderr_target": "/home/ubuntu/if_external/logs/dreamzero_intervention_server_20260904T090417Z.log"
+    },
+    {
+      "pid": 69674,
+      "role": "rank-0 worker",
+      "start_time_utc": "2026-09-04T09:04:18Z",
+      "cwd": "/home/ubuntu/if_external/dreamzero",
+      "executable": "/usr/bin/python3.12",
+      "command": "/home/ubuntu/if_external/envs/dreamzero/bin/python -u socket_test_optimized_AR.py --port 5000 --model-path /home/ubuntu/if_external/checkpoints/DreamZero-DROID",
+      "stdout_target": "/home/ubuntu/if_external/logs/dreamzero_intervention_server_20260904T090417Z.log",
+      "stderr_target": "/home/ubuntu/if_external/logs/dreamzero_intervention_server_20260904T090417Z.log"
+    },
+    {
+      "pid": 69675,
+      "role": "rank-1 worker",
+      "start_time_utc": "2026-09-04T09:04:18Z",
+      "cwd": "/home/ubuntu/if_external/dreamzero",
+      "executable": "/usr/bin/python3.12",
+      "command": "/home/ubuntu/if_external/envs/dreamzero/bin/python -u socket_test_optimized_AR.py --port 5000 --model-path /home/ubuntu/if_external/checkpoints/DreamZero-DROID",
+      "stdout_target": "/home/ubuntu/if_external/logs/dreamzero_intervention_server_20260904T090417Z.log",
+      "stderr_target": "/home/ubuntu/if_external/logs/dreamzero_intervention_server_20260904T090417Z.log"
+    }
+  ],
+  "postrun_environment_snapshot": {
+    "artifact": "postrun_python_distributions.txt",
+    "sha256": "4301a6e9b6805985decdda1b47445b03f949c24a8465c84df3b9664e90279180",
+    "distribution_count": 258,
+    "capture_method": "Python importlib.metadata from /home/ubuntu/if_external/envs/dreamzero/bin/python",
+    "limitation": "Captured after the experiment. It documents the still-running environment but is not a launch-time lockfile or container digest."
+  },
+  "scientific_artifact_bindings": {
+    "final_core_analysis_inventory": {
+      "artifact": "../core_analysis_final/artifact_inventory.json",
+      "sha256": "4474b1a7f2d9d2c7bf4682d4d94910782d55e0b26e3ec693b235902e1c500327"
+    },
+    "final_control_analysis_inventory": {
+      "artifact": "../control_analysis/artifact_inventory.json",
+      "sha256": "dbc56bd5e282b7c7cd30876206bf15b6a800d3f4e4912af1cf60a5f8b0f7c663"
+    },
+    "checkpoint_content_manifest": {
+      "artifact": "../provenance/checkpoint_content_manifest.json",
+      "sha256": "d4aed4d63209fa9625fcfe80561387a756dcbad1adf43e7fb3473edf234aae9c"
+    },
+    "checkpoint_content_manifest_audit": {
+      "artifact": "../provenance/checkpoint_content_manifest_audit.json",
+      "sha256": "48c0e4c8254fe28d6e073d503fcf45b0223ffb8e89bcc4619c85bd3de6ead949"
+    },
+    "representative_selection_inventory": {
+      "artifact": "../representative/artifact_inventory.json",
+      "sha256": "6bb7111c65a57ea01cc4b03860b45a63d223eef26215e7763ac6e6ae2c14829b"
+    },
+    "representative_media_receipt": {
+      "artifact": "../representative_media/receipt.json",
+      "sha256": "b51849ea718b25bb1474e1b7c8c2040bac1c6af9673674db3ea10348ed71c2a7"
+    }
+  },
+  "control_scope_clarification": {
+    "proved": "Patched-server mode-off versus record is bitwise exact; 30/30 diagonal self-replays are exact; recipient action-noise traces remain fixed; the intervention audit shows no writes to action coordinates.",
+    "not_proved": "There is no saved action-array oracle from a clean, unmodified official-HEAD server. Therefore this package does not claim independent bitwise upstream-server parity analogous to the LingBot audit."
+  },
+  "impact": "This correction changes the runtime-log provenance description only. It does not alter raw action arrays, future traces, manifests, control outcomes, analyses, or reported numerical results."
+}

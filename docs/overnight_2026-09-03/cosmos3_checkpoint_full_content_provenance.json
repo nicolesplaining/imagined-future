@@ -1,0 +1,13 @@
+{
+  "checkpoint_content_manifest_audit_path": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/cosmos3_checkpoint_provenance/Cosmos3-Nano-Policy-DROID.content-manifest.audit.json",
+  "checkpoint_content_manifest_audit_sha256": "f82aac8b14fff6030cefdd23a35adece6642ccfbf0ac25bcfcaf386baf119972",
+  "checkpoint_content_manifest_file_count": 87,
+  "checkpoint_content_manifest_hashing_elapsed_seconds": 32.87411079899903,
+  "checkpoint_content_manifest_path": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/cosmos3_checkpoint_provenance/Cosmos3-Nano-Policy-DROID.content-manifest.json",
+  "checkpoint_content_manifest_sha256": "b6cbee5522104145f71cfcc74f5049f61e7de3640b88f14831909c7f473c2660",
+  "checkpoint_content_manifest_total_size_bytes": 32937437706,
+  "checkpoint_identity_kind": "sha256_of_canonical_full_file_content_manifest",
+  "checkpoint_identity_sha256": "b6cbee5522104145f71cfcc74f5049f61e7de3640b88f14831909c7f473c2660",
+  "checkpoint_root": "/lambda/nfs/imagined-future/checkpoints/Cosmos3-Nano-Policy-DROID",
+  "status": "verified_pre_outcome"
+}

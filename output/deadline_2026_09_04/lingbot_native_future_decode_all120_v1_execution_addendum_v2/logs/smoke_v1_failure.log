@@ -1,0 +1,20 @@
+The config attributes {'clip_output': False} were passed to AutoencoderKLWan, but are not expected and will be ignored. Please verify your config.json configuration file.
+Traceback (most recent call last):
+  File "/home/ubuntu/if_external/tools/decode_lingbot_all_native_futures.py", line 418, in <module>
+    main()
+  File "/home/ubuntu/if_external/tools/decode_lingbot_all_native_futures.py", line 278, in main
+    decoded = VA_Server.decode_one_video(holder, future.to(device), "np")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/if_external/lingbot-va/wan_va/wan_va_server.py", line 638, in decode_one_video
+    video = self.video_processor.postprocess_video(video, output_type=output_type)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/diffusers/video_processor.py", line 104, in postprocess_video
+    batch_output = self.postprocess(batch_vid, output_type)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/diffusers/image_processor.py", line 786, in postprocess
+    image = self.pt_to_numpy(image)
+            ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/diffusers/image_processor.py", line 209, in pt_to_numpy
+    images = images.cpu().permute(0, 2, 3, 1).float().numpy()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Can't call numpy() on Tensor that requires grad. Use tensor.detach().numpy() instead.

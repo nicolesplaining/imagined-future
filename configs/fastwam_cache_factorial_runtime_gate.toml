@@ -1,0 +1,12 @@
+study_name = "fastwam_optional_idm_future_cache_factorial_runtime_gate_excluded"
+base_manifest_id = "fastwam-dd8450f367664a53"
+base_manifest_sha256 = "c872040226b259a8dd6d64b8966818a0232cdf4965dd3c24709df475469a92e7"
+
+[design]
+factorial = "recipient-versus-donor future latent x recipient-versus-donor video K/V cache"
+scope = "one excluded smoke state selected by manifest index zero before outcomes"
+execution_shard = "shard index 0 of 8, yielding exactly one state and 48 arms"
+required_runtime_gates = ["48 finite arms", "native/stored replay <= 1e-6", "base replay <= 1e-6", "recipient-cache future-swap invariance <= 1e-6", "donor-cache future-swap invariance <= 1e-6"]
+implementation_runner_sha256 = "c3de7bae85d01411421fd5854fa0181d26621549774955d5c1b076923dcda357"
+scientific_use = "excluded engineering gate; never enter powered estimates"
+

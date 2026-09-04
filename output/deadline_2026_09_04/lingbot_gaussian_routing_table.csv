@@ -1,0 +1,4 @@
+control,offdiagonal_cells,correct_count,rate,ci95_low,ci95_high,one_sided_permutation_p_above_chance,projection,distance_reduction,interpretation
+gaussian_source_identity,360,42,0.116667,0.094444,0.138889,1.000000,0.167069,-0.308741,branch_statistic_matched_gaussian_sources_did_not_recover_gaussian_source_identity_above_chance
+native_donor_alignment,360,78,0.216667,0.191667,0.238889,0.999950,-0.097140,-0.013523,gaussian_sources_did_not_recover_native_donor_identity_above_chance_or_positive_native_donor_steering
+native_recipient_retention,360,126,0.350000,0.291667,0.416667,,,,gaussian_sources_are_not_an_inert_recipient_preserving_null

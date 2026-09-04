@@ -1,0 +1,79 @@
+{
+  "artifact_count": 12,
+  "artifacts": [
+    {
+      "mode": 292,
+      "relative_path": "audit_dreamzero_upstream_native_parity.py",
+      "sha256": "1c4f510ca8a2bbb8766bc34edf63fab6d8393f4f5f036898277b2ad368c8e2c1",
+      "size_bytes": 5484
+    },
+    {
+      "mode": 292,
+      "relative_path": "clean_upstream_server.log",
+      "sha256": "c0f9a09c3413d9ac9822adbd630989b444558805652ff20a34e290d16f2e6a0c",
+      "size_bytes": 119452
+    },
+    {
+      "mode": 292,
+      "relative_path": "execution_receipt.json",
+      "sha256": "f9f6294d582486d97c8a2def87c63d770985fa022016660b744df54489db9c11",
+      "size_bytes": 1963
+    },
+    {
+      "mode": 292,
+      "relative_path": "patched_actions.npz",
+      "sha256": "de6188264a65ee2d1763b03fc2a88d8bddcf3705c799528be9e6e904a380c754",
+      "size_bytes": 888
+    },
+    {
+      "mode": 292,
+      "relative_path": "patched_actions.npz.sha256",
+      "sha256": "35e2c4ff66c90a6792534c447ca155327389759b50925f7248fd6c49cb2ee45c",
+      "size_bytes": 86
+    },
+    {
+      "mode": 292,
+      "relative_path": "patched_mode_off_server.log",
+      "sha256": "49d283d56f3a8103eeaae6521e942c0e779aac584a46e3e7c92894a2a5ab8fc7",
+      "size_bytes": 118093
+    },
+    {
+      "mode": 292,
+      "relative_path": "patched_receipt.json",
+      "sha256": "eedd5ec9c016aedf075daae4e8e42ff15271285c3e063a143a81d1b1fbcb5eca",
+      "size_bytes": 1693
+    },
+    {
+      "mode": 292,
+      "relative_path": "patched_receipt.json.sha256",
+      "sha256": "a9caa00feab82973c7846aa8a5f4e83408185ca549f11d37ff99364eab08a5ef",
+      "size_bytes": 87
+    },
+    {
+      "mode": 292,
+      "relative_path": "upstream_actions.npz",
+      "sha256": "de6188264a65ee2d1763b03fc2a88d8bddcf3705c799528be9e6e904a380c754",
+      "size_bytes": 888
+    },
+    {
+      "mode": 292,
+      "relative_path": "upstream_actions.npz.sha256",
+      "sha256": "889432b9cc364f2b62779cad705045347b24b2a73cee53077390a1e31f2fdbce",
+      "size_bytes": 87
+    },
+    {
+      "mode": 292,
+      "relative_path": "upstream_receipt.json",
+      "sha256": "6f537ed34395a379a8286dda69b945744c58affa1441888cb3d024d25769da50",
+      "size_bytes": 1034
+    },
+    {
+      "mode": 292,
+      "relative_path": "upstream_receipt.json.sha256",
+      "sha256": "1067b1bd9799d52e77d0b84de90ad8326f43650e4f425b50f3af9c16812c1196",
+      "size_bytes": 88
+    }
+  ],
+  "schema": "dreamzero-upstream-native-parity-artifact-index-v1",
+  "status": "complete"
+}

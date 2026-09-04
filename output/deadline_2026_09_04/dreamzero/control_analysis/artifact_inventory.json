@@ -1,0 +1,504 @@
+{
+  "analyzer_sha256": "bcd3dbc5687f4e3bba941d99792f5b42b1f76b6075c16981b1d852fb7ff5ce57",
+  "artifacts": [
+    {
+      "relative_path": "dose_alpha_state_metrics.csv",
+      "sha256": "99bde8b0e6b3481b448e43d266a9e59da9ec566f25523ed020087443433900e9",
+      "size_bytes": 9606
+    },
+    {
+      "relative_path": "dose_alpha_summary.csv",
+      "sha256": "39b70d479289e14a289a3e938ff54fef79f3acea80be5b7e25db9246e06a67dd",
+      "size_bytes": 351
+    },
+    {
+      "relative_path": "dose_response.pdf",
+      "sha256": "4d80418858441fa2f263ce61780254a38433b11023f95b85c27ab520ca5f6c18",
+      "size_bytes": 10218
+    },
+    {
+      "relative_path": "dose_response.png",
+      "sha256": "01b1f9f6ff0f9ffaaf00d44979cc1386736e353ff61313f673b8eef70f283cee",
+      "size_bytes": 45206
+    },
+    {
+      "relative_path": "dose_state_metrics.csv",
+      "sha256": "10828ba0d5c51eb60b5c6258a8c3a95916c756a8216f4dbb178af56677fa0df2",
+      "size_bytes": 7367
+    },
+    {
+      "relative_path": "gaussian_state_metrics.csv",
+      "sha256": "8e541f03c075472708a6144679d61418ceb96a1de95723a0bd8829f5ae8428d4",
+      "size_bytes": 6738
+    },
+    {
+      "relative_path": "results.md",
+      "sha256": "6ba7131ddc4b2c3bdae90cdaae1f8e9da2fc835d00b1678671a41a1fe053d9ea",
+      "size_bytes": 386
+    },
+    {
+      "relative_path": "source_artifact_inventory.csv",
+      "sha256": "c5c7e799e1b7cc0e81b29ff70333ff4b0ef71f8b0738dc4f8c306f712a8f5ca2",
+      "size_bytes": 8941
+    },
+    {
+      "relative_path": "summary.json",
+      "sha256": "e00616ebc2c910c14a71716cc75a4ad0b29da479ba11bf836cf77ba2dff8f7b1",
+      "size_bytes": 4864
+    }
+  ],
+  "manifest_file_sha256": "d1ffc3111a10bed9ac8fdd17c631dc3a5d8eb3128ac4fa250d9398bcede12cfc",
+  "schema": "dreamzero-control-analysis-artifact-inventory-v1",
+  "sources": [
+    {
+      "core_actions_sha256": "0b4de20006869cff9efaa4517cc1e7845cb8b1355ebc82ce9cd2077d1f914ea1",
+      "core_result_sha256": "3bca0dbad3ca175c8aa48c2eba034e66cf9cd2c611050e6cb8091afbbcf3527f",
+      "dose": {
+        "actions_sha256": "8670c3d0ff291492f1fce5e29c6fb3ae8b02a4a5b72ad1b1fcc92cdaa98ebbe1",
+        "result_sha256": "397924293b270a4e9f9417cf63922c52cbbe4e621f29d2873f3fcf9c553bb3b5",
+        "trace_manifest_sha256": "4fa62b1745ab17a733b3b6cd776c5313e19d9e76777bd3cca4cff88bb6c954fb"
+      },
+      "gaussian": {
+        "actions_sha256": "d132759704eb76fa8cd23c75b400621cb133198a9a31f462c8ded8174cf72593",
+        "result_sha256": "a93962b992f30776daf7de091a661274aa93fe42c2828fd0862216a2431630d1",
+        "trace_sha256": "8edf888dbadaf8d0509e3b8d751a16861e7eab0b3ba9eb3f7576fe35d4893d73"
+      },
+      "state_id": "droid_episode_041320_frame_000077"
+    },
+    {
+      "core_actions_sha256": "54bf53d9d7b481e6b80ec4ee749e220d0583a3f476b09e167e461ff0f6a15e03",
+      "core_result_sha256": "889a279cfd78ffe84378e7df3696cfeb2eea5f4978c56704044cc5949872181d",
+      "dose": {
+        "actions_sha256": "68c18bb8a1da62b1a89349b7d8294c5ca67036ec06170f004be7e9ca087e92ef",
+        "result_sha256": "3524c26536d2bb6e1b79af3ef5f814f56d1641c31d9b1a5e56fa47091e92d35a",
+        "trace_manifest_sha256": "9f3992b1fdf078daae529338bfef4e43730169198869e91a0f2fff0ba36cf95a"
+      },
+      "gaussian": {
+        "actions_sha256": "862390392609e2aac8fef99a6cab579e33478ac01630fd681f9a6238b8545735",
+        "result_sha256": "9304041704949abb4b943e1297057b777a847b019fe9a53d4561aac3ff84e364",
+        "trace_sha256": "733f84b696603aacc1a89a609795d4c7532c3de55f0db106a6bf51977741a022"
+      },
+      "state_id": "droid_episode_039259_frame_000062"
+    },
+    {
+      "core_actions_sha256": "9689b6f3f2c2cc71ffc059f8df4b6109f019a81544e5aed94fa888da008e91b5",
+      "core_result_sha256": "19bebe7b069faad61614ff5b2d19b066ec15b850d2a8919fdbac1544ff762c64",
+      "dose": {
+        "actions_sha256": "ebad690deeb75812239ecca09153c2f7c0d1b4ce473025ae24bac789a2b396ea",
+        "result_sha256": "0d2ef0677a26ad7bc08fdba1ffc87bdf2007df2ea935f9da2df9d35636dd0b96",
+        "trace_manifest_sha256": "c89f09b0b83749411a68b1d4dfb23632a11412a1701166b78d7ad2a708fe9ff1"
+      },
+      "gaussian": {
+        "actions_sha256": "f45c6f19b6a20546c24822753cc4c48f7d5f69c2ca6a1659b9a43dc90b565467",
+        "result_sha256": "d6044e312bead416ec56aa28d69e6ff2e816fe1f9cbf23c17176762d34679a4a",
+        "trace_sha256": "c2f6b3711c6cda3bda8229f785ad86336210954b0f8f98f0457ca8dfb971ae53"
+      },
+      "state_id": "droid_episode_006474_frame_000068"
+    },
+    {
+      "core_actions_sha256": "2ad3f19d79ebbe7821bd21a08a864b3ac119c41fda95fa81714673c421882b6d",
+      "core_result_sha256": "7b18cb756e5fe8da4bb8eb8d7c21e703f129833f9384f2cd545e2350df8ba248",
+      "dose": {
+        "actions_sha256": "b53c14322a90643926f449153a6927f06f1addde2a1447dcf0706209d9d61a7d",
+        "result_sha256": "9506f75a28c00124c3c75bbc74da105e6c52006b99d365ee9a12b7654740911b",
+        "trace_manifest_sha256": "032cbd2d2174e768842f4f46977cff4cee3ee5c0189220791b48e081b4b1bc5a"
+      },
+      "gaussian": {
+        "actions_sha256": "ec0975c275a5620c2e84efe7ff6a3a1fd8af72a79456104076f1add01132161e",
+        "result_sha256": "353c24b28d3311a7ad658d41c343559ee1e51f05a142c9ca3846e1b1e5c171fb",
+        "trace_sha256": "83a48bb62f76ec214b66d25584da7c7a5fdf95f3f39cacc82b86195700e25576"
+      },
+      "state_id": "droid_episode_016591_frame_000130"
+    },
+    {
+      "core_actions_sha256": "9263e3aad94d055be488ee92ebcbf7e6752fc3a871851e54627edad60c2a3f8a",
+      "core_result_sha256": "8c052f22c5fa22b80e32728575ccb0296d8f8bea509e62aea426c86c222b4474",
+      "dose": {
+        "actions_sha256": "2764bead954f5fa3dd7a646764193e866c5c008b23b7180b671f3d542c98e7f8",
+        "result_sha256": "93b34465b700673cc148114dcbf8a69dc857b9bbe46ea3f733f806153d7191d0",
+        "trace_manifest_sha256": "6b7027cfecfffbf63ca9dbcd865111e086be06699c7c8d9dbb7bdf9319a5357f"
+      },
+      "gaussian": {
+        "actions_sha256": "b56b10f926b2dc43127fef5c3360d8cb49f6a50398e603357a2226a6429da500",
+        "result_sha256": "e90eae9b5594168cedde671611fe65f4ca904f642cbee45b57e664f118c061ef",
+        "trace_sha256": "fdf7e9c2a48df68abb92fc38055558d46c511d64b9cfda6e47f05c3e57d55cc9"
+      },
+      "state_id": "droid_episode_036175_frame_000107"
+    },
+    {
+      "core_actions_sha256": "0c774f1678ade6284cd3a1775cfc3f2f8226ad36a0cd0205c62eaf77b78a020a",
+      "core_result_sha256": "6d17b4543ee951706f2f5a8f37338bffe125fd3d8e9afd44c9e54fc833f52018",
+      "dose": {
+        "actions_sha256": "3ee40b54953518bef384b672d179ed93cab9a987eba2837fd9fc717c8df7b30a",
+        "result_sha256": "2e85a0135fd87a44929948e64298213cea4901421204d78001b8e0b53f718528",
+        "trace_manifest_sha256": "fd894bf2615c468678c44e015142723ecae23976ba7e9c34068534d7f92bf2b3"
+      },
+      "gaussian": {
+        "actions_sha256": "02fc1e73592ad7efa61f500124a5282f9eeaae519af3d225baae3b104a7be1c1",
+        "result_sha256": "9838b6bdee738b9577fda8c6c94c031e0a3ca2dba665c9a3766eb0f5fdef5a56",
+        "trace_sha256": "a2275c361a9f5df5cddf36e2858801470a01f50a33eb6bdb19e6d858f0b01e9b"
+      },
+      "state_id": "droid_episode_011699_frame_000330"
+    },
+    {
+      "core_actions_sha256": "1a1b6c59802e944813d8246044301b3c2f2e852b12ed736d0d4275803afce329",
+      "core_result_sha256": "b931b725b9a83493de2a4270e7bb728da9287b87f7a0420846d86491816e6970",
+      "dose": {
+        "actions_sha256": "7fe2d8e7cbd068f33967469b23098b80b5c5bd9e4d139422e2f6fb8999fc01d3",
+        "result_sha256": "c25ad0dbfd476457ff9dfb9a40aa7b15c33bd5117d0fa0c16f851ae96044d6d5",
+        "trace_manifest_sha256": "5ddd47fdfe13c39d8b4a7025b0421f295a02e142dbdf20282890f78ee97cf88f"
+      },
+      "gaussian": {
+        "actions_sha256": "2f23a77c902cd74b07a8fddc4001d174fb72f3d75e5a60d8a19fe53c838f75eb",
+        "result_sha256": "f1492bd078e1971752a335e4bc09d3d8ff5be4e47ad1155eeb4e14aae15b4770",
+        "trace_sha256": "455947fb3cebe05e83b78016e2006c12136d065f8f3e9fd13198c488a3c36963"
+      },
+      "state_id": "droid_episode_034636_frame_000261"
+    },
+    {
+      "core_actions_sha256": "dd93c8b53915012a5a6c1cba7bbc2070870910d4e6195fb23ce161f47cdb2d59",
+      "core_result_sha256": "48f2b0e0e13d4fd60e2e2621cec3afb8a12d22aa130b23d60256caf1ce64866c",
+      "dose": {
+        "actions_sha256": "e183ee91ae654735765534d553fa993dedefaa436a09c21c1d24038118fa2c7d",
+        "result_sha256": "f8c1c9ecbea2577fa93876042ad7304d475100e75ca21f57c8199c5d4121f65c",
+        "trace_manifest_sha256": "b665c84e649629d50fc3fd9a18e5371bb1fbf9f0c04c169d6699a090e1701b91"
+      },
+      "gaussian": {
+        "actions_sha256": "6400631432dee289dd50cf438c56c9a16ea1e044ffe891d4044af7a6c827a646",
+        "result_sha256": "5b879d738bf7899dd3b57ff12254c592d5e935dd8cbf8a707da57c3d368f7fdf",
+        "trace_sha256": "56c6417c9d2509d3b983f5f79146958934dcc7ec9662960628e2e5376d99f56b"
+      },
+      "state_id": "droid_episode_012839_frame_000207"
+    },
+    {
+      "core_actions_sha256": "ac3b36a16505943faba33670e389ba4b6a4be73812136a34b056dca2cf0dcb9c",
+      "core_result_sha256": "791c5053ac06397f32d2add881240dbb1b133fd039ad398fb77d801418ecd85f",
+      "dose": {
+        "actions_sha256": "741fb2491367ad90e0d225e8c617d28598047c2e0161adc7307d84d9436fa435",
+        "result_sha256": "8bb20f04fb1f9200bccead5d4b397a59c2f223fc0f5609c8da65e5ee678992a2",
+        "trace_manifest_sha256": "fd1723592569da84adf01455fe6135f61038e20b032a0d45b7710f303535c934"
+      },
+      "gaussian": {
+        "actions_sha256": "def69972a6aa34900aa53045f3d3f5dae18990c6cd2b8a65e5e1754cc3dd7604",
+        "result_sha256": "98ee591adcaecef5e5e89404e301046766bca8de4d474929a42a6da86b5a7281",
+        "trace_sha256": "444d75674443f02dbfe893264b9153efec5febc146ab7dd8281de6feaabe7f0d"
+      },
+      "state_id": "droid_episode_016483_frame_000077"
+    },
+    {
+      "core_actions_sha256": "0a27481f6c61b4ee621841355b9659781ab0ea169dbedaeca4a17aebeea047b1",
+      "core_result_sha256": "6fa94e3df2e91c9f35908146afd3c53e1443eff70ab24ab3c8358d93e31fef35",
+      "dose": {
+        "actions_sha256": "45e8a20d8286f01d5fbe237ad0feff93e2fe74bd2b03ef92fc1fe7f1f0904df9",
+        "result_sha256": "fef8602592c138130c50a2c19bd04915399e6c8845397f54a8da423ac8412456",
+        "trace_manifest_sha256": "ec043d63d350b59cc9e13031ceaacede238f8086720bfce65481b1ef463dd76b"
+      },
+      "gaussian": {
+        "actions_sha256": "9e762e306fb88bc16d7fa29ea7cc56e9d07f590fc56ec3e6dee30e98a728fe2a",
+        "result_sha256": "9c29ce139fdbe761aa8e2ab66c22b74b2e5e3a7c1fa2e9ad98bf113ae518c5a9",
+        "trace_sha256": "aa05b3ac6c76a2d984c9090104b3fcfc4e4e523953aa8f5e870922de888215dc"
+      },
+      "state_id": "droid_episode_018290_frame_000160"
+    },
+    {
+      "core_actions_sha256": "c5ae0e6976f880bbc9a6ce83321d33e89fb2a2509b74ae4570a938e3265305ef",
+      "core_result_sha256": "d44acb2324c657b5de8c1544b63be13f58cc71c597e0cf9916f381dc8097d2ea",
+      "dose": {
+        "actions_sha256": "11a99102c7ec3e366533c66baa7aa214125c15f7cd196594cefdc1ab67966e6c",
+        "result_sha256": "4085f095eb1340ca9780572f1acf9a97bdc601b4a822a44849c0f7d80da9ecf1",
+        "trace_manifest_sha256": "e9c015c23af750580737289805896561860aa8cdb1bc5d89e826306c3f152365"
+      },
+      "gaussian": {
+        "actions_sha256": "bcae52dc37eed8861245c126b731afd2f2bf2031807d626fea4b48496895611b",
+        "result_sha256": "14a40ca34f9eacf068bac3fc3618bba6879210927583454f8dd6740bd2d096dd",
+        "trace_sha256": "c6c0c3d2dbbb9b2700dc4c73fef720f90f213de5a4d7ef7c5878a8e159451083"
+      },
+      "state_id": "droid_episode_011256_frame_000212"
+    },
+    {
+      "core_actions_sha256": "e7dd88390461f1d8680266538723b89e7c952e99aec369c7c521c49c8bb1bb51",
+      "core_result_sha256": "dbeae3945a001aad681c294b6c1dde0aac8e7e6c07dfe66ef4ec732e18295090",
+      "dose": {
+        "actions_sha256": "201655ccca244441932accd876e4b29713b6e010beb3ab8820f715ae1b0210ac",
+        "result_sha256": "fc97eb96de3d34b71853b718c5dbc756c5fccbaadd1e23ab600602e656da82c2",
+        "trace_manifest_sha256": "9600b25988128f954c8dc9c63c7ed1444aec3020aab8267c1f3ae82b363d3b1a"
+      },
+      "gaussian": {
+        "actions_sha256": "e2449cb4e697cfee21bdeaa3486d8ed8d9546a35e86ef33b71f33a62658bdab7",
+        "result_sha256": "dbe14d79367fb8f20a1b0bd2a9858e464aa137a3a7ef55a8d18a01bfe0e7d6f1",
+        "trace_sha256": "47d02164b56d8072b40b2839032da0e4cb97a879eca02d63111fab7cc344a4ec"
+      },
+      "state_id": "droid_episode_031870_frame_000098"
+    },
+    {
+      "core_actions_sha256": "2cb5ce74c579d84c28050e299631ddb59275defd91748c2644493ec5838aa489",
+      "core_result_sha256": "9b7678242bdc11d88dbae738f7a96f31bbfa235a49fcdb2ef3d8d0ea066ae7fd",
+      "dose": {
+        "actions_sha256": "9ccd8404682aad03fd1ccb961149a3c08c126bdbdbc92f891521eab94725ace4",
+        "result_sha256": "df3d9c2018dd30582ec9916d1736d08d69005ee66a82ef422b4027ebd90560d7",
+        "trace_manifest_sha256": "64c1f7064082fd2cb4494c28afdb780318a9e79bbb3b1d27adafa61fdce060fd"
+      },
+      "gaussian": {
+        "actions_sha256": "665a60b99c7c1caeb7c8efda94b452730ec635972ebf3eb4ea42be8afa513bfa",
+        "result_sha256": "ea60e43c459188cda2cc2d9e98b326416a211b1dfa303d884e485df366cb8c9d",
+        "trace_sha256": "90361bef0b966a56c4ae43c90a3b2ca16a0e0aa7f04340d05a2eae4de658bee4"
+      },
+      "state_id": "droid_episode_010336_frame_000067"
+    },
+    {
+      "core_actions_sha256": "5954a283d2ce0c3ef8a6320f0cc7d67598eab06228fa8e1fcb7dc5a8b96a3b46",
+      "core_result_sha256": "5d53f36d4d0cf5b9d07168a9fea5bf086ce2dd085f6029d5dbf57540a73a3f75",
+      "dose": {
+        "actions_sha256": "50b8b42748a973ceee5d6c588d9ba5437791ee790c03690f64734bbb09dd8c6f",
+        "result_sha256": "dfe8c7f406e6aa2ba770dd22938a66b2ae6cc56caf2138ce6ce59f1e082e4c20",
+        "trace_manifest_sha256": "72577c3676fa46770f3f4c446d9cd32ffbdb21c6786e2f2660a2ecea4f9200b9"
+      },
+      "gaussian": {
+        "actions_sha256": "4b34be5e7bd7f21565995e65277aaf12dc9416800ba66735bbb930122248b60d",
+        "result_sha256": "c964e962017396f2a593f87e5a9ae089b242ddc30ed1bb75bca7b1a223aa902d",
+        "trace_sha256": "af306dc3684d3d0bd90f8f3c11702742826e0dce04f846650592f5643753a3c5"
+      },
+      "state_id": "droid_episode_038079_frame_000074"
+    },
+    {
+      "core_actions_sha256": "7d59f4af4ae8f3f80b649be8ba9445c6599fd8c9b01c397a8cce7eda639c20d3",
+      "core_result_sha256": "53cb3b7143430adfb931b95ff2aa901f9c73585e7a1cb1d7c208c83a4ba872f9",
+      "dose": {
+        "actions_sha256": "cc8c5c1643cc8653cc9ea3f84cb2720be7852f455a9cbcd35f348843b84b7d3d",
+        "result_sha256": "f0da6b5cd3ad2a5f3f8162cd4e4cae76085cb488e0b9d897b5ce3ddcd42013fd",
+        "trace_manifest_sha256": "e91ab617267d1f5dc27d711d37054aeba55e8a4249342a1bc1477c3f6143d29b"
+      },
+      "gaussian": {
+        "actions_sha256": "17ff7d7d064804cbe290f2c56663b1e4924f47464815c153009076812b5f2706",
+        "result_sha256": "25319ac34e3964c8e1afa74c20f64623682920e5b18c959b67b9450b398d6ea3",
+        "trace_sha256": "ac60b52c6ee9a6bc4baaaa1d983828f9f41166526a1fa0f82ec880d146758f62"
+      },
+      "state_id": "droid_episode_007416_frame_000134"
+    },
+    {
+      "core_actions_sha256": "6019ad0791f5d7a158055e8a7ab686075b0f5c86c105d24d341965b39d2c3f29",
+      "core_result_sha256": "d32b6cc3d54674fd5dd2a9d783463d12b3d09a4b36c96fbbd8955c9aceae43d6",
+      "dose": {
+        "actions_sha256": "711f99e02b75eef8acd1ff2fe231bd435ff05584bf95ba92183674e330c89dd1",
+        "result_sha256": "188dbfb03f45bc6575917692ffb5da7f3c9feadb4ef2a6768caf87918767f247",
+        "trace_manifest_sha256": "57ea44b01793a96f1309a65096c3455a3f6881267c14eb5bf141b7d288868b0e"
+      },
+      "gaussian": {
+        "actions_sha256": "1dc6e2049a88e97ebddf1a379a13be0127c51a0de19127dd0a12a28c81b8e1d6",
+        "result_sha256": "abce3d03e9dc2cbd06bfe42852432ef31401f731cd263cd13435c515d379096b",
+        "trace_sha256": "cea03c37348ed98cdfe2c0e93c6db58b74548a9343d7bcb75c406ba0656af567"
+      },
+      "state_id": "droid_episode_037602_frame_000148"
+    },
+    {
+      "core_actions_sha256": "8b6f749181632819210364a371dc2b1b6b33a797b56e1098ed8487437a896b71",
+      "core_result_sha256": "5917c23d3e3690b160d3232107554bd1cd17df7bf3264dfbe195a263367ef3f8",
+      "dose": {
+        "actions_sha256": "ce24ceef5c89d9d65b31e57e02a1393f36c8697e2c1ca3ae62c68efe34b6420f",
+        "result_sha256": "28ebff9d78d01854fee97b134d20888a8b080a77dcfc43081b6b5e72c053b1a9",
+        "trace_manifest_sha256": "6a664a61dd66b084ccc3a7120025bbf2c9e81075e803b6caa250e0a879df1983"
+      },
+      "gaussian": {
+        "actions_sha256": "ec0838e76fd066f08fdca8c63dccb4acfb3153c69b1e6c19a6e6f29d5dcb62cd",
+        "result_sha256": "fb37fa8803a42a44c343e9cf4eb648ee7b4e714e877c8ec46430ec24dbf2fd2b",
+        "trace_sha256": "8e607170c5f4b006f0ff8bf0ab91a05a34618a46ae51c2b7de582fc02fc0fcd6"
+      },
+      "state_id": "droid_episode_032588_frame_000101"
+    },
+    {
+      "core_actions_sha256": "227ea122b115b896698e7ca183063a57c0709fb3ec34dd4dd1e27093b555e517",
+      "core_result_sha256": "aa5f3523a1f3df4e80812ac007a1337efc574d839b484c2ef9eea490b3e0893a",
+      "dose": {
+        "actions_sha256": "59af89f65f7449a9f2fd1131be296be4ef9cceb8283df27bc2768b9049b2699a",
+        "result_sha256": "b94335b039d0d29b15e75312ade34bf1aab77e5a6325d512ff98ce7fae08a3f6",
+        "trace_manifest_sha256": "de5d7599d8d91ac7c0f597a9b9eb12718007637aa7e29b21d9fb5826edd44616"
+      },
+      "gaussian": {
+        "actions_sha256": "ed8ed907f6ded00a98084a6e29cf9cdd1bb2d0c0e7d3103ba5133a6dc2e62104",
+        "result_sha256": "5e0d18b17895cfe604b5867f772ae22f84f081662b86c86e4d2f679477b978bb",
+        "trace_sha256": "9271e1412cedba78d7c4a5e80b4d161f3f0c2e746121a85506ec50163503dce7"
+      },
+      "state_id": "droid_episode_019166_frame_000104"
+    },
+    {
+      "core_actions_sha256": "6b66c24ce8fb49ab68d1fb26bc0a11cbb29f3278bb150bb3074a50dbad1c82c6",
+      "core_result_sha256": "b053f229cd12b9ac0dd19e9e4937975f13028e6079a2bb1f094c457907a56956",
+      "dose": {
+        "actions_sha256": "20a8d584766c28991dce426557ff72e34a980fdea3ffe4e6be8fb95aac979575",
+        "result_sha256": "e2d155679ee16cd80f29561be66d4aa9f268380f7a99831ee3ce03f63d55ffb0",
+        "trace_manifest_sha256": "a76279efaf1cc030b0034b8c8cb5ee1c8003730abfe6692ef30ca4edcb894009"
+      },
+      "gaussian": {
+        "actions_sha256": "0a1dc7c7c0d1444be07bd91c4b18cebd2968069da780187456a247ad36655454",
+        "result_sha256": "bbaf028b9ef240eb45a82dbe8cdacbe7aaa80691d33503fbe71f62e4361b0eb0",
+        "trace_sha256": "4bed63c6c6b689bf8df5cdde9365ed543ab5d54e5ba4fe16af2ad0db4683b8da"
+      },
+      "state_id": "droid_episode_025075_frame_000057"
+    },
+    {
+      "core_actions_sha256": "c02799bd7aa7f2513afce1126e5adc18b4b3c275ecadc48d612bd814f74e7ca8",
+      "core_result_sha256": "a8d83710afc90f636307fa2a2d778dc55c8562414af4698ce374f5fb4de772d0",
+      "dose": {
+        "actions_sha256": "61a75da93a89f84185ebdb4a8a3f0b51d6b839c56581cb918cbb4d3f51474d60",
+        "result_sha256": "1ed990e2642a4add722ad751ca767c7b15b1e0f01281906ba1fbbdd36fed2305",
+        "trace_manifest_sha256": "23cba9745a6313f1f892fd0ba24f454796c0d7fe2ef4a5f677e0830f425fabee"
+      },
+      "gaussian": {
+        "actions_sha256": "3348ad1c18a2a960fd77293af9ee1ae5836c29feb1fba102afb74a9d81b7e9aa",
+        "result_sha256": "7e295442248765dafa2a7574a9a899d6ae75cb694e90a973ac997e306acd51fd",
+        "trace_sha256": "f810286f9d274c1146ca85552e2bbb92ae95257ce35c8733e0e2690f0a0c396f"
+      },
+      "state_id": "droid_episode_044305_frame_000165"
+    },
+    {
+      "core_actions_sha256": "5827a88c42427f4855601d03579d1a67bf0715fb94f73aeb01e69c1a34e5ff48",
+      "core_result_sha256": "6c4bfe861f8fc46eabaaae5d2aa0aa21bf93146d03b95e7ef60a39711abac8b3",
+      "dose": {
+        "actions_sha256": "5f2b7eecf6525cce41a5591e2f2a5c988838c00b73374449f52a5ff5904a8efc",
+        "result_sha256": "c61586ec255b9ab9d74b9befe9f2ce0016519dc8d21cdcae59011a5bb61d90dd",
+        "trace_manifest_sha256": "725b7b526bd10018ada3b0e45e1801e2b6f199aad1e715bcff5ae4a188dd059a"
+      },
+      "gaussian": {
+        "actions_sha256": "eb32b189f81220124577bf39d7432d13a7117b3a15108b4cf0d43632c6c1bec4",
+        "result_sha256": "c88f085a334d34aa85521f44ad1b4d9a74990405554efdcd9bed8bef32cdbb14",
+        "trace_sha256": "9aa656ddde29b4208a3f67cc0c59675b2b9f36f2d2163b5ff4484d57440a6448"
+      },
+      "state_id": "droid_episode_048372_frame_000095"
+    },
+    {
+      "core_actions_sha256": "7e8200e7842ad8aa2e543374826ba88d5d5ab1fa133bad32db76f64bdb8f34af",
+      "core_result_sha256": "1bd50651c44c5fc5187db3d50933c35c06df613ee41e0f27f970ee95c26791ac",
+      "dose": {
+        "actions_sha256": "6a03fe5b3f0bf79795f7ef6659c563dcab2ca8bb1fa44cc435afa1348b08ba64",
+        "result_sha256": "49907db541d97f00e98119c14656fa25064d44ccf2233eb9d90cdcba19c641b1",
+        "trace_manifest_sha256": "7a40244a2a22101a846d6e9e818017345d12a6109fc5daf5bac83b2244026348"
+      },
+      "gaussian": {
+        "actions_sha256": "e022b8f955b0162c85f8db3475fdfeb59870c9362f81077ed3cc93453039158b",
+        "result_sha256": "dc3787de76a69252e2cc749cf114e56b046289418a6b37037a7be224b9ebc9a0",
+        "trace_sha256": "a94d4afd924c86f830c6a10e18826bee276cf9b437df1141b06c05cc369ecddf"
+      },
+      "state_id": "droid_episode_006011_frame_000178"
+    },
+    {
+      "core_actions_sha256": "c1f94b4b97fdbd0897423cea3c8e798f544ed1093d634f0ef6b8d8ca88764f95",
+      "core_result_sha256": "9dd5b54f7f591731a8353dfd5845518cb13931ce64c90984e9b8011fadbd910d",
+      "dose": {
+        "actions_sha256": "a526f695e850e333325052063e070af8aa062040b835274202f0cb9b420c8b37",
+        "result_sha256": "216ae8cd57c8c1222c74dda681af91c3acf0d760fc24327b2d4b29f4c73b8552",
+        "trace_manifest_sha256": "e0ace62a94170818f7cb3e3cdb4060026843d08f7e5eaf5dab3470eadef19ce6"
+      },
+      "gaussian": {
+        "actions_sha256": "0ca4cd21c16575efe13ae6e4bcb8202dd7d1ce48d1b21ca7022824b674293422",
+        "result_sha256": "b35b5bc06ad11e689ce3afa8605d02245a195e0e9356309fc92d1fd223fc5c00",
+        "trace_sha256": "5b4c416b63a1889e490057abd9205143221039b094ba7e55b9aeb98018bd364a"
+      },
+      "state_id": "droid_episode_051025_frame_000156"
+    },
+    {
+      "core_actions_sha256": "8b396355e043e4b9ca385f4d13bb567dd43ba8494d093c6da732362664500926",
+      "core_result_sha256": "62c434501c0690013acc1d99fce13357a2cb0b9b24f479b6550f1a5b0337e9da",
+      "dose": {
+        "actions_sha256": "0e8d47e0d4c10f8307dae1d2f5361861d1233228a730e110c857ddcc4b7bd2ae",
+        "result_sha256": "bf486810124c0890a69333e8419f5cf21d4c77ecd99a099b061e5e51d32026d6",
+        "trace_manifest_sha256": "c427d0253469e7c92dfa7aad5f4dc179d4d65e0fc7197570aac31069c034a597"
+      },
+      "gaussian": {
+        "actions_sha256": "5c521d12ef1d985191da53fe3cb8fb2f1ee7d01762b8ddbf831fb8b2f81b0d65",
+        "result_sha256": "d6a651796986fb469de70600ec2383c6379f442042391707e1015b5abda07d82",
+        "trace_sha256": "071216de2c164277bf6fb254b7293294caa267774b62b8037aaf0fd191b96453"
+      },
+      "state_id": "droid_episode_019839_frame_000146"
+    },
+    {
+      "core_actions_sha256": "fd118000e213549d3949b9a264647dc3199d72923c65d09026ed9c54e0a25810",
+      "core_result_sha256": "421e84d5039805fb0e9ad58189fde043af158cb412031cf9fe3f88288dddc52b",
+      "dose": {
+        "actions_sha256": "60d134b25e6c9e9062a90258951f6e779f7d13db7dea171db9da42d4d102657b",
+        "result_sha256": "d4b4d76477a34b1550433cc0842123cbbcca509a034e24bc84240c11797349b7",
+        "trace_manifest_sha256": "6942397d5bc6259ec4080e1dcde379a6241db95aa2f4011f92e3195b1178ddce"
+      },
+      "gaussian": {
+        "actions_sha256": "e4dca184097e3dfa967ff4b76209ad8b05277958188afcb46b8e3b6e703f30b8",
+        "result_sha256": "c8160e8032d49611ed111554697222fb5bd16fcdd545def7b7f02cf97503ff25",
+        "trace_sha256": "e3b7c4dbab06536767ebe45f603ae2bb1c1cb2cb83fa0cf8499ee06a4173da55"
+      },
+      "state_id": "droid_episode_022570_frame_000068"
+    },
+    {
+      "core_actions_sha256": "680c74a899102b09aab3fdc0736c4ea24528be3b1a6f6605bfe78d2dc42bb18b",
+      "core_result_sha256": "920c008b93f865815cb861bbdd0348382bd806a0890429d75c74918dac3146af",
+      "dose": {
+        "actions_sha256": "23ed0f2d3e7b1988ce167aa5a3b11c3b0ef85e10889b6e559b44e6a41d1c1fe7",
+        "result_sha256": "85095e4fe3e1e57a1fae577a2bb21ed2c81d366a6f804f125c783b7a9235091b",
+        "trace_manifest_sha256": "a2e420c36432470d9e41c3750d9429f57edeb006d7bb6e8e93a25b95bc4cb41e"
+      },
+      "gaussian": {
+        "actions_sha256": "8f0644504d148323f1d61a48237fb3ab78abe0394cfd41a40abce276a4b231f2",
+        "result_sha256": "0b692ff91d1b034a34ab43a57d911d8848e725a5885f9f9d2026e9b73972dc29",
+        "trace_sha256": "d677c81b666657fe2bb3c02c97e284db783bda96359b688b5fcc8f00353f20fb"
+      },
+      "state_id": "droid_episode_023493_frame_000059"
+    },
+    {
+      "core_actions_sha256": "85a8e0bb94446bc99ae04d695a093257f04c030a711c4a6522ddb1ce8f3d6d51",
+      "core_result_sha256": "c2e5b16e83408655ed6f6158415422052af3ee8843addbb472fe1bf78737254e",
+      "dose": {
+        "actions_sha256": "4177d6ee5cd79bcc8137f2a6019e3c9f10d6ff590e6aeb4ac621a94a88c0991d",
+        "result_sha256": "3ed1b25a1f62ac674c03b20890cbe1e22791d22fa8353bd0f2332966ed6ec882",
+        "trace_manifest_sha256": "7581a85992bb8cc6295a92765d821ae4aacc94f4c6c7e9b557853fdbf07c9ff1"
+      },
+      "gaussian": {
+        "actions_sha256": "39f682f18442627cbea76c9aa60c5913697bf0bd292a4915d11a0d7fbfe4393b",
+        "result_sha256": "2a17fc81c4cd498ba6663d91d148fec02cd0476100bc221800fe6d98ea519c55",
+        "trace_sha256": "24c5b64faf772a24a2968690e9c6e4debf7c97601d113035dc369bb71d89d908"
+      },
+      "state_id": "droid_episode_050050_frame_000130"
+    },
+    {
+      "core_actions_sha256": "0b2f48522150a998857312cbe07401c237154575633d2e6ae830d0a690e90092",
+      "core_result_sha256": "7abb75ae78c30b4e256a6758ab5271f44c62590c52fd91044ebbe91152270344",
+      "dose": {
+        "actions_sha256": "91433d618740d6ada70b8a72391f85230342a6898519d8446ce9d2e77dbc2dee",
+        "result_sha256": "1c27921c9efbc5005bca213474410b20e4856e82f787175c939c900439b4de5c",
+        "trace_manifest_sha256": "d52879c1053d5ef30e5c9a30c0988b9305e1ffb019d7d22d44c28047353a9c0b"
+      },
+      "gaussian": {
+        "actions_sha256": "63aea981b9e09492a38606e6952b11873706fd73a11fac7e0007bb0994e6f6e2",
+        "result_sha256": "db14604a9d8f5407caf2927f737629e31b583fd0a2cf52eacdffa038e8c15999",
+        "trace_sha256": "d0bfd65198fdbd11b6b202c6a82a0564eeac84e45c04d920f3d224f9f8b25dbf"
+      },
+      "state_id": "droid_episode_042965_frame_000072"
+    },
+    {
+      "core_actions_sha256": "cc4e2205338965884135328f05cf6fd9a511ec4ead27bf949c6e5e7eb8da833c",
+      "core_result_sha256": "f538165d2a3de2341a26fdbe1fef47ee39709118213f0b480f8e9e8d7cc8743d",
+      "dose": {
+        "actions_sha256": "99c43b1428e6f86b993e36529aed6e2c61423e1c93d1e7f48a1eb5bcda363d76",
+        "result_sha256": "654e6ad1f5eb8f61d7b686b60df2865c5cff36a6c680ae631d1d363a17fb7896",
+        "trace_manifest_sha256": "9c46fb8fb6707ae67a5e1d9b316ce0979ba3e4d7af5ecbd222f875167da611d6"
+      },
+      "gaussian": {
+        "actions_sha256": "a41237c6dd912bf27b1ae871f26d30ab7ee300e7c9a6ebf25e4391572f3eeaad",
+        "result_sha256": "b8e6edb67607675d6e24a3a446b87efaedfc0f44cb2cbd49697d4b85d43ff5b3",
+        "trace_sha256": "5d8fbb298bbbc50bd578c823d6e33d4b57234310fbd2998c862dad5930a11369"
+      },
+      "state_id": "droid_episode_043719_frame_000060"
+    },
+    {
+      "core_actions_sha256": "42c671769aed6707bc6794194368242b17e9c04ff5061ebe44ed529bc9049b25",
+      "core_result_sha256": "9d2253d43a0d7e6d85ab6c0cb3f03dcf361080b488457d440027258724bbcee9",
+      "dose": {
+        "actions_sha256": "ed83de6f5e0852aadbb412578d63a6f14066ce0d77252b2ecb12a63e5161e71b",
+        "result_sha256": "0e023f7f8c37dd116385d285bbf1411277d03a1c0cf9d11b7d20117b732433ab",
+        "trace_manifest_sha256": "27d80d441c101a4a6b9b10cc1e22c35601aedb5cc4223d9e9f604b4fe4711231"
+      },
+      "gaussian": {
+        "actions_sha256": "1ed7f838e425f235b249107709b10150127aa57ac47f608e7234e16fc7724411",
+        "result_sha256": "7c4ef6608377615a6c16b1cd40d249e0712082f4c2a3f699860bb6390e8602b0",
+        "trace_sha256": "75e90c9d91787a06f12a5ad814f5f13b2ee0b161165e802d9dd4a79483b93c89"
+      },
+      "state_id": "droid_episode_019784_frame_000061"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "metric": "mean_interior_slope",
+  "monte_carlo_p_greater_equal": 9.99990000099999e-06,
+  "monte_carlo_p_two_sided_absolute": 9.99990000099999e-06,
+  "null_95_interval_high": 0.2743969868029278,
+  "null_95_interval_low": -0.2726321667527147,
+  "null_mean": 0.00022875170897448754,
+  "observed": 1.0733742481898816,
+  "permutation_unit": "three interior alpha labels independently within each frozen state; endpoints excluded",
+  "repetitions": 100000,
+  "seed": 260907
+}

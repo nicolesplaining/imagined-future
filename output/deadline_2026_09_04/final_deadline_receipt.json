@@ -1,0 +1,35 @@
+{
+  "deadline": "2026-09-04T12:00:00-07:00",
+  "frozen_at": "2026-09-04T11:58:03-07:00",
+  "verifier": {
+    "command": "python3 scripts/verify_deadline_2026_09_04_handoff.py",
+    "status": "PASS",
+    "checked_at": "2026-09-04T11:57:14-07:00"
+  },
+  "headline_results": {
+    "dreamzero_correct_source_retrieval": "360/360",
+    "lingbot_va_correct_source_retrieval": "269/360",
+    "chance_rate": 0.25,
+    "dose_response": "five levels complete for both models"
+  },
+  "requirement_status": {
+    "population_and_controls": "complete",
+    "dose_response": "complete",
+    "raw_outputs_provenance_tables_plots_media": "complete",
+    "claim_safe_synthesis": "complete",
+    "independent_external_future_by_kv_factorial": "incomplete"
+  },
+  "document_sha256": {
+    "noon_final_results.md": "4157d83d6a9ebba978a316f36ca9c693d2a8c8dd4fa9e9a227daf923861f1e8c",
+    "claim_safe_synthesis.md": "2b06aec561639aefac6c291f7d4e4c95077ed9aba9443f474940a8d99ae93b55",
+    "goal_requirement_matrix.md": "006768ce4b325c9340b2f6fce90bdacd4cd3fb6e47472daf5cfbee28e61e414b",
+    "dreamzero_kv_factorial_feasibility.md": "15a9ed50ca17abb05873244dce59fe81e255bd4c3cccee578a1c4835b956844c"
+  },
+  "compute": {
+    "experimental_gpu_processes_remaining": 0,
+    "dreamzero_gpu_memory_mib": [0, 0],
+    "lingbot_va_gpu_memory_mib": [0, 0],
+    "instances_left_running": true
+  },
+  "manuscript_edited_or_pushed": false
+}

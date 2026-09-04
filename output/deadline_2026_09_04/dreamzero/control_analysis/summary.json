@@ -1,0 +1,147 @@
+{
+  "analyzer_sha256": "bcd3dbc5687f4e3bba941d99792f5b42b1f76b6075c16981b1d852fb7ff5ce57",
+  "audit_status": "passed",
+  "bootstrap_repetitions": 50000,
+  "canonical_family_counts": {
+    "move": 3,
+    "open": 3,
+    "pick": 3,
+    "place": 3,
+    "press": 3,
+    "put": 3,
+    "remove": 3,
+    "take": 3,
+    "turn": 3,
+    "use": 3
+  },
+  "core_result_root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/dreamzero_eval_v1",
+  "core_runner_sha256": "e627132e037679717512faac2f7bc46ddda8898f1e7bfe5637445a99e8163019",
+  "dose_by_alpha": [
+    {
+      "alpha": 0.0,
+      "mean": 0.0,
+      "n_states": 30,
+      "state_bootstrap_95_ci": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "alpha": 0.25,
+      "mean": 0.04595798965143446,
+      "n_states": 30,
+      "state_bootstrap_95_ci": [
+        0.030440325034499574,
+        0.06268602224478839
+      ]
+    },
+    {
+      "alpha": 0.5,
+      "mean": 0.4647123494044469,
+      "n_states": 30,
+      "state_bootstrap_95_ci": [
+        0.41115236419741574,
+        0.5183500129667296
+      ]
+    },
+    {
+      "alpha": 0.75,
+      "mean": 0.938782910472088,
+      "n_states": 30,
+      "state_bootstrap_95_ci": [
+        0.9138786180033623,
+        0.9598497317002337
+      ]
+    },
+    {
+      "alpha": 1.0,
+      "mean": 0.9850636743531014,
+      "n_states": 30,
+      "state_bootstrap_95_ci": [
+        0.9699051684907,
+        0.9975451246249788
+      ]
+    }
+  ],
+  "dose_by_alpha_is_descriptive": true,
+  "dose_interior_slope_sign_flip": {
+    "endpoints_excluded": true,
+    "method": "one-sided Monte Carlo state-level sign flip",
+    "null_mean": -0.00045259287985226925,
+    "p_value": 9.99990000099999e-06
+  },
+  "dose_reused_endpoint_alphas": [
+    0.0,
+    1.0
+  ],
+  "dose_root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/dreamzero_dose_v1",
+  "dose_run_inventory_sha256": "0918f972636eed27c8c8c8d2bda29b121990db665da155faba8c8a1faad1e3ae",
+  "dose_runner_sha256": "bc180328508c3d687c8003e245584ef7ee194529438a4ccf4dfacb11cb0c5d7d",
+  "estimates": {
+    "dose_interior_linear_slope": {
+      "mean": 1.7856498416413067,
+      "n_states": 30,
+      "state_bootstrap_95_ci": [
+        1.7069082944406375,
+        1.8530149350003926
+      ]
+    },
+    "dose_interior_monotonic_fraction": {
+      "mean": 1.0,
+      "n_states": 30,
+      "state_bootstrap_95_ci": [
+        1.0,
+        1.0
+      ]
+    },
+    "gaussian_perturbation_normalized": {
+      "mean": 2.069788402227533,
+      "n_states": 30,
+      "state_bootstrap_95_ci": [
+        1.7020322411123063,
+        2.4761191454371225
+      ]
+    },
+    "gaussian_recipient_preservation": {
+      "mean": 0.30833333333333335,
+      "n_states": 30,
+      "state_bootstrap_95_ci": [
+        0.275,
+        0.35
+      ]
+    }
+  },
+  "exact_core_endpoint_gates": {
+    "alpha_0_equals_core_self_replay": true,
+    "alpha_1_equals_core_211_to_223_replay": true
+  },
+  "gaussian_root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/dreamzero_gaussian_control_v1",
+  "gaussian_run_inventory_sha256": "04e54e0b783df05ab5e96da83916632a1a9fb5b8fced267bc2fc7e231ef7c105",
+  "gaussian_runner_sha256": "74e6c4d4ab76006aa48f8dcd7666fbf5b9ef786bd639daa684b9cc1e36b606a9",
+  "manifest_file_sha256": "d1ffc3111a10bed9ac8fdd17c631dc3a5d8eb3128ac4fa250d9398bcede12cfc",
+  "maximum_gaussian_trace_norm_relative_error": 2.488253204110942e-05,
+  "patched_server_mode_off_record_gate": {
+    "actions_sha256": "85c4a801cd497df2267d23b6f07ad65a192b739279566c1303dcf86e81d4e080",
+    "maximum_absolute_error": 0.0,
+    "result_sha256": "2847c1bb0d991d29452c802f258ac4c2b2e5f312fe3c9859b113709d6190038d",
+    "runner_sha256": "74e6c4d4ab76006aa48f8dcd7666fbf5b9ef786bd639daa684b9cc1e36b606a9",
+    "scientific_admission": false,
+    "status": "passed",
+    "trace_sha256": "3c0af4a7f50b1827c22de9eef6db8f95be9471036e63d7ff922eb61329bc1f72"
+  },
+  "permutation_repetitions": 100000,
+  "schema": "dreamzero-control-analysis-v2",
+  "seed": 260904,
+  "state_count": 30,
+  "state_is_independent_unit": true,
+  "task_family_count": 10,
+  "trace_root_mapping": {
+    "contract": "identical state-relative trace path; content SHA revalidated from client artifact and server audit",
+    "core_client": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/dreamzero_eval_v1/traces",
+    "core_server": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/dreamzero_eval_v1/traces",
+    "dose_client": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/dreamzero_dose_v1/traces",
+    "dose_server": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/dreamzero_dose_v1/traces",
+    "gaussian_client": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/dreamzero_gaussian_control_v1/traces",
+    "gaussian_server": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/dreamzero_gaussian_control_v1/traces"
+  }
+}

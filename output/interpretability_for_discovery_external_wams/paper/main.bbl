@@ -1,0 +1,226 @@
+\begin{thebibliography}{24}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Du et~al.(2023)Du, Yang, Dai, Dai, Nachum, Tenenbaum, Schuurmans, and
+  Abbeel]{du2023unipi}
+Yilun Du, Sherry Yang, Bo~Dai, Hanjun Dai, Ofir Nachum, Joshua~B. Tenenbaum,
+  Dale Schuurmans, and Pieter Abbeel.
+\newblock Learning universal policies via text-guided video generation.
+\newblock In \emph{Advances in Neural Information Processing Systems},
+  volume~36, 2023.
+\newblock URL
+  \url{https://proceedings.neurips.cc/paper_files/paper/2023/hash/1d5b9233ad716a43be5c0d3023cb82d0-Abstract.html}.
+
+\bibitem[Du et~al.(2024)Du, Yang, Florence, Xia, Wahid, Ichter, Sermanet, Yu,
+  Abbeel, Tenenbaum, Kaelbling, Zeng, and Tompson]{du2024videolanguage}
+Yilun Du, Sherry Yang, Pete Florence, Fei Xia, Ayzaan Wahid, Brian Ichter,
+  Pierre Sermanet, Tianhe Yu, Pieter Abbeel, Joshua~B. Tenenbaum, Leslie
+  Kaelbling, Andy Zeng, and Jonathan Tompson.
+\newblock Video language planning.
+\newblock In \emph{The Twelfth International Conference on Learning
+  Representations}, 2024.
+\newblock URL \url{https://openreview.net/forum?id=9pKtcJcMP3}.
+
+\bibitem[Ebert et~al.(2018)Ebert, Finn, Dasari, Xie, Lee, and
+  Levine]{ebert2018visualforesight}
+Frederik Ebert, Chelsea Finn, Sudeep Dasari, Annie Xie, Alex Lee, and Sergey
+  Levine.
+\newblock Visual foresight: Model-based deep reinforcement learning for
+  vision-based robotic control.
+\newblock \emph{arXiv preprint arXiv:1812.00568}, 2018.
+\newblock URL \url{https://arxiv.org/abs/1812.00568}.
+
+\bibitem[Field and Welsh(2007)]{field2007clusterbootstrap}
+C.~A. Field and A.~H. Welsh.
+\newblock Bootstrapping clustered data.
+\newblock \emph{Journal of the Royal Statistical Society: Series B},
+  69\penalty0 (3):\penalty0 369--390, 2007.
+\newblock \doi{10.1111/j.1467-9868.2007.00593.x}.
+
+\bibitem[Goldowsky-Dill et~al.(2023)Goldowsky-Dill, MacLeod, Sato, and
+  Arora]{goldowskydill2023pathpatching}
+Nicholas Goldowsky-Dill, Chris MacLeod, Lucas Sato, and Aryaman Arora.
+\newblock Localizing model behavior with path patching, 2023.
+\newblock URL \url{https://arxiv.org/abs/2304.05969}.
+\newblock arXiv preprint, version 2.
+
+\bibitem[Guo et~al.(2024)Guo, Hu, Zhang, Wang, Chen, Lu, and Chen]{guo2024pad}
+Yanjiang Guo, Yucheng Hu, Jianke Zhang, Yen-Jen Wang, Xiaoyu Chen, Chaochao Lu,
+  and Jianyu Chen.
+\newblock Prediction with action: Visual policy learning via joint denoising
+  process.
+\newblock In \emph{Advances in Neural Information Processing Systems},
+  volume~37, pages 112386--112410. Curran Associates, Inc., 2024.
+\newblock \doi{10.52202/079017-3570}.
+\newblock URL
+  \url{https://proceedings.neurips.cc/paper_files/paper/2024/hash/cbe25fa0e7c7084049276888a09acc8d-Abstract-Conference.html}.
+
+\bibitem[Hu et~al.(2025)Hu, Guo, Wang, Chen, Wang, Zhang, Sreenath, Lu, and
+  Chen]{hu2025vpp}
+Yucheng Hu, Yanjiang Guo, Pengchao Wang, Xiaoyu Chen, Yen-Jen Wang, Jianke
+  Zhang, Koushil Sreenath, Chaochao Lu, and Jianyu Chen.
+\newblock Video prediction policy: A generalist robot policy with predictive
+  visual representations.
+\newblock In \emph{Proceedings of the 42nd International Conference on Machine
+  Learning}, volume 267 of \emph{Proceedings of Machine Learning Research},
+  pages 24328--24346. PMLR, 2025.
+\newblock URL \url{https://proceedings.mlr.press/v267/hu25g.html}.
+
+\bibitem[Kim et~al.(2026)Kim, Gao, Lin, Lin, Ge, Lam, Liang, Song, Liu, Finn,
+  and Gu]{kim2026cosmospolicy}
+Moo~Jin Kim, Yihuai Gao, Tsung-Yi Lin, Yen-Chen Lin, Yunhao Ge, Grace Lam,
+  Percy Liang, Shuran Song, Ming-Yu Liu, Chelsea Finn, and Jinwei Gu.
+\newblock {Cosmos Policy}: Fine-tuning video models for visuomotor control and
+  planning.
+\newblock In \emph{The Fourteenth International Conference on Learning
+  Representations}, 2026.
+\newblock URL \url{https://openreview.net/forum?id=wPEIStHxYH}.
+
+\bibitem[Lakens(2017)]{lakens2017equivalence}
+Dani{\"e}l Lakens.
+\newblock Equivalence tests: A practical primer for t tests, correlations, and
+  meta-analyses.
+\newblock \emph{Social Psychological and Personality Science}, 8\penalty0
+  (4):\penalty0 355--362, 2017.
+\newblock \doi{10.1177/1948550617697177}.
+
+\bibitem[Li et~al.(2026)Li, Zhang, Luo, Yang, Wang, Han, Yu, Gao, Xue, Zhu,
+  Shen, and Xu]{li2026cauva}
+Lin Li, Qihang Zhang, Yiming Luo, Shuai Yang, Ruilin Wang, Fei Han, Mingrui Yu,
+  Zelin Gao, Nan Xue, Xing Zhu, Yujun Shen, and Yinghao Xu.
+\newblock Causal world modeling for robot control, 2026.
+\newblock URL \url{https://arxiv.org/abs/2601.21998}.
+\newblock arXiv preprint.
+
+\bibitem[Li et~al.(2025)Li, Gao, Sadigh, and Song]{li2025uva}
+Shuang Li, Yihuai Gao, Dorsa Sadigh, and Shuran Song.
+\newblock Unified video action model, 2025.
+\newblock URL \url{https://arxiv.org/abs/2503.00200}.
+\newblock arXiv preprint, version 3.
+
+\bibitem[Liu et~al.(2023)Liu, Zhu, Gao, Feng, Liu, Zhu, and
+  Stone]{liu2023libero}
+Bo~Liu, Yifeng Zhu, Chongkai Gao, Yihao Feng, Qiang Liu, Yuke Zhu, and Peter
+  Stone.
+\newblock {LIBERO}: Benchmarking knowledge transfer for lifelong robot
+  learning.
+\newblock In \emph{Advances in Neural Information Processing Systems},
+  volume~36, pages 44776--44791. Curran Associates, Inc., 2023.
+\newblock \doi{10.52202/075280-1939}.
+\newblock URL
+  \url{https://proceedings.neurips.cc/paper_files/paper/2023/hash/8c3c666820ea055a77726d66fc7d447f-Abstract-Datasets_and_Benchmarks.html}.
+
+\bibitem[Meng et~al.(2022)Meng, Bau, Andonian, and Belinkov]{meng2022rome}
+Kevin Meng, David Bau, Alex Andonian, and Yonatan Belinkov.
+\newblock Locating and editing factual associations in {GPT}.
+\newblock In \emph{Advances in Neural Information Processing Systems},
+  volume~35, pages 17359--17372. Curran Associates, Inc., 2022.
+\newblock \doi{10.52202/068431-1262}.
+\newblock URL
+  \url{https://proceedings.neurips.cc/paper_files/paper/2022/hash/6f1d43d5a82a37e89b0665b33bf3a182-Abstract-Conference.html}.
+
+\bibitem[Nasiriany et~al.(2024)Nasiriany, Maddukuri, Zhang, Parikh, Lo, Joshi,
+  Mandlekar, and Zhu]{nasiriany2024robocasa}
+Soroush Nasiriany, Abhiram Maddukuri, Lance Zhang, Adeet Parikh, Aaron Lo,
+  Abhishek Joshi, Ajay Mandlekar, and Yuke Zhu.
+\newblock {RoboCasa}: Large-scale simulation of household tasks for generalist
+  robots.
+\newblock In \emph{Proceedings of Robotics: Science and Systems}, Delft,
+  Netherlands, July 2024.
+\newblock \doi{10.15607/RSS.2024.XX.050}.
+\newblock URL \url{https://www.roboticsproceedings.org/rss20/p050.html}.
+
+\bibitem[{NVIDIA}(2026{\natexlab{a}})]{nvidia2026cosmos3droid}
+{NVIDIA}.
+\newblock Cosmos3-nano-policy-droid.
+\newblock Hugging Face model checkpoint and configuration, 2026{\natexlab{a}}.
+\newblock URL \url{https://huggingface.co/nvidia/Cosmos3-Nano-Policy-DROID}.
+\newblock Checkpoint revision 2b9f9517efcfbf26e222945b386ae9b65c0930ac.
+
+\bibitem[{NVIDIA}(2026{\natexlab{b}})]{nvidia2026cosmospolicylibero}
+{NVIDIA}.
+\newblock Cosmos-policy-libero-predict2-2b.
+\newblock Hugging Face model checkpoint and configuration, 2026{\natexlab{b}}.
+\newblock URL
+  \url{https://huggingface.co/nvidia/Cosmos-Policy-LIBERO-Predict2-2B}.
+\newblock Checkpoint revision cb689ec0e3347c13667d70a78a3447388f5c3bb8.
+
+\bibitem[{NVIDIA} et~al.(2026)]{nvidia2026cosmos3}
+{NVIDIA} et~al.
+\newblock {Cosmos 3}: Omnimodal world models for physical {AI}.
+\newblock \emph{arXiv preprint arXiv:2606.02800}, 2026.
+\newblock \doi{10.48550/arXiv.2606.02800}.
+\newblock URL
+  \url{https://research.nvidia.com/labs/cosmos-lab/cosmos3/technical-report.pdf}.
+
+\bibitem[Qiu et~al.(2026)Qiu, Li, Chen, Ge, Ge, and Liu]{qiu2026agra}
+Lu~Qiu, Yizhuo Li, Yi~Chen, Yuying Ge, Yixiao Ge, and Xihui Liu.
+\newblock Making foresight actionable: Repurposing representation alignment in
+  world action models, 2026.
+\newblock URL \url{https://arxiv.org/abs/2606.12217}.
+\newblock arXiv preprint.
+
+\bibitem[Vig et~al.(2020)Vig, Gehrmann, Belinkov, Qian, Nevo, Singer, and
+  Shieber]{vig2020causalmediation}
+Jesse Vig, Sebastian Gehrmann, Yonatan Belinkov, Sharon Qian, Daniel Nevo,
+  Yaron Singer, and Stuart Shieber.
+\newblock Investigating gender bias in language models using causal mediation
+  analysis.
+\newblock In \emph{Advances in Neural Information Processing Systems},
+  volume~33, pages 12388--12401. Curran Associates, Inc., 2020.
+\newblock URL
+  \url{https://proceedings.neurips.cc/paper/2020/hash/92650b2e92217715fe312e6fa7b90d82-Abstract.html}.
+
+\bibitem[Yang et~al.(2026)Yang, Dagli, Zook, Hadfield, Goyal, Birchfield,
+  Ramos, and Tremblay]{yang2026robolab}
+Xuning Yang, Rishit Dagli, Alex Zook, Hugo Hadfield, Ankit Goyal, Stan
+  Birchfield, Fabio Ramos, and Jonathan Tremblay.
+\newblock {RoboLab}: A high-fidelity simulation benchmark for analysis of task
+  generalist policies.
+\newblock In \emph{Proceedings of Robotics: Science and Systems}, Sydney,
+  Australia, July 2026.
+\newblock \doi{10.15607/RSS.2026.XXII.096}.
+\newblock URL \url{https://roboticsproceedings.org/rss22/p096.html}.
+
+\bibitem[Ye et~al.(2026)Ye, Ge, Zheng, Gao, Yu, Kurian, Indupuru, Tan, Zhu,
+  Xiang, Malik, Lee, Liang, Ranawaka, Gu, Xu, Wang, Hu, Narayan, Bjorck, Wang,
+  Kim, Niu, Zheng, Xie, Wu, Wang, Julian, Xu, Du, Chebotar, Reed, Kautz, Zhu,
+  Fan, and Jang]{ye2026dreamzero}
+Seonghyeon Ye, Yunhao Ge, Kaiyuan Zheng, Shenyuan Gao, Sihyun Yu, George
+  Kurian, Suneel Indupuru, You~Liang Tan, Chuning Zhu, Jiannan Xiang, Ayaan
+  Malik, Kyungmin Lee, William Liang, Nadun Ranawaka, Jiasheng Gu, Yinzhen Xu,
+  Guanzhi Wang, Fengyuan Hu, Avnish Narayan, Johan Bjorck, Jing Wang, Gwanghyun
+  Kim, Dantong Niu, Ruijie Zheng, Yuqi Xie, Jimmy Wu, Qi~Wang, Ryan Julian,
+  Danfei Xu, Yilun Du, Yevgen Chebotar, Scott Reed, Jan Kautz, Yuke Zhu,
+  Linxi~{``Jim''} Fan, and Joel Jang.
+\newblock World action models are zero-shot policies, 2026.
+\newblock URL \url{https://arxiv.org/abs/2602.15922}.
+\newblock arXiv preprint.
+
+\bibitem[Yuan et~al.(2026)Yuan, Dong, Liu, and Zhao]{yuan2026fastwam}
+Tianyuan Yuan, Zibin Dong, Yicheng Liu, and Hang Zhao.
+\newblock {Fast-WAM}: Do world action models need test-time future
+  imagination?, 2026.
+\newblock URL \url{https://arxiv.org/abs/2603.16666}.
+\newblock arXiv preprint, version 2.
+
+\bibitem[Zhang et~al.(2026)Zhang, Tong, Li, Wang, and Li]{zhang2026rift}
+Chushan Zhang, Jinguang Tong, Xuesong Li, Yikai Wang, and Hongdong Li.
+\newblock Keep the future, drop the rollout: {RIFT} for world action models,
+  2026.
+\newblock URL \url{https://arxiv.org/abs/2608.11521}.
+\newblock arXiv preprint, version 2.
+
+\bibitem[Zhang and Nanda(2024)]{zhang2024activationpatching}
+Fred Zhang and Neel Nanda.
+\newblock Towards best practices of activation patching in language models:
+  Metrics and methods.
+\newblock In \emph{The Twelfth International Conference on Learning
+  Representations}, 2024.
+\newblock URL \url{https://openreview.net/forum?id=Hf17y6u9BC}.
+
+\end{thebibliography}

@@ -186,6 +186,16 @@ class GuidedFutureClamp:
     vision_name: str = "vision_0"
     calls: list[float] = field(default_factory=list, init=False)
     clamped_call_indices: list[int] = field(default_factory=list, init=False)
+    inactive_call_indices: list[int] = field(default_factory=list, init=False)
+    active_call_sigmas: list[float] = field(default_factory=list, init=False)
+    model_input_future_clamp_errors: list[float] = field(default_factory=list, init=False)
+    returned_future_velocity_overwrite_errors: list[float] = field(
+        default_factory=list, init=False
+    )
+    future_mask_coordinate_count: int | None = field(default=None, init=False)
+    inactive_wrapper_write_count: int = field(default=0, init=False)
+    action_input_errors: list[float] = field(default_factory=list, init=False)
+    action_output_errors: list[float] = field(default_factory=list, init=False)
     maximum_action_input_error: float = field(default=0.0, init=False)
     maximum_action_output_error: float = field(default=0.0, init=False)
 
@@ -218,14 +228,32 @@ class GuidedFutureClamp:
             self.calls.append(sigma)
 
             if self.active_call_indices is not None and call_index not in self.active_call_indices:
+                self.inactive_call_indices.append(call_index)
+                self.action_input_errors.append(0.0)
+                self.action_output_errors.append(0.0)
                 return velocity_fn(noisy_state, timestep)
             self.clamped_call_indices.append(call_index)
+            self.active_call_sigmas.append(sigma)
 
             target = self.target.to(device=model_state[self.sample_index].device, dtype=model_state[self.sample_index].dtype)
             path_noise = self.path_noise.to(device=target.device, dtype=target.dtype)
             model_vision = model_state[self.sample_index][vision.start : vision.stop]
             donor_path = (1.0 - sigma) * target + sigma * path_noise
             model_vision[selected] = donor_path[selected]
+            mask_count = int(selected.sum().detach().cpu())
+            if self.future_mask_coordinate_count is None:
+                self.future_mask_coordinate_count = mask_count
+            elif self.future_mask_coordinate_count != mask_count:
+                raise RuntimeError("future-mask cardinality changed across denoising calls")
+            self.model_input_future_clamp_errors.append(
+                float(
+                    (model_vision[selected] - donor_path[selected])
+                    .abs()
+                    .max()
+                    .detach()
+                    .cpu()
+                )
+            )
 
             action = None
             native_action_input = None
@@ -239,6 +267,19 @@ class GuidedFutureClamp:
                 )
             except KeyError:
                 pass
+            action_input_error = 0.0
+            if action is not None and native_action_input is not None:
+                action_input_error = float(
+                    (
+                        model_state[self.sample_index][action.start : action.stop]
+                        - native_action_input
+                    )
+                    .abs()
+                    .max()
+                    .detach()
+                    .cpu()
+                )
+            self.action_input_errors.append(action_input_error)
 
             guided_velocity = velocity_fn(model_state, timestep)
             output = [item.clone() for item in guided_velocity]
@@ -248,16 +289,32 @@ class GuidedFutureClamp:
 
             output_vision = output[self.sample_index][vision.start : vision.stop]
             sampler_vision = noisy_state[self.sample_index][vision.start : vision.stop]
-            if sigma > torch.finfo(sampler_vision.dtype).eps:
-                desired_velocity = (sampler_vision - target) / sigma
-                output_vision[selected] = desired_velocity[selected].to(output_vision.dtype)
+            if sigma <= torch.finfo(sampler_vision.dtype).eps:
+                raise RuntimeError("active future clamp encountered a zero RF sigma")
+            desired_velocity = (sampler_vision - target) / sigma
+            expected_velocity = desired_velocity[selected].to(output_vision.dtype)
+            output_vision[selected] = expected_velocity
+            self.returned_future_velocity_overwrite_errors.append(
+                float(
+                    (output_vision[selected] - expected_velocity)
+                    .abs()
+                    .max()
+                    .detach()
+                    .cpu()
+                )
+            )
 
             if action is not None and native_action_output is not None:
                 changed_action_output = output[self.sample_index][action.start : action.stop]
-                self.maximum_action_output_error = max(
-                    self.maximum_action_output_error,
-                    float((changed_action_output - native_action_output).abs().max().detach().cpu()),
+                action_output_error = float(
+                    (changed_action_output - native_action_output).abs().max().detach().cpu()
                 )
+                self.maximum_action_output_error = max(
+                    self.maximum_action_output_error, action_output_error
+                )
+            else:
+                action_output_error = 0.0
+            self.action_output_errors.append(action_output_error)
             return output
 
         return interventional

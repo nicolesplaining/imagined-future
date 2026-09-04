@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "protocol_id": "lingbot_future_dose_v1",
+  "frozen_at_utc": "2026-09-04T09:28:39Z",
+  "frozen_before_evaluation_outcome_inspection": true,
+  "evaluation_effect_metrics_inspected_at_freeze": false,
+  "completed_evaluation_states_at_freeze": 16,
+  "scientific_role": "separate follow-up dose-response; never merged into the core 4x4 result identity",
+  "gate": {
+    "run_only_after_core_states_complete": 30,
+    "require_all_core_exact_controls": true,
+    "require_upstream_native_oracle_audit": true,
+    "stop_if_interpolation_is_not_mechanistically_interpretable": true
+  },
+  "source": {
+    "manifest_path": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_states/manifest.json",
+    "manifest_sha256": "9c8d7dd547955e4622d98c7eb42fffed157f6db983f41f02929b28a434be47b4",
+    "core_result_root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_eval_v1",
+    "core_runner_path": "/home/ubuntu/if_external/tools/run_lingbot_future_transplants.py",
+    "core_runner_sha256": "902d749772eadef213988c1b30ddb1ef2182da7e2f3852dc6ba596d05bf09fc2",
+    "upstream_commit": "7c6ffa9bfc4b83582cafc860fab4c82cc7deeeeb",
+    "checkpoint_revision": "0e89d1e753019988aba484e8da2dc0810e264d9f"
+  },
+  "cohort": {
+    "admission": "evaluation",
+    "selection": "all 30 frozen evaluation states in manifest task/state order",
+    "state_ids": [
+      "task00_state010",
+      "task00_state020",
+      "task00_state030",
+      "task01_state010",
+      "task01_state020",
+      "task01_state030",
+      "task02_state010",
+      "task02_state020",
+      "task02_state030",
+      "task03_state010",
+      "task03_state020",
+      "task03_state030",
+      "task04_state010",
+      "task04_state020",
+      "task04_state030",
+      "task05_state010",
+      "task05_state020",
+      "task05_state030",
+      "task06_state010",
+      "task06_state020",
+      "task06_state030",
+      "task07_state010",
+      "task07_state020",
+      "task07_state030",
+      "task08_state010",
+      "task08_state020",
+      "task08_state030",
+      "task09_state010",
+      "task09_state020",
+      "task09_state030"
+    ],
+    "outcome_based_selection_or_exclusion": false
+  },
+  "ordered_pair": {
+    "recipient_branch_id": "b0",
+    "recipient_branch_index": 0,
+    "donor_branch_id": "b1",
+    "donor_branch_index": 1,
+    "action_noise_branch_id": "b0",
+    "action_noise_branch_index": 0,
+    "action_noise_seed": 1009
+  },
+  "dose": {
+    "alphas": [0.0, 0.25, 0.5, 0.75, 1.0],
+    "interior_model_calls_per_state": 3,
+    "endpoint_reuse": {
+      "alpha_0": "core latent_grid_actions[recipient=0,future_source=0]",
+      "alpha_1": "core latent_grid_actions[recipient=0,future_source=1]"
+    },
+    "interpolation": "L_alpha = (1-alpha) * L_b0 + alpha * L_b1",
+    "interpolation_variable": "the final normalized denoised future-video latent recorded by the core runner",
+    "present_frame": "identical frozen observation latent at every alpha; explicitly overwritten after interpolation",
+    "cache_installation": "recompute the complete official t=0 predicted-video K/V cache from L_alpha before action denoising",
+    "action_noise": "reuse the exact frozen b0 action-noise tensor at every alpha",
+    "action_coordinates_written": false,
+    "cache_tensors_linearly_blended": false,
+    "claim_scope": "pathwise sensitivity along one fixed latent segment; not semantic naturalness or a population intervention over future concepts"
+  },
+  "analysis": {
+    "independent_unit": "frozen simulator state",
+    "action_view": "three action frames actually executed by LIBERO; discard the conditioned first frame",
+    "state_response": "projection of A_alpha-A_0 onto A_1-A_0, divided by squared endpoint distance",
+    "primary_state_statistic": "OLS slope of the three interior projected responses at alpha 0.25, 0.5, 0.75",
+    "primary_cohort_estimate": "unweighted mean of the 30 state slopes",
+    "confidence_interval": "percentile bootstrap resampling 30 states with replacement; 50000 repetitions; seed 260906",
+    "randomization_test": "independently permute the three interior alpha labels within every state, recompute cohort mean slope; 100000 repetitions; seed 260907",
+    "secondary_descriptives": [
+      "fraction of states with nondecreasing interior projected response",
+      "mean absolute deviation of interior projected response from alpha",
+      "all five alpha-wise cohort means and state-bootstrap intervals"
+    ],
+    "endpoint_policy": "alpha 0 and 1 are integrity anchors reused from core and are excluded from the primary slope/permutation statistic",
+    "zero_endpoint_contrast_policy": "report the state as projection-undefined and fail the preregistered complete-cohort analysis; do not substitute another ordered pair",
+    "state_or_task_weighting_changes": false,
+    "outcome_selected_examples": false
+  },
+  "optional_engineering_smoke": {
+    "allowed_state": "dev_task01_state000",
+    "included_in_analysis": false,
+    "required": false
+  }
+}

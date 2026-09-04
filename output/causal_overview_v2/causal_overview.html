@@ -1,0 +1,743 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Does the generated future change the action?</title>
+  <style>
+    :root {
+      --ink: #17212b;
+      --muted: #58646f;
+      --hairline: #c8ced2;
+      --paper: #fbfaf7;
+      --panel: #f4f4f1;
+      --a: #3978b7;
+      --a-pale: #e9f1f8;
+      --b: #db792f;
+      --b-pale: #fbede3;
+      --new: #239681;
+      --new-pale: #e6f3ef;
+      --model: #1d2731;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-width: 100%; min-height: 100%; }
+    body {
+      display: grid;
+      place-items: center;
+      background: #e6e7e5;
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .canvas {
+      width: 1900px;
+      height: 1220px;
+      overflow: hidden;
+      padding: 27px 34px 18px;
+      background: var(--paper);
+    }
+
+    .masthead {
+      height: 112px;
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      align-items: center;
+      border-bottom: 3px solid var(--ink);
+    }
+
+    .eyebrow {
+      margin-bottom: 3px;
+      color: #59646e;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 2.4px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 47px;
+      line-height: 1.02;
+      letter-spacing: -1px;
+    }
+
+    .masthead p {
+      margin: 0;
+      padding-left: 34px;
+      border-left: 5px solid var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 24px;
+      line-height: 1.25;
+    }
+
+    .core {
+      height: 655px;
+      display: grid;
+      grid-template-columns: 824px 84px 924px;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .side {
+      position: relative;
+      padding-top: 16px;
+      overflow: hidden;
+    }
+
+    .side-kicker {
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+    }
+
+    .side h2 {
+      margin: 3px 0 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 28px;
+      line-height: 1.1;
+    }
+
+    .normal-grid {
+      position: relative;
+      height: 477px;
+      margin-top: 11px;
+      display: grid;
+      grid-template-columns: 224px 1fr;
+      align-items: center;
+    }
+
+    .start {
+      position: relative;
+      z-index: 2;
+      width: 210px;
+      margin-left: 3px;
+    }
+
+    .photo {
+      position: relative;
+      margin: 0;
+    }
+
+    .photo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo figcaption {
+      margin-top: 5px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.15;
+    }
+
+    .start .image {
+      width: 210px;
+      height: 210px;
+      border: 5px solid var(--ink);
+    }
+
+    .same-state {
+      position: absolute;
+      top: -11px;
+      left: 14px;
+      padding: 5px 11px;
+      background: var(--ink);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+    }
+
+    .branch-arrows {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .rollout-lanes {
+      position: relative;
+      z-index: 2;
+      align-self: stretch;
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      gap: 10px;
+      padding-left: 52px;
+    }
+
+    .rollout {
+      display: grid;
+      grid-template-columns: 183px 112px 183px;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 11px 8px;
+      border-left: 7px solid;
+    }
+    .rollout.a { border-color: var(--a); background: var(--a-pale); }
+    .rollout.b { border-color: var(--b); background: var(--b-pale); }
+
+    .rollout .image { width: 183px; height: 145px; border: 4px solid; }
+    .rollout.a .image { border-color: var(--a); }
+    .rollout.b .image { border-color: var(--b); }
+    .rollout.a figcaption, .rollout.a .action-link { color: var(--a); }
+    .rollout.b figcaption, .rollout.b .action-link { color: var(--b); }
+
+    .action-link {
+      position: relative;
+      text-align: center;
+      font-size: 17px;
+      font-weight: 800;
+    }
+    .action-link::after {
+      content: "";
+      display: block;
+      width: 86px;
+      height: 4px;
+      margin: 8px auto 0;
+      background: currentColor;
+    }
+    .action-link::before {
+      content: "";
+      position: absolute;
+      right: 5px;
+      bottom: -7px;
+      width: 13px;
+      height: 13px;
+      border-top: 4px solid currentColor;
+      border-right: 4px solid currentColor;
+      transform: rotate(45deg);
+    }
+
+    .correlation-note {
+      height: 54px;
+      display: grid;
+      place-items: center;
+      margin-top: -3px;
+      background: #fff4cd;
+      border-top: 2px solid #d4b247;
+      border-bottom: 2px solid #d4b247;
+      text-align: center;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 21px;
+      font-weight: 700;
+    }
+
+    .intervene-arrow {
+      position: relative;
+      display: grid;
+      place-items: center;
+    }
+    .intervene-arrow::before {
+      content: "";
+      width: 66px;
+      height: 7px;
+      background: var(--new);
+    }
+    .intervene-arrow::after {
+      content: "";
+      position: absolute;
+      right: 8px;
+      width: 23px;
+      height: 23px;
+      border-top: 7px solid var(--new);
+      border-right: 7px solid var(--new);
+      transform: rotate(45deg);
+    }
+    .intervene-arrow span {
+      position: absolute;
+      top: 266px;
+      width: 110px;
+      text-align: center;
+      color: var(--new);
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      transform: rotate(-90deg);
+      text-transform: uppercase;
+    }
+
+    .causal { padding-left: 16px; }
+    .causal .side-kicker { width: 500px; }
+
+    .hypothesis {
+      position: absolute;
+      top: 13px;
+      right: 2px;
+      width: 425px;
+      font-size: 13.5px;
+      line-height: 1.28;
+      color: var(--muted);
+    }
+    .hypothesis b { color: var(--ink); }
+    .hypothesis strong { color: var(--new); }
+
+    .fixed-strip {
+      position: relative;
+      height: 103px;
+      margin-top: 13px;
+      padding: 18px 9px 7px;
+      display: grid;
+      grid-template-columns: 82px 245px 126px 1fr;
+      gap: 7px;
+      border: 2px solid #878f96;
+      background: #f2f3f2;
+    }
+
+    .fixed-label {
+      position: absolute;
+      top: -12px;
+      left: 13px;
+      padding: 3px 10px;
+      background: #666f77;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .fixed-thumb { width: 82px; height: 72px; border: 2px solid #69727a; }
+    .fixed-item {
+      display: grid;
+      place-items: center;
+      padding: 5px 8px;
+      border-left: 1px solid #b4b9bd;
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.08;
+    }
+    .fixed-item b { font-size: 15px; }
+    .solver-steps {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      margin-top: 4px;
+    }
+    .solver-steps i {
+      display: grid;
+      place-items: center;
+      min-width: 45px;
+      height: 22px;
+      padding: 0 4px;
+      border: 1px solid #7c858c;
+      background: #fff;
+      font-style: normal;
+      font-size: 11px;
+    }
+
+    .only-change {
+      height: 151px;
+      display: grid;
+      grid-template-columns: 124px 72px 150px 56px 1fr;
+      align-items: center;
+      gap: 7px;
+      margin-top: 10px;
+    }
+    .small-future .image { width: 124px; height: 108px; border: 3px solid; }
+    .small-future figcaption { font-size: 14px; }
+    .future-a-old { opacity: .42; }
+    .future-a-old .image { border-color: var(--a); }
+    .future-b-new .image { width: 150px; border-color: var(--b); }
+    .future-a-old figcaption { color: var(--a); text-decoration: line-through; }
+    .future-b-new figcaption { color: var(--b); }
+
+    .replace-arrow { text-align: center; color: var(--b); font-size: 14px; font-weight: 900; }
+    .replace-arrow b { display: block; font-size: 35px; line-height: .8; }
+    .to-model { position: relative; height: 4px; background: var(--b); }
+    .to-model::after {
+      content: "";
+      position: absolute;
+      right: -1px;
+      top: -7px;
+      width: 14px;
+      height: 14px;
+      border-top: 4px solid var(--b);
+      border-right: 4px solid var(--b);
+      transform: rotate(45deg);
+    }
+    .model-block {
+      display: grid;
+      place-items: center;
+      height: 94px;
+      padding: 8px 12px;
+      border-radius: 7px;
+      background: var(--model);
+      color: #fff;
+      text-align: center;
+    }
+    .model-block b { font-family: Georgia, "Times New Roman", serif; font-size: 21px; }
+    .model-block span { color: #d1d7db; font-size: 13px; line-height: 1.15; }
+
+    .output-grid {
+      height: 254px;
+      display: grid;
+      grid-template-columns: 520px 1fr;
+      gap: 17px;
+      align-items: start;
+    }
+    .action-plot { width: 520px; height: 265px; margin-top: -5px; }
+    .result-side { padding-top: 1px; }
+    .result-row {
+      display: grid;
+      grid-template-columns: 144px 1fr;
+      gap: 9px;
+      align-items: center;
+    }
+    .result-photo .image { width: 144px; height: 144px; border: 4px solid var(--new); }
+    .result-photo figcaption { color: var(--new); font-size: 14px; }
+    .withheld {
+      padding: 11px 10px;
+      border-top: 2px solid var(--b);
+      border-bottom: 2px solid var(--b);
+      color: #7d4b27;
+      font-size: 14px;
+      line-height: 1.25;
+    }
+    .withheld b { color: var(--b); font-size: 16px; }
+
+    .ruler-title { margin-top: 7px; font-size: 14px; font-weight: 800; }
+    .ruler {
+      position: relative;
+      height: 49px;
+      margin: 0 18px 0 15px;
+    }
+    .ruler-line { position: absolute; left: 0; right: 0; top: 18px; height: 3px; background: var(--ink); }
+    .mark { position: absolute; top: 10px; width: 18px; height: 18px; border-radius: 50%; transform: translateX(-50%); }
+    .mark.a { left: 0; background: var(--a); }
+    .mark.b { left: 91%; background: var(--b); }
+    .mark.new { left: 95%; width: 21px; height: 21px; border-radius: 2px; background: var(--new); transform: translateX(-50%) rotate(45deg); box-shadow: 0 0 0 3px #fff; }
+    .ruler span {
+      position: absolute;
+      top: 31px;
+      transform: translateX(-50%);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .ruler .la { left: 0; color: var(--a); }
+    .ruler .lb { left: 91%; color: var(--b); }
+    .ruler .ln { left: 95%; top: -9px; color: var(--new); font-size: 16px; font-weight: 900; }
+
+    .causal-conclusion {
+      height: 49px;
+      margin-top: 3px;
+      display: grid;
+      place-items: center;
+      background: var(--new-pale);
+      border-top: 2px solid var(--new);
+      border-bottom: 2px solid var(--new);
+      text-align: center;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .evidence {
+      height: 341px;
+      display: grid;
+      grid-template-columns: 765px 1fr;
+      gap: 24px;
+      padding-top: 13px;
+    }
+
+    .evidence h3 {
+      margin: 0 0 5px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 25px;
+    }
+    .evidence-sub { color: var(--muted); font-size: 15px; }
+
+    .breadth {
+      padding-right: 19px;
+      border-right: 1px solid #bfc5c9;
+    }
+    .coverage-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .scope-chip {
+      padding: 5px 10px;
+      background: var(--ink);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 800;
+    }
+    .task-strip {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+      margin-top: 9px;
+    }
+    .task {
+      margin: 0;
+      min-width: 0;
+    }
+    .task img {
+      display: block;
+      width: 100%;
+      height: 76px;
+      object-fit: cover;
+      border: 1px solid #8c949a;
+    }
+    .task figcaption { margin-top: 3px; text-align: center; font-size: 11px; color: #49545e; }
+
+    .population-flow {
+      display: grid;
+      grid-template-columns: 132px 34px 132px 1fr;
+      align-items: center;
+      gap: 7px;
+      margin-top: 10px;
+    }
+    .pop-number {
+      padding: 6px 8px;
+      background: #eef0f0;
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.12;
+    }
+    .pop-number b { display: block; font-size: 25px; color: var(--ink); }
+    .pop-arrow { color: var(--ink); font-size: 26px; text-align: center; }
+    .missing-note {
+      padding-left: 11px;
+      border-left: 4px solid #aeb5ba;
+      font-size: 13px;
+      line-height: 1.25;
+      color: #4f5a64;
+    }
+
+    .rigor-lines {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px 15px;
+      margin-top: 9px;
+      font-size: 13px;
+      line-height: 1.22;
+    }
+    .rigor-lines div::before { content: "✓"; margin-right: 6px; color: var(--new); font-weight: 900; }
+
+    .mechanics { padding-right: 1px; }
+    .mechanics-table {
+      width: 100%;
+      margin-top: 7px;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 12.5px;
+      line-height: 1.18;
+    }
+    .mechanics-table th {
+      padding: 5px 8px;
+      border-bottom: 2px solid var(--ink);
+      text-align: left;
+      font-size: 12px;
+      letter-spacing: .7px;
+      text-transform: uppercase;
+    }
+    .mechanics-table td {
+      padding: 7px 8px;
+      border-bottom: 1px solid #cbd0d3;
+      vertical-align: top;
+    }
+    .mechanics-table td:first-child { font-weight: 900; font-size: 14px; }
+    .mechanics-table code { padding: 1px 3px; background: #eceeee; color: #27313a; font-size: 11.5px; }
+
+    .followups {
+      margin-top: 9px;
+      display: grid;
+      grid-template-columns: 1fr 1.25fr;
+      gap: 8px;
+    }
+    .followup {
+      padding: 7px 9px;
+      background: #f0f1ef;
+      font-size: 12px;
+      line-height: 1.2;
+    }
+    .followup b { display: block; margin-bottom: 2px; font-size: 13px; }
+    .followup .result { color: var(--new); font-weight: 900; }
+
+    footer {
+      height: 67px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding-top: 10px;
+      border-top: 1px solid #9ea6ac;
+      font-size: 13px;
+      color: #505c66;
+    }
+    footer strong { color: var(--ink); }
+    footer .boundary {
+      max-width: 620px;
+      text-align: right;
+      font-family: Georgia, "Times New Roman", serif;
+      font-style: italic;
+      color: #6b556d;
+    }
+  </style>
+</head>
+<body>
+  <main class="canvas" aria-label="Causal overview of future interventions in world action models">
+    <header class="masthead">
+      <div>
+        <div class="eyebrow">The causal question</div>
+        <h1>Does the generated future change the action?</h1>
+      </div>
+      <p>A future and an action can be generated together without one causing the other. The test is to change <em>only the future</em> and ask whether the action follows.</p>
+    </header>
+
+    <section class="core">
+      <article class="side normal">
+        <div class="side-kicker">What normal rollouts show</div>
+        <h2>One starting state, two different future–action pairs</h2>
+
+        <div class="normal-grid">
+          <svg class="branch-arrows" viewBox="0 0 824 477" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <marker id="headA" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#3978b7"/></marker>
+              <marker id="headB" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#db792f"/></marker>
+            </defs>
+            <path d="M205 221 C240 221, 239 112, 286 112" fill="none" stroke="#3978b7" stroke-width="5" marker-end="url(#headA)"/>
+            <path d="M205 256 C240 256, 239 362, 286 362" fill="none" stroke="#db792f" stroke-width="5" marker-end="url(#headB)"/>
+          </svg>
+
+          <figure class="photo start">
+            <span class="same-state">same saved state</span>
+            <div class="image"><img src="assets/start.png" alt="The same LIBERO simulator state used to start both normal rollouts"></div>
+            <figcaption>same observation<br>and instruction</figcaption>
+          </figure>
+
+          <div class="rollout-lanes">
+            <div class="rollout a">
+              <figure class="photo"><div class="image"><img src="assets/future_a.png" alt="Predicted Future A from the held-out LIBERO rollout"></div><figcaption>Future A</figcaption></figure>
+              <div class="action-link">Action A</div>
+              <figure class="photo"><div class="image"><img src="assets/endpoint_a.png" alt="Simulator endpoint after executing Action A"></div><figcaption>Action A executed</figcaption></figure>
+            </div>
+            <div class="rollout b">
+              <figure class="photo"><div class="image"><img src="assets/future_b.png" alt="Predicted Future B from the held-out LIBERO rollout"></div><figcaption>Future B</figcaption></figure>
+              <div class="action-link">Action B</div>
+              <figure class="photo"><div class="image"><img src="assets/endpoint_b.png" alt="Simulator endpoint after executing Action B"></div><figcaption>Action B executed</figcaption></figure>
+            </div>
+          </div>
+        </div>
+
+        <div class="correlation-note">Future A agrees with Action A; Future B agrees with Action B—but agreement alone is only correlation.</div>
+      </article>
+
+      <div class="intervene-arrow"><span>intervene</span></div>
+
+      <article class="side causal">
+        <div class="side-kicker">The experiment that separates cause from correlation</div>
+        <h2>Rerun A, but insert Future B</h2>
+        <div class="hypothesis"><b>If the future is incidental:</b> the new action stays near A.<br><strong>If its content controls action:</strong> the new action moves toward B.</div>
+
+        <div class="fixed-strip">
+          <span class="fixed-label">held fixed from rollout A</span>
+          <img class="fixed-thumb" src="assets/start.png" alt="fixed starting observation">
+          <div class="fixed-item"><span><b>same instruction</b><br>“turn on the stove and put the moka pot on it”</span></div>
+          <div class="fixed-item"><span><b>A’s random draws</b><br>action noise + future noise</span></div>
+          <div class="fixed-item"><span><b>same solver and schedule</b><span class="solver-steps"><i>80</i><i>42.3</i><i>21.0</i><i>9.6</i><i>4</i></span></span></div>
+        </div>
+
+        <div class="only-change">
+          <figure class="photo small-future future-a-old"><div class="image"><img src="assets/future_a.png" alt="Future A removed from the rerun"></div><figcaption>Future A</figcaption></figure>
+          <div class="replace-arrow">replace only<br>the future<b>→</b></div>
+          <figure class="photo small-future future-b-new"><div class="image"><img src="assets/future_b.png" alt="Future B inserted into rollout A"></div><figcaption>insert Future B</figcaption></figure>
+          <i class="to-model"></i>
+          <div class="model-block"><b>same policy computation</b><span>recompute A while repeatedly clamping only its future representation</span></div>
+        </div>
+
+        <div class="output-grid">
+          <img class="action-plot" src="assets/action_pca.svg" alt="Actual Action A, Action B, and recomputed 16-step action chunks projected into the same PCA plane">
+          <div class="result-side">
+            <div class="result-row">
+              <figure class="photo result-photo"><div class="image"><img src="assets/endpoint_patch.png" alt="Simulator endpoint after executing the recomputed action"></div><figcaption>new action executed</figcaption></figure>
+              <div class="withheld"><b>Action B is withheld</b><br>It never enters the policy. Only after inference does it define the direction used for scoring.</div>
+            </div>
+            <div class="ruler-title">Full-vector action score</div>
+            <div class="ruler"><i class="ruler-line"></i><i class="mark a"></i><i class="mark b"></i><i class="mark new"></i><span class="la">Action A · 0</span><span class="lb">Action B · 1</span><span class="ln">new · 1.04</span></div>
+          </div>
+        </div>
+
+        <div class="causal-conclusion">Because the new action moves toward B, Future B’s content causally affects the action.</div>
+      </article>
+    </section>
+
+    <section class="evidence">
+      <article class="breadth">
+        <div class="coverage-head">
+          <div>
+            <h3>The example is illustrative; inference is population-level</h3>
+            <div class="evidence-sub">All prespecified states and all missing states are accounted for.</div>
+          </div>
+          <span class="scope-chip">2 models · 2 benchmarks</span>
+        </div>
+
+        <div class="task-strip" aria-label="Six RoboLab tasks represented in the Cosmos 3 population">
+          <figure class="task"><img src="assets/task_banana.png" alt="banana to bowl task"><figcaption>banana → bowl</figcaption></figure>
+          <figure class="task"><img src="assets/task_marker.png" alt="marker to mug task"><figcaption>marker → mug</figcaption></figure>
+          <figure class="task"><img src="assets/task_mustard.png" alt="mustard to bin task"><figcaption>mustard → bin</figcaption></figure>
+          <figure class="task"><img src="assets/task_rubiks.png" alt="Rubik's cube task"><figcaption>Rubik’s cube</figcaption></figure>
+          <figure class="task"><img src="assets/task_phone.png" alt="phone to bin task"><figcaption>phone → bin</figcaption></figure>
+          <figure class="task"><img src="assets/task_spoon.png" alt="spoon to mug task"><figcaption>spoon → mug</figcaption></figure>
+        </div>
+
+        <div class="population-flow">
+          <div class="pop-number"><b>24</b>prespecified<br>RoboLab states</div>
+          <div class="pop-arrow">→</div>
+          <div class="pop-number"><b>22</b>completed<br>22/22 positive</div>
+          <div class="missing-note"><b>2 missing, disclosed and not replaced:</b> their registered source videos ended before the required 33 frames. No intervention outcome entered retention.</div>
+        </div>
+
+        <div class="rigor-lines">
+          <div>Six Cosmos 3 tasks; self, matched-Gaussian, and natural-future controls</div>
+          <div>Task-balanced resampling preserves the conclusions</div>
+          <div>Pairs selected from native success, separation, and replay validity only</div>
+          <div>Cosmos Policy: 30 frozen LIBERO states/10 tasks; self, Gaussian, natural, and shuffled controls</div>
+        </div>
+      </article>
+
+      <article class="mechanics">
+        <h3>What is actually replaced?</h3>
+        <div class="evidence-sub">The overview stays plain-language; the intervention itself is tensor-level and repeated.</div>
+        <table class="mechanics-table">
+          <colgroup><col style="width:13%"><col style="width:34%"><col style="width:31%"><col style="width:22%"></colgroup>
+          <thead><tr><th>Model</th><th>Target</th><th>When</th><th>Never written</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Cosmos Policy</td>
+              <td>Clean <code>x₀</code> future latent: proprioception, wrist RGB, primary RGB at temporal slots 5–7</td>
+              <td>Initialization + every one of five solver evaluations; target reset after each evaluation. Conditional-only, so no CFG branch.</td>
+              <td>Action and value coordinates; current observation and instruction</td>
+            </tr>
+            <tr>
+              <td>Cosmos 3</td>
+              <td>Future-video latent frames 1–8. Noisy state uses <code>(1−σ)Fᴮ + σεᴬ</code>; post-guidance future velocity is reset to the clean target.</td>
+              <td>Before conditional and unconditional forwards at all four UniPC calls; velocity reset after guidance each time</td>
+              <td>Current-video frame; action state and action velocity</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="followups">
+          <div class="followup"><b>Which visual content is sufficient?</b>Cosmos 3: disjoint robot/object pixel interventions at 10 states across six tasks. <span class="result">Neither isolated factor recreates the whole-future effect.</span></div>
+          <div class="followup"><b>Which route carries the effect?</b>Self-future K/V replaces alternative-future K/V at all 36 layers × eight forwards, action-query rows only; other tokens and the future clamp stay fixed. <span class="result">83–88% of Cosmos 3 steering is removed.</span></div>
+        </div>
+      </article>
+    </section>
+
+    <footer>
+      <span><strong>Held-out LIBERO example:</strong> task02 · state10 · rollout seeds 313 and 347 · intervention noise seed 419 · actual 16×7 action chunks</span>
+      <span class="boundary">This tests content-specific future conditioning. It does not show candidate comparison, task-success mediation, or task-level planning.</span>
+    </footer>
+  </main>
+</body>
+</html>

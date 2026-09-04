@@ -1,0 +1,78 @@
+{
+  "analysis_clarification": {
+    "path": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_future_dose_v1_analysis_clarification.json",
+    "sha256": "2f3ca2211b66100c6d99d44e879b632bee1434da1f8d371fb2ed27f981ee7f8e"
+  },
+  "artifacts": [
+    {
+      "bytes": 530,
+      "path": "README.md",
+      "sha256": "6ab5a07f645e2c2e238491ecb67132e3ae3094d00cb319b7668b28288e77554a"
+    },
+    {
+      "bytes": 303,
+      "path": "alpha_summary.csv",
+      "sha256": "0f025c987ee93fa8d8933380cb131d44f8d44a7188ee62fade0be8b58e30d44e"
+    },
+    {
+      "bytes": 3200128,
+      "path": "bootstrap_draws.npy",
+      "sha256": "915376f50d03cb3d6cff7f4851783ad648b471e5bb70c22e53b3b6443a26abda"
+    },
+    {
+      "bytes": 866,
+      "path": "bootstrap_summary.csv",
+      "sha256": "3ad90d750c96d2fca9f7776878c8ffeceb01ef63f7579f7a03bbccb03e5e46b7"
+    },
+    {
+      "bytes": 800128,
+      "path": "permutation_null.npy",
+      "sha256": "114da6614fd33e54c55bd52da821a5a3632353bd0e30c0aeaf15bc3e6876ebf0"
+    },
+    {
+      "bytes": 475,
+      "path": "permutation_summary.json",
+      "sha256": "239de248779216f61e48cd798171c1423bf6d26fc7767dc234f819648ac6fb25"
+    },
+    {
+      "bytes": 184353,
+      "path": "plots/all_state_dose_response.png",
+      "sha256": "2c66ef2045c355cf142ca2ccc2a444078b680e004c9953a1189afb3cd30e5ea0"
+    },
+    {
+      "bytes": 31192,
+      "path": "plots/state_interior_slopes.png",
+      "sha256": "bcc8fc062844e985f2bd9e59ce4300fc5f24957fb0c55e2a17fad6487f39feb8"
+    },
+    {
+      "bytes": 664,
+      "path": "resampling_manifest.json",
+      "sha256": "e34d1c768319b56eb05a59601af7eece7c3fceebb2233620ab3b1e697c30f133"
+    },
+    {
+      "bytes": 4711,
+      "path": "state_metrics.csv",
+      "sha256": "d8f71cef3f9fc86206268409f9702c6c5b325655a34e7af5554e21865ebfbbfa"
+    },
+    {
+      "bytes": 2240,
+      "path": "summary.json",
+      "sha256": "de891927550197f8d3275a14dce515644a09d1895bda7ef74bc244098fecba9d"
+    }
+  ],
+  "generator": "/home/ubuntu/if_external/tools/summarize_lingbot_future_dose.py",
+  "generator_sha256": "03b899c5755f52023c094a1347760423f1f4c5d114757b3cc23b6e66ac367ac2",
+  "oracle_receipt": {
+    "path": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_upstream_native_parity_v4/upstream_native_parity.json",
+    "sha256": "f54eebb2d4525ec8d8c57ebdc3b1294041194e5d1e13fd0033380a09453719aa"
+  },
+  "outcome_selected_states_or_examples": false,
+  "protocol": {
+    "path": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_future_dose_v1_preregistered.json",
+    "sha256": "8b6b4103b5c172f28c896b9834fda114aa52684c53f8c570c78c346fda9d3eba"
+  },
+  "source_core_result_root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_eval_v1",
+  "source_result_root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_future_dose_v1",
+  "state_count": 30,
+  "status": "complete"
+}

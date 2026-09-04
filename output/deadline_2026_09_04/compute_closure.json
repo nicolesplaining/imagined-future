@@ -1,0 +1,26 @@
+{
+  "checked_at_local": "2026-09-04T11:50:33-07:00",
+  "checked_at_utc": "2026-09-04T18:50:33Z",
+  "instances_stopped_or_deleted": false,
+  "nodes": [
+    {
+      "hostname": "if-overnight-external-wams",
+      "ip": "68.209.72.187",
+      "role": "DreamZero",
+      "experimental_processes_remaining": 0,
+      "gpu_memory_mib": [0, 0],
+      "gpu_utilization_percent": [0, 0],
+      "closure_action": "SIGTERM sent to verified torchrun parents PID 69619 (deadline experiment server), PID 108557 (clean upstream parity server), and PID 110121 (patched parity server); all child workers exited"
+    },
+    {
+      "hostname": "if-overnight-robolab-clients",
+      "ip": "68.209.75.174",
+      "role": "LingBot-VA",
+      "experimental_processes_remaining": 0,
+      "gpu_memory_mib": [0, 0],
+      "gpu_utilization_percent": [0, 0],
+      "closure_action": "Gaussian workers PIDs 47067 and 47068 had exited normally before closure audit"
+    }
+  ],
+  "status": "experimental_processes_closed_instances_left_running"
+}

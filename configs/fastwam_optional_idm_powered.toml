@@ -1,0 +1,33 @@
+study_name = "fastwam_optional_idm_powered_all_libero_v1"
+
+# Identical to the successful frozen smoke: four natural future/action branches
+# with independent video and action RNG streams.
+video_seeds = [101, 211, 307, 401]
+action_seeds = [1009, 2017, 3019, 4021]
+
+[inference]
+num_inference_steps = 20
+sigma_shift = 1.0
+num_video_frames = 9
+action_horizon = 32
+rand_device = "cpu"
+
+[design]
+cohort = "selection-free powered external-WAM replication"
+independent_unit = "saved simulator state"
+task_structure = "40 tasks nested within four LIBERO suites"
+within_state_measurements = "four branches and all twelve ordered recipient-to-donor pairs"
+primary_outcome = "four-way correct-donor action retrieval"
+secondary_outcomes = ["donor distance reduction", "donor-axis projection", "orthogonal residual ratio"]
+inference_rule = "average ordered pairs within state; hierarchical bootstrap suites then tasks then states"
+state_selection_rule = "Cartesian product of every suite, every task, and untouched initial-state indices 4,5,6"
+mechanical_fallback_rule = "abort the entire launch before model inference if any task lacks any requested index"
+smoke_exclusion = "indices 0,1,2,3 used by smoke are excluded from every powered task"
+frozen_condition_count = 8
+frozen_runs_per_state = 72
+
+[state_grid]
+suites = ["libero_spatial", "libero_object", "libero_goal", "libero_10"]
+task_ids = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+initial_state_indices = [4, 5, 6]
+wait_steps = 30

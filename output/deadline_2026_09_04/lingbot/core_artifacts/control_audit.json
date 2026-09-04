@@ -1,0 +1,361 @@
+{
+  "all_exact_controls_pass": true,
+  "provenance": {
+    "checkpoint_revision": [
+      "0e89d1e753019988aba484e8da2dc0810e264d9f"
+    ],
+    "manifest_path": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_eval_v1/manifest.json",
+    "manifest_sha256": "9c8d7dd547955e4622d98c7eb42fffed157f6db983f41f02929b28a434be47b4",
+    "runner_sha256": [
+      "902d749772eadef213988c1b30ddb1ef2182da7e2f3852dc6ba596d05bf09fc2"
+    ],
+    "upstream_commit": [
+      "7c6ffa9bfc4b83582cafc860fab4c82cc7deeeeb"
+    ]
+  },
+  "state_count": 30,
+  "states": [
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task00_state010",
+      "task_id": 0
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task00_state020",
+      "task_id": 0
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task00_state030",
+      "task_id": 0
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task01_state010",
+      "task_id": 1
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task01_state020",
+      "task_id": 1
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task01_state030",
+      "task_id": 1
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task02_state010",
+      "task_id": 2
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task02_state020",
+      "task_id": 2
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task02_state030",
+      "task_id": 2
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task03_state010",
+      "task_id": 3
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task03_state020",
+      "task_id": 3
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task03_state030",
+      "task_id": 3
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task04_state010",
+      "task_id": 4
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task04_state020",
+      "task_id": 4
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task04_state030",
+      "task_id": 4
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task05_state010",
+      "task_id": 5
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task05_state020",
+      "task_id": 5
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task05_state030",
+      "task_id": 5
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task06_state010",
+      "task_id": 6
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task06_state020",
+      "task_id": 6
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task06_state030",
+      "task_id": 6
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task07_state010",
+      "task_id": 7
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task07_state020",
+      "task_id": 7
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task07_state030",
+      "task_id": 7
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task08_state010",
+      "task_id": 8
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task08_state020",
+      "task_id": 8
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task08_state030",
+      "task_id": 8
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task09_state010",
+      "task_id": 9
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task09_state020",
+      "task_id": 9
+    },
+    {
+      "action_noise_hashes_unique": 4,
+      "cache_hashes_unique": 4,
+      "donor_cache_routing_max_abs_error": 0.0,
+      "future_hashes_unique": 4,
+      "recipient_cache_routing_max_abs_error": 0.0,
+      "self_cache_max_abs_error": 0.0,
+      "self_latent_max_abs_error": 0.0,
+      "state_id": "task09_state030",
+      "task_id": 9
+    }
+  ],
+  "task_counts": {
+    "0": 3,
+    "1": 3,
+    "2": 3,
+    "3": 3,
+    "4": 3,
+    "5": 3,
+    "6": 3,
+    "7": 3,
+    "8": 3,
+    "9": 3
+  }
+}

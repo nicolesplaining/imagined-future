@@ -239,14 +239,19 @@ class ResearchPolicyService:
             )
         future_frames = tuple(range(1, donor.vision_shape[-3]))
         mask = temporal_mask(donor.vision_shape, future_frames, device=torch.device("cpu"))
-        if mode == "self":
+        if mode in {"self", "none"}:
             target = recipient.target
+            target_source = "recipient"
         elif mode == "donor":
             target = donor.target
+            target_source = "donor"
         elif mode == "gaussian":
             target = gaussian_target_on_mask(recipient.target, donor.target, mask, seed=gaussian_seed)
+            target_source = "gaussian_geometry"
         else:
             raise ValueError(f"unsupported intervention mode: {mode!r}")
+        if mode == "none" and timing_steps != ():
+            raise ValueError("none mode requires an explicit empty research_timing_steps list")
         if recipient.path_noise is None:
             raise ValueError("recipient record has no captured path noise")
 
@@ -262,7 +267,8 @@ class ResearchPolicyService:
         def transform(velocity_fn):
             return x0.wrap_velocity(clamp.wrap_velocity(velocity_fn))
 
-        sampler = SamplerVelocityWrapper(self._base.model.sampler, transform)
+        initial = SamplerInitialStateCapture(self._base.model.sampler)
+        sampler = SamplerVelocityWrapper(initial, transform)
         samples = self._base.model.generate_samples_from_batch(
             data_batch,
             sampler=sampler,
@@ -275,14 +281,106 @@ class ResearchPolicyService:
             num_steps=self._base.cfg.num_steps,
             shift=self._base.cfg.shift,
         )
+        if initial.initial_state is None:
+            raise RuntimeError("intervention sampler audit capture did not initialize")
         output_target = samples["vision"][0].detach().cpu().reshape(-1)
+        requested_active_call_indices = (
+            tuple(range(len(clamp.calls))) if timing_steps is None else timing_steps
+        )
+        if (
+            len(set(requested_active_call_indices)) != len(requested_active_call_indices)
+            or tuple(sorted(requested_active_call_indices)) != requested_active_call_indices
+            or any(index < 0 or index >= len(clamp.calls) for index in requested_active_call_indices)
+        ):
+            raise ValueError(
+                f"requested active calls are not unique ordered valid indices: "
+                f"{requested_active_call_indices} for {len(clamp.calls)} calls"
+            )
+        requested_active_sigmas = tuple(
+            clamp.calls[index] for index in requested_active_call_indices
+        )
+        if tuple(clamp.clamped_call_indices) != requested_active_call_indices:
+            raise RuntimeError(
+                f"observed active calls {clamp.clamped_call_indices} differ from requested "
+                f"{requested_active_call_indices}"
+            )
+        if tuple(clamp.active_call_sigmas) != requested_active_sigmas:
+            raise RuntimeError("observed active sigmas differ from requested call sigmas")
+        if not (
+            len(clamp.model_input_future_clamp_errors)
+            == len(clamp.returned_future_velocity_overwrite_errors)
+            == len(requested_active_call_indices)
+        ):
+            raise RuntimeError("intervention-site audit cardinality differs from active calls")
+        inactive_call_indices = tuple(
+            index
+            for index in range(len(clamp.calls))
+            if index not in requested_active_call_indices
+        )
+        if tuple(clamp.inactive_call_indices) != inactive_call_indices:
+            raise RuntimeError("observed inactive calls differ from requested complement")
+        if not (
+            len(clamp.action_input_errors)
+            == len(clamp.action_output_errors)
+            == len(clamp.calls)
+        ):
+            raise RuntimeError("per-call action nonwrite audit cardinality differs")
+        final_sampler_delta = output_target[mask] - target[mask]
         audit = {
             "target_hash": tensor_digest(target),
+            "target_source": target_source,
+            "target_source_record_ids": [recipient.record_id]
+            if target_source == "recipient"
+            else [donor.record_id]
+            if target_source == "donor"
+            else [recipient.record_id, donor.record_id],
+            "recipient_future_hash": tensor_digest(recipient.target),
+            "donor_future_hash": tensor_digest(donor.target),
+            "recipient_path_noise_hash": tensor_digest(recipient.path_noise),
+            "initial_state_hash": tensor_digest(initial.initial_state[0]),
             "output_future_hash": tensor_digest(output_target),
-            "target_future_max_error": float((output_target[mask] - target[mask]).abs().max()),
+            "final_sampler_target_max_abs_error": float(
+                final_sampler_delta.abs().max()
+            ),
+            "final_sampler_target_l2": float(
+                torch.linalg.vector_norm(final_sampler_delta.double())
+            ),
             "maximum_action_input_error": clamp.maximum_action_input_error,
             "maximum_action_output_error": clamp.maximum_action_output_error,
             "sigmas": np.asarray(clamp.calls, dtype=np.float32),
+            "vision_shape": np.asarray(donor.vision_shape, dtype=np.int64),
+            "future_frame_indices": np.asarray(future_frames, dtype=np.int64),
+            "vision_coordinate_count": int(mask.numel()),
+            "future_mask_coordinate_count": int(mask.sum()),
+            "future_mask_index_hash": tensor_digest(mask),
+            "requested_active_call_indices": np.asarray(
+                requested_active_call_indices, dtype=np.int64
+            ),
+            "observed_active_call_indices": np.asarray(
+                clamp.clamped_call_indices, dtype=np.int64
+            ),
+            "inactive_call_indices": np.asarray(
+                inactive_call_indices, dtype=np.int64
+            ),
+            "inactive_wrapper_write_count": int(clamp.inactive_wrapper_write_count),
+            "requested_active_sigmas": np.asarray(
+                requested_active_sigmas, dtype=np.float32
+            ),
+            "observed_active_sigmas": np.asarray(
+                clamp.active_call_sigmas, dtype=np.float32
+            ),
+            "model_input_future_clamp_errors": np.asarray(
+                clamp.model_input_future_clamp_errors, dtype=np.float64
+            ),
+            "returned_future_velocity_overwrite_errors": np.asarray(
+                clamp.returned_future_velocity_overwrite_errors, dtype=np.float64
+            ),
+            "action_input_errors": np.asarray(
+                clamp.action_input_errors, dtype=np.float64
+            ),
+            "action_output_errors": np.asarray(
+                clamp.action_output_errors, dtype=np.float64
+            ),
             "clamped_call_indices": np.asarray(clamp.clamped_call_indices, dtype=np.int64),
             "x0_sigmas": np.asarray([item["sigma"] for item in x0.records], dtype=np.float32),
             "x0_vision_hashes": [tensor_digest(item["samples"][0]["vision_0"]) for item in x0.records],
@@ -450,6 +548,7 @@ class ResearchPolicyService:
                     "research_path_noise_hash": tensor_digest(record.path_noise),
                     "research_initial_state_hash": record.initial_state_hash,
                     "research_sigmas": np.asarray(record.sigmas, dtype=np.float32),
+                    "research_x0_sigmas": np.asarray(record.sigmas, dtype=np.float32),
                     "research_x0_vision_hashes": list(record.x0_vision_hashes),
                     "research_x0_action_hashes": list(record.x0_action_hashes),
                     "research_attention_exclude_layers": np.asarray(attention_layers, dtype=np.int64),
@@ -459,7 +558,7 @@ class ResearchPolicyService:
                     decoded = self._base.model.decode(samples["vision"][0])
                     video = ((decoded[0].clamp(-1, 1) + 1) * 127.5).to(torch.uint8).permute(1, 2, 3, 0)
                     outputs["video"] = video.cpu().numpy()
-            elif mode in {"self", "donor", "gaussian"}:
+            elif mode in {"none", "self", "donor", "gaussian"}:
                 recipient_id = str(obs["research_recipient_id"])
                 donor_id = str(obs.get("research_donor_id", recipient_id))
                 recipient = self.registry[recipient_id]
@@ -583,9 +682,15 @@ def main() -> None:
         registry_limit=args.registry_limit,
         attention_instrumentation=args.attention_instrumentation,
     )
+    if service.registry:
+        raise RuntimeError("research registry was not empty at server startup")
     server_cls = _load_openpi_websocket_policy_server()
     hostname = socket.gethostname()
-    print(f"research server {hostname} listening on 0.0.0.0:{args.port}", flush=True)
+    print(
+        f"research server {hostname} listening on 0.0.0.0:{args.port} "
+        "registry_entries=0",
+        flush=True,
+    )
     server_cls(policy=service, host="0.0.0.0", port=args.port, metadata={}).serve_forever()
 
 

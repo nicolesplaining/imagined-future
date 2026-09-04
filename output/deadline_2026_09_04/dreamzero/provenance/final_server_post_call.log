@@ -1,0 +1,210 @@
+W0904 08:33:15.484000 43572 torch/distributed/run.py:774] 
+W0904 08:33:15.484000 43572 torch/distributed/run.py:774] *****************************************
+W0904 08:33:15.484000 43572 torch/distributed/run.py:774] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0904 08:33:15.484000 43572 torch/distributed/run.py:774] *****************************************
+/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/albumentations/__init__.py:13: UserWarning: A new version of Albumentations is available: 2.0.8 (you have 1.4.18). Upgrade using: pip install -U albumentations. To disable automatic update checks, set the environment variable NO_ALBUMENTATIONS_UPDATE to 1.
+  check_for_updates()
+/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/albumentations/__init__.py:13: UserWarning: A new version of Albumentations is available: 2.0.8 (you have 1.4.18). Upgrade using: pip install -U albumentations. To disable automatic update checks, set the environment variable NO_ALBUMENTATIONS_UPDATE to 1.
+  check_for_updates()
+Rank 0/2 (PID: 43628) setting device to 0
+Rank 1/2 (PID: 43629) setting device to 1
+Rank 0/2 (PID: 43628) using device cuda:0
+Rank 1/2 (PID: 43629) using device cuda:1
+[Gloo] Rank 1[Gloo] Rank  is connected to 10 peer ranks.  is connected to Expected number of connected peer ranks is : 11 peer ranks. Expected number of connected peer ranks is : 
+1
+INFO:__main__:Rank 0 initialized signal_group (gloo)
+INFO:__main__:Rank 1 initialized signal_group (gloo)
+No model config overrides provided
+Loading model from pretrained directly
+No model config overrides provided
+Loading model from pretrained directly
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/transformers/utils/import_utils.py", line 1967, in _get_module
+[rank1]:     return importlib.import_module("." + module_name, self.__name__)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+[rank1]:     return _bootstrap._gcd_import(name[level:], package, level)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+[rank1]:   File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+[rank1]:   File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+[rank1]:   File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+[rank1]:   File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+[rank1]:   File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+[rank1]:   File "/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/transformers/models/opt/modeling_opt.py", line 37, in <module>
+[rank1]:     from ...modeling_utils import PreTrainedModel
+[rank1]: ImportError: cannot import name 'PreTrainedModel' from partially initialized module 'transformers.modeling_utils' (most likely due to a circular import) (/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/transformers/modeling_utils.py)
+
+[rank1]: The above exception was the direct cause of the following exception:
+
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/transformers/utils/import_utils.py", line 1967, in _get_module
+[rank1]:     return importlib.import_module("." + module_name, self.__name__)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+[rank1]:     return _bootstrap._gcd_import(name[level:], package, level)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+[rank1]:   File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+[rank1]:   File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+[rank1]:   File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+[rank1]:   File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+[rank1]:   File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+[rank1]:   File "/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/transformers/modeling_utils.py", line 158, in <module>
+[rank1]:     import deepspeed
+[rank1]:   File "/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/deepspeed/__init__.py", line 45, in <module>
+[rank1]:     from .runtime.hybrid_engine import DeepSpeedHybridEngine
+[rank1]:   File "/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/deepspeed/runtime/hybrid_engine.py", line 26, in <module>
+[rank1]:     OPTLearnedPositionalEmbedding = transformers.models.opt.modeling_opt.OPTLearnedPositionalEmbedding
+[rank1]:                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/transformers/utils/import_utils.py", line 1958, in __getattr__
+[rank1]:     value = self._get_module(name)
+[rank1]:             ^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/transformers/utils/import_utils.py", line 1969, in _get_module
+[rank1]:     raise RuntimeError(
+[rank1]: RuntimeError: Failed to import transformers.models.opt.modeling_opt because of the following error (look up to see its traceback):
+[rank1]: cannot import name 'PreTrainedModel' from partially initialized module 'transformers.modeling_utils' (most likely due to a circular import) (/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/transformers/modeling_utils.py)
+
+[rank1]: The above exception was the direct cause of the following exception:
+
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/home/ubuntu/if_external/dreamzero/socket_test_optimized_AR.py", line 836, in <module>
+[rank1]:     main(args)
+[rank1]:   File "/home/ubuntu/if_external/dreamzero/socket_test_optimized_AR.py", line 766, in main
+[rank1]:     policy = GrootSimPolicy(
+[rank1]:              ^^^^^^^^^^^^^^^
+[rank1]:   File "/home/ubuntu/if_external/dreamzero/groot/vla/model/n1_5/sim_policy.py", line 318, in __init__
+[rank1]:     cls = getattr(importlib.import_module(cls_module), cls_name)
+[rank1]:                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+[rank1]:     return _bootstrap._gcd_import(name[level:], package, level)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+[rank1]:   File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+[rank1]:   File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+[rank1]:   File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+[rank1]:   File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+[rank1]:   File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+[rank1]:   File "/home/ubuntu/if_external/dreamzero/groot/vla/model/dreamzero/base_vla.py", line 10, in <module>
+[rank1]:     from transformers import AutoConfig, AutoModel, PretrainedConfig, PreTrainedModel
+[rank1]:   File "<frozen importlib._bootstrap>", line 1412, in _handle_fromlist
+[rank1]:   File "/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/transformers/utils/import_utils.py", line 1955, in __getattr__
+[rank1]:     module = self._get_module(self._class_to_module[name])
+[rank1]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/transformers/utils/import_utils.py", line 1969, in _get_module
+[rank1]:     raise RuntimeError(
+[rank1]: RuntimeError: Failed to import transformers.modeling_utils because of the following error (look up to see its traceback):
+[rank1]: Failed to import transformers.models.opt.modeling_opt because of the following error (look up to see its traceback):
+[rank1]: cannot import name 'PreTrainedModel' from partially initialized module 'transformers.modeling_utils' (most likely due to a circular import) (/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/transformers/modeling_utils.py)
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/transformers/utils/import_utils.py", line 1967, in _get_module
+[rank0]:     return importlib.import_module("." + module_name, self.__name__)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+[rank0]:     return _bootstrap._gcd_import(name[level:], package, level)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+[rank0]:   File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+[rank0]:   File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+[rank0]:   File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+[rank0]:   File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+[rank0]:   File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+[rank0]:   File "/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/transformers/models/opt/modeling_opt.py", line 37, in <module>
+[rank0]:     from ...modeling_utils import PreTrainedModel
+[rank0]: ImportError: cannot import name 'PreTrainedModel' from partially initialized module 'transformers.modeling_utils' (most likely due to a circular import) (/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/transformers/modeling_utils.py)
+
+[rank0]: The above exception was the direct cause of the following exception:
+
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/transformers/utils/import_utils.py", line 1967, in _get_module
+[rank0]:     return importlib.import_module("." + module_name, self.__name__)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+[rank0]:     return _bootstrap._gcd_import(name[level:], package, level)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+[rank0]:   File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+[rank0]:   File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+[rank0]:   File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+[rank0]:   File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+[rank0]:   File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+[rank0]:   File "/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/transformers/modeling_utils.py", line 158, in <module>
+[rank0]:     import deepspeed
+[rank0]:   File "/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/deepspeed/__init__.py", line 45, in <module>
+[rank0]:     from .runtime.hybrid_engine import DeepSpeedHybridEngine
+[rank0]:   File "/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/deepspeed/runtime/hybrid_engine.py", line 26, in <module>
+[rank0]:     OPTLearnedPositionalEmbedding = transformers.models.opt.modeling_opt.OPTLearnedPositionalEmbedding
+[rank0]:                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/transformers/utils/import_utils.py", line 1958, in __getattr__
+[rank0]:     value = self._get_module(name)
+[rank0]:             ^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/transformers/utils/import_utils.py", line 1969, in _get_module
+[rank0]:     raise RuntimeError(
+[rank0]: RuntimeError: Failed to import transformers.models.opt.modeling_opt because of the following error (look up to see its traceback):
+[rank0]: cannot import name 'PreTrainedModel' from partially initialized module 'transformers.modeling_utils' (most likely due to a circular import) (/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/transformers/modeling_utils.py)
+
+[rank0]: The above exception was the direct cause of the following exception:
+
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/home/ubuntu/if_external/dreamzero/socket_test_optimized_AR.py", line 836, in <module>
+[rank0]:     main(args)
+[rank0]:   File "/home/ubuntu/if_external/dreamzero/socket_test_optimized_AR.py", line 766, in main
+[rank0]:     policy = GrootSimPolicy(
+[rank0]:              ^^^^^^^^^^^^^^^
+[rank0]:   File "/home/ubuntu/if_external/dreamzero/groot/vla/model/n1_5/sim_policy.py", line 318, in __init__
+[rank0]:     cls = getattr(importlib.import_module(cls_module), cls_name)
+[rank0]:                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+[rank0]:     return _bootstrap._gcd_import(name[level:], package, level)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+[rank0]:   File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+[rank0]:   File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+[rank0]:   File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+[rank0]:   File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+[rank0]:   File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+[rank0]:   File "/home/ubuntu/if_external/dreamzero/groot/vla/model/dreamzero/base_vla.py", line 10, in <module>
+[rank0]:     from transformers import AutoConfig, AutoModel, PretrainedConfig, PreTrainedModel
+[rank0]:   File "<frozen importlib._bootstrap>", line 1412, in _handle_fromlist
+[rank0]:   File "/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/transformers/utils/import_utils.py", line 1955, in __getattr__
+[rank0]:     module = self._get_module(self._class_to_module[name])
+[rank0]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/transformers/utils/import_utils.py", line 1969, in _get_module
+[rank0]:     raise RuntimeError(
+[rank0]: RuntimeError: Failed to import transformers.modeling_utils because of the following error (look up to see its traceback):
+[rank0]: Failed to import transformers.models.opt.modeling_opt because of the following error (look up to see its traceback):
+[rank0]: cannot import name 'PreTrainedModel' from partially initialized module 'transformers.modeling_utils' (most likely due to a circular import) (/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/transformers/modeling_utils.py)
+W0904 08:33:33.657000 43572 torch/distributed/elastic/multiprocessing/api.py:900] Sending process 43629 closing signal SIGTERM
+E0904 08:33:33.721000 43572 torch/distributed/elastic/multiprocessing/api.py:874] failed (exitcode: 1) local_rank: 0 (pid: 43628) of binary: /home/ubuntu/if_external/envs/dreamzero/bin/python
+Traceback (most recent call last):
+  File "/home/ubuntu/if_external/envs/dreamzero/bin/torchrun", line 10, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 357, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/torch/distributed/run.py", line 901, in main
+    run(args)
+  File "/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/torch/distributed/run.py", line 892, in run
+    elastic_launch(
+  File "/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 143, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/if_external/envs/dreamzero/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 277, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+socket_test_optimized_AR.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-09-04_08:33:33
+  host      : if-overnight-external-wams.ll.local
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 43628)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

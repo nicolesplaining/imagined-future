@@ -1,0 +1,41 @@
+{
+  "action_array_sha256": "eb0079e9771ceedda2551305e2eeaf83c9891c07cd10a639fcf4ca156550e023",
+  "action_dtype": "float32",
+  "action_shape": [
+    24,
+    8
+  ],
+  "admission": "excluded_development_control",
+  "bitwise_exact": true,
+  "capture_runner_sha256": "1c4f510ca8a2bbb8766bc34edf63fab6d8393f4f5f036898277b2ad368c8e2c1",
+  "checkpoint_revision": "96ad344138c66e82536422432ad742f015784942",
+  "clean_checkout_status": "clean",
+  "clean_source_sha256": {
+    "groot/vla/model/dreamzero/action_head/wan_flow_matching_action_tf.py": "7193cd73423472aa252bee73bd80e0d673c89d773ec852e90f50154729b50845",
+    "groot/vla/model/n1_5/sim_policy.py": "c7b692b84a03a70adc7e0d21fb7632a9866285645e8d43c916100e6f5fb7497a",
+    "socket_test_optimized_AR.py": "7ef17f66064bac8defafc1a84551089b124546729a98be8c0515b33d2e159d48"
+  },
+  "failed_attempts": [
+    {
+      "disposition": "failed after inference but before any artifact write",
+      "error": "TypeError: controlled DreamZero response expected a mapping but official upstream returned its native ndarray",
+      "resolution": "capture runner was updated to admit the native ndarray response; both successful arms used the same final runner hash",
+      "stage": "first clean-client capture wrapper",
+      "stderr_was_not_persisted": true
+    }
+  ],
+  "input_fingerprint": "02d94b71b6f69e7de3ffc276f132b8be672c79ef8e3945384ace32d25ee18e2d",
+  "maximum_absolute_error": 0.0,
+  "noise_seed": 1140,
+  "official_commit": "ab790c198fbce33503358efbbd4187ce9a89adf3",
+  "patched_diff_sha256": "7c601e25d335a348056ef674065e445279482e91098f28493b3f218882b3d25a",
+  "patched_modified_files": [
+    "M groot/vla/model/dreamzero/action_head/wan_flow_matching_action_tf.py",
+    " M groot/vla/model/n1_5/sim_policy.py",
+    " M socket_test_optimized_AR.py"
+  ],
+  "schema": "dreamzero-upstream-native-parity-execution-v1",
+  "scientific_admission": false,
+  "status": "complete",
+  "worker_shutdown_after_comparison": true
+}

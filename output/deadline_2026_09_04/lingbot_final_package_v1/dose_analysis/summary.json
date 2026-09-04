@@ -1,0 +1,62 @@
+{
+  "action_coordinate_intervention": "none",
+  "alphas": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "analysis_clarification_sha256": "2f3ca2211b66100c6d99d44e879b632bee1434da1f8d371fb2ed27f981ee7f8e",
+  "claim_scope": "pathwise sensitivity along one fixed latent segment; not semantic naturalness or a population intervention over future concepts",
+  "endpoint_cells_excluded_from_primary_inference": true,
+  "endpoint_cells_reused_from_core": true,
+  "interior_nondecreasing_state_count": 30,
+  "oracle_action_bitwise_equal": true,
+  "oracle_action_max_abs_error": 0.0,
+  "oracle_future_bitwise_equal": true,
+  "oracle_future_max_abs_error": 0.0,
+  "oracle_receipt_path": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_upstream_native_parity_v4/upstream_native_parity.json",
+  "oracle_receipt_sha256": "f54eebb2d4525ec8d8c57ebdc3b1294041194e5d1e13fd0033380a09453719aa",
+  "ordered_pair": "b0_to_b1",
+  "outcome_selected_states_or_examples": false,
+  "primary_bootstrap": {
+    "bootstrap_95_ci_high": 1.1086219176170966,
+    "bootstrap_95_ci_low": 1.0394117689531157,
+    "bootstrap_mean": 1.0733390246068797,
+    "estimate": 1.0733742481898816,
+    "metric": "interior_slope",
+    "n_states": 30,
+    "repetitions": 50000,
+    "seed": 260906
+  },
+  "primary_metric": "mean state-level interior projected-response slope",
+  "primary_permutation": {
+    "metric": "mean_interior_slope",
+    "monte_carlo_p_greater_equal": 9.99990000099999e-06,
+    "monte_carlo_p_two_sided_absolute": 9.99990000099999e-06,
+    "null_95_interval_high": 0.2743969868029278,
+    "null_95_interval_low": -0.2726321667527147,
+    "null_mean": 0.00022875170897448754,
+    "observed": 1.0733742481898816,
+    "permutation_unit": "three interior alpha labels independently within each frozen state; endpoints excluded",
+    "repetitions": 100000,
+    "seed": 260907
+  },
+  "protocol_sha256": "8b6b4103b5c172f28c896b9834fda114aa52684c53f8c570c78c346fda9d3eba",
+  "state_count": 30,
+  "status": "complete",
+  "task_counts": {
+    "0": 3,
+    "1": 3,
+    "2": 3,
+    "3": 3,
+    "4": 3,
+    "5": 3,
+    "6": 3,
+    "7": 3,
+    "8": 3,
+    "9": 3
+  },
+  "upstream_parity_claim_scope": "bitwise for the controlled official _infer audit"
+}

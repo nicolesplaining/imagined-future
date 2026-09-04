@@ -1,0 +1,86 @@
+{
+  "all_120_control_latents_saved_and_unique": true,
+  "all_exact_controls_pass": true,
+  "cell_count": 480,
+  "cohort_selection_uses_gaussian_outcomes": false,
+  "design": "complete 30-state x 4 recipient-action-noise x 4 branch-derived norm-matched Gaussian-source grid",
+  "gaussian_source_retrieval_off_diagonal": {
+    "bootstrap": {
+      "ci95_high": 0.1388888888888889,
+      "ci95_low": 0.09444444444444446,
+      "estimate": 0.11666666666666665,
+      "resamples": 100000,
+      "unit": "state"
+    },
+    "permutation": {
+      "chance_rate": 0.25,
+      "null_mean": 0.2501042222222223,
+      "observed": 0.11666666666666667,
+      "p_value_plus_one": 1.0,
+      "permutations": 100000,
+      "scheme": "one shared four-label source permutation per state; original 12 off-diagonal positions"
+    },
+    "template": "four diagonal existing Gaussian-control actions"
+  },
+  "gaussian_template_distance_reduction_off_diagonal": {
+    "ci95_high": -0.28830773264242415,
+    "ci95_low": -0.3293719843345714,
+    "estimate": -0.3087413309414925,
+    "resamples": 100000,
+    "unit": "state"
+  },
+  "gaussian_template_projection_off_diagonal": {
+    "ci95_high": 0.1780062270882412,
+    "ci95_low": 0.15635592223625774,
+    "estimate": 0.16706868508736772,
+    "resamples": 100000,
+    "unit": "state"
+  },
+  "interpretation": "Arbitrary-source/norm-matched Gaussian routing audit. Sources inherit branch-specific first/second moments and norm; this is not an equal-geometry null, semantic-content test, or natural-future intervention.",
+  "native_donor_alignment_off_diagonal": {
+    "bootstrap": {
+      "ci95_high": 0.23888888888888887,
+      "ci95_low": 0.19166666666666668,
+      "estimate": 0.21666666666666667,
+      "resamples": 100000,
+      "unit": "state"
+    },
+    "permutation": {
+      "chance_rate": 0.25,
+      "null_mean": 0.24999769444444445,
+      "observed": 0.21666666666666667,
+      "p_value_plus_one": 0.999950000499995,
+      "permutations": 100000,
+      "scheme": "one shared four-label source permutation per state; original 12 off-diagonal positions"
+    },
+    "template": "four native branch actions"
+  },
+  "native_recipient_retention_off_diagonal": {
+    "ci95_high": 0.4166666666666667,
+    "ci95_low": 0.2916666666666667,
+    "estimate": 0.35,
+    "resamples": 100000,
+    "unit": "state"
+  },
+  "native_template_distance_reduction_off_diagonal": {
+    "ci95_high": -0.0081494825029545,
+    "ci95_low": -0.019347713779381572,
+    "estimate": -0.013523335487832334,
+    "resamples": 100000,
+    "unit": "state"
+  },
+  "native_template_projection_off_diagonal": {
+    "ci95_high": 0.0089561083894481,
+    "ci95_low": -0.21418856528361474,
+    "estimate": -0.09714016905138591,
+    "resamples": 100000,
+    "unit": "state"
+  },
+  "off_diagonal_cell_count": 360,
+  "resamples": 100000,
+  "rng_seed": 20260904,
+  "schema_version": 1,
+  "state_count": 30,
+  "status": "complete",
+  "timing": "postanalysis exploratory control requested after the core and dose outcomes; not publicly preregistered"
+}

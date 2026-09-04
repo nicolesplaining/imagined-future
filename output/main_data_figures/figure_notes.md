@@ -6,16 +6,18 @@ These captions use the estimands and qualifications in `paper/main.tex` after co
 Plot elements remain vector, and the PDFs embed CID TrueType fonts rather than
 Type 3 fonts.
 
-## Figure 2 — Directional tests
+## Figure 2 — Future conditions on one scale
 
-Primary directional and specificity-control contrasts. (a) Donor-minus-self
-steering for the five primary model/source/outcome combinations. Zero denotes no
-donor-directed effect, the dashed line marks the prespecified 0.10 criterion, and
-the dotted line marks the full recipient-to-donor displacement at 1. (b) Paired
-donor projection minus the named control projection, including Cosmos 3 action and
-executed-endpoint comparisons. Individual marks are restored simulator states for
-Cosmos 3 and task-level first-query units for Cosmos Policy; large marks and bars
-are means and 95% independent-unit bootstrap intervals.
+Future interventions and controls on one common scale. The horizontal axis is the
+normalized donor projection $\pi_x$, with self fixed at 0 and the paired donor at
+1 defining the native recipient-to-donor direction. Rows are nested by
+model and future source; controls progress from natural to shuffled to matched
+Gaussian where available, followed by the paired transplant. Cosmos Policy
+control projections are reconstructed within task from the registered pairwise
+contrasts before bootstrapping. Light shading identifies the paired-transplant
+rows, and thin gray segments connect paired action and endpoint means. Large marks
+and bars are means and 95% independent-unit bootstrap intervals across restored
+simulator states for Cosmos 3 and task-level first-query units for Cosmos Policy.
 
 ## Figure 3 — Cosmos 3 pixel factors
 

@@ -1,0 +1,35 @@
+{
+  "bindings": {
+    "core_runner_sha256": "902d749772eadef213988c1b30ddb1ef2182da7e2f3852dc6ba596d05bf09fc2",
+    "decoder_sha256": "4a1335ac0392f1dd86af13d067476eaae41588915a9a64b1d87eb3468dbad0be",
+    "finalizer_sha256": "fafd1f5230ca1add4785b83b674a52f18b17c3ccd62a5a8806a84e237ef21ea4",
+    "manifest_sha256": "9c8d7dd547955e4622d98c7eb42fffed157f6db983f41f02929b28a434be47b4",
+    "official_server_source_sha256": "9c2a427611db487fea5cf40f184b713bf2088e533990ee00fdcd020d2668b4bf",
+    "vae_payload_sha256": "62cd18f19438e35b32ac63020e2852f566e9b02f46b6cdbd87972a356e3c6f4b"
+  },
+  "branch_count": 4,
+  "created_at_utc": "2026-09-04T17:50:07.520002+00:00",
+  "item_count": 120,
+  "media": {
+    "contact_sheet": "media/all_120_terminal_frames_contact_sheet.png",
+    "contact_sheet_sha256": "f37a1c5a6bcfe24ece65192fae0264874406f34feac4edb0bf8c568d06727479",
+    "overview_video": "media/all_30_states_all_4_branches.mp4",
+    "overview_video_sha256": "51204a42a5ee5ff40d66b95092b4b80193a10584b0db04c07d9330fdf1ee5e19"
+  },
+  "output_root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_native_future_decode_all120_v1",
+  "schema_version": 1,
+  "source_shards": [
+    {
+      "artifact_index_sha256": "d577b669f146e0a68b28809fec894ce73754e14e830611bd4fe7f6ce8aa3c8c0",
+      "root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_native_future_decode_all120_v1_shard0",
+      "tree_aggregate_sha256": "96a288e95bce63358bacfdf0c34a6322bc35f9b2d4497360a17b7594a7580905"
+    },
+    {
+      "artifact_index_sha256": "956efec68a8d7f9bba9376084bef14d60e04f4ba64a62f734b95750903d29b94",
+      "root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_native_future_decode_all120_v1_shard1",
+      "tree_aggregate_sha256": "fd8ffd9150f0a9c3fb284da1931fbc4b6c64e623765749c3eb7dbba7827f6632"
+    }
+  ],
+  "state_count": 30,
+  "status": "complete_mode_frozen_read_only_umbrella"
+}

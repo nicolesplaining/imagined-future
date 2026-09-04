@@ -1,0 +1,14 @@
+FROM cosmos-framework:overnight-2026-09-03
+
+WORKDIR /workspace
+
+# Add the exact wheel artifacts selected by cosmos-framework d4599e2's lock.
+# Dependencies are already present in the base cu130/vllm environment.
+RUN --mount=type=cache,target=/root/.cache/uv \
+    /workspace/.venv/bin/uv pip install --python /workspace/.venv/bin/python --no-deps \
+      "filelock @ https://files.pythonhosted.org/packages/81/47/dd9a212ef6e343a6857485ffe25bba537304f1913bdbed446a23f7f592e1/filelock-3.29.0-py3-none-any.whl#sha256=96f5f6344709aa1572bbf631c640e4ebeeb519e08da902c39a001882f30ac258" \
+      "openpi-client @ https://files.pythonhosted.org/packages/95/55/84ddc2c41a8178f63f8b668cf90497601bcd354128813aad63db96571c45/openpi_client-0.1.2-py3-none-any.whl#sha256=b8aa6d2ea7172d3b7c1fcf867d43930052b5ff19ea7b777966781105aa989897" \
+      "openpi-server @ https://files.pythonhosted.org/packages/08/27/e544f3f6bbb73845fc491ee69856b69a017eca643e05a78e0105625ef371/openpi_server-0.1.0-py3-none-any.whl#sha256=e4db08c1f718cb704eb1c995270b46ffd013bf1e2cf95300d5b303f2040551af"
+
+RUN /workspace/.venv/bin/python -c \
+    "import importlib.metadata as m; import openpi_server; print(m.version('openpi-server'))"

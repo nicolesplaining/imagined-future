@@ -1,0 +1,43 @@
+{
+  "file_count_excluding_index": 7,
+  "files": [
+    {
+      "bytes": 4956,
+      "path": "execution_receipt.json",
+      "sha256": "561b0db1f153f7cc139cd51d190502bb4e9fb032babf6aea79ed43bf5978238d"
+    },
+    {
+      "bytes": 11959,
+      "path": "freeze_lingbot_decode_execution_addendum.py",
+      "sha256": "d63f1b7f6da2ddf11f98a5a1871ac62c012a5bbc4b04844ffabab1112f95986b"
+    },
+    {
+      "bytes": 2925,
+      "path": "logs/exhaustive_shard0_success.log",
+      "sha256": "4d766bfaa24481d3edbbf917e3939c2bf1c0dabd03c67fac7d2544caaa64db30"
+    },
+    {
+      "bytes": 2925,
+      "path": "logs/exhaustive_shard1_success.log",
+      "sha256": "b71ea6b792f7b0bf808728f154307c31577f2f344f7ea337c11a052820cdf7b5"
+    },
+    {
+      "bytes": 557,
+      "path": "logs/finalize_success.log",
+      "sha256": "5e424e7e7ffad6e3e4342336a6eeba82c22375433102add9de7299441312446d"
+    },
+    {
+      "bytes": 1642,
+      "path": "logs/smoke_v1_failure.log",
+      "sha256": "37bc0ae82da5dfb16322d45ead0fa2b33c08de1ea39fdf29e827498f6331dc93"
+    },
+    {
+      "bytes": 621,
+      "path": "logs/smoke_v2_success.log",
+      "sha256": "ab5125f5aec5f7afcf8086b0cfef6256ff41c0f78d6c0b5481bd125e438dde08"
+    }
+  ],
+  "schema_version": 1,
+  "status": "complete_mode_frozen_read_only_execution_addendum",
+  "tree_aggregate_sha256": "e4bc015123487dea1bd2abf230b95b74232f214f3c5bc8b46c2773718b3c5944"
+}

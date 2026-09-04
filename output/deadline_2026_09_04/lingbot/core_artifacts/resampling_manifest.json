@@ -1,0 +1,32 @@
+{
+  "bootstrap": {
+    "columns": [
+      "retrieval_accuracy_off_diagonal",
+      "retrieval_accuracy_all",
+      "projection",
+      "distance_reduction",
+      "cosine_alignment",
+      "orthogonal_residual",
+      "normalized_final_distance",
+      "gaussian_perturbation_normalized",
+      "donor_future_recipient_cache_projection",
+      "recipient_future_donor_cache_projection"
+    ],
+    "draws_file": "bootstrap_draws.npy",
+    "independent_unit": "frozen simulator state",
+    "repetitions": 50000,
+    "seed": 260904
+  },
+  "permutation": {
+    "columns": [
+      "retrieval_accuracy_all",
+      "retrieval_accuracy_off_diagonal"
+    ],
+    "draws_file": "permutation_null.npy",
+    "off_diagonal_null_expected_accuracy": 0.25,
+    "primary_metric": "retrieval_accuracy_off_diagonal",
+    "repetitions": 100000,
+    "seed": 260905,
+    "unit": "one shared permutation of all four future-source labels over all four native-action labels per state; the mapping is shared across recipient rows and off-diagonal scoring retains the original 12 cells"
+  }
+}

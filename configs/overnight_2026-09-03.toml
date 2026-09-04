@@ -1,0 +1,187 @@
+[study]
+study_id = "overnight_2026_09_03"
+frozen_at_utc = "2026-09-03T21:51:50Z"
+amended_at_utc = "2026-09-03T22:32:16Z"
+deadline_hours = 16
+outcomes_may_not_change_design = true
+state_is_independent_unit = true
+manuscript_edits_authorized = false
+
+[cosmos3_selection_free]
+status = "frozen_before_outcomes"
+model = "nvidia/Cosmos3-Nano-Policy-DROID"
+tasks = [
+  "BananaInBowlTask",
+  "RubiksCubeTask",
+  "MustardInLeftBinTask",
+  "SpoonInMugTask",
+  "MarkerInMugTask",
+  "SmartphoneInBinTask",
+]
+environment_seeds = [3554, 4828, 5017, 5428, 6693, 8281, 8632, 8901]
+branch_seeds = [211, 223, 227, 229]
+recipient_seed = 211
+donor_seeds = [223, 227, 229]
+future_sources = ["model_predicted", "simulator_executed"]
+primary_candidate_set = [211, 223, 227, 229]
+primary_chance_rate = 0.25
+action_pair_design = "all_12_ordered_recipient_to_donor_pairs"
+physical_endpoint_design = "fixed_recipient_211_to_three_donors"
+selection_rule = "include every task-by-environment-seed state; never filter on success, native separation, visual quality, or intervention result"
+allowed_exclusions = [
+  "missing_or_corrupt_recording",
+  "branch_point_exceeds_recording",
+  "nonexact_state_restore",
+  "nonfinite_model_output",
+  "invalid_future_tensor_shape",
+]
+early_termination_rule = "include and score the physically reached terminal endpoint"
+primary_outcome = "state_mean_four_way_correct_donor_action_identification_across_all_12_ordered_pairs"
+secondary_outcomes = [
+  "distance_reduction_to_correct_donor_action",
+  "cosine_alignment_with_donor_axis",
+  "orthogonal_residual_normalized_by_native_separation",
+  "normalized_donor_projection",
+  "four_way_correct_donor_endpoint_identification",
+  "distance_reduction_to_correct_donor_endpoint",
+  "task_object_position_endpoint_donor_identification",
+  "distance_reduction_to_task_object_position_endpoint",
+]
+required_controls = [
+  "exact_native_recompute",
+  "mechanics_matched_self_patch",
+  "same_state_wrong_donor_permutation",
+  "distance_matched_gaussian_for_primary_donor",
+]
+
+[cosmos3_selection_free.branch_points]
+BananaInBowlTask = 64
+RubiksCubeTask = 64
+MustardInLeftBinTask = 96
+SpoonInMugTask = 128
+MarkerInMugTask = 320
+SmartphoneInBinTask = 64
+
+[cosmos3_selection_free.target_objects]
+BananaInBowlTask = "banana"
+RubiksCubeTask = "rubiks_cube"
+MustardInLeftBinTask = "mustard"
+SpoonInMugTask = "spoon_big"
+MarkerInMugTask = "marker"
+SmartphoneInBinTask = "smartphone"
+
+[cosmos3_kv_factorial]
+status = "frozen_before_rescue_outcomes"
+population_manifest = "results/overnight_2026_09_03/frozen_manifest.json"
+units = 24
+tasks = [
+  "BananaInBowlTask",
+  "RubiksCubeTask",
+  "MustardInLeftBinTask",
+  "SpoonInMugTask",
+  "MarkerInMugTask",
+  "SmartphoneInBinTask",
+]
+environment_seeds = [3554, 4828, 5017, 5428]
+selection_rule = "first four config-ordered frozen environment seeds in every task; no native or intervention outcome filtering"
+layers = "all_36_direct_future_to_action_connections"
+future_sources = ["model_predicted", "simulator_executed"]
+cells = [
+  "recipient_future__recipient_kv",
+  "donor_future__donor_kv",
+  "donor_future__recipient_kv",
+  "recipient_future__donor_kv",
+]
+primary_outcomes = [
+  "kv_main_effect_on_action_donor_projection",
+  "future_by_kv_interaction_on_action_donor_projection",
+  "donor_kv_rescue_action_donor_projection",
+]
+secondary_outcomes = [
+  "robot_endpoint_donor_projection",
+  "object_endpoint_donor_projection",
+  "task_object_position_endpoint_donor_projection",
+  "full_endpoint_donor_projection",
+]
+required_controls = [
+  "recipient_kv_record_replay_exact",
+  "donor_kv_record_replay_exact",
+  "token_count_and_order_unchanged",
+  "current_video_instruction_action_noise_unchanged",
+]
+interpretation_rule = "call K/V conditionally sufficient only if donor K/V rescues or redirects recipient-future actions; otherwise retain necessity/suppression language"
+
+[fastwam_optional_idm]
+status = "frozen_before_outcomes"
+repository = "https://github.com/yuantianyuan01/FastWAM"
+checkpoint = "yuanty/fastwam"
+upstream_commit = "7faa71108368fbb3b6885649f112af607427a2d4"
+smoke_manifest_id = "fastwam-dd8450f367664a53"
+smoke_manifest_sha256 = "c872040226b259a8dd6d64b8966818a0232cdf4965dd3c24709df475469a92e7"
+primary_mode = "idm"
+negative_control_mode = "first_frame"
+smoke_suites = ["libero_spatial", "libero_10"]
+smoke_task_indices = [0]
+smoke_initial_state_indices = [0, 1, 2, 3]
+wait_steps = 30
+video_seeds = [101, 211, 307, 401]
+action_seeds = [1009, 2017, 3019, 4021]
+seed_pairing = "one independent video/action seed pair per native branch"
+primary_candidate_count = 4
+primary_chance_rate = 0.25
+scale_suites = ["libero_spatial", "libero_object", "libero_goal", "libero_10"]
+scale_task_indices = [0, 2, 4, 6, 8]
+scale_environment_seeds = [0, 1, 2]
+primary_outcome = "four_way_correct_donor_action_identification"
+secondary_outcomes = [
+  "distance_reduction_to_correct_donor_action",
+  "cosine_alignment_with_donor_axis",
+  "orthogonal_residual_normalized_by_native_separation",
+  "normalized_donor_projection",
+]
+required_conditions = [
+  "native",
+  "self_latent_replay",
+  "self_cache_replay",
+  "correct_donor_latent",
+  "correct_donor_cache",
+  "wrong_donor_same_state",
+  "shuffled_or_norm_matched_cache",
+  "first_frame_all_12_ordered_donor_labels_with_same_observation_instruction_action_seed",
+  "first_frame_donor_label_invariance",
+]
+
+[runtime_provenance]
+cosmos_framework_commit = "d4599e2e43fbd06168e9884205b9b66c3902d8f6"
+cosmos_framework_base_image = "cosmos-framework:overnight-2026-09-03"
+cosmos_framework_base_image_digest = "sha256:2fd099d606fc83eb4e0a3516b18987ea1dee3d68bf3778409e8992dc6340b175"
+cosmos_framework_image = "cosmos-framework:overnight-2026-09-03-policy-server"
+cosmos_framework_image_digest = "sha256:95a8933deb69f2fc73697d846f7e17066a4d4e05dc9ef85718a7ee12cfea2a8c"
+cosmos_framework_base = "nvidia/cuda:13.0.2-cudnn-devel-ubuntu24.04@sha256:e071e85c52ad91fc9ea24158ff5330876b2d1a5c4ac83ccc6066976835873c01"
+openpi_server_wheel = "openpi-server==0.1.0@sha256:e4db08c1f718cb704eb1c995270b46ffd013bf1e2cf95300d5b303f2040551af"
+openpi_client_wheel = "openpi-client==0.1.2@sha256:b8aa6d2ea7172d3b7c1fcf867d43930052b5ff19ea7b777966781105aa989897"
+filelock_wheel = "filelock==3.29.0@sha256:96f5f6344709aa1572bbf631c640e4ebeeb519e08da902c39a001882f30ac258"
+robolab_commit = "9db0aaf09d9fe5d4f37b168320788258c7012463"
+openpi_client_commit = "aa6420561529593114160d05e5ad155792b272f3"
+robolab_image = "robolab:overnight-2026-09-03"
+robolab_client_image_digest = "sha256:ea2b318e344149b2acdd2a1c8b51f30e549a366166d23e9ee8c6f4975a2b2a67"
+robolab_server_image_digest = "sha256:f78dad4bc92ca4e571f3a4f6cfe1c771f2bbaf18c892277fa5a0f8f759887971"
+robolab_base = "nvcr.io/nvidia/isaac-lab:2.2.0@sha256:b4d8e96cbfb9a6c40067bec6cc5ee180e36d4c0164b25f7215c5f47e31897b94"
+image_digest_note = "RoboLab images are clean independent rebuilds from identical pinned source and base; nondeterministic image metadata yields distinct node-local digests"
+
+[fastwam_optional_idm.smoke_gate]
+maximum_self_replay_absolute_error = 1e-6
+future_latents_must_be_nonidentical = true
+minimum_state_mean_correct_donor_accuracy = 0.50
+minimum_states_with_positive_distance_reduction = 6
+smoke_state_count = 8
+control_must_not_match_correct_donor_effect = true
+deadline_hours_from_start = 4
+
+[analysis]
+bootstrap_resamples = 10000
+bootstrap_hierarchy = ["task", "state"]
+within_state_repeats = ["donor", "direction", "action_seed"]
+report_separation_quartiles = true
+report_leave_one_task_out = true
+do_not_pool_models = true

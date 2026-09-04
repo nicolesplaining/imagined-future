@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "protocol_id": "lingbot_future_dose_v1",
+  "clarification_frozen_at_utc": "2026-09-04T09:32:15Z",
+  "frozen_before_evaluation_outcome_inspection": true,
+  "evaluation_effect_metrics_inspected_at_freeze": false,
+  "completed_evaluation_states_at_freeze": 18,
+  "changes_state_selection_intervention_or_outcomes": false,
+  "purpose": "Resolve randomization-test tail and numerical details omitted from the original outcome-blind preregistration.",
+  "primary_randomization_p_value": "greater-than-or-equal one-sided tail for a positive cohort-mean interior slope",
+  "direction_rationale": "The prespecified recipient-to-donor dose hypothesis predicts increasing donor-directed action projection as alpha increases.",
+  "two_sided_sensitivity": "also report the absolute-tail Monte Carlo p-value without replacing the primary directional test",
+  "monte_carlo_correction": "(extreme_null_draws + 1) / (repetitions + 1)",
+  "interior_alphas": [0.25, 0.5, 0.75],
+  "state_slope_formula": "sum((alpha-mean(alpha))*projection) / sum((alpha-mean(alpha))^2), using only the three interior points",
+  "projection_denominator": "squared Euclidean distance between executed-action endpoint vectors A_1 and A_0",
+  "bootstrap_interval": "2.5th and 97.5th percentiles of unweighted state-resampled cohort means",
+  "floating_tie_tolerance": 1e-15,
+  "undefined_endpoint_policy": "fail the complete-cohort confirmatory analysis when any endpoint squared distance is exactly zero"
+}

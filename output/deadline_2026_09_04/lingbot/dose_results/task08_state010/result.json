@@ -1,0 +1,76 @@
+{
+  "action_coordinate_intervention": "none",
+  "action_noise_sha256": "1f0ca7e3c88474df9e762e4205d9cb801c6caa571468ee37ed9b7d37d672ff17",
+  "action_noise_source": "b0",
+  "actions_path": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_future_dose_v1/task08_state010/actions.npz",
+  "actions_sha256": "a75d391037e64cae2daa35b6c640da27cdd0e18b09a857a655e5ce79739214dd",
+  "admission": "evaluation",
+  "alphas": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "cache_installation": "official t=0 future forward recomputed at every interior alpha",
+  "checkpoint_aggregate_sha256": "bb895755e071bf5ab74494c07199a11c8e344b367971b4c6405321807e32b2e1",
+  "checkpoint_content_manifest_sha256": "b1c8722becbb4a77a840cb5716cbd57e68c5bd77cb4a0af3d19a6e9ee1de00fd",
+  "checkpoint_revision": "0e89d1e753019988aba484e8da2dc0810e264d9f",
+  "core_result_root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_eval_v1",
+  "core_runner_sha256": "902d749772eadef213988c1b30ddb1ef2182da7e2f3852dc6ba596d05bf09fc2",
+  "core_state_root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_eval_v1/task08_state010",
+  "dose_result_root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_future_dose_v1",
+  "dose_runner_sha256": "2d8b419be882eb979ed58091f7d0b0cd4322f2503aac9e4a854c558834f21b2e",
+  "dose_state_root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_future_dose_v1/task08_state010",
+  "duration_seconds_by_interior_alpha": {
+    "alpha_0.25": 3.9216434955596924,
+    "alpha_0.50": 3.910341262817383,
+    "alpha_0.75": 3.8801496028900146
+  },
+  "endpoint_action_sha256": [
+    "3d70453930c7b181c7060499668edd8ba4a056f37127c49db7ee45eb3e25ba34",
+    "d80a9ab311b17c1490fa618d554facf07937212e0cfa73046f763e6a979f3d46"
+  ],
+  "endpoint_source": [
+    "core latent_grid_actions[0,0]",
+    "core latent_grid_actions[0,1]"
+  ],
+  "future_sha256": [
+    "74df0eed0796164c8902f352b858a61418615ae7ca35e9529fc449dfd6050431",
+    "9c47f6a81cb8019d259dcd263f22fac693feae5cbc64acf2d91404dd176a8260",
+    "d21d096c3597ced9e4b264400c42f7c61a316f0338a6faec8e1cb0e351e42757",
+    "06ec0161ce7820590b5b8f83db09ad9fe92e385757de392b1f32c0347f5e192e",
+    "c25d38ca6981965c902366d67cf5253069bc29ba5675db61687edbe8fbf52dce"
+  ],
+  "input_sha256": {
+    "core_actions": "fbb587460331beca33f064c6dacf4854dac6932156372abf252915333296ca32",
+    "core_frozen_inputs": "752c9293fdb6f57d9ad0456170b4aa0d0860b68d09de88b051994bd57edb782b",
+    "future_b0": "497766f93c4725b74f2152ef59b0669f8da15e852053e1bdd3d1d375a424a6d3",
+    "future_b1": "51eae8b569b26dd1d58e1a45f5e8deb2e8b6673675993eb052282be210d6a8e0"
+  },
+  "interior_cache_sha256": [
+    null,
+    "c068075088ebb0a78d3b71630c4af80a13163af008b0ac0bcca434f1a8fd0140",
+    "6cdde10743adfe12e27cffec9da9c9a0d113fba8092d49c6e95e78d4cd43cc5d",
+    "0eabf24a2062cc30b4bfac40e9e0113bfb58bed1c00cb9d9238a012577722c0a",
+    null
+  ],
+  "interior_model_calls": 3,
+  "interpolation_compute_dtype": "torch.float32 before cast to source dtype",
+  "interpolation_dtype": "torch.bfloat16",
+  "interpolation_variable": "final normalized denoised future-video latent",
+  "manifest_sha256": "9c8d7dd547955e4622d98c7eb42fffed157f6db983f41f02929b28a434be47b4",
+  "oracle_action_bitwise_equal": true,
+  "oracle_future_bitwise_equal": true,
+  "oracle_receipt_sha256": "f54eebb2d4525ec8d8c57ebdc3b1294041194e5d1e13fd0033380a09453719aa",
+  "ordered_pair": {
+    "donor": "b1",
+    "recipient": "b0"
+  },
+  "present_frame_overwritten_from_frozen_input": true,
+  "protocol_sha256": "8b6b4103b5c172f28c896b9834fda114aa52684c53f8c570c78c346fda9d3eba",
+  "result_path": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_future_dose_v1/task08_state010/result.json",
+  "state_id": "task08_state010",
+  "status": "complete",
+  "upstream_commit": "7c6ffa9bfc4b83582cafc860fab4c82cc7deeeeb"
+}

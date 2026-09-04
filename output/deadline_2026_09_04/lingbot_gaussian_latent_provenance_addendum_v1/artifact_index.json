@@ -1,0 +1,634 @@
+{
+  "file_count_excluding_index": 125,
+  "files": [
+    {
+      "bytes": 819,
+      "path": "README.md",
+      "sha256": "fe76caa760e2aab90ff7bb4c9bbe771e9be9137485ebbf233e2bf9c1136ed31f"
+    },
+    {
+      "bytes": 28004,
+      "path": "builder_script.py",
+      "sha256": "6874e202d9c57ff706819d3d83e6b691a6f6e83a7a214076a784cc80e07e3867"
+    },
+    {
+      "bytes": 2466,
+      "path": "receipt.json",
+      "sha256": "87fec43a24788f6aa4ca21f054c264383a42d9cb75fdf0ff0c8f9b8aae54393f"
+    },
+    {
+      "bytes": 31904,
+      "path": "source_bindings.json",
+      "sha256": "46b155e1c39e14a25e9b79b1fba275545c32e88b53d14a107810dc81cf344681"
+    },
+    {
+      "bytes": 241497,
+      "path": "tensor_records.json",
+      "sha256": "93046a336d1088a6c4166f109282858d558fd98d4aca8d7e4ce0558b96cb361f"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task00_state010/gaussian_b0_seed900000.pt",
+      "sha256": "b70126b8a271a6ef33c92816bd13c827d2e900c0d9119345e9ae430114ad5521"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task00_state010/gaussian_b1_seed900001.pt",
+      "sha256": "b199b17980d06504e4ae4847e86b64bbbbc04a2bc526400ecb70b9a8e1e1ca71"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task00_state010/gaussian_b2_seed900002.pt",
+      "sha256": "eaf0701f088e52b66f409dbf816c6838f862adec1aa01ba8378c9b503c97f737"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task00_state010/gaussian_b3_seed900003.pt",
+      "sha256": "310cd1ffc2d2a1ee9ad95edd3781d15394315de4f2050df1a00d59dc33d2e53c"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task00_state020/gaussian_b0_seed900000.pt",
+      "sha256": "6beb99a690879a4df1e8364987cc8452f1d25313b0d92cf1f25ae8bf92186fb3"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task00_state020/gaussian_b1_seed900001.pt",
+      "sha256": "c9a1660c5fef43b128a7625ebfc2920a9c5324af8f67a1650f7e04e9a9606891"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task00_state020/gaussian_b2_seed900002.pt",
+      "sha256": "8b83d27cd55f116f51f0f519a1d2aee8e15f4b18daa0c0b7817db49b71602e44"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task00_state020/gaussian_b3_seed900003.pt",
+      "sha256": "8ab0bbc6b940a4cfc106a9c23d24387a0411059c2c1eaf1d78101fd616278f31"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task00_state030/gaussian_b0_seed900000.pt",
+      "sha256": "50421bb50e36f9673b2ce96d419fe0e0fdbb6650c568407cb2c3fdd1861d29f6"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task00_state030/gaussian_b1_seed900001.pt",
+      "sha256": "0e397c209596cb3257d24f47e6723fbb88477e8a3b0958aa7f7d67a3e46e1e82"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task00_state030/gaussian_b2_seed900002.pt",
+      "sha256": "81e53693ed54560e2774ebe59274263b122fc943adfa740b8b5d65e7f6e52e4e"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task00_state030/gaussian_b3_seed900003.pt",
+      "sha256": "8374fb5bf0cbb4720d419d583efbde1b9cca32c33c6f5b3a4409263a1a144357"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task01_state010/gaussian_b0_seed900000.pt",
+      "sha256": "967624e1c64f0b8b9ca31889475e5fde30f8a58e6e0c5901311cec004111f60c"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task01_state010/gaussian_b1_seed900001.pt",
+      "sha256": "714ea4093ee2e0a756183df5b709ecbd513ebabfbb624c167eced9655a5b9552"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task01_state010/gaussian_b2_seed900002.pt",
+      "sha256": "7a1016b8993aa5eaa715feb62ede87b0a26f89325be2c535de72e9994e368883"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task01_state010/gaussian_b3_seed900003.pt",
+      "sha256": "b8842c03df33896b82320e495eb07d1dc7a14c42db5f70e43e9580ca7e7dd263"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task01_state020/gaussian_b0_seed900000.pt",
+      "sha256": "e33543d79e6dc9dfed04a3293869ade8e0f5218e7f74b15f629bb0713e3b88b8"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task01_state020/gaussian_b1_seed900001.pt",
+      "sha256": "18f02fbaf4e43388cdc6a2818e6a458944d47ef9d00132832da8d7662748efef"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task01_state020/gaussian_b2_seed900002.pt",
+      "sha256": "c2d28b3ba7e23647b881c5beba4b0bd81052048430d59c2eebbbacff2551932c"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task01_state020/gaussian_b3_seed900003.pt",
+      "sha256": "8d14cc00ed2399774609fcbc7f958f89bd63dc6d9b1c311faeb5c776630684bd"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task01_state030/gaussian_b0_seed900000.pt",
+      "sha256": "1a31cf37eb5c16d41a50f9bd9f167b52d412b38560715816dd90c76d3dac1420"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task01_state030/gaussian_b1_seed900001.pt",
+      "sha256": "65fecc8aa1337a81c9bcc7c6db229b1ab2054b11b5b915ac506fb73c5050e893"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task01_state030/gaussian_b2_seed900002.pt",
+      "sha256": "42cc514f84db9aff7586e2381fc32b833b1321a3983ebc3fbdcad30d219d4311"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task01_state030/gaussian_b3_seed900003.pt",
+      "sha256": "a722d982688409c347e67d7432acb5ffbabf61b79092425aa7b6a9c53e335244"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task02_state010/gaussian_b0_seed900000.pt",
+      "sha256": "7a97f2c25d055ce375c4214da0a7d63134ae682277cc2a1deec4808e78b62631"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task02_state010/gaussian_b1_seed900001.pt",
+      "sha256": "4d47f1ca1c6fcbc6d73006d4453a02656434ceb1bc23506399e2c5307d26df51"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task02_state010/gaussian_b2_seed900002.pt",
+      "sha256": "03ab7db70b102888352e877160ad4d17492e70ded9be04b21f56c27bd82d797a"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task02_state010/gaussian_b3_seed900003.pt",
+      "sha256": "d0b8fda3b76f33de4d58e8a364a22201bbd58c27d0b2bec2ead2640dd5878a4a"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task02_state020/gaussian_b0_seed900000.pt",
+      "sha256": "36f789072834d3159ea9ee44bab77bd5c0a35d940245ecdfc7daa925888699c7"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task02_state020/gaussian_b1_seed900001.pt",
+      "sha256": "1dfef322156e09d85f2b113ff9ac5a7fd623046093d833142b1459054648853a"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task02_state020/gaussian_b2_seed900002.pt",
+      "sha256": "bb8ed0f58d325e0216d56c98194f3f3221f6d3c1f0d0557ae8f1bb3ae243bf47"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task02_state020/gaussian_b3_seed900003.pt",
+      "sha256": "b548ebd09227708095a3cbbb8530d99a1a533bbb8ca1d9b4fba953945019a5b8"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task02_state030/gaussian_b0_seed900000.pt",
+      "sha256": "2129a037905eec51c8cae684698cc3dcc167e974f383c5a95ba61fc0040f5aed"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task02_state030/gaussian_b1_seed900001.pt",
+      "sha256": "e2cf338ee50a96cb96894fd1aefdb6ebe8e7429987931ed38eb31a314bafedb6"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task02_state030/gaussian_b2_seed900002.pt",
+      "sha256": "874ec8e569cdb028771b1209c5cbf0be39cbcaaf980ab3e987655e19d47408ab"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task02_state030/gaussian_b3_seed900003.pt",
+      "sha256": "02194e1078a730da45890a1000811e83a03e265e6f7f0cf139960bb8a65f3797"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task03_state010/gaussian_b0_seed900000.pt",
+      "sha256": "ae223d42086401a49c354a44b0770a5f111792c322248da0e5c58bf482f3beb9"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task03_state010/gaussian_b1_seed900001.pt",
+      "sha256": "11d79750c689fe35054ecf8102f073466fe4d031181d6aab846f7b520cfdf506"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task03_state010/gaussian_b2_seed900002.pt",
+      "sha256": "02a92bc706edc6404014230a85ba2dd8053837a00afd3ba681030dd157ac81ce"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task03_state010/gaussian_b3_seed900003.pt",
+      "sha256": "e1d1078abf0002b0e2900fbadfd5d7286d93544995cc9b36722f0ee866ff851a"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task03_state020/gaussian_b0_seed900000.pt",
+      "sha256": "04f07ac04cb6a9b773c2fc56aef6a261d105a863dccf8d521aae7f3f2afd4a72"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task03_state020/gaussian_b1_seed900001.pt",
+      "sha256": "31f719bca5577362dd353d507fd1591a94db48ffa3660348040567012c600775"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task03_state020/gaussian_b2_seed900002.pt",
+      "sha256": "b1cf758aa0fd837a8440db4c5ac5c361d149bf623ef7ac6ba7302f4ff2dfa243"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task03_state020/gaussian_b3_seed900003.pt",
+      "sha256": "1496051dc9a8fe90f42f00748d013a5b2a23d7185a8fc0f1848ff106dd6d002d"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task03_state030/gaussian_b0_seed900000.pt",
+      "sha256": "d66f47b718e35699e42f1e496297d8d7791650280c77124996377ecc76f15cba"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task03_state030/gaussian_b1_seed900001.pt",
+      "sha256": "141cb892f2f6333f8b0d06d6a43faf023032cc611ac2b600722bd47536b1bfe8"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task03_state030/gaussian_b2_seed900002.pt",
+      "sha256": "2e9c476a8ee45840dbea9acbfcd7774f15357681838b0e406f34fe68ba95c0b0"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task03_state030/gaussian_b3_seed900003.pt",
+      "sha256": "b2fb0af70d9735f47ade18461cbc19e7f1156f6a968c5fdb6b2ffc0645c2720a"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task04_state010/gaussian_b0_seed900000.pt",
+      "sha256": "91d13d173eca4fc329929ea56cc429d284034353081b628cb77e7680d3f5ef19"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task04_state010/gaussian_b1_seed900001.pt",
+      "sha256": "c4569e31763b247c8c8de71eec74296b3b7512d39825133850c9662ec8d91d9b"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task04_state010/gaussian_b2_seed900002.pt",
+      "sha256": "15bdcd5f0ddf16969aa225814a67d51a66fd550fb394b2bd623bccd68d34d3f7"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task04_state010/gaussian_b3_seed900003.pt",
+      "sha256": "e29199c70a99862731942e0564cd64dd1670a41f719471706dfaa2c4f6a500c6"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task04_state020/gaussian_b0_seed900000.pt",
+      "sha256": "616abf3437a389fe27bca8cdcc952cc1458f9ec40ef812bac1e0b2a5bbc2d96e"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task04_state020/gaussian_b1_seed900001.pt",
+      "sha256": "f6a651928b6afed7d55113bd3c4e460d4a938b9c64b3a2ebaa1b0ff87b66dce1"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task04_state020/gaussian_b2_seed900002.pt",
+      "sha256": "007f3bf0c75d2eb57555f48af94296664ba1f7207521f00a2da020da00eeb369"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task04_state020/gaussian_b3_seed900003.pt",
+      "sha256": "21e2accaef31fa42d84e02076ed93d9acdddeea231383c0b5b0ab8d1fe0b1710"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task04_state030/gaussian_b0_seed900000.pt",
+      "sha256": "ca8079ee9eb4325fe93bb9dac8e1892006436409642084063a964a32d1e9b66e"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task04_state030/gaussian_b1_seed900001.pt",
+      "sha256": "8465838ec79f1d8db55f5c7b48018c22ae805eddb2901bd66b13ef92fd713e5a"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task04_state030/gaussian_b2_seed900002.pt",
+      "sha256": "50f5e28ca9eaaf65188c552e15d42d248a06dfba6d8a8707400025363079b0a5"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task04_state030/gaussian_b3_seed900003.pt",
+      "sha256": "bde519279c749e656e4dac21dfe19063f21b60482f30c81553488a0b1fcdebee"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task05_state010/gaussian_b0_seed900000.pt",
+      "sha256": "b5a4d7a74e11c63b436041b6bfa5c4ace87f8a8c7cca3b664b650f2be58e78d0"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task05_state010/gaussian_b1_seed900001.pt",
+      "sha256": "372651060e70e221426c0c56e32569317f0c6145c54119df45ff3d4a8321e9e3"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task05_state010/gaussian_b2_seed900002.pt",
+      "sha256": "972f188f47ede1580c47068deea9d14c9e91396ea6f5593759973177ebab20b9"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task05_state010/gaussian_b3_seed900003.pt",
+      "sha256": "da316b61d5fe7e5e97dce9a4dad742084dd2025ac041bff10e2cd1988be569d7"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task05_state020/gaussian_b0_seed900000.pt",
+      "sha256": "11c5ae7d9abd90f2a7755410d02753b7c022015afaa0e370bae21997ba5363c6"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task05_state020/gaussian_b1_seed900001.pt",
+      "sha256": "e2301c3e8f3fc3029599eafd9223391b68989749cca7bac20d9e1a76d055f643"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task05_state020/gaussian_b2_seed900002.pt",
+      "sha256": "fa7ef96626002671c1ba62a7010683094299f5eded044cef9f6c80c48831151f"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task05_state020/gaussian_b3_seed900003.pt",
+      "sha256": "adcff4d4566226cc432e13cbcb2c2289ae4c56e053f6e5cb1cc7e3bdfa05d5b2"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task05_state030/gaussian_b0_seed900000.pt",
+      "sha256": "cf47a39d4f3d3a561ad045b2f0b08605f2ce106de5fea8e06aa15962f94e1667"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task05_state030/gaussian_b1_seed900001.pt",
+      "sha256": "d6263fc80c6473a3afbadb1567fc4a5c45778ff408a095d07d7f8da9657eb34f"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task05_state030/gaussian_b2_seed900002.pt",
+      "sha256": "5b82bebbdc4ba27868e6a31ebaadbde6bcdb234509af1c6975b9cffbb1201715"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task05_state030/gaussian_b3_seed900003.pt",
+      "sha256": "bcaf490f3990a96aeba780605c0a002dfe151438d0bbea961c09023adf2b9bca"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task06_state010/gaussian_b0_seed900000.pt",
+      "sha256": "d248d84eab4a7f5df0494e6eabe424658a8e5611cf46a66e939d472098d1090d"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task06_state010/gaussian_b1_seed900001.pt",
+      "sha256": "ba42fd3f0485bd4282a9c8ecdfa86049948136291e58af05510ee0c7db4072b6"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task06_state010/gaussian_b2_seed900002.pt",
+      "sha256": "827e229c81436c4aacb031331139f2859e014c520bf7861f254c71f8e68054c7"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task06_state010/gaussian_b3_seed900003.pt",
+      "sha256": "b6280d10cdc6cf088b346fe720c406ea16c5e9dd2a965a97254d339f500527a0"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task06_state020/gaussian_b0_seed900000.pt",
+      "sha256": "79f1a1b1a0096b228f4aad36f6587527cff92feee18e50d7df52c8bf15bf41f6"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task06_state020/gaussian_b1_seed900001.pt",
+      "sha256": "645380997d827fc8d7f5d89e2fcc4e68bb1dd3a76d75ecb0b56f47091b95ffec"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task06_state020/gaussian_b2_seed900002.pt",
+      "sha256": "41bd1019d738b2cbfec8f852dc17922436c895c197970060076825248fcbc741"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task06_state020/gaussian_b3_seed900003.pt",
+      "sha256": "7fc1e43f19b1ac2cfafa8f3bc6adbc510497529698f50b5076cdf180c9bff40a"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task06_state030/gaussian_b0_seed900000.pt",
+      "sha256": "78e62f2ef08186e3f526732938740b18bd0079bd8dd0d266b050a115390576b0"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task06_state030/gaussian_b1_seed900001.pt",
+      "sha256": "75a759614a75d965f48f8dbc49577e62872caacab9e7bde7851ad53d33c68681"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task06_state030/gaussian_b2_seed900002.pt",
+      "sha256": "fc14c063736bd7d7f48e0b76d678aaccfe9b01e050a699ef2a9364534b939307"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task06_state030/gaussian_b3_seed900003.pt",
+      "sha256": "06972246195f435750f7a9f3376168816441dc52ddbb353fa39c8769bb4eaea8"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task07_state010/gaussian_b0_seed900000.pt",
+      "sha256": "d365b5ab55ae25950ade5e9ba18808e8c7c0cb9880d256fb520e4053643eebea"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task07_state010/gaussian_b1_seed900001.pt",
+      "sha256": "828b400757f70d1502bbd9933e96eab54207b3feae39f4e5d03ef15debe210df"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task07_state010/gaussian_b2_seed900002.pt",
+      "sha256": "153bf584d6f8951bf71722b86bd907acb59c7892b8bf91948d2fc6fce4175d11"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task07_state010/gaussian_b3_seed900003.pt",
+      "sha256": "b2c9bfb436af9c3edcf71bfa7f44f464934af3b2ab8cb375c543b02049518cc6"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task07_state020/gaussian_b0_seed900000.pt",
+      "sha256": "a377198bd614082be6da5067d092f16a9152bd3e13e082a31c1ded5d4c89b6a7"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task07_state020/gaussian_b1_seed900001.pt",
+      "sha256": "554a1b174820b12e3a663df567fba525d469feb3a386bb2020b9d8992e44eed8"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task07_state020/gaussian_b2_seed900002.pt",
+      "sha256": "4cde23d0b3fa78a96d119253873e98ab894e531b4e1baa64b8be50ed37fa9e6a"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task07_state020/gaussian_b3_seed900003.pt",
+      "sha256": "f865c76f21b75cd62a5848b593df47baefa9f4acb1416ddcc25e2ea14570ca4d"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task07_state030/gaussian_b0_seed900000.pt",
+      "sha256": "0fbbd8f75d4ac8e035c6e08ef8c4954e8538e802d26e513f84a589b987cf4f9a"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task07_state030/gaussian_b1_seed900001.pt",
+      "sha256": "d260ba759c0dc99aea1ceaf622507a448bcfb644828618568e520ff2dd0432e7"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task07_state030/gaussian_b2_seed900002.pt",
+      "sha256": "77f622656fd31b07f504e0d68dc91f5ec5ecdbd6cfd103b30c25f1dec8f85f2c"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task07_state030/gaussian_b3_seed900003.pt",
+      "sha256": "5a220d5cc24da35691d3ad0ef8022cc53611392529a28cdbb1043a2ed031a375"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task08_state010/gaussian_b0_seed900000.pt",
+      "sha256": "5e6a7eaebfe3167694031f09e1abdf5af3927a9645e7fcec4de47e1e6778b8a3"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task08_state010/gaussian_b1_seed900001.pt",
+      "sha256": "d6c3ecd107291f0b1c50b46dd57653eb03758db8e153d0a459bc50cc3efce4d4"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task08_state010/gaussian_b2_seed900002.pt",
+      "sha256": "a56dbb260162ff1dff480d9c7ddd801e1987856110cbaaf8d8012c761adea851"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task08_state010/gaussian_b3_seed900003.pt",
+      "sha256": "4b536f1378542b9e58a98ab164b3e44ec6872e60e9e296f281eeff89c60f5436"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task08_state020/gaussian_b0_seed900000.pt",
+      "sha256": "be460e902d09f13761489305150b8b9b3e814907f04837a12c443991b75c6211"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task08_state020/gaussian_b1_seed900001.pt",
+      "sha256": "7d5a7ab859c6b2eaae6507081bf8157623d7e7fe8252cb64f6eb390e06740819"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task08_state020/gaussian_b2_seed900002.pt",
+      "sha256": "02844ce289089cc213f17aa8be197e57a607bcf5f186274054a3f0d36eabd5bc"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task08_state020/gaussian_b3_seed900003.pt",
+      "sha256": "c03be6164fae124cafb5d9f56fe1cfdd72a09664a75245ee035e2a9dd9beb97f"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task08_state030/gaussian_b0_seed900000.pt",
+      "sha256": "023c0eae70694f7b8c926069ef7831101e6ab92e78293a9b0b038bf5ae22a650"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task08_state030/gaussian_b1_seed900001.pt",
+      "sha256": "c05cc8e77026528a14a7091568be68206ec1ff2b3e77dca0d9185c46a87909b8"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task08_state030/gaussian_b2_seed900002.pt",
+      "sha256": "1b1f8b9b954cf59bb72439924ad2e9a6babcf69b4afe074d407d43502ab31492"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task08_state030/gaussian_b3_seed900003.pt",
+      "sha256": "300dcd61a80842cb4a61a8f7793c6114b241ad4765ee31ae66a4fa276c4b2cd7"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task09_state010/gaussian_b0_seed900000.pt",
+      "sha256": "49956da0bd27664f8fbabb7ff87dec4f2ae3f9c19d17a21d9c7157ae2f4f726e"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task09_state010/gaussian_b1_seed900001.pt",
+      "sha256": "53c72971d97ccccf5957a068f28548d414102f8d2dcf8bdb9eb8947378cdabd9"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task09_state010/gaussian_b2_seed900002.pt",
+      "sha256": "fedab000ec80666a736f5aa19a24e253316c0ddfacb909f45d9fab8ed20392a9"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task09_state010/gaussian_b3_seed900003.pt",
+      "sha256": "7ed9209df46a6bd108a1ba3874bc494ed91f707fc672ed44d3fb3c36b0a6870f"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task09_state020/gaussian_b0_seed900000.pt",
+      "sha256": "bee24f05b480f7140d69139761f91ba317cdbc1e21d47cc44555d60ab655317b"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task09_state020/gaussian_b1_seed900001.pt",
+      "sha256": "854efb3078fe256714f6d73292e3d903280736454bd9793177e2d942551d8bb3"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task09_state020/gaussian_b2_seed900002.pt",
+      "sha256": "eb98ccd557f5bb94bce74c5250d4e74ec1708000e20fe656eedfb0399f1b539a"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task09_state020/gaussian_b3_seed900003.pt",
+      "sha256": "dc0dda359359fd791a2c6ecd65b5c3ad005df1c994a52d1df75e34afb37dd2f4"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task09_state030/gaussian_b0_seed900000.pt",
+      "sha256": "2fd4e19369a25f6b3ce9e7d1a93e285c1af1daa21e428b987b1b0ecd39761da7"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task09_state030/gaussian_b1_seed900001.pt",
+      "sha256": "e177e054d8cba3f7483e11d75cb0b75b1538a96a013abd20c4a1cc8253b44734"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task09_state030/gaussian_b2_seed900002.pt",
+      "sha256": "d43062d2b4163751b21e8862ac6699a68bdc129ded75ebb0b22beb0f67d46d91"
+    },
+    {
+      "bytes": 51053,
+      "path": "tensors/task09_state030/gaussian_b3_seed900003.pt",
+      "sha256": "ff676362135f9f4c9bf810a547fa3f30ac3ff37f55c0b204b124eecf9b29921b"
+    }
+  ],
+  "index_excludes_itself": true,
+  "schema_version": "lingbot-gaussian-latent-provenance-v1",
+  "total_bytes_excluding_index": 6431050,
+  "tree_aggregate_sha256": "b917cf86ebe6b80af6851fb8eec1c3d2a42b5e16eebf704df53b49c473433a21"
+}

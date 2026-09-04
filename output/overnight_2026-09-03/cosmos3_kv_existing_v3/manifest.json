@@ -1,0 +1,450 @@
+{
+  "analysis": {
+    "bootstrap": "task-to-state hierarchical bootstrap",
+    "bootstrap_samples": 10000,
+    "bootstrap_seed": 20260903,
+    "independent_unit": "saved simulator state",
+    "report": [
+      "cellwise donor projection",
+      "cellwise distance to recipient and donor",
+      "K/V effect at fixed recipient future",
+      "K/V effect at fixed donor future",
+      "future x K/V interaction",
+      "per-task and leave-one-task-out estimates",
+      "number of states following K/V rather than visible-future identity"
+    ],
+    "within_state_measurements": "four factorial cells"
+  },
+  "attention_scope": {
+    "keys_values": "future_video",
+    "layers": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35
+    ],
+    "queries": "action",
+    "token_count_preserved": true
+  },
+  "controls": [
+    "native recipient exact repeat",
+    "recipient K/V record versus uninstrumented clean recipient-future clamp",
+    "recipient K/V exact replay",
+    "donor K/V record versus uninstrumented donor-future clamp",
+    "donor K/V exact replay",
+    "fixed visible-future signature within each K/V crossing",
+    "no direct action-coordinate mutation",
+    "one model-state fingerprint across arms"
+  ],
+  "evaluation_state_count": 21,
+  "excluded_development_state": "BananaInBowlTask_seed_103",
+  "factorial_cells": [
+    "recipient_future_recipient_kv",
+    "donor_future_recipient_kv",
+    "donor_future_donor_kv",
+    "recipient_future_donor_kv"
+  ],
+  "future_source": "model-predicted",
+  "manifest_id": "cosmos3-kv-existing-bb8591311eda8a59",
+  "runtime": {
+    "cosmos_commit": "d4599e2e43fbd06168e9884205b9b66c3902d8f6",
+    "server_image": "sha256:95a8933deb69f2fc73697d846f7e17066a4d4e05dc9ef85718a7ee12cfea2a8c",
+    "single_state_runner_sha256": "83285e99b993e7f996a40189332643338e33805fe03e00b931f0c214e32179de"
+  },
+  "schema_version": 1,
+  "scope": "population-level suppression/rescue extension on the existing selected-pair cohort; not selection-free and not a replacement for the fresh held-out study",
+  "source_cohort": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1",
+  "source_state_count": 22,
+  "states": [
+    {
+      "asset_video": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/BananaInBowlTask_seed_107/self.npz",
+      "branch_step": 64,
+      "branch_summary": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/BananaInBowlTask_seed_107/summary.json",
+      "donor_seed": 241,
+      "environment_seed": 107,
+      "input_sha256": {
+        "asset_video": "60a703d9c7689649f28f0bf02c0473cc394be0cbf04d9ef0891918d25eb24419",
+        "branch_summary": "c02a008bf9f1fa21510a68957fe77e16cbc08f449251bb0abaa843fcd42a38ec",
+        "recorded_hdf5": "72b536623111ff09ca036ebe029c48804e7bbf1d296ad7858dd8092e3f370c7b"
+      },
+      "instruction": "Pick up the banana and place it in the bowl",
+      "recipient_seed": 229,
+      "recorded_hdf5": "/lambda/nfs/imagined-future/external/RoboLab/output/cosmos3_population_screen_v1/seed_107/BananaInBowlTask/run_0.hdf5",
+      "state_id": "BananaInBowlTask_seed_107",
+      "task": "BananaInBowlTask"
+    },
+    {
+      "asset_video": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/BananaInBowlTask_seed_109/self.npz",
+      "branch_step": 64,
+      "branch_summary": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/BananaInBowlTask_seed_109/summary.json",
+      "donor_seed": 239,
+      "environment_seed": 109,
+      "input_sha256": {
+        "asset_video": "9f343080d1e33189f858f83b8d7e92415dae9b83ba1c3fd32e625e63833005f8",
+        "branch_summary": "fd9100c3626e7f0a888a318194d4323e6241cfc4263d78b651635eda64b7dd65",
+        "recorded_hdf5": "a9a0b52f27bb826245957d61206aae6e6faa899e2dbbc9beb79a0b44dfdf9038"
+      },
+      "instruction": "Pick up the banana and place it in the bowl",
+      "recipient_seed": 229,
+      "recorded_hdf5": "/lambda/nfs/imagined-future/external/RoboLab/output/cosmos3_population_screen_v1/seed_109/BananaInBowlTask/run_0.hdf5",
+      "state_id": "BananaInBowlTask_seed_109",
+      "task": "BananaInBowlTask"
+    },
+    {
+      "asset_video": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/BananaInBowlTask_seed_113/self.npz",
+      "branch_step": 64,
+      "branch_summary": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/BananaInBowlTask_seed_113/summary.json",
+      "donor_seed": 281,
+      "environment_seed": 113,
+      "input_sha256": {
+        "asset_video": "6e35ffb235bf9d3d08fe42764291944669483927e421b5960f4a71ff4bb7e638",
+        "branch_summary": "37d038b7e0a635395d9be7602d14f650904e50aa3c3a9ef6541e5583a232fb26",
+        "recorded_hdf5": "e93d5c016b8272ad0737dad5485fd19843ee1977c3158b893ac65737a8f48283"
+      },
+      "instruction": "Pick up the banana and place it in the bowl",
+      "recipient_seed": 223,
+      "recorded_hdf5": "/lambda/nfs/imagined-future/external/RoboLab/output/cosmos3_population_screen_v1/seed_113/BananaInBowlTask/run_0.hdf5",
+      "state_id": "BananaInBowlTask_seed_113",
+      "task": "BananaInBowlTask"
+    },
+    {
+      "asset_video": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/MarkerInMugTask_seed_101/self.npz",
+      "branch_step": 320,
+      "branch_summary": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/MarkerInMugTask_seed_101/summary.json",
+      "donor_seed": 223,
+      "environment_seed": 101,
+      "input_sha256": {
+        "asset_video": "1ed0b257c85c2652cfc4e0cc861970bed1d145393b880f31678e8d5b3309f2c3",
+        "branch_summary": "c08be64ba58dd7ba143e842838bd1b1d626ede02a44ac971d77d65062d31029a",
+        "recorded_hdf5": "a5c98ad473aacc6c2ed7de6a58eb35aa949b6088c74185550b659ffe946dc114"
+      },
+      "instruction": "Put the whiteboard marker in the mug",
+      "recipient_seed": 211,
+      "recorded_hdf5": "/lambda/nfs/imagined-future/external/RoboLab/output/cosmos3_population_screen_v1/seed_101/MarkerInMugTask/run_0.hdf5",
+      "state_id": "MarkerInMugTask_seed_101",
+      "task": "MarkerInMugTask"
+    },
+    {
+      "asset_video": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/MarkerInMugTask_seed_109/self.npz",
+      "branch_step": 320,
+      "branch_summary": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/MarkerInMugTask_seed_109/summary.json",
+      "donor_seed": 269,
+      "environment_seed": 109,
+      "input_sha256": {
+        "asset_video": "e8801fc51e08119aeec2169498a6537f7692a06efd72437d6c41c4619e61bdb3",
+        "branch_summary": "2f25514447c4dc291087f521d91f60035af861bba714c549c1dd60bc14e6c67a",
+        "recorded_hdf5": "47e74c16ee35a323411234ebfbb3bcdb3e1420454d8d4b290503c342b0987d11"
+      },
+      "instruction": "Put the whiteboard marker in the mug",
+      "recipient_seed": 211,
+      "recorded_hdf5": "/lambda/nfs/imagined-future/external/RoboLab/output/cosmos3_population_screen_v1/seed_109/MarkerInMugTask/run_0.hdf5",
+      "state_id": "MarkerInMugTask_seed_109",
+      "task": "MarkerInMugTask"
+    },
+    {
+      "asset_video": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/MarkerInMugTask_seed_113/self.npz",
+      "branch_step": 320,
+      "branch_summary": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/MarkerInMugTask_seed_113/summary.json",
+      "donor_seed": 251,
+      "environment_seed": 113,
+      "input_sha256": {
+        "asset_video": "405f122bf698c55aed2784cf0f9812cf761570ae70e200fcf6daf79a2d8ca3db",
+        "branch_summary": "83069ab13ef4bc2e38da1e996173a3e4a3187e911737709716e31eca2a4ad082",
+        "recorded_hdf5": "2ae9fc7ea272945564e3ab819d0a6dee77e80807a1fa2a51cdb7559fac412c19"
+      },
+      "instruction": "Put the whiteboard marker in the mug",
+      "recipient_seed": 239,
+      "recorded_hdf5": "/lambda/nfs/imagined-future/external/RoboLab/output/cosmos3_population_screen_v1/seed_113/MarkerInMugTask/run_0.hdf5",
+      "state_id": "MarkerInMugTask_seed_113",
+      "task": "MarkerInMugTask"
+    },
+    {
+      "asset_video": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/MustardInLeftBinTask_seed_107/self.npz",
+      "branch_step": 96,
+      "branch_summary": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/MustardInLeftBinTask_seed_107/summary.json",
+      "donor_seed": 229,
+      "environment_seed": 107,
+      "input_sha256": {
+        "asset_video": "a9550becec4eed261e9d7b85b6aae527741ed6617482951fd8df58a999ac60f3",
+        "branch_summary": "ac62ec2303c3c54aa656792e227b3701c6e432fe082d9e1e2fd24b49bcb70274",
+        "recorded_hdf5": "d8277ccb73938f4403cb27234f43d0c33b81b6f554fae8832a0f98c878b8b6cd"
+      },
+      "instruction": "Put the mustard in the left bin",
+      "recipient_seed": 227,
+      "recorded_hdf5": "/lambda/nfs/imagined-future/external/RoboLab/output/cosmos3_population_screen_v1/seed_107/MustardInLeftBinTask/run_0.hdf5",
+      "state_id": "MustardInLeftBinTask_seed_107",
+      "task": "MustardInLeftBinTask"
+    },
+    {
+      "asset_video": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/MustardInLeftBinTask_seed_109/self.npz",
+      "branch_step": 96,
+      "branch_summary": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/MustardInLeftBinTask_seed_109/summary.json",
+      "donor_seed": 263,
+      "environment_seed": 109,
+      "input_sha256": {
+        "asset_video": "98918a3644c1046f0270a5fdf18afd04b77924879000f164572fdb77f6cd0bba",
+        "branch_summary": "85067de6a7ebed845d12eb58ad14de71cb14c631fdd2c4338ed55e175cb7764c",
+        "recorded_hdf5": "7498854fe0c4c06f2e9cc44ff07d2657829b23d8d4f10899230b3a872ada5ffd"
+      },
+      "instruction": "Put the mustard in the left bin",
+      "recipient_seed": 229,
+      "recorded_hdf5": "/lambda/nfs/imagined-future/external/RoboLab/output/cosmos3_population_screen_v1/seed_109/MustardInLeftBinTask/run_0.hdf5",
+      "state_id": "MustardInLeftBinTask_seed_109",
+      "task": "MustardInLeftBinTask"
+    },
+    {
+      "asset_video": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/MustardInLeftBinTask_seed_113/self.npz",
+      "branch_step": 96,
+      "branch_summary": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/MustardInLeftBinTask_seed_113/summary.json",
+      "donor_seed": 239,
+      "environment_seed": 113,
+      "input_sha256": {
+        "asset_video": "2388155137110fe9713c0a9a2b868d092d5f9ee29d61a293a5d42db86bdfe38c",
+        "branch_summary": "e92ba1ff3a6763f1c6e73a0659981bd64cd9911c6c8a6e285d0acf62932bcf80",
+        "recorded_hdf5": "8d80f505bb4a2ac5a95eb1db9b719fd473509c81505e9e116f0b3216fccee687"
+      },
+      "instruction": "Put the mustard in the left bin",
+      "recipient_seed": 211,
+      "recorded_hdf5": "/lambda/nfs/imagined-future/external/RoboLab/output/cosmos3_population_screen_v1/seed_113/MustardInLeftBinTask/run_0.hdf5",
+      "state_id": "MustardInLeftBinTask_seed_113",
+      "task": "MustardInLeftBinTask"
+    },
+    {
+      "asset_video": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/RubiksCubeTask_seed_101/self.npz",
+      "branch_step": 64,
+      "branch_summary": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/RubiksCubeTask_seed_101/summary.json",
+      "donor_seed": 293,
+      "environment_seed": 101,
+      "input_sha256": {
+        "asset_video": "3df6ced1ce0af208a6a997c0acfe50debf0eb2ef42afbe9fff715435ff7d1de5",
+        "branch_summary": "e1b67e6f5e15f5c8dde3aa026b8708e06ed49a5e8bdabbd4f8129346e178d824",
+        "recorded_hdf5": "64c7aef4df68905ea83a2b690ba3d1d92ff5899bcd8616ba768db5bfad210381"
+      },
+      "instruction": "Put the cube in the bowl",
+      "recipient_seed": 223,
+      "recorded_hdf5": "/lambda/nfs/imagined-future/external/RoboLab/output/cosmos3_population_screen_v1/seed_101/RubiksCubeTask/run_0.hdf5",
+      "state_id": "RubiksCubeTask_seed_101",
+      "task": "RubiksCubeTask"
+    },
+    {
+      "asset_video": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/RubiksCubeTask_seed_103/self.npz",
+      "branch_step": 64,
+      "branch_summary": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/RubiksCubeTask_seed_103/summary.json",
+      "donor_seed": 233,
+      "environment_seed": 103,
+      "input_sha256": {
+        "asset_video": "3d8d11c1220c67e62fd57f31bd24e3f69e39612f70dec757a7a2bcd02f36dc76",
+        "branch_summary": "39d9cdb3188e5abc275577fe955740ba563e71913c582448d0136188159a41c9",
+        "recorded_hdf5": "4b557cf2af27e9e91f8dc12958f3f142d0daf4cd9eda929fab83ed44813a2f04"
+      },
+      "instruction": "Put the cube in the bowl",
+      "recipient_seed": 223,
+      "recorded_hdf5": "/lambda/nfs/imagined-future/external/RoboLab/output/cosmos3_population_screen_v1/seed_103/RubiksCubeTask/run_0.hdf5",
+      "state_id": "RubiksCubeTask_seed_103",
+      "task": "RubiksCubeTask"
+    },
+    {
+      "asset_video": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/RubiksCubeTask_seed_109/self.npz",
+      "branch_step": 64,
+      "branch_summary": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/RubiksCubeTask_seed_109/summary.json",
+      "donor_seed": 269,
+      "environment_seed": 109,
+      "input_sha256": {
+        "asset_video": "87e1fa19d038c437c269c3902cba615fa4716f61659665b878d9098daca611b1",
+        "branch_summary": "64854438dcc88a7ee9977844430617c965cc00e0f25b65f849a8b82034a399ec",
+        "recorded_hdf5": "4248a249809b1961d81b1775a1fdf362f9952ee24b2caf12839ddada3f3baf69"
+      },
+      "instruction": "Put the cube in the bowl",
+      "recipient_seed": 241,
+      "recorded_hdf5": "/lambda/nfs/imagined-future/external/RoboLab/output/cosmos3_population_screen_v1/seed_109/RubiksCubeTask/run_0.hdf5",
+      "state_id": "RubiksCubeTask_seed_109",
+      "task": "RubiksCubeTask"
+    },
+    {
+      "asset_video": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/RubiksCubeTask_seed_113/self.npz",
+      "branch_step": 64,
+      "branch_summary": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/RubiksCubeTask_seed_113/summary.json",
+      "donor_seed": 281,
+      "environment_seed": 113,
+      "input_sha256": {
+        "asset_video": "e6e05e40b3df437693e2f15aae253a46f81303ba990321913b3ead8e8f350d41",
+        "branch_summary": "45a7af9142af939ccd773d473b5dd7ee89c8e04123a7e49c2562ae2f8787f1a5",
+        "recorded_hdf5": "720e495b16b5c5e9b0a649ec3364ed51ca2d65edd26a0e66ea7d6c0629c8d45a"
+      },
+      "instruction": "Put the cube in the bowl",
+      "recipient_seed": 229,
+      "recorded_hdf5": "/lambda/nfs/imagined-future/external/RoboLab/output/cosmos3_population_screen_v1/seed_113/RubiksCubeTask/run_0.hdf5",
+      "state_id": "RubiksCubeTask_seed_113",
+      "task": "RubiksCubeTask"
+    },
+    {
+      "asset_video": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/SmartphoneInBinTask_seed_101/self.npz",
+      "branch_step": 64,
+      "branch_summary": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/SmartphoneInBinTask_seed_101/summary.json",
+      "donor_seed": 227,
+      "environment_seed": 101,
+      "input_sha256": {
+        "asset_video": "fd7a3bf5aa33f2de674666d0832bf77954b4523516931e8bc1ea955d9e5c851a",
+        "branch_summary": "9b7a8d028dcaa442227b628f8afe49a6862f023eaaa99b9c79d053c04e276eb2",
+        "recorded_hdf5": "8ac73e636b0faa0838d70cd4197e14cd93972b030411e4f0dd72ebf065b4bd99"
+      },
+      "instruction": "Put the smartphone in the grey bin",
+      "recipient_seed": 223,
+      "recorded_hdf5": "/lambda/nfs/imagined-future/external/RoboLab/output/cosmos3_population_screen_v1/seed_101/SmartphoneInBinTask/run_0.hdf5",
+      "state_id": "SmartphoneInBinTask_seed_101",
+      "task": "SmartphoneInBinTask"
+    },
+    {
+      "asset_video": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/SmartphoneInBinTask_seed_103/self.npz",
+      "branch_step": 64,
+      "branch_summary": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/SmartphoneInBinTask_seed_103/summary.json",
+      "donor_seed": 269,
+      "environment_seed": 103,
+      "input_sha256": {
+        "asset_video": "35226f3965f512e5ea5fdedb9cf077268e3cceffd4d9be7b6f799f19f02c1279",
+        "branch_summary": "a25e4eeb7617b731a9de5af0ff5cd08693f65bc0ab6de0dd1d98c5b58650d092",
+        "recorded_hdf5": "eaf720dc323840bd39aa72a21fa71c2864026367864a385e828280a94fda2e90"
+      },
+      "instruction": "Put the smartphone in the grey bin",
+      "recipient_seed": 211,
+      "recorded_hdf5": "/lambda/nfs/imagined-future/external/RoboLab/output/cosmos3_population_screen_v1/seed_103/SmartphoneInBinTask/run_0.hdf5",
+      "state_id": "SmartphoneInBinTask_seed_103",
+      "task": "SmartphoneInBinTask"
+    },
+    {
+      "asset_video": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/SmartphoneInBinTask_seed_107/self.npz",
+      "branch_step": 64,
+      "branch_summary": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/SmartphoneInBinTask_seed_107/summary.json",
+      "donor_seed": 269,
+      "environment_seed": 107,
+      "input_sha256": {
+        "asset_video": "cebf461803c17263898552ecd2a453ad1d1d98f79e8aab621dee8e7e3c93aec8",
+        "branch_summary": "d177b4ec03fc8015b97abb5f9206a7bb38f61cbd1e23ff36f8b900f375ba17f5",
+        "recorded_hdf5": "0b1f0993b23656215d9b24f3a1fcdb12072ed88dd84cc07ba0594c1e86cc8eb1"
+      },
+      "instruction": "Put the smartphone in the grey bin",
+      "recipient_seed": 239,
+      "recorded_hdf5": "/lambda/nfs/imagined-future/external/RoboLab/output/cosmos3_population_screen_v1/seed_107/SmartphoneInBinTask/run_0.hdf5",
+      "state_id": "SmartphoneInBinTask_seed_107",
+      "task": "SmartphoneInBinTask"
+    },
+    {
+      "asset_video": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/SmartphoneInBinTask_seed_113/self.npz",
+      "branch_step": 64,
+      "branch_summary": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/SmartphoneInBinTask_seed_113/summary.json",
+      "donor_seed": 227,
+      "environment_seed": 113,
+      "input_sha256": {
+        "asset_video": "05d971c1f67bad40f6835aeab8c0cd3fd3a77805e5dc24534507b1002c97672e",
+        "branch_summary": "5fc140d75b9470707179a88aa7127ecfce78fd989d1dfa42a8691ac971859011",
+        "recorded_hdf5": "9728de575d7b268bed56b1d6dc72128730b8050ab9b18eeb0e63286963a2c0c0"
+      },
+      "instruction": "Put the smartphone in the grey bin",
+      "recipient_seed": 223,
+      "recorded_hdf5": "/lambda/nfs/imagined-future/external/RoboLab/output/cosmos3_population_screen_v1/seed_113/SmartphoneInBinTask/run_0.hdf5",
+      "state_id": "SmartphoneInBinTask_seed_113",
+      "task": "SmartphoneInBinTask"
+    },
+    {
+      "asset_video": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/SpoonInMugTask_seed_101/self.npz",
+      "branch_step": 128,
+      "branch_summary": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/SpoonInMugTask_seed_101/summary.json",
+      "donor_seed": 281,
+      "environment_seed": 101,
+      "input_sha256": {
+        "asset_video": "ab46406864f21eef4c8439b4e8b31f9393a330d111cda2fa71c533941103d306",
+        "branch_summary": "881e742728b487f48675ef87a4c7f1331e05e0fd4f1f868d9c36dc86569a96c2",
+        "recorded_hdf5": "1ccf5c77de75e704a49cd1891010bc03ef9a931f1ea5029ed76b2962e235015c"
+      },
+      "instruction": "Put the metal spoon that's in the wooden bowl in the mug",
+      "recipient_seed": 257,
+      "recorded_hdf5": "/lambda/nfs/imagined-future/external/RoboLab/output/cosmos3_population_screen_v1/seed_101/SpoonInMugTask/run_0.hdf5",
+      "state_id": "SpoonInMugTask_seed_101",
+      "task": "SpoonInMugTask"
+    },
+    {
+      "asset_video": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/SpoonInMugTask_seed_107/self.npz",
+      "branch_step": 128,
+      "branch_summary": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/SpoonInMugTask_seed_107/summary.json",
+      "donor_seed": 263,
+      "environment_seed": 107,
+      "input_sha256": {
+        "asset_video": "c34330a90c849aa8058d4a24ac50348a65fca3e815e2edb27d95e762cace5759",
+        "branch_summary": "dec21a7c81f21470b2f3ed5dddfe58668c063302ccc447f469ae06c17fa34cbe",
+        "recorded_hdf5": "979ffbab1439bdcaccaeb9db38904f8e811e3d2e0d06d01fed1ccfc77d0da050"
+      },
+      "instruction": "Put the metal spoon that's in the wooden bowl in the mug",
+      "recipient_seed": 241,
+      "recorded_hdf5": "/lambda/nfs/imagined-future/external/RoboLab/output/cosmos3_population_screen_v1/seed_107/SpoonInMugTask/run_0.hdf5",
+      "state_id": "SpoonInMugTask_seed_107",
+      "task": "SpoonInMugTask"
+    },
+    {
+      "asset_video": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/SpoonInMugTask_seed_109/self.npz",
+      "branch_step": 128,
+      "branch_summary": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/SpoonInMugTask_seed_109/summary.json",
+      "donor_seed": 227,
+      "environment_seed": 109,
+      "input_sha256": {
+        "asset_video": "c43c6249ac440e9ef7e2852a91f499c32dfa37b6cac114104fd2810d048a02c2",
+        "branch_summary": "9d6ea0e1f3b99a654e28cf565590f42ccf64d17bb890880809ed7a686bdde20e",
+        "recorded_hdf5": "79d411d818a2e53836458c8ea2df0ccfc79ef6c70a40aea3e56213020f6e799a"
+      },
+      "instruction": "Put the metal spoon that's in the wooden bowl in the mug",
+      "recipient_seed": 211,
+      "recorded_hdf5": "/lambda/nfs/imagined-future/external/RoboLab/output/cosmos3_population_screen_v1/seed_109/SpoonInMugTask/run_0.hdf5",
+      "state_id": "SpoonInMugTask_seed_109",
+      "task": "SpoonInMugTask"
+    },
+    {
+      "asset_video": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/SpoonInMugTask_seed_113/self.npz",
+      "branch_step": 128,
+      "branch_summary": "/lambda/nfs/imagined-future/results/cosmos3_population_confirmatory_v1/SpoonInMugTask_seed_113/summary.json",
+      "donor_seed": 229,
+      "environment_seed": 113,
+      "input_sha256": {
+        "asset_video": "a8db7926e804d9f412395363e84baf32fc516b61cc74ec2b7d86c4e031fae794",
+        "branch_summary": "dc4a07cc3993dfca4fdfcf21340d3d83fd332f710831e33679ec0742c43ea13e",
+        "recorded_hdf5": "ba04688e15df4d41a25363845bcdc77fb72fa90f1ecd3fa3e656976ba07b5399"
+      },
+      "instruction": "Put the metal spoon that's in the wooden bowl in the mug",
+      "recipient_seed": 223,
+      "recorded_hdf5": "/lambda/nfs/imagined-future/external/RoboLab/output/cosmos3_population_screen_v1/seed_113/SpoonInMugTask/run_0.hdf5",
+      "state_id": "SpoonInMugTask_seed_113",
+      "task": "SpoonInMugTask"
+    }
+  ],
+  "study_name": "cosmos3-existing-cohort-predicted-future-kv-factorial-v3"
+}

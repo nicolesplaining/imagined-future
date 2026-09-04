@@ -1,0 +1,487 @@
+Skip to main content
+Interpretability for Discovery
+Home
+About
+CFP
+Schedule
+Speakers
+Organizers
+
+Submit paper ↗
+NeurIPS 2026 Workshop
+
+Interpretability for Discovery
+What do AI models know that we don’t?
+We explore how model interpretability can turn learned representations into novel, testable knowledge.
+
+December 12 or 13, 2026
+Atlanta, Georgia, USA
+August 29, 2026 · AoE
+September 2, 2026 · AoE
+Submit paper ↗
+View speakers ↓
+Contact organizers
+About the
+Workshop
+Read the full premise →
+AI models now match or exceed human experts across domains from protein structure prediction and clinical forecasting to astronomy, climate science, animal communication, and strategic games.
+
+This workshop reframes interpretability as a tool for discovery, bringing interpretability researchers and domain scientists together to turn what models encode into knowledge experts can test and validate.
+
+Key Dates
+All deadlines follow Anywhere on Earth (AoE).
+
+01
+Deadline
+Submission deadline
+August 29, 2026 · 11:59 PM AOE
+September 2, 2026
+11:59:59 PM AOE
+02
+Notification
+Author notification
+September 29, 2026
+On or before this date
+03
+In person
+Workshop event
+December 12 or 13, 2026
+Final date to be confirmed · Atlanta, Georgia, USA
+Call for reviewers
+We’re recruiting reviewers
+If you work on interpretability or related topics, we’re looking for you!
+
+Register interest ↗
+Submission details →
+Invited Speakers
+Portrait of Gašper Beguš
+Gašper Beguš
+UC Berkeley
+
+Portrait of Katrin Franke
+Katrin Franke
+Stanford University
+
+Portrait of Nicholas Wang
+Nicholas Wang
+Goodfire
+
+Portrait of John F. Wu
+John F. Wu
+Johns Hopkins University
+
+Speaker lineup
+More speakers coming soon
+We will share additional confirmed speakers here.
+
+December 12 or 13 · Atlanta
+
+Workshop Timetable
+Tentative schedule. The final date, speaker assignments, and talk titles will be added when confirmed.
+
+08:30–08:40
+Welcome and opening remarks
+Workshop organizers
+
+Intro
+08:40–09:10
+Invited talk 1
+Title forthcoming
+
+Talk
+09:10–09:40
+Invited talk 2
+Title forthcoming
+
+Talk
+09:40–10:00
+Coffee
+Intermission
+
+Break
+10:00–10:30
+Spotlight talks
+Selected authors
+
+Spotlight
+10:30–11:30
+Panel discussion
+Interpretability for scientific discovery
+
+Panel
+11:30–12:00
+Invited talk 3
+Title forthcoming
+
+Talk
+12:00–13:00
+Lunch
+Intermission
+
+Break
+13:00–14:30
+Poster session
+Accepted papers
+
+Posters
+14:30–15:00
+Invited talk 4
+Title forthcoming
+
+Talk
+15:00–15:30
+Coffee
+Intermission
+
+Break
+15:30–16:00
+Invited talk 5
+Title forthcoming
+
+Talk
+16:00–16:30
+Invited talk 6
+Title forthcoming
+
+Talk
+16:30–17:00
+Closing remarks
+Workshop organizers
+
+Finale
+Open schedule page →
+More information
+
+Explore the workshop
+01 · About
+Premise and research scope
+Why interpretability can be a method for producing new knowledge.
+
+Read more →
+02 · CFP
+Submission instructions
+Dates, paper format, review policy, presentation details, and responsible use.
+
+Read more →
+03 · Schedule
+Full-day program
+The complete timetable and program notes in a focused view.
+
+Read more →
+Organizers
+Portrait of Xiaoyan Bai
+Xiaoyan Bai
+University of Chicago
+
+Portrait of Yonatan Belinkov
+Yonatan Belinkov
+Technion
+
+Portrait of Ekdeep Singh Lubana
+Ekdeep Singh Lubana
+Goodfire AI
+
+Portrait of Yaniv Nikankin
+Yaniv Nikankin
+Technion
+
+Portrait of Chenhao Tan
+Chenhao Tan
+University of Chicago
+
+Portrait of Amirtha Varshini A S
+Amirtha Varshini A S
+Montai Therapeutics
+
+With support from
+
+Sponsorship
+We gratefully acknowledge the support of our sponsor.
+
+Goodfire logo
+Goodfire
+Interp4Discovery
+NeurIPS 2026 Workshop on Interpretability for Discovery
+
+interp4discovery@gmail.com
+About
+CFP
+Schedule
+Organizers
+Sponsors
+Contact
+OpenReview ↗
+
+Skip to main content
+Interp4Discovery
+Home
+About
+CFP
+Schedule
+Speakers
+Organizers
+
+Submit paper ↗
+Workshop focus
+
+From prediction to discovery
+Interpretability is more than a debugging tool. It can bridge black-box models and scientific breakthroughs across unfamiliar domains, architectures, and modalities.
+
+Premise
+
+Explanation is only the beginning.
+Explore the scope ↓
+AI models now match or exceed human experts across many domains, from protein structure prediction and clinical forecasting to astronomy, climate science, animal communication, and strategic games.
+
+To reach that performance, they appear to have learned patterns and regularities that humans have not yet articulated. Interpretability gives us a way to read those representations back out.
+
+This workshop reframes interpretability as a tool for discovery, not just explanation. We bring together interpretability researchers and scientists to turn what models encode into knowledge that domain experts can test and validate.
+
+Core questions
+
+What must we solve?
+Discovery requires more than a compelling visualization. It requires methods, translation, and validation.
+
+Question 01
+Adapting modalities
+How can interpretability methods adapt to architectures, inductive biases, and data modalities beyond standard language and vision models?
+
+Question 02
+Translating knowledge
+How can interpretable internal representations become actionable, testable new knowledge?
+
+Question 03
+Open scientific problems
+What questions can interpretability help answer that are currently unknown to humans?
+
+Intellectual scope
+
+Workshop topics
+We invite work at the boundary between understanding models and producing knowledge about the world.
+
+01
+Methods and models for knowledge discovery
+Interpretability methods, evaluation frameworks, and model designs that support discovery across unfamiliar architectures and modalities.
+
+02
+Interpretability-driven discovery
+Empirical case studies where examining model internals surfaces non-obvious, verifiable knowledge in science and expert domains.
+
+03
+Perspectives on novel knowledge
+Position papers and theory on scope, limitations, epistemology, validation, and open problems in interpretability for discovery.
+
+04
+Failure cases and negative results
+Careful analyses of unsuccessful approaches, misleading interpretations, failed validation, and practical limits that clarify when interpretability does or does not support reliable discovery.
+
+Read the call for papers →
+Interp4Discovery
+NeurIPS 2026 Workshop on Interpretability for Discovery
+
+Home
+CFP
+Schedule
+Contact
+
+Skip to main content
+Interp4Discovery
+Home
+About
+CFP
+Schedule
+Speakers
+Organizers
+
+Submit paper ↗
+NeurIPS 2026 Workshop
+
+Call for Papers
+We invite original methodological, empirical, theoretical, and position work on using interpretability to uncover new knowledge.
+
+Key dates
+Submission deadline
+Aug 29, 2026 · 11:59 PM AOE
+Sept 2, 2026
+11:59:59 PM AOE
+Author notification
+Sept 29, 2026
+Workshop
+Dec 12 or 13, 2026
+Final date to be confirmed · Atlanta, Georgia
+OpenReview portal ↗
+At a glance
+Submission format
+Up to 5 pages of main text
++1 page for camera-ready
+Double blind
+Non-archival
+Private on OpenReview
+
+OpenReview account
+Without an institutional email, account approval can take up to two weeks. Please register early.
+
+Formatting template
+Download the official NeurIPS 2026 formatting instructions and LaTeX files.
+
+Download ZIP ↓
+Submission guidelines
+All submissions must be made through the OpenReview submission portal ↗ and remain private during review. We welcome methodological, empirical, theoretical, and position work on using interpretability to uncover new knowledge.
+
+Paper format
+Up to 5 pages
+Main text only. References and appendices do not count toward the limit, but the main text must be self-contained.
+
+Failure cases and negative results are welcome. We encourage careful studies of unsuccessful methods, misleading interpretations, failed validation, and practical limitations that help establish when interpretability can or cannot support reliable discovery.
+
+Formatting
+Write the submission in English and upload it as a single PDF.
+Use the NeurIPS 2026 workshop LaTeX template.
+References and appendices are excluded from the five-page main-text limit.
+The main text must be self-contained. Reviewers are not required to read appendices.
+Plan ahead
+If you do not have an institutional email, OpenReview account approval can take up to two weeks. Please create your account well before the submission deadline.
+
+Presentation and camera-ready
+Accepted papers will be presented as posters, with a subset selected for oral or spotlight talks.
+Accepted papers may use one additional main-text page in the camera-ready version, allowing up to six main-text pages to integrate reviewer feedback.
+Authors are encouraged, but not required, to attend the workshop in person.
+Eligibility and prior work
+Work previously submitted to or accepted at a non-archival venue, including workshops, is welcome.
+We do not accept work that has already been accepted at an archival venue, with the exception of NeurIPS 2026 papers submitted through the fast-track process below.
+Submissions undergoing peer review at another venue, including ICLR or NeurIPS, at the paper submission deadline are welcome.
+NeurIPS 2026 fast track
+We welcome papers that have already been accepted to NeurIPS 2026. Authors may request fast-track consideration and will be asked to provide evidence of the prior reviews and acceptance. Fast-track submissions remain subject to additional review, including workshop theme fit, after the regular reviewing process is complete.
+
+Anonymity and reproducibility
+Double-blind review
+The reviewing process is double-blind. Authors are responsible for ensuring that the manuscript and supplementary materials contain no identifying details.
+
+Remove author names, affiliations, acknowledgments, and other identifying details. Cite prior work in the third person.
+Before submission, search the manuscript for the names, GitHub usernames, and Hugging Face usernames of all core contributors.
+Code, data, models, and demos
+Authors are strongly encouraged to open source relevant code, models, prompts, data, and interactive demos. Reviewers will be specifically asked to consider reproducibility and the availability of code and data.
+
+For GitHub repositories, we recommend anonymous.4open.science ↗.
+For larger files such as model weights and datasets, we recommend using an anonymous Hugging Face account.
+For interactive demos, we recommend an anonymous website or Streamlit app.
+Review and publication policies
+Double-blind review
+Submissions must be fully anonymized. Authors are responsible for removing all identifying details.
+
+Non-archival
+Prior non-archival work and work under review elsewhere are welcome. Workshop acceptance does not prevent later archival publication.
+
+Responsible-use statement
+Every submission must include a short statement covering potential societal impacts and suggested mitigations. A missing statement is grounds for desk rejection.
+
+Camera-ready revision
+Accepted papers receive one additional main-text page, for a maximum of six pages, to incorporate reviewer feedback.
+
+Contact
+Questions may be sent to interp4discovery@gmail.com.
+
+Interp4Discovery
+NeurIPS 2026 Workshop on Interpretability for Discovery
+
+Home
+About
+Schedule
+Contact
+
+Skip to main content
+Interp4Discovery
+Home
+About
+CFP
+Schedule
+Speakers
+Organizers
+
+Submit paper ↗
+NeurIPS 2026 Workshop
+
+Program Schedule
+A tentative full-day program exploring the intersection of interpretability and scientific discovery. All times are local.
+
+Tentative date · December 12 or 13, 2026
+Location · Atlanta, Georgia, USA
+Format · Full day, in person
+08:30–08:40
+Welcome and opening remarks
+Workshop organizers
+
+Intro
+08:40–09:10
+Invited talk 1
+Speaker and title forthcoming
+
+Talk
+09:10–09:40
+Invited talk 2
+Speaker and title forthcoming
+
+Talk
+09:40–10:00
+Coffee
+Intermission
+
+Break
+10:00–10:30
+Spotlight talks
+Selected authors
+
+Spotlight
+10:30–11:30
+Panel discussion
+Interpretability for scientific discovery
+
+Panel
+11:30–12:00
+Invited talk 3
+Speaker and title forthcoming
+
+Talk
+12:00–13:00
+Lunch
+Intermission
+
+Break
+13:00–14:30
+Poster session
+Accepted papers
+
+Posters
+14:30–15:00
+Invited talk 4
+Speaker and title forthcoming
+
+Talk
+15:00–15:30
+Coffee
+Intermission
+
+Break
+15:30–16:00
+Invited talk 5
+Speaker and title forthcoming
+
+Talk
+16:00–16:30
+Invited talk 6
+Speaker and title forthcoming
+
+Talk
+16:30–17:00
+Closing remarks
+Workshop organizers
+
+Finale
+Meet the invited speakers →
+Interp4Discovery
+NeurIPS 2026 Workshop on Interpretability for Discovery
+
+Home
+About
+CFP
+Contact

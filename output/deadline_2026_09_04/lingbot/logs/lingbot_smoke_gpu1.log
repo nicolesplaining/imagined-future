@@ -1,0 +1,105 @@
+The config attributes {'clip_output': False} were passed to AutoencoderKLWan, but are not expected and will be ignored. Please verify your config.json configuration file.
+Loading checkpoint shards:   0%|          | 0/3 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 3/3 [00:00<00:00, 215.69it/s]
+The config attributes {'added_kv_proj_dim': None, 'image_dim': None, 'qk_norm': 'rms_norm_across_heads'} were passed to WanTransformer3DModel, but are not expected and will be ignored. Please verify your config.json configuration file.
+Loading checkpoint shards:   0%|          | 0/3 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 3/3 [00:00<00:00, 84.50it/s]
+Some weights of the model checkpoint at /home/ubuntu/if_external/checkpoints/lingbot-va-posttrain-libero-long/transformer were not used when initializing WanTransformer3DModel: 
+ ['patch_embedding.bias, patch_embedding.weight']
+/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/distributed/distributed_c10d.py:4876: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  warnings.warn(  # warn only once
+[rank0]:[W904 08:43:53.479885228 ProcessGroupNCCL.cpp:5068] Guessing device ID based on global rank. This can cause a hang if rank to GPU mapping is heterogeneous. You can specify device_id in init_process_group()
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/home/ubuntu/if_external/tools/run_lingbot_future_transplants.py", line 516, in <module>
+[rank0]:     main()
+[rank0]:   File "/home/ubuntu/if_external/tools/run_lingbot_future_transplants.py", line 512, in main
+[rank0]:     run_state(server, record, manifest, args)
+[rank0]:   File "/home/ubuntu/if_external/tools/run_lingbot_future_transplants.py", line 429, in run_state
+[rank0]:     install_future(server, obs, control)
+[rank0]:   File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 120, in decorate_context
+[rank0]:     return func(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/ubuntu/if_external/tools/run_lingbot_future_transplants.py", line 210, in install_future
+[rank0]:     init_latent = server._encode_obs(obs)
+[rank0]:                   ^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/ubuntu/if_external/lingbot-va/wan_va/wan_va_server.py", line 368, in _encode_obs
+[rank0]:     enc_out = self.streaming_vae.encode_chunk(videos_chunk)
+[rank0]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/ubuntu/if_external/lingbot-va/wan_va/modules/utils.py", line 93, in encode_chunk
+[rank0]:     out = self.encoder(x_chunk,
+[rank0]:           ^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/diffusers/models/autoencoders/autoencoder_kl_wan.py", line 601, in forward
+[rank0]:     x = layer(x, feat_cache=feat_cache, feat_idx=feat_idx)
+[rank0]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/diffusers/models/autoencoders/autoencoder_kl_wan.py", line 499, in forward
+[rank0]:     x = self.downsampler(x, feat_cache=feat_cache, feat_idx=feat_idx)
+[rank0]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/diffusers/models/autoencoders/autoencoder_kl_wan.py", line 304, in forward
+[rank0]:     x = self.time_conv(torch.cat([feat_cache[idx][:, :, -1:, :, :], x], 2))
+[rank0]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/diffusers/models/autoencoders/autoencoder_kl_wan.py", line 175, in forward
+[rank0]:     return super().forward(x)
+[rank0]:            ^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/nn/modules/conv.py", line 717, in forward
+[rank0]:     return self._conv_forward(input, self.weight, self.bias)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/nn/modules/conv.py", line 712, in _conv_forward
+[rank0]:     return F.conv3d(
+[rank0]:            ^^^^^^^^^
+[rank0]: RuntimeError: Calculated padded input size per channel: (2 x 16 x 16). Kernel size: (3 x 1 x 1). Kernel size can't be greater than actual input size
+[rank0]:[W904 08:45:45.766930687 ProcessGroupNCCL.cpp:1524] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+E0904 08:45:46.663000 20541 torch/distributed/elastic/multiprocessing/api.py:882] failed (exitcode: 1) local_rank: 0 (pid: 20704) of binary: /home/ubuntu/if_external/envs/lingbot/bin/python
+Traceback (most recent call last):
+  File "/home/ubuntu/if_external/envs/lingbot/bin/torchrun", line 10, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 357, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/distributed/run.py", line 936, in main
+    run(args)
+  File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/distributed/run.py", line 927, in run
+    elastic_launch(
+  File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 156, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 293, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+/home/ubuntu/if_external/tools/run_lingbot_future_transplants.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-09-04_08:45:46
+  host      : if-overnight-robolab-clients.ll.local
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 20704)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

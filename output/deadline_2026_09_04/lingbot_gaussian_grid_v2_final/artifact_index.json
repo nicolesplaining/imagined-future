@@ -1,0 +1,58 @@
+{
+  "file_count_excluding_index": 10,
+  "files": [
+    {
+      "bytes": 48526,
+      "path": "cells.csv",
+      "sha256": "e9548b0b0e57c2e47ebfbcddbdc86cf4816e71c6c9eeb3f18c37868bb4930e59"
+    },
+    {
+      "bytes": 9398,
+      "path": "execution_receipt.json",
+      "sha256": "2671b848025135b1dda814d323bee69deca668e84250fe15ba17b5d97c7ea31b"
+    },
+    {
+      "bytes": 1650,
+      "path": "logs/initial_failure_shard0.log",
+      "sha256": "e7590a6bf85fee7bd7d869fabd5c216fe9d518394bc3bd66b7a340150eb96598"
+    },
+    {
+      "bytes": 1650,
+      "path": "logs/initial_failure_shard1.log",
+      "sha256": "e7590a6bf85fee7bd7d869fabd5c216fe9d518394bc3bd66b7a340150eb96598"
+    },
+    {
+      "bytes": 2588,
+      "path": "logs/successful_shard0.log",
+      "sha256": "6fc0a4f725793b55d759a6a7a0a81a8bb70831583892bede6fc06d3dc345477e"
+    },
+    {
+      "bytes": 2588,
+      "path": "logs/successful_shard1.log",
+      "sha256": "9f5b5d597adb52b69cb2b672bd9e7c59954831139d40a5083f0c96bfbfb76564"
+    },
+    {
+      "bytes": 1817,
+      "path": "provenance.json",
+      "sha256": "8b237359ed972b5af2ddd34c1c7c3cfb2f514603bbce8dadcbb607749d040f74"
+    },
+    {
+      "bytes": 4315,
+      "path": "state_metrics.csv",
+      "sha256": "4c643d6ee98b7d07b3600968b6de6d42d78b8d5753dbb182a5a07db6506a7502"
+    },
+    {
+      "bytes": 29279,
+      "path": "summarize_lingbot_gaussian_source_grid.py",
+      "sha256": "8b24f096932b4a65ab0f6b585fd1053668eda298b7b3e47d15aabca21d9d0581"
+    },
+    {
+      "bytes": 3036,
+      "path": "summary.json",
+      "sha256": "0d4ff650d405c96097443b4954365d15b87b5a916e958378881332cc91d41e3e"
+    }
+  ],
+  "schema_version": 1,
+  "status": "complete_mode_frozen_read_only_analysis",
+  "tree_aggregate_sha256": "9cb7d5b91ff1f19efc7bce2afbf9a5b0002682537a7c2e00455d151af2da2e1c"
+}

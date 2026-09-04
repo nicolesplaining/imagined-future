@@ -1,0 +1,3736 @@
+{
+  "action_pair_design": "all_12_ordered_recipient_to_donor_pairs",
+  "allowed_exclusions": [
+    "missing_or_corrupt_recording",
+    "branch_point_exceeds_recording",
+    "nonexact_state_restore",
+    "nonfinite_model_output",
+    "invalid_future_tensor_shape"
+  ],
+  "candidate_count": 48,
+  "candidates": [
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 64,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 3554,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_3554/BananaInBowlTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_3554/BananaInBowlTask/run_0.hdf5",
+      "selected": true,
+      "task": "BananaInBowlTask",
+      "unit_id": "BananaInBowlTask-seed-3554"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 64,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 4828,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_4828/BananaInBowlTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_4828/BananaInBowlTask/run_0.hdf5",
+      "selected": true,
+      "task": "BananaInBowlTask",
+      "unit_id": "BananaInBowlTask-seed-4828"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 64,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 5017,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_5017/BananaInBowlTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_5017/BananaInBowlTask/run_0.hdf5",
+      "selected": true,
+      "task": "BananaInBowlTask",
+      "unit_id": "BananaInBowlTask-seed-5017"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 64,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 5428,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_5428/BananaInBowlTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_5428/BananaInBowlTask/run_0.hdf5",
+      "selected": true,
+      "task": "BananaInBowlTask",
+      "unit_id": "BananaInBowlTask-seed-5428"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 64,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 6693,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_6693/BananaInBowlTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_6693/BananaInBowlTask/run_0.hdf5",
+      "selected": true,
+      "task": "BananaInBowlTask",
+      "unit_id": "BananaInBowlTask-seed-6693"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 64,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 8281,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8281/BananaInBowlTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8281/BananaInBowlTask/run_0.hdf5",
+      "selected": true,
+      "task": "BananaInBowlTask",
+      "unit_id": "BananaInBowlTask-seed-8281"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 64,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 8632,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8632/BananaInBowlTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8632/BananaInBowlTask/run_0.hdf5",
+      "selected": true,
+      "task": "BananaInBowlTask",
+      "unit_id": "BananaInBowlTask-seed-8632"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 64,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 8901,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8901/BananaInBowlTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8901/BananaInBowlTask/run_0.hdf5",
+      "selected": true,
+      "task": "BananaInBowlTask",
+      "unit_id": "BananaInBowlTask-seed-8901"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 64,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 3554,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_3554/RubiksCubeTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_3554/RubiksCubeTask/run_0.hdf5",
+      "selected": true,
+      "task": "RubiksCubeTask",
+      "unit_id": "RubiksCubeTask-seed-3554"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 64,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 4828,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_4828/RubiksCubeTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_4828/RubiksCubeTask/run_0.hdf5",
+      "selected": true,
+      "task": "RubiksCubeTask",
+      "unit_id": "RubiksCubeTask-seed-4828"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 64,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 5017,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_5017/RubiksCubeTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_5017/RubiksCubeTask/run_0.hdf5",
+      "selected": true,
+      "task": "RubiksCubeTask",
+      "unit_id": "RubiksCubeTask-seed-5017"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 64,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 5428,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_5428/RubiksCubeTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_5428/RubiksCubeTask/run_0.hdf5",
+      "selected": true,
+      "task": "RubiksCubeTask",
+      "unit_id": "RubiksCubeTask-seed-5428"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 64,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 6693,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_6693/RubiksCubeTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_6693/RubiksCubeTask/run_0.hdf5",
+      "selected": true,
+      "task": "RubiksCubeTask",
+      "unit_id": "RubiksCubeTask-seed-6693"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 64,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 8281,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8281/RubiksCubeTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8281/RubiksCubeTask/run_0.hdf5",
+      "selected": true,
+      "task": "RubiksCubeTask",
+      "unit_id": "RubiksCubeTask-seed-8281"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 64,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 8632,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8632/RubiksCubeTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8632/RubiksCubeTask/run_0.hdf5",
+      "selected": true,
+      "task": "RubiksCubeTask",
+      "unit_id": "RubiksCubeTask-seed-8632"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 64,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 8901,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8901/RubiksCubeTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8901/RubiksCubeTask/run_0.hdf5",
+      "selected": true,
+      "task": "RubiksCubeTask",
+      "unit_id": "RubiksCubeTask-seed-8901"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 96,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 3554,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_3554/MustardInLeftBinTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_3554/MustardInLeftBinTask/run_0.hdf5",
+      "selected": true,
+      "task": "MustardInLeftBinTask",
+      "unit_id": "MustardInLeftBinTask-seed-3554"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 96,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 4828,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_4828/MustardInLeftBinTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_4828/MustardInLeftBinTask/run_0.hdf5",
+      "selected": true,
+      "task": "MustardInLeftBinTask",
+      "unit_id": "MustardInLeftBinTask-seed-4828"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 96,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 5017,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_5017/MustardInLeftBinTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_5017/MustardInLeftBinTask/run_0.hdf5",
+      "selected": true,
+      "task": "MustardInLeftBinTask",
+      "unit_id": "MustardInLeftBinTask-seed-5017"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 96,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 5428,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_5428/MustardInLeftBinTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_5428/MustardInLeftBinTask/run_0.hdf5",
+      "selected": true,
+      "task": "MustardInLeftBinTask",
+      "unit_id": "MustardInLeftBinTask-seed-5428"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 96,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 6693,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_6693/MustardInLeftBinTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_6693/MustardInLeftBinTask/run_0.hdf5",
+      "selected": true,
+      "task": "MustardInLeftBinTask",
+      "unit_id": "MustardInLeftBinTask-seed-6693"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 96,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 8281,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8281/MustardInLeftBinTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8281/MustardInLeftBinTask/run_0.hdf5",
+      "selected": true,
+      "task": "MustardInLeftBinTask",
+      "unit_id": "MustardInLeftBinTask-seed-8281"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 96,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 8632,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8632/MustardInLeftBinTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8632/MustardInLeftBinTask/run_0.hdf5",
+      "selected": true,
+      "task": "MustardInLeftBinTask",
+      "unit_id": "MustardInLeftBinTask-seed-8632"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 96,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 8901,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8901/MustardInLeftBinTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8901/MustardInLeftBinTask/run_0.hdf5",
+      "selected": true,
+      "task": "MustardInLeftBinTask",
+      "unit_id": "MustardInLeftBinTask-seed-8901"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 128,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 3554,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_3554/SpoonInMugTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_3554/SpoonInMugTask/run_0.hdf5",
+      "selected": true,
+      "task": "SpoonInMugTask",
+      "unit_id": "SpoonInMugTask-seed-3554"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 128,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 4828,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_4828/SpoonInMugTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_4828/SpoonInMugTask/run_0.hdf5",
+      "selected": true,
+      "task": "SpoonInMugTask",
+      "unit_id": "SpoonInMugTask-seed-4828"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 128,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 5017,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_5017/SpoonInMugTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_5017/SpoonInMugTask/run_0.hdf5",
+      "selected": true,
+      "task": "SpoonInMugTask",
+      "unit_id": "SpoonInMugTask-seed-5017"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 128,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 5428,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_5428/SpoonInMugTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_5428/SpoonInMugTask/run_0.hdf5",
+      "selected": true,
+      "task": "SpoonInMugTask",
+      "unit_id": "SpoonInMugTask-seed-5428"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 128,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 6693,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_6693/SpoonInMugTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_6693/SpoonInMugTask/run_0.hdf5",
+      "selected": true,
+      "task": "SpoonInMugTask",
+      "unit_id": "SpoonInMugTask-seed-6693"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 128,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 8281,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8281/SpoonInMugTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8281/SpoonInMugTask/run_0.hdf5",
+      "selected": true,
+      "task": "SpoonInMugTask",
+      "unit_id": "SpoonInMugTask-seed-8281"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 128,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 8632,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8632/SpoonInMugTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8632/SpoonInMugTask/run_0.hdf5",
+      "selected": true,
+      "task": "SpoonInMugTask",
+      "unit_id": "SpoonInMugTask-seed-8632"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 128,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 8901,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8901/SpoonInMugTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8901/SpoonInMugTask/run_0.hdf5",
+      "selected": true,
+      "task": "SpoonInMugTask",
+      "unit_id": "SpoonInMugTask-seed-8901"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 320,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 3554,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_3554/MarkerInMugTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_3554/MarkerInMugTask/run_0.hdf5",
+      "selected": true,
+      "task": "MarkerInMugTask",
+      "unit_id": "MarkerInMugTask-seed-3554"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 320,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 4828,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_4828/MarkerInMugTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_4828/MarkerInMugTask/run_0.hdf5",
+      "selected": true,
+      "task": "MarkerInMugTask",
+      "unit_id": "MarkerInMugTask-seed-4828"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 320,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 5017,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_5017/MarkerInMugTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_5017/MarkerInMugTask/run_0.hdf5",
+      "selected": true,
+      "task": "MarkerInMugTask",
+      "unit_id": "MarkerInMugTask-seed-5017"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 320,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 5428,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_5428/MarkerInMugTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_5428/MarkerInMugTask/run_0.hdf5",
+      "selected": true,
+      "task": "MarkerInMugTask",
+      "unit_id": "MarkerInMugTask-seed-5428"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 320,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 6693,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_6693/MarkerInMugTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_6693/MarkerInMugTask/run_0.hdf5",
+      "selected": true,
+      "task": "MarkerInMugTask",
+      "unit_id": "MarkerInMugTask-seed-6693"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 320,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 8281,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8281/MarkerInMugTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8281/MarkerInMugTask/run_0.hdf5",
+      "selected": true,
+      "task": "MarkerInMugTask",
+      "unit_id": "MarkerInMugTask-seed-8281"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 320,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 8632,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8632/MarkerInMugTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8632/MarkerInMugTask/run_0.hdf5",
+      "selected": true,
+      "task": "MarkerInMugTask",
+      "unit_id": "MarkerInMugTask-seed-8632"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 320,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 8901,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8901/MarkerInMugTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8901/MarkerInMugTask/run_0.hdf5",
+      "selected": true,
+      "task": "MarkerInMugTask",
+      "unit_id": "MarkerInMugTask-seed-8901"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 64,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 3554,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_3554/SmartphoneInBinTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_3554/SmartphoneInBinTask/run_0.hdf5",
+      "selected": true,
+      "task": "SmartphoneInBinTask",
+      "unit_id": "SmartphoneInBinTask-seed-3554"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 64,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 4828,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_4828/SmartphoneInBinTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_4828/SmartphoneInBinTask/run_0.hdf5",
+      "selected": true,
+      "task": "SmartphoneInBinTask",
+      "unit_id": "SmartphoneInBinTask-seed-4828"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 64,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 5017,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_5017/SmartphoneInBinTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_5017/SmartphoneInBinTask/run_0.hdf5",
+      "selected": true,
+      "task": "SmartphoneInBinTask",
+      "unit_id": "SmartphoneInBinTask-seed-5017"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 64,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 5428,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_5428/SmartphoneInBinTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_5428/SmartphoneInBinTask/run_0.hdf5",
+      "selected": true,
+      "task": "SmartphoneInBinTask",
+      "unit_id": "SmartphoneInBinTask-seed-5428"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 64,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 6693,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_6693/SmartphoneInBinTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_6693/SmartphoneInBinTask/run_0.hdf5",
+      "selected": true,
+      "task": "SmartphoneInBinTask",
+      "unit_id": "SmartphoneInBinTask-seed-6693"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 64,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 8281,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8281/SmartphoneInBinTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8281/SmartphoneInBinTask/run_0.hdf5",
+      "selected": true,
+      "task": "SmartphoneInBinTask",
+      "unit_id": "SmartphoneInBinTask-seed-8281"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 64,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 8632,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8632/SmartphoneInBinTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8632/SmartphoneInBinTask/run_0.hdf5",
+      "selected": true,
+      "task": "SmartphoneInBinTask",
+      "unit_id": "SmartphoneInBinTask-seed-8632"
+    },
+    {
+      "action_ordered_pairs": [
+        [
+          211,
+          223
+        ],
+        [
+          211,
+          227
+        ],
+        [
+          211,
+          229
+        ],
+        [
+          223,
+          211
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          229
+        ],
+        [
+          227,
+          211
+        ],
+        [
+          227,
+          223
+        ],
+        [
+          227,
+          229
+        ],
+        [
+          229,
+          211
+        ],
+        [
+          229,
+          223
+        ],
+        [
+          229,
+          227
+        ]
+      ],
+      "branch_seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "branch_step": 64,
+      "donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "environment_seed": 8901,
+      "physical_donor_seeds": [
+        223,
+        227,
+        229
+      ],
+      "physical_recipient_seed": 211,
+      "recipient_seed": 211,
+      "recorded_env_cfg": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8901/SmartphoneInBinTask/env_cfg.json",
+      "recorded_hdf5": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/recordings/seed_8901/SmartphoneInBinTask/run_0.hdf5",
+      "selected": true,
+      "task": "SmartphoneInBinTask",
+      "unit_id": "SmartphoneInBinTask-seed-8901"
+    }
+  ],
+  "frozen_at_utc": "2026-09-03T21:51:50Z",
+  "physical_endpoint_design": "fixed_recipient_211_to_three_donors",
+  "primary_chance_rate": 0.25,
+  "primary_outcome": "state_mean_four_way_correct_donor_action_identification_across_all_12_ordered_pairs",
+  "replacement_after_outcome": false,
+  "required_controls": [
+    "exact_native_recompute",
+    "mechanics_matched_self_patch",
+    "same_state_wrong_donor_permutation",
+    "distance_matched_gaussian_for_primary_donor"
+  ],
+  "secondary_outcomes": [
+    "distance_reduction_to_correct_donor_action",
+    "cosine_alignment_with_donor_axis",
+    "orthogonal_residual_normalized_by_native_separation",
+    "normalized_donor_projection",
+    "four_way_correct_donor_endpoint_identification",
+    "distance_reduction_to_correct_donor_endpoint"
+  ],
+  "selection_rule": "include every task-by-environment-seed state; never filter on success, native separation, visual quality, or intervention result",
+  "selection_uses_native_or_intervention_outcomes": false,
+  "source_config": "configs/overnight_2026-09-03.toml",
+  "source_config_sha256": "eef54e72c0bdd88e174edbd0aab1b0e40beb2669f6e5976080c5c4f3c2d4d2e9",
+  "states_per_task": 8,
+  "status": "frozen_before_outcomes",
+  "study_id": "overnight_2026_09_03",
+  "task_count": 6
+}

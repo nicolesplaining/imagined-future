@@ -1,0 +1,44 @@
+{
+  "created_at_utc": "2026-09-04T18:02:58.806384+00:00",
+  "mapping_csv_sha256": "0ff7c5a2ab5a33ae5e0447859fc98c103d21cc25d880888951e297a6c8a74b32",
+  "overview": {
+    "branch_order": [
+      211,
+      223,
+      227,
+      229
+    ],
+    "probe": {
+      "avg_frame_rate": "5/1",
+      "codec_name": "h264",
+      "duration": 54.0,
+      "height": 704,
+      "nb_frames": 270,
+      "width": 1280
+    },
+    "relative_path": "all_30_states_4_branches_overview.mp4",
+    "sha256": "1f6b76c3c3de34956bfc290fba114190b11d7258e8ac57314920375cb9818e19",
+    "state_order": "raw receipt / frozen manifest order"
+  },
+  "purpose": "selection-neutral descriptive media; no outcome or appearance selection",
+  "schema": "dreamzero-exhaustive-derived-media-v1",
+  "script_sha256": "f8597762c596157ba69f8b370ac0d3fb4c46c039a1152014b9893e3b6ce24433",
+  "selection": "all 30 frozen manifest states x all four registered branches, in raw receipt order",
+  "source_raw_artifact_index_sha256": "8907b7f854f7ea5217cfdce842bb56d2cc86649fd2fa53eed11480966f5f5aa6",
+  "source_raw_receipt_sha256": "89c7f4742b42698d2a2cb122f63c5792d6e53da070280c019ad18a1fb3acacdb",
+  "source_raw_root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/dreamzero_all_native_media_v1",
+  "source_raw_tree_aggregate_sha256": "e6e34e5b60ae6dd3233cd95e614a8911227d4c6f869222d6195dd0ebcf3f56c5",
+  "source_state_count": 30,
+  "source_video_count": 120,
+  "source_videos_rehashed_before_and_after": true,
+  "status": "complete",
+  "terminal_contact_sheet": {
+    "columns": 4,
+    "frame_index_zero_based": 8,
+    "height": 6420,
+    "relative_path": "all_30x4_terminal_contact_sheet.png",
+    "rows": 30,
+    "sha256": "0a453a952a982041c7c3307576c921caadb99d7aa615a12229ad863190cc0a46",
+    "width": 1280
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "schema": "dreamzero-final-provenance-chain-v2",
+  "created_utc": "2026-09-04T17:41:00Z",
+  "note": "This chain preserves the immutable v1 receipt and v1 chain, applies the narrowly scoped runtime-log correction in the addendum, and binds the final scientific artifacts. The corrective addendum is authoritative for the evaluated server log; all other v1 receipt fields remain authoritative within their stated scope.",
+  "raw_runtime_receipt": {
+    "path": "../provenance/final_runtime_receipt.json",
+    "sha256": "57b89a7a98b3326812fa6652fff1f000f9bbe6940cd82a4e1a72b7983eaa06e5"
+  },
+  "prior_chain": {
+    "path": "../provenance_chain.json",
+    "sha256": "34f52efc5f960a271ae291fc94c3527622e14edbd0de3d7e992cce5b0bc1aa63"
+  },
+  "runtime_provenance_addendum": {
+    "path": "runtime_provenance_addendum_v1.json",
+    "sha256": "b7ce05309878376cc5f1fa1c091c4fa5007a7c9d705f7481cf902a9c54878078"
+  },
+  "actual_server_log_snapshot": {
+    "path": "actual_intervention_server_snapshot.log",
+    "sha256": "a01f759f9ef18022df7aeb4d543eac5626b08a15ffc80389533538ed24f4c07e",
+    "size_bytes": 1199124
+  },
+  "postrun_python_distributions": {
+    "path": "postrun_python_distributions.txt",
+    "sha256": "4301a6e9b6805985decdda1b47445b03f949c24a8465c84df3b9664e90279180",
+    "distribution_count": 258,
+    "scope": "postrun snapshot, not launch-time lockfile"
+  },
+  "final_scientific_artifacts": {
+    "core_analysis_inventory": {
+      "path": "../core_analysis_final/artifact_inventory.json",
+      "sha256": "4474b1a7f2d9d2c7bf4682d4d94910782d55e0b26e3ec693b235902e1c500327"
+    },
+    "control_analysis_inventory": {
+      "path": "../control_analysis/artifact_inventory.json",
+      "sha256": "dbc56bd5e282b7c7cd30876206bf15b6a800d3f4e4912af1cf60a5f8b0f7c663"
+    },
+    "representative_selection_inventory": {
+      "path": "../representative/artifact_inventory.json",
+      "sha256": "6bb7111c65a57ea01cc4b03860b45a63d223eef26215e7763ac6e6ae2c14829b"
+    },
+    "representative_media_receipt": {
+      "path": "../representative_media/receipt.json",
+      "sha256": "b51849ea718b25bb1474e1b7c8c2040bac1c6af9673674db3ea10348ed71c2a7"
+    }
+  }
+}

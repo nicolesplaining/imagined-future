@@ -1,0 +1,170 @@
+{
+  "admission": "evaluation",
+  "all_exact_controls_pass": true,
+  "analysis_state_metrics_sha256": "c4419a896511fab7082db13ea02018f24ceef1a29c23e01822eecf3b31d7a667",
+  "analysis_summary_path": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_eval_v1_analysis/summary.json",
+  "analysis_summary_sha256": "aaaac835f253bc8a328bcb164a3d06ac7482fce946818b1dca11dcf50886b581",
+  "bootstrap": [
+    {
+      "bootstrap_95_ci_high": 0.8194444444444444,
+      "bootstrap_95_ci_low": 0.6666666666666665,
+      "bootstrap_mean": 0.7471957777777777,
+      "estimate": 0.7472222222222221,
+      "metric": "retrieval_accuracy_off_diagonal",
+      "n_states": 30,
+      "repetitions": 50000,
+      "seed": 260904
+    },
+    {
+      "bootstrap_95_ci_high": 0.8645833333333334,
+      "bootstrap_95_ci_low": 0.75,
+      "bootstrap_mean": 0.8103968333333333,
+      "estimate": 0.8104166666666667,
+      "metric": "retrieval_accuracy_all",
+      "n_states": 30,
+      "repetitions": 50000,
+      "seed": 260904
+    },
+    {
+      "bootstrap_95_ci_high": 0.7229902123440534,
+      "bootstrap_95_ci_low": 0.6242715454710507,
+      "bootstrap_mean": 0.6755107403341378,
+      "estimate": 0.6754348472425978,
+      "metric": "projection",
+      "n_states": 30,
+      "repetitions": 50000,
+      "seed": 260904
+    },
+    {
+      "bootstrap_95_ci_high": 0.5239932038874104,
+      "bootstrap_95_ci_low": 0.4214522355964019,
+      "bootstrap_mean": 0.4735259956404093,
+      "estimate": 0.4734864541413798,
+      "metric": "distance_reduction",
+      "n_states": 30,
+      "repetitions": 50000,
+      "seed": 260904
+    },
+    {
+      "bootstrap_95_ci_high": 0.846507909088683,
+      "bootstrap_95_ci_low": 0.7774197820105418,
+      "bootstrap_mean": 0.8135873473890302,
+      "estimate": 0.8135733473694766,
+      "metric": "cosine_alignment",
+      "n_states": 30,
+      "repetitions": 50000,
+      "seed": 260904
+    },
+    {
+      "bootstrap_95_ci_high": 0.41814631955849674,
+      "bootstrap_95_ci_low": 0.35910044392763263,
+      "bootstrap_mean": 0.3884147111904836,
+      "estimate": 0.3884212779676617,
+      "metric": "orthogonal_residual",
+      "n_states": 30,
+      "repetitions": 50000,
+      "seed": 260904
+    },
+    {
+      "bootstrap_95_ci_high": 0.578547764403598,
+      "bootstrap_95_ci_low": 0.47600679611258956,
+      "bootstrap_mean": 0.5264740043595907,
+      "estimate": 0.5265135458586202,
+      "metric": "normalized_final_distance",
+      "n_states": 30,
+      "repetitions": 50000,
+      "seed": 260904
+    },
+    {
+      "bootstrap_95_ci_high": 3.7749015979485856,
+      "bootstrap_95_ci_low": 3.0174545831669857,
+      "bootstrap_mean": 3.39045664062852,
+      "estimate": 3.3897003987893,
+      "metric": "gaussian_perturbation_normalized",
+      "n_states": 30,
+      "repetitions": 50000,
+      "seed": 260904
+    },
+    {
+      "bootstrap_95_ci_high": 0.0,
+      "bootstrap_95_ci_low": 0.0,
+      "bootstrap_mean": 0.0,
+      "estimate": 0.0,
+      "metric": "donor_future_recipient_cache_projection",
+      "n_states": 30,
+      "repetitions": 50000,
+      "seed": 260904
+    },
+    {
+      "bootstrap_95_ci_high": 0.7229902123440534,
+      "bootstrap_95_ci_low": 0.6242715454710507,
+      "bootstrap_mean": 0.6755107403341378,
+      "estimate": 0.6754348472425978,
+      "metric": "recipient_future_donor_cache_projection",
+      "n_states": 30,
+      "repetitions": 50000,
+      "seed": 260904
+    }
+  ],
+  "checkpoint_content_manifest_path": "checkpoint_content_manifest.json",
+  "checkpoint_content_manifest_sha256": "b1c8722becbb4a77a840cb5716cbd57e68c5bd77cb4a0af3d19a6e9ee1de00fd",
+  "checkpoint_revision": "0e89d1e753019988aba484e8da2dc0810e264d9f",
+  "environment_provenance_path": "environment_provenance.json",
+  "environment_provenance_sha256": "189eb5f1b33b6878f65fd5e4977231113969ad36633ea5a2e94703e1c2d6c0cf",
+  "manifest_sha256": "9c8d7dd547955e4622d98c7eb42fffed157f6db983f41f02929b28a434be47b4",
+  "media_selection_uses_outcomes": false,
+  "metric_names": [
+    "retrieval_accuracy_off_diagonal",
+    "retrieval_accuracy_all",
+    "projection",
+    "distance_reduction",
+    "cosine_alignment",
+    "orthogonal_residual",
+    "normalized_final_distance",
+    "gaussian_perturbation_normalized",
+    "donor_future_recipient_cache_projection",
+    "recipient_future_donor_cache_projection"
+  ],
+  "permutation": [
+    {
+      "metric": "retrieval_accuracy_all",
+      "monte_carlo_p_greater_equal": 9.99990000099999e-06,
+      "null_95_interval_high": 0.32708333333333334,
+      "null_95_interval_low": 0.17916666666666667,
+      "null_mean": 0.2498754791666667,
+      "observed": 0.8104166666666667,
+      "permutation_unit": "one shared permutation of all four future-source labels over all four native-action labels per state; the mapping is shared across recipient rows and off-diagonal scoring retains the original 12 cells",
+      "repetitions": 100000,
+      "seed": 260905
+    },
+    {
+      "metric": "retrieval_accuracy_off_diagonal",
+      "monte_carlo_p_greater_equal": 9.99990000099999e-06,
+      "null_95_interval_high": 0.3277777777777778,
+      "null_95_interval_low": 0.18055555555555555,
+      "null_mean": 0.2498881944444444,
+      "observed": 0.7472222222222222,
+      "permutation_unit": "one shared permutation of all four future-source labels over all four native-action labels per state; the mapping is shared across recipient rows and off-diagonal scoring retains the original 12 cells",
+      "repetitions": 100000,
+      "seed": 260905
+    }
+  ],
+  "primary_inferential_metric": "retrieval_accuracy_off_diagonal",
+  "retrieval_accuracy_all_includes_exact_self_controls": true,
+  "runner_sha256": "902d749772eadef213988c1b30ddb1ef2182da7e2f3852dc6ba596d05bf09fc2",
+  "state_count": 30,
+  "status": "complete",
+  "task_counts": {
+    "0": 3,
+    "1": 3,
+    "2": 3,
+    "3": 3,
+    "4": 3,
+    "5": 3,
+    "6": 3,
+    "7": 3,
+    "8": 3,
+    "9": 3
+  },
+  "upstream_commit": "7c6ffa9bfc4b83582cafc860fab4c82cc7deeeeb"
+}

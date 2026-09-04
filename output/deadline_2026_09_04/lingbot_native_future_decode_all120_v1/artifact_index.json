@@ -1,0 +1,43 @@
+{
+  "file_count_excluding_index": 7,
+  "files": [
+    {
+      "bytes": 78339,
+      "path": "all_120_decodes.csv",
+      "sha256": "393bd418bd97de4fec3c1e0441e87a4a6ebf5176de23fbbe0df63ca3b0e5a4ac"
+    },
+    {
+      "bytes": 203241,
+      "path": "all_120_decodes.json",
+      "sha256": "f5d2fb9cbda1bc37be0c85fcb542c3d10cbd8ebe5a68c7afd60109867957f223"
+    },
+    {
+      "bytes": 19038,
+      "path": "finalize_lingbot_exhaustive_decode.py",
+      "sha256": "fafd1f5230ca1add4785b83b674a52f18b17c3ccd62a5a8806a84e237ef21ea4"
+    },
+    {
+      "bytes": 4956664,
+      "path": "media/all_120_terminal_frames_contact_sheet.png",
+      "sha256": "f37a1c5a6bcfe24ece65192fae0264874406f34feac4edb0bf8c568d06727479"
+    },
+    {
+      "bytes": 1419990,
+      "path": "media/all_30_states_all_4_branches.mp4",
+      "sha256": "51204a42a5ee5ff40d66b95092b4b80193a10584b0db04c07d9330fdf1ee5e19"
+    },
+    {
+      "bytes": 1930,
+      "path": "provenance.json",
+      "sha256": "56a86aa3035eb98df7f7c15c10a49d483e4736c998092e17a7ba6f4a1a2a70d1"
+    },
+    {
+      "bytes": 1008,
+      "path": "selection_policy.json",
+      "sha256": "e5ea9fae48a5744f53e01b9ae5606d65d58426f00e96b0378b58ed51ce14ee2f"
+    }
+  ],
+  "schema_version": 1,
+  "status": "complete_mode_frozen_read_only_umbrella",
+  "tree_aggregate_sha256": "6eb59863a5cc7e4764e484cedc481974d140b9e5f2604aefc4dfb85769054217"
+}

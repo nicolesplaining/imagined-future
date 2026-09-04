@@ -1,0 +1,3 @@
+model,alpha_0_response,alpha_025_response,alpha_050_response,alpha_075_response,alpha_1_response,projection_definition,interior_nondecreasing_states,total_states,interior_slope,slope_ci_low,slope_ci_high,one_sided_p,test
+DreamZero,0.000000,0.045958,0.464712,0.938783,0.985064,native_recipient_action_to_native_donor_action_axis,30,30,1.785650,1.706908,1.853015,0.0000099999,state_level_sign_flip
+LingBot-VA,0.000000,0.220885,0.487489,0.757572,1.000000,observed_alpha0_to_alpha1_predicted_action_endpoint_segment_endpoints_zero_and_one_by_construction,30,30,1.073374,1.039412,1.108622,0.0000099999,within_state_interior_alpha_label_permutation

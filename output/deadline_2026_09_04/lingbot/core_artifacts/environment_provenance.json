@@ -1,0 +1,231 @@
+{
+  "artifact_generator": {
+    "path": "/home/ubuntu/if_external/tools/build_lingbot_postrun_artifacts.py",
+    "sha256": "efdaaaf1236936bc9398f19d38a151905302b3dc10bb8d9eae02810a818ca441"
+  },
+  "checkpoint": {
+    "aggregate_sha256": "bb895755e071bf5ab74494c07199a11c8e344b367971b4c6405321807e32b2e1",
+    "all_huggingface_etags_match_payload": true,
+    "all_payload_and_metadata_mtimes_predate_launch": true,
+    "content_inventory_file": "checkpoint_content_manifest.json",
+    "digest_timing": "postrun",
+    "huggingface_repo": "robbyant/lingbot-va-posttrain-libero-long",
+    "huggingface_revision": "0e89d1e753019988aba484e8da2dc0810e264d9f",
+    "launch_time_checkpoint_digest_available": false,
+    "path": "/home/ubuntu/if_external/checkpoints/lingbot-va-posttrain-libero-long",
+    "payload_file_count": 19,
+    "payload_total_bytes": 24382314409,
+    "temporal_evidence_limit": "No checkpoint aggregate was captured at launch; postrun content is bound to prelaunch Hugging Face metadata/etags and file mtimes, which cannot exclude a mutate-and-restore scenario."
+  },
+  "environment": {
+    "import_compatibility": {
+      "inference_basis": "Core execution could import LingBot without installed flash_attn only through this staged path; launch receipt captured selected environment variables but omitted PYTHONPATH.",
+      "launch_receipt_captured_pythonpath": false,
+      "pythonpath_used_by_core": "/home/ubuntu/if_external/compat",
+      "shim_contract": "import-only; raises if flash_attn_func is called; released server selects attn_mode='torch'",
+      "shim_mtime_ns": 1788511379455463505,
+      "shim_mtime_predates_launch": true,
+      "shim_path": "/home/ubuntu/if_external/compat/flash_attn/__init__.py",
+      "shim_sha256": "7f1448bdeae5f4991112d78131688d417836c91fee79624929cda5d2f135bec8"
+    },
+    "nvidia_smi_gpu_inventory": [
+      "0, GPU-a2529189-4f04-40db-0851-c163176be13e, NVIDIA H100 80GB HBM3, 81559 MiB, 580.105.08",
+      "1, GPU-df4cd1ab-5e7c-3f6d-b860-a2463314d1a2, NVIDIA H100 80GB HBM3, 81559 MiB, 580.105.08"
+    ],
+    "packages": {
+      "Pillow": "12.3.0",
+      "diffusers": "0.36.0",
+      "flash-attn": null,
+      "imageio": "2.37.4",
+      "matplotlib": "3.11.1",
+      "numpy": "1.26.4",
+      "torch": "2.9.0+cu126",
+      "torchvision": "0.24.0+cu126",
+      "transformers": "4.55.4"
+    },
+    "platform": "Linux-6.8.0-1046-nvidia-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "python_executable": "/home/ubuntu/if_external/envs/lingbot/bin/python",
+    "torch_cuda": {
+      "cuda_available": true,
+      "cudnn": 91002,
+      "gpus": [
+        {
+          "compute_capability": [
+            9,
+            0
+          ],
+          "name": "NVIDIA H100 80GB HBM3",
+          "total_memory_bytes": 85017624576,
+          "visible_index": 0
+        },
+        {
+          "compute_capability": [
+            9,
+            0
+          ],
+          "name": "NVIDIA H100 80GB HBM3",
+          "total_memory_bytes": 85017624576,
+          "visible_index": 1
+        }
+      ],
+      "torch": "2.9.0+cu126",
+      "torch_cuda_runtime": "12.6"
+    }
+  },
+  "final_log_receipts": [
+    {
+      "bytes": 2202,
+      "exists": true,
+      "path": "/home/ubuntu/if_external/logs/lingbot_eval_v1_gpu0.log",
+      "sha256": "11832addb979da20e64730796b9102a99e2a1b6f3d5020e5f304c0f04e2c1fe4"
+    },
+    {
+      "bytes": 2202,
+      "exists": true,
+      "path": "/home/ubuntu/if_external/logs/lingbot_eval_v1_gpu1.log",
+      "sha256": "f7e303eb22b778954dbbc6eaf714c840fd1d8f68bef09b1bf410205115c72db6"
+    }
+  ],
+  "frozen_design": {
+    "action_seeds": [
+      1009,
+      2017,
+      3019,
+      4021
+    ],
+    "branch_ids": [
+      "b0",
+      "b1",
+      "b2",
+      "b3"
+    ],
+    "manifest_path": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_eval_v1/manifest.json",
+    "manifest_sha256": "9c8d7dd547955e4622d98c7eb42fffed157f6db983f41f02929b28a434be47b4",
+    "state_count": 30,
+    "video_seeds": [
+      101,
+      211,
+      307,
+      401
+    ]
+  },
+  "intervention": {
+    "action_coordinates_written_by_intervention": false,
+    "cache_fields": [
+      "k",
+      "v",
+      "id",
+      "mask",
+      "is_pred"
+    ],
+    "live_runner_path": "/home/ubuntu/if_external/tools/run_lingbot_future_transplants.py",
+    "live_runner_sha256": "902d749772eadef213988c1b30ddb1ef2182da7e2f3852dc6ba596d05bf09fc2",
+    "runner_functions": [
+      "generate_future",
+      "install_future",
+      "generate_action",
+      "snapshot_cache",
+      "restore_cache"
+    ],
+    "upstream_cache_location": "wan_va/modules/model.py:WanAttention.attn_caches['pos']",
+    "upstream_video_action_boundary": "wan_va/wan_va_server.py:_infer, after video loop and before action loop"
+  },
+  "launch": {
+    "capture_is_outcome_blind": true,
+    "captured_at_utc": "2026-09-04T09:19:06.169259+00:00",
+    "gpu_inventory_csv": "0, GPU-a2529189-4f04-40db-0851-c163176be13e, NVIDIA H100 80GB HBM3, 81559 MiB, 580.105.08\n1, GPU-df4cd1ab-5e7c-3f6d-b860-a2463314d1a2, NVIDIA H100 80GB HBM3, 81559 MiB, 580.105.08",
+    "host": {
+      "hostname": "if-overnight-robolab-clients",
+      "platform": "Linux-6.8.0-1046-nvidia-x86_64-with-glibc2.39"
+    },
+    "paths": {
+      "checkpoint": "/home/ubuntu/if_external/checkpoints/lingbot-va-posttrain-libero-long",
+      "logs": [
+        "/home/ubuntu/if_external/logs/lingbot_eval_v1_gpu0.log",
+        "/home/ubuntu/if_external/logs/lingbot_eval_v1_gpu1.log"
+      ],
+      "manifest": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_states/manifest.json",
+      "output_root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_eval_v1",
+      "repo": "/home/ubuntu/if_external/lingbot-va",
+      "runner": "/home/ubuntu/if_external/tools/run_lingbot_future_transplants.py"
+    },
+    "processes": [
+      {
+        "command": "/home/ubuntu/if_external/envs/lingbot/bin/python /home/ubuntu/if_external/envs/lingbot/bin/torchrun --standalone --master_port=29801 --nproc_per_node=1 /home/ubuntu/if_external/tools/run_lingbot_future_transplants.py --lingbot-root /home/ubuntu/if_external/lingbot-va --checkpoint /home/ubuntu/if_external/checkpoints/lingbot-va-posttrain-libero-long --manifest /lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_states/manifest.json --output-root /lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_eval_v1 --admission evaluation --shard-index 0 --shard-count 2 --gaussian-controls --run-factorial",
+        "environment": {
+          "CUDA_VISIBLE_DEVICES": "0"
+        },
+        "pid": 22711,
+        "start_time": "Fri Sep  4 08:55:12 2026"
+      },
+      {
+        "command": "/home/ubuntu/if_external/envs/lingbot/bin/python /home/ubuntu/if_external/envs/lingbot/bin/torchrun --standalone --master_port=29802 --nproc_per_node=1 /home/ubuntu/if_external/tools/run_lingbot_future_transplants.py --lingbot-root /home/ubuntu/if_external/lingbot-va --checkpoint /home/ubuntu/if_external/checkpoints/lingbot-va-posttrain-libero-long --manifest /lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_states/manifest.json --output-root /lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_eval_v1 --admission evaluation --shard-index 1 --shard-count 2 --gaussian-controls --run-factorial",
+        "environment": {
+          "CUDA_VISIBLE_DEVICES": "1"
+        },
+        "pid": 22712,
+        "start_time": "Fri Sep  4 08:55:12 2026"
+      },
+      {
+        "command": "/home/ubuntu/if_external/envs/lingbot/bin/python -u /home/ubuntu/if_external/tools/run_lingbot_future_transplants.py --lingbot-root /home/ubuntu/if_external/lingbot-va --checkpoint /home/ubuntu/if_external/checkpoints/lingbot-va-posttrain-libero-long --manifest /lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_states/manifest.json --output-root /lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_eval_v1 --admission evaluation --shard-index 0 --shard-count 2 --gaussian-controls --run-factorial",
+        "environment": {
+          "CUDA_VISIBLE_DEVICES": "0",
+          "LOCAL_RANK": "0",
+          "MASTER_ADDR": "if-overnight-robolab-clients.ll.local",
+          "MASTER_PORT": "42261",
+          "RANK": "0",
+          "TORCHELASTIC_RUN_ID": "8760f15b-3346-4a40-9dbf-7b2357e7eb32",
+          "WORLD_SIZE": "1"
+        },
+        "pid": 22827,
+        "start_time": "Fri Sep  4 08:55:13 2026"
+      },
+      {
+        "command": "/home/ubuntu/if_external/envs/lingbot/bin/python -u /home/ubuntu/if_external/tools/run_lingbot_future_transplants.py --lingbot-root /home/ubuntu/if_external/lingbot-va --checkpoint /home/ubuntu/if_external/checkpoints/lingbot-va-posttrain-libero-long --manifest /lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_states/manifest.json --output-root /lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_eval_v1 --admission evaluation --shard-index 1 --shard-count 2 --gaussian-controls --run-factorial",
+        "environment": {
+          "CUDA_VISIBLE_DEVICES": "1",
+          "LOCAL_RANK": "0",
+          "MASTER_ADDR": "if-overnight-robolab-clients.ll.local",
+          "MASTER_PORT": "45633",
+          "RANK": "0",
+          "TORCHELASTIC_RUN_ID": "1199a875-7b4a-4a12-99c6-a8c3cc8e6658",
+          "WORLD_SIZE": "1"
+        },
+        "pid": 22881,
+        "start_time": "Fri Sep  4 08:55:14 2026"
+      }
+    ],
+    "schema_version": 1,
+    "sha256": {
+      "manifest": "9c8d7dd547955e4622d98c7eb42fffed157f6db983f41f02929b28a434be47b4",
+      "runner": "902d749772eadef213988c1b30ddb1ef2182da7e2f3852dc6ba596d05bf09fc2"
+    }
+  },
+  "paths": {
+    "analysis_root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_eval_v1_analysis",
+    "artifact_root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_eval_v1_artifacts_v2",
+    "launch_receipt": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_eval_v1_provenance/live_launch_receipt.json",
+    "result_root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_eval_v1"
+  },
+  "repository": {
+    "commit": "7c6ffa9bfc4b83582cafc860fab4c82cc7deeeeb",
+    "origin": "https://github.com/Robbyant/lingbot-va.git",
+    "path": "/home/ubuntu/if_external/lingbot-va",
+    "porcelain_status": [
+      "?? LingBot_VA.egg-info/PKG-INFO",
+      "?? LingBot_VA.egg-info/SOURCES.txt",
+      "?? LingBot_VA.egg-info/dependency_links.txt",
+      "?? LingBot_VA.egg-info/requires.txt",
+      "?? LingBot_VA.egg-info/top_level.txt"
+    ],
+    "source_sha256": {
+      "evaluation/libero/client.py": "63a48baa2cfecd924963b8a8f7e7eda2b367785a7e29ad0a6326f80517c7e004",
+      "wan_va/configs/va_libero_cfg.py": "cddcdc3dee6e31c63160efad40ace4717474d2682a6df894ddc4cef0b4954a37",
+      "wan_va/modules/model.py": "f65fdca5f28b327bfc89ca082a7b55eee3fb4ab1ffc469c642a075920e6f4487",
+      "wan_va/wan_va_server.py": "9c2a427611db487fea5cf40f184b713bf2088e533990ee00fdcd020d2668b4bf"
+    },
+    "tracked_files_clean": true
+  },
+  "schema_version": 1
+}

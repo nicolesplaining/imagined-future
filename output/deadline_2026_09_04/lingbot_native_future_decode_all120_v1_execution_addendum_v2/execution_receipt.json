@@ -1,0 +1,103 @@
+{
+  "created_at_utc": "2026-09-04T18:22:32.066076+00:00",
+  "decoder_sha256": "4a1335ac0392f1dd86af13d067476eaae41588915a9a64b1d87eb3468dbad0be",
+  "engineering_smokes": [
+    {
+      "decoder_sha256": "45cb3b14f92aef451e10d434e5e1c025c43e3dc9afc82be73a439f1d8fe51548",
+      "disposition": "no scientific artifact produced; staging removed; no installed output root",
+      "failure": "unbound official decode call omitted generate() no_grad context",
+      "included_in_inference": false,
+      "log": "logs/smoke_v1_failure.log",
+      "method_change_after_failure": "wrapped the same official VA_Server.decode_one_video call in torch.no_grad, matching upstream generate() context",
+      "pid": 39275,
+      "status": "failed_engineering_smoke",
+      "version": "v1"
+    },
+    {
+      "artifact_index_sha256": "30a5c2c41f1d026a2d7fcb29d848279ce4aef90d3e273b08229489088a0b820f",
+      "decoded_item_count": 1,
+      "decoder_sha256": "1785efb84aae3d7bf9de1b2b7ee3d30dfb18f2c0cff1da19f4b1e887c483fc63",
+      "included_in_inference": false,
+      "log": "logs/smoke_v2_success.log",
+      "pid": 39526,
+      "status": "complete_excluded_engineering_smoke",
+      "version": "v2"
+    }
+  ],
+  "exhaustive_launches": [
+    {
+      "artifact_index_sha256": "d577b669f146e0a68b28809fec894ce73754e14e830611bd4fe7f6ce8aa3c8c0",
+      "decoded_item_count": 60,
+      "log": "logs/exhaustive_shard0_success.log",
+      "physical_gpu": 0,
+      "pid": 40003,
+      "runtime_seconds": 58.966278076171875,
+      "shard_index": 0,
+      "tree_aggregate_sha256": "96a288e95bce63358bacfdf0c34a6322bc35f9b2d4497360a17b7594a7580905"
+    },
+    {
+      "artifact_index_sha256": "956efec68a8d7f9bba9376084bef14d60e04f4ba64a62f734b95750903d29b94",
+      "decoded_item_count": 60,
+      "log": "logs/exhaustive_shard1_success.log",
+      "physical_gpu": 1,
+      "pid": 40004,
+      "runtime_seconds": 58.715187788009644,
+      "shard_index": 1,
+      "tree_aggregate_sha256": "fd8ffd9150f0a9c3fb284da1931fbc4b6c64e623765749c3eb7dbba7827f6632"
+    }
+  ],
+  "final_umbrella": {
+    "artifact_index_sha256": "f89a96b3b12c35e25cc121284c84dc83de1edb2c8cfc28b3e0faadcaa6c3b332",
+    "item_count": 120,
+    "log": "logs/finalize_success.log",
+    "root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_native_future_decode_all120_v1",
+    "tree_aggregate_sha256": "6eb59863a5cc7e4764e484cedc481974d140b9e5f2604aefc4dfb85769054217"
+  },
+  "logs": [
+    {
+      "bytes": 1642,
+      "path": "logs/smoke_v1_failure.log",
+      "sha256": "37bc0ae82da5dfb16322d45ead0fa2b33c08de1ea39fdf29e827498f6331dc93",
+      "source_path": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_native_future_decode_smoke_v1.log"
+    },
+    {
+      "bytes": 621,
+      "path": "logs/smoke_v2_success.log",
+      "sha256": "ab5125f5aec5f7afcf8086b0cfef6256ff41c0f78d6c0b5481bd125e438dde08",
+      "source_path": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_native_future_decode_smoke_v2.log"
+    },
+    {
+      "bytes": 2925,
+      "path": "logs/exhaustive_shard0_success.log",
+      "sha256": "4d766bfaa24481d3edbbf917e3939c2bf1c0dabd03c67fac7d2544caaa64db30",
+      "source_path": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_native_future_decode_all120_v1_shard0.log"
+    },
+    {
+      "bytes": 2925,
+      "path": "logs/exhaustive_shard1_success.log",
+      "sha256": "b71ea6b792f7b0bf808728f154307c31577f2f344f7ea337c11a052820cdf7b5",
+      "source_path": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_native_future_decode_all120_v1_shard1.log"
+    },
+    {
+      "bytes": 557,
+      "path": "logs/finalize_success.log",
+      "sha256": "5e424e7e7ffad6e3e4342336a6eeba82c22375433102add9de7299441312446d",
+      "source_path": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_native_future_decode_all120_v1.finalize.log"
+    }
+  ],
+  "output_root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_native_future_decode_all120_v1_execution_addendum_v2",
+  "schema_version": 1,
+  "smoke_v2_to_exhaustive_decoder_delta": {
+    "changes": [
+      "require non-smoke shard_count to be exactly one or two",
+      "prove the imported flash_attn module is the exact pinned shim and record its path/PYTHONPATH",
+      "fail closed on the smoke-established decoded shape (13,128,256,3), float32 dtype, finiteness, and [0,1] range"
+    ],
+    "decode_computation_changed": false,
+    "from_sha256": "1785efb84aae3d7bf9de1b2b7ee3d30dfb18f2c0cff1da19f4b1e887c483fc63",
+    "interpretation": "The excluded smoke validates the same no_grad-wrapped official VA_Server.decode_one_video computation used exhaustively; the final delta only adds fail-closed identity/schema/provenance gates.",
+    "official_entrypoint_changed": false,
+    "to_sha256": "4a1335ac0392f1dd86af13d067476eaae41588915a9a64b1d87eb3468dbad0be"
+  },
+  "status": "complete_mode_frozen_read_only_execution_addendum"
+}

@@ -34,6 +34,19 @@ results/*
 !results/cosmos3_population_confirmatory_v1/failure_report.json
 wandb/
 *.log
+.DS_Store
+tmp/
+
+# Raw generated arrays and large working media live on the shared Lambda
+# filesystem; see docs/deadline_2026_09_04/lambda_storage.md.
+output/**/*.pt
+output/**/*.npy
+output/**/*.npz
+output/cover_figure_candidates/
+output/deadline_2026_09_04/
+output/overnight_2026-09-03/
+codex_figure_studio/__pycache__/
+third_party/**/__pycache__/
 
 # LaTeX build intermediates; keep the rendered paper PDF.
 paper/*.aux

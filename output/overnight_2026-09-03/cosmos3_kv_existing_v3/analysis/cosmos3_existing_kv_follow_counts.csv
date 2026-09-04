@@ -1,0 +1,8 @@
+task,states,crossed_arms,donor_future_recipient_kv_follows_recipient_kv,recipient_future_donor_kv_follows_donor_kv,crossed_arms_follow_kv,donor_future_recipient_kv_ties,recipient_future_donor_kv_ties,state_class_counts
+ALL,21,42,21,21,42,0,0,"{""both_follow_kv"":21}"
+BananaInBowlTask,3,6,3,3,6,0,0,"{""both_follow_kv"":3}"
+MarkerInMugTask,3,6,3,3,6,0,0,"{""both_follow_kv"":3}"
+MustardInLeftBinTask,3,6,3,3,6,0,0,"{""both_follow_kv"":3}"
+RubiksCubeTask,4,8,4,4,8,0,0,"{""both_follow_kv"":4}"
+SmartphoneInBinTask,4,8,4,4,8,0,0,"{""both_follow_kv"":4}"
+SpoonInMugTask,4,8,4,4,8,0,0,"{""both_follow_kv"":4}"

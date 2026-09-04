@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "gate_id": "lingbot_upstream_native_parity_gate_v1",
+  "addendum_id": "lingbot_upstream_native_parity_environment_addendum_v1",
+  "frozen_at_utc": "2026-09-04T10:07:51Z",
+  "evaluation_effect_metrics_inspected_at_freeze": false,
+  "changes_state_selection_intervention_outcomes_or_tolerances": false,
+  "trigger": "The first oracle launch failed before model construction because the launch command omitted the import-only FlashAttention compatibility path used by the completed core run.",
+  "required_environment": {
+    "PYTHONPATH": "/home/ubuntu/if_external/compat",
+    "shim_path": "/home/ubuntu/if_external/compat/flash_attn/__init__.py",
+    "shim_sha256": "7f1448bdeae5f4991112d78131688d417836c91fee79624929cda5d2f135bec8"
+  },
+  "scope": "The released LIBERO configuration uses attn_mode='torch', but LingBot imports flash_attn_func unconditionally. The shim only satisfies import and raises if called.",
+  "safety_gate": "Require released attn_mode='torch'; any call into shim hard-fails.",
+  "failed_attempt": {
+    "log_path": "/home/ubuntu/if_external/logs/lingbot_upstream_native_parity_v1.log",
+    "failure_stage": "module import before VA_Server construction",
+    "effect_output_produced": false
+  }
+}

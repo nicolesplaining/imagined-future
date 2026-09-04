@@ -1,0 +1,7 @@
+condition,source_type,definition
+self,recipient/native,Recipient future or native recipient run
+natural C,predicted,Third model-generated future from the identical saved state
+Gaussian G,synthetic,Latent matched to executed-donor norm and recipient distance
+predicted donor B,predicted,Model-predicted future from donor branch B
+executed donor B,executed,Observed video produced by physically executing action B
+self-future K/V patch,activation patch,Donor-run future-video K/V replaced with recipient self-future K/V

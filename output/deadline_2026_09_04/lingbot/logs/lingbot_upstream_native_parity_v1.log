@@ -1,0 +1,54 @@
+Traceback (most recent call last):
+  File "/home/ubuntu/if_external/lingbot-va/wan_va/modules/model.py", line 30, in <module>
+    from flash_attn_interface import flash_attn_func
+ModuleNotFoundError: No module named 'flash_attn_interface'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/ubuntu/if_external/tools/audit_lingbot_upstream_native_parity.py", line 489, in <module>
+    main()
+  File "/home/ubuntu/if_external/tools/audit_lingbot_upstream_native_parity.py", line 273, in main
+    from wan_va.configs import VA_CONFIGS
+  File "/home/ubuntu/if_external/lingbot-va/wan_va/__init__.py", line 2, in <module>
+    from . import configs, distributed, modules
+  File "/home/ubuntu/if_external/lingbot-va/wan_va/modules/__init__.py", line 2, in <module>
+    from .utils import load_text_encoder, load_tokenizer, load_transformer, load_vae
+  File "/home/ubuntu/if_external/lingbot-va/wan_va/modules/utils.py", line 9, in <module>
+    from .model import WanTransformer3DModel
+  File "/home/ubuntu/if_external/lingbot-va/wan_va/modules/model.py", line 32, in <module>
+    from flash_attn import flash_attn_func
+ModuleNotFoundError: No module named 'flash_attn'
+E0904 10:05:50.095000 29093 torch/distributed/elastic/multiprocessing/api.py:882] failed (exitcode: 1) local_rank: 0 (pid: 29152) of binary: /home/ubuntu/if_external/envs/lingbot/bin/python
+Traceback (most recent call last):
+  File "/home/ubuntu/if_external/envs/lingbot/bin/torchrun", line 10, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 357, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/distributed/run.py", line 936, in main
+    run(args)
+  File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/distributed/run.py", line 927, in run
+    elastic_launch(
+  File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 156, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 293, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+/home/ubuntu/if_external/tools/audit_lingbot_upstream_native_parity.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-09-04_10:05:50
+  host      : if-overnight-robolab-clients.ll.local
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 29152)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

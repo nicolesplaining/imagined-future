@@ -1,0 +1,18 @@
+{
+  "authorized_call_count": 92,
+  "authorized_state_count": 1,
+  "conditions": [
+    "fresh isolated if-cosmos-dose-v2-presmoke-8003 container from the manifest-pinned image",
+    "dedicated frozen dose server is the container entrypoint on GPU 2 and port 8003",
+    "startup receipt reports registry_entries=0 before the first smoke request",
+    "full checkpoint content verification passes before the first smoke request",
+    "only the excluded Bagels state and no powered state is requested"
+  ],
+  "manifest_id": "cosmos3-dose-excluded-smoke-832b41a3b67fc689",
+  "manifest_sha256": "8b0bfd7968cf8df4275aaf835ccf7362e65bd797008de5802de928b5d85cd82a",
+  "notes": "Authorizes the excluded 92-call control smoke only. It does not authorize any powered evaluation call. The final powered manifest requires a separate post-smoke outcome-blind GO audit.",
+  "scope": "outcome_blind_excluded_smoke_prelaunch_audit",
+  "snapshot_checksum_list_sha256": "126d387ccd39dc0c6e23beefac462a80670266d647463c77622da7ec5cb6a100",
+  "status": "pass",
+  "verdict": "GO_SMOKE"
+}

@@ -1,0 +1,220 @@
+{
+  "admission": "evaluation",
+  "all_states_four_unique_caches": true,
+  "all_states_four_unique_futures": true,
+  "chance_rate": 0.25,
+  "complete_state_count": 30,
+  "estimates": {
+    "cosine_alignment": {
+      "mean": 0.8135733473694766,
+      "n_states": 30,
+      "state_bootstrap_95_ci": [
+        0.776910075442014,
+        0.8465930671199845
+      ]
+    },
+    "distance_reduction": {
+      "mean": 0.4734864541413798,
+      "n_states": 30,
+      "state_bootstrap_95_ci": [
+        0.42135164970684386,
+        0.5237550682715909
+      ]
+    },
+    "donor_future_recipient_cache_projection": {
+      "mean": 0.0,
+      "n_states": 30,
+      "state_bootstrap_95_ci": [
+        0.0,
+        0.0
+      ]
+    },
+    "gaussian_perturbation_normalized": {
+      "mean": 3.3897003987893,
+      "n_states": 30,
+      "state_bootstrap_95_ci": [
+        3.016994488002664,
+        3.7713879777149715
+      ]
+    },
+    "normalized_final_distance": {
+      "mean": 0.5265135458586202,
+      "n_states": 30,
+      "state_bootstrap_95_ci": [
+        0.4758575040525214,
+        0.5786870037094316
+      ]
+    },
+    "orthogonal_residual": {
+      "mean": 0.3884212779676617,
+      "n_states": 30,
+      "state_bootstrap_95_ci": [
+        0.35919501662502756,
+        0.41849109689563896
+      ]
+    },
+    "projection": {
+      "mean": 0.6754348472425978,
+      "n_states": 30,
+      "state_bootstrap_95_ci": [
+        0.6241405018651314,
+        0.7234019329267746
+      ]
+    },
+    "recipient_future_donor_cache_projection": {
+      "mean": 0.6754348472425978,
+      "n_states": 30,
+      "state_bootstrap_95_ci": [
+        0.6240578518246923,
+        0.7239626234642881
+      ]
+    },
+    "retrieval_accuracy_all": {
+      "mean": 0.8104166666666667,
+      "n_states": 30,
+      "state_bootstrap_95_ci": [
+        0.75,
+        0.8645833333333334
+      ]
+    },
+    "retrieval_accuracy_off_diagonal": {
+      "mean": 0.7472222222222221,
+      "n_states": 30,
+      "state_bootstrap_95_ci": [
+        0.6666666666666665,
+        0.8194444444444445
+      ]
+    }
+  },
+  "expected_state_count": 30,
+  "failed_or_missing_states": [],
+  "leave_one_task_out": {
+    "0": {
+      "cosine_alignment": 0.8182840409823543,
+      "distance_reduction": 0.4837677147500887,
+      "donor_future_recipient_cache_projection": 0.0,
+      "gaussian_perturbation_normalized": 3.3983788846347247,
+      "normalized_final_distance": 0.5162322852499113,
+      "orthogonal_residual": 0.38407585140565914,
+      "projection": 0.6873805833213502,
+      "recipient_future_donor_cache_projection": 0.6873805833213502,
+      "retrieval_accuracy_all": 0.8125,
+      "retrieval_accuracy_off_diagonal": 0.75
+    },
+    "1": {
+      "cosine_alignment": 0.81446777422361,
+      "distance_reduction": 0.47278689475048963,
+      "donor_future_recipient_cache_projection": 0.0,
+      "gaussian_perturbation_normalized": 3.384765374665661,
+      "normalized_final_distance": 0.5272131052495104,
+      "orthogonal_residual": 0.39263499658241985,
+      "projection": 0.6793325541264343,
+      "recipient_future_donor_cache_projection": 0.6793325541264343,
+      "retrieval_accuracy_all": 0.8148148148148148,
+      "retrieval_accuracy_off_diagonal": 0.7530864197530863
+    },
+    "2": {
+      "cosine_alignment": 0.8051436908456034,
+      "distance_reduction": 0.4615053726693757,
+      "donor_future_recipient_cache_projection": 0.0,
+      "gaussian_perturbation_normalized": 3.415224265662957,
+      "normalized_final_distance": 0.5384946273306243,
+      "orthogonal_residual": 0.39200346164388306,
+      "projection": 0.6619239776328212,
+      "recipient_future_donor_cache_projection": 0.6619239776328212,
+      "retrieval_accuracy_all": 0.7939814814814815,
+      "retrieval_accuracy_off_diagonal": 0.7253086419753086
+    },
+    "3": {
+      "cosine_alignment": 0.8172764287340188,
+      "distance_reduction": 0.4806294239903359,
+      "donor_future_recipient_cache_projection": 0.0,
+      "gaussian_perturbation_normalized": 3.3797851546058464,
+      "normalized_final_distance": 0.5193705760096641,
+      "orthogonal_residual": 0.3819613467490096,
+      "projection": 0.6804872139731243,
+      "recipient_future_donor_cache_projection": 0.6804872139731243,
+      "retrieval_accuracy_all": 0.8125,
+      "retrieval_accuracy_off_diagonal": 0.75
+    },
+    "4": {
+      "cosine_alignment": 0.8171869970317969,
+      "distance_reduction": 0.47888401641637773,
+      "donor_future_recipient_cache_projection": 0.0,
+      "gaussian_perturbation_normalized": 3.35110549626903,
+      "normalized_final_distance": 0.5211159835836222,
+      "orthogonal_residual": 0.38493769175083986,
+      "projection": 0.6797160804731383,
+      "recipient_future_donor_cache_projection": 0.6797160804731383,
+      "retrieval_accuracy_all": 0.8125,
+      "retrieval_accuracy_off_diagonal": 0.75
+    },
+    "5": {
+      "cosine_alignment": 0.8121349721121898,
+      "distance_reduction": 0.4707100334208809,
+      "donor_future_recipient_cache_projection": 0.0,
+      "gaussian_perturbation_normalized": 3.346689100644135,
+      "normalized_final_distance": 0.5292899665791191,
+      "orthogonal_residual": 0.3881300462850542,
+      "projection": 0.668196425764779,
+      "recipient_future_donor_cache_projection": 0.668196425764779,
+      "retrieval_accuracy_all": 0.8078703703703703,
+      "retrieval_accuracy_off_diagonal": 0.7438271604938271
+    },
+    "6": {
+      "cosine_alignment": 0.8179927747547607,
+      "distance_reduction": 0.48280739274518547,
+      "donor_future_recipient_cache_projection": 0.0,
+      "gaussian_perturbation_normalized": 3.3761463121317723,
+      "normalized_final_distance": 0.5171926072548145,
+      "orthogonal_residual": 0.37991827574926174,
+      "projection": 0.6803498032099673,
+      "recipient_future_donor_cache_projection": 0.6803498032099673,
+      "retrieval_accuracy_all": 0.8148148148148148,
+      "retrieval_accuracy_off_diagonal": 0.7530864197530863
+    },
+    "7": {
+      "cosine_alignment": 0.822287308429796,
+      "distance_reduction": 0.4797951024979607,
+      "donor_future_recipient_cache_projection": 0.0,
+      "gaussian_perturbation_normalized": 3.4232010644055806,
+      "normalized_final_distance": 0.5202048975020394,
+      "orthogonal_residual": 0.3890062511733286,
+      "projection": 0.6848423497622995,
+      "recipient_future_donor_cache_projection": 0.6848423497622995,
+      "retrieval_accuracy_all": 0.8333333333333334,
+      "retrieval_accuracy_off_diagonal": 0.7777777777777777
+    },
+    "8": {
+      "cosine_alignment": 0.8012159238464038,
+      "distance_reduction": 0.4533695493475823,
+      "donor_future_recipient_cache_projection": 0.0,
+      "gaussian_perturbation_normalized": 3.486007538758304,
+      "normalized_final_distance": 0.5466304506524177,
+      "orthogonal_residual": 0.40032914296774785,
+      "projection": 0.6572723782119416,
+      "recipient_future_donor_cache_projection": 0.6572723782119416,
+      "retrieval_accuracy_all": 0.7939814814814815,
+      "retrieval_accuracy_off_diagonal": 0.7253086419753086
+    },
+    "9": {
+      "cosine_alignment": 0.809743562734231,
+      "distance_reduction": 0.4706090408255211,
+      "donor_future_recipient_cache_projection": 0.0,
+      "gaussian_perturbation_normalized": 3.3357007961149865,
+      "normalized_final_distance": 0.5293909591744789,
+      "orthogonal_residual": 0.3912157153694132,
+      "projection": 0.6748471059501235,
+      "recipient_future_donor_cache_projection": 0.6748471059501235,
+      "retrieval_accuracy_all": 0.8078703703703703,
+      "retrieval_accuracy_off_diagonal": 0.7438271604938271
+    }
+  },
+  "manifest_sha256": "9c8d7dd547955e4622d98c7eb42fffed157f6db983f41f02929b28a434be47b4",
+  "max_self_cache_abs_error": 0.0,
+  "max_self_latent_abs_error": 0.0,
+  "result_root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_eval_v1",
+  "retrieval_within_state_label_permutation_p": 9.99990000099999e-06,
+  "state_is_independent_unit": true,
+  "within_state_cells": 16
+}

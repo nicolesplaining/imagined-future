@@ -1,0 +1,15 @@
+{
+  "contact_sheet_layout": "30 manifest-order state rows x four branch columns; terminal decoded frame",
+  "created_at_utc": "2026-09-04T17:50:07.517282+00:00",
+  "included_in_core_inference": false,
+  "interpretation_limit": "Decoded images are postanalysis visualization of latent tensors, not an intervention, selection criterion, or proof of semantic distinctness.",
+  "item_count": 120,
+  "overview_layout": "2x2 branches b0,b1 / b2,b3; 30 states concatenated in manifest order; 390 frames at 10 fps",
+  "schema_version": 1,
+  "selection_rule": "all 30 frozen evaluation states x all four native branches, in frozen manifest order; every one of 13 decoded frames is included in the overview video; contact sheet uses the predetermined terminal decoded frame for every item",
+  "selection_uses_outcomes": false,
+  "selection_uses_semantics": false,
+  "selection_uses_visual_appearance": false,
+  "status": "complete",
+  "timing": "postanalysis visualization after the complete core and dose analyses"
+}

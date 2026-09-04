@@ -1,0 +1,1907 @@
+{
+  "analysis": {
+    "bootstrap": "suite-task-state hierarchical",
+    "bootstrap_samples": 10000,
+    "bootstrap_seed": 20260903,
+    "independent_unit": "state"
+  },
+  "audit": {
+    "all_outputs_complete": true,
+    "complete_state_count": 120,
+    "expected_run_count": 5760,
+    "manifest_id": "fastwam-kvfact-a09195568dd5a17f",
+    "manifest_state_count": 120,
+    "required_state_count": 120,
+    "unexpected_state_ids": [],
+    "valid_run_count": 5760
+  },
+  "base_audit": {
+    "all_frozen_outputs_complete": true,
+    "complete_state_count": 120,
+    "expected_run_count": 8640,
+    "expected_state_count": 120,
+    "malformed_records": [],
+    "manifest_id": "fastwam-813f0233b9a2c083",
+    "required_frozen_state_count": 120,
+    "result_root": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/fastwam_optional_idm_powered/fastwam-813f0233b9a2c083",
+    "unexpected_state_ids": [],
+    "valid_complete_run_count": 8640
+  },
+  "base_manifest_id": "fastwam-813f0233b9a2c083",
+  "conditions": {
+    "future_donor_cache_donor": {
+      "correct_donor_retrieval_rate": {
+        "ci95_high": 1.0,
+        "ci95_low": 0.9965277777777778,
+        "mean": 0.9993055555555556,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "cosine_alignment": {
+        "ci95_high": 0.9619974728336956,
+        "ci95_low": 0.92691742983672,
+        "mean": 0.9433195609601924,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "degenerate_axes": 0,
+      "distance_to_donor": {
+        "ci95_high": 0.2516709886639162,
+        "ci95_low": 0.1801267953264169,
+        "mean": 0.2150085365447652,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "donor_distance_reduction": {
+        "ci95_high": 0.7375284934532054,
+        "ci95_low": 0.6377824386956847,
+        "mean": 0.6828366681664071,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "donor_projection": {
+        "ci95_high": 0.9108989977829617,
+        "ci95_low": 0.8319038101934741,
+        "mean": 0.8689926136403685,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "invalid_rows": 0,
+      "n_rows": 1440,
+      "n_states": 120,
+      "orthogonal_residual": {
+        "ci95_high": 0.22361560334397967,
+        "ci95_low": 0.16514119495897456,
+        "mean": 0.19426726283712895,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "orthogonal_residual_ratio": {
+        "ci95_high": 0.31731216869545026,
+        "ci95_low": 0.2443287451425689,
+        "mean": 0.28389882214253925,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "valid_axes": 1440
+    },
+    "future_donor_cache_recipient": {
+      "correct_donor_retrieval_rate": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "cosine_alignment": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "degenerate_axes": 0,
+      "distance_to_donor": {
+        "ci95_high": 0.9361584082776873,
+        "ci95_low": 0.6288202552280366,
+        "mean": 0.7760186480445105,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "donor_distance_reduction": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "donor_projection": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "invalid_rows": 0,
+      "n_rows": 1440,
+      "n_states": 120,
+      "orthogonal_residual": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "orthogonal_residual_ratio": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "valid_axes": 1440
+    },
+    "future_recipient_cache_donor": {
+      "correct_donor_retrieval_rate": {
+        "ci95_high": 1.0,
+        "ci95_low": 0.9965277777777778,
+        "mean": 0.9993055555555556,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "cosine_alignment": {
+        "ci95_high": 0.9616987338285216,
+        "ci95_low": 0.9268350734420441,
+        "mean": 0.9433195609601924,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "degenerate_axes": 0,
+      "distance_to_donor": {
+        "ci95_high": 0.25027240740099,
+        "ci95_low": 0.17889477608072732,
+        "mean": 0.2150085365447652,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "donor_distance_reduction": {
+        "ci95_high": 0.738121414820247,
+        "ci95_low": 0.6369153669022956,
+        "mean": 0.6828366681664071,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "donor_projection": {
+        "ci95_high": 0.9122272610419564,
+        "ci95_low": 0.8329162615436029,
+        "mean": 0.8689926136403685,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "invalid_rows": 0,
+      "n_rows": 1440,
+      "n_states": 120,
+      "orthogonal_residual": {
+        "ci95_high": 0.2244723156835698,
+        "ci95_low": 0.16476419578771612,
+        "mean": 0.19426726283712895,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "orthogonal_residual_ratio": {
+        "ci95_high": 0.3174599086361514,
+        "ci95_low": 0.24389784209221607,
+        "mean": 0.28389882214253925,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "valid_axes": 1440
+    },
+    "future_recipient_cache_recipient": {
+      "correct_donor_retrieval_rate": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "cosine_alignment": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "degenerate_axes": 0,
+      "distance_to_donor": {
+        "ci95_high": 0.9338031408213946,
+        "ci95_low": 0.6237244659153439,
+        "mean": 0.7760186480445105,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "donor_distance_reduction": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "donor_projection": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "invalid_rows": 0,
+      "n_rows": 1440,
+      "n_states": 120,
+      "orthogonal_residual": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "orthogonal_residual_ratio": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "valid_axes": 1440
+    }
+  },
+  "controls": {
+    "base_reference_global_max_abs_error": {
+      "future_donor_cache_donor": 0.0,
+      "future_recipient_cache_donor": 0.0,
+      "future_recipient_cache_recipient": 0.0
+    },
+    "donor_cache_future_swap_global_max_abs_error": 0.0,
+    "native_action_regeneration_global_max_abs_error": 0.0,
+    "recipient_cache_future_swap_global_max_abs_error": 0.0,
+    "stored_native_latent_regeneration_global_max_abs_error": 0.0
+  },
+  "controls_by_state": {
+    "libero_10_task00_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task00_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task00_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task01_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task01_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task01_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task02_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task02_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task02_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task03_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task03_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task03_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task04_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task04_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task04_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task05_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task05_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task05_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task06_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task06_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task06_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task07_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task07_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task07_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task08_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task08_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task08_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task09_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task09_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_10_task09_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task00_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task00_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task00_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task01_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task01_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task01_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task02_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task02_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task02_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task03_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task03_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task03_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task04_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task04_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task04_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task05_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task05_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task05_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task06_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task06_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task06_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task07_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task07_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task07_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task08_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task08_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task08_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task09_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task09_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_goal_task09_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task00_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task00_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task00_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task01_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task01_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task01_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task02_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task02_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task02_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task03_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task03_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task03_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task04_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task04_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task04_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task05_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task05_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task05_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task06_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task06_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task06_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task07_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task07_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task07_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task08_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task08_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task08_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task09_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task09_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_object_task09_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task00_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task00_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task00_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task01_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task01_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task01_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task02_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task02_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task02_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task03_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task03_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task03_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task04_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task04_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task04_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task05_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task05_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task05_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task06_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task06_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task06_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task07_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task07_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task07_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task08_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task08_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task08_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task09_state004_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task09_state005_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    },
+    "libero_spatial_task09_state006_wait30": {
+      "base_reference_errors": {
+        "future_donor_cache_donor": 0.0,
+        "future_recipient_cache_donor": 0.0,
+        "future_recipient_cache_recipient": 0.0
+      },
+      "donor_cache_future_swap_error": 0.0,
+      "native_action_regeneration_error": 0.0,
+      "recipient_cache_future_swap_error": 0.0,
+      "stored_native_latent_regeneration_error": 0.0
+    }
+  },
+  "evidence_gate": {
+    "criteria": {
+      "all_120_states_and_5760_arms_complete": true,
+      "all_actions_finite": true,
+      "cache_main_effect_distance_reduction_lower_above_zero": true,
+      "cache_main_effect_retrieval_lower_above_zero": true,
+      "exact_replay_and_future_swap_controls": true,
+      "parent_120_states_and_8640_arms_complete": true
+    },
+    "decision": "cache_dominance_criteria_met",
+    "exact_tolerance": 1e-06,
+    "passed": true
+  },
+  "factorial_contrasts": {
+    "cache_main_effect": {
+      "correct_donor_retrieval_rate": {
+        "ci95_high": 1.0,
+        "ci95_low": 0.9965277777777778,
+        "mean": 0.9993055555555556,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "cosine_alignment": {
+        "ci95_high": 0.962108784184301,
+        "ci95_low": 0.9272202826594156,
+        "mean": 0.9433195609601924,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "distance_to_donor": {
+        "ci95_high": -0.4300062998312688,
+        "ci95_low": -0.7006484753915438,
+        "mean": -0.5610101114997453,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "donor_distance_reduction": {
+        "ci95_high": 0.7383576703335881,
+        "ci95_low": 0.636792524513081,
+        "mean": 0.6828366681664071,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "donor_projection": {
+        "ci95_high": 0.9134698250717364,
+        "ci95_low": 0.8322872836789255,
+        "mean": 0.8689926136403685,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "orthogonal_residual": {
+        "ci95_high": 0.22433829388583246,
+        "ci95_low": 0.16574684598316125,
+        "mean": 0.19426726283712895,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "orthogonal_residual_ratio": {
+        "ci95_high": 0.3178184357390181,
+        "ci95_low": 0.24393248280378885,
+        "mean": 0.28389882214253925,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      }
+    },
+    "future_by_cache_interaction": {
+      "correct_donor_retrieval_rate": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "cosine_alignment": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "distance_to_donor": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "donor_distance_reduction": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "donor_projection": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "orthogonal_residual": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "orthogonal_residual_ratio": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      }
+    },
+    "future_main_effect": {
+      "correct_donor_retrieval_rate": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "cosine_alignment": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "distance_to_donor": {
+        "ci95_high": 3.585095183685402e-18,
+        "ci95_low": -9.367506770274759e-18,
+        "mean": -2.6020852139652106e-18,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "donor_distance_reduction": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "donor_projection": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "orthogonal_residual": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      },
+      "orthogonal_residual_ratio": {
+        "ci95_high": 0.0,
+        "ci95_low": 0.0,
+        "mean": 0.0,
+        "n_states_missing": 0,
+        "n_states_total": 120,
+        "n_states_valid": 120,
+        "n_suites": 4,
+        "n_tasks": 40
+      }
+    }
+  },
+  "manifest_id": "fastwam-kvfact-a09195568dd5a17f",
+  "status": "complete"
+}

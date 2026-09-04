@@ -1,0 +1,16 @@
+study_name = "fastwam_optional_idm_future_cache_factorial_powered_v2"
+base_manifest_id = "fastwam-813f0233b9a2c083"
+base_manifest_sha256 = "d74edd650f32faf7a0907871ae43e7362b5be19e029bef0b17d055eb114d125a"
+
+[design]
+factorial = "recipient-versus-donor future latent x recipient-versus-donor video K/V cache"
+new_missing_cell = "donor future latent plus recipient video cache"
+independent_unit = "saved simulator state"
+within_state_measurements = "all 12 ordered recipient-to-donor pairs"
+primary_prediction = "donor-future/recipient-cache matches recipient-cache action; recipient-future/donor-cache matches donor-cache action"
+exact_replay_controls = ["recipient/recipient matches base self_cache", "recipient/donor matches base donor_cache", "donor/donor matches base donor_latent"]
+cache_invariance_audits = ["recipient-cache output invariant to recipient versus donor future latent", "donor-cache output invariant to recipient versus donor future latent"]
+cache_source_reconstruction = "regenerate full-precision native future latent and K/V from each frozen video seed; require exact parent native-action replay and exact agreement with the stored FP16 latent artifact"
+execution_rule = "launch only after base powered matrix finishes; never inspect a partial factorial subset"
+degenerate_axis_rule = "retain and count every degenerate native recipient-donor action axis"
+bootstrap_rule = "average ordered pairs within state; 10000 suite-task-state hierarchical bootstrap draws with seed 20260903"

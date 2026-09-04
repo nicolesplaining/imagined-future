@@ -1,0 +1,31 @@
+{
+  "artifact_count_excluding_index": 5,
+  "artifacts": [
+    {
+      "relative_path": "all_30_states_4_branches_overview.mp4",
+      "sha256": "1f6b76c3c3de34956bfc290fba114190b11d7258e8ac57314920375cb9818e19",
+      "size_bytes": 15303039
+    },
+    {
+      "relative_path": "all_30x4_terminal_contact_sheet.png",
+      "sha256": "0a453a952a982041c7c3307576c921caadb99d7aa615a12229ad863190cc0a46",
+      "size_bytes": 9691435
+    },
+    {
+      "relative_path": "build_dreamzero_exhaustive_overview.py",
+      "sha256": "f8597762c596157ba69f8b370ac0d3fb4c46c039a1152014b9893e3b6ce24433",
+      "size_bytes": 13567
+    },
+    {
+      "relative_path": "manifest_order.csv",
+      "sha256": "0ff7c5a2ab5a33ae5e0447859fc98c103d21cc25d880888951e297a6c8a74b32",
+      "size_bytes": 21993
+    },
+    {
+      "relative_path": "receipt.json",
+      "sha256": "80d0180c3df8fa88e715c7869c1345661c2fd4d85dbd7d062dd9d326cf6b533b",
+      "size_bytes": 1779
+    }
+  ],
+  "schema": "dreamzero-exhaustive-derived-media-index-v1"
+}

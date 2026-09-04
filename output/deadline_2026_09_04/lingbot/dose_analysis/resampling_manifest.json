@@ -1,0 +1,24 @@
+{
+  "bootstrap": {
+    "columns": [
+      "interior_slope",
+      "interior_nondecreasing_fraction",
+      "interior_mean_absolute_alpha_deviation",
+      "projection_alpha_0.00",
+      "projection_alpha_0.25",
+      "projection_alpha_0.50",
+      "projection_alpha_0.75",
+      "projection_alpha_1.00"
+    ],
+    "draws_file": "bootstrap_draws.npy",
+    "repetitions": 50000,
+    "seed": 260906
+  },
+  "independent_unit": "frozen simulator state",
+  "permutation": {
+    "draws_file": "permutation_null.npy",
+    "repetitions": 100000,
+    "seed": 260907,
+    "unit": "three interior alpha labels independently within each frozen state; endpoints excluded"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "all_outputs_complete": true,
+  "complete_state_count": 120,
+  "expected_run_count": 5760,
+  "manifest_id": "fastwam-kvfact-a09195568dd5a17f",
+  "manifest_state_count": 120,
+  "required_state_count": 120,
+  "unexpected_state_ids": [],
+  "valid_run_count": 5760
+}

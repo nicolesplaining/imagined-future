@@ -1,0 +1,20 @@
+{
+  "audit": "independent-cosmos3-future-strength-dose-v2-prelaunch-audit-v1",
+  "authorized_call_count": 2760,
+  "authorized_state_count": 30,
+  "checkpoint_verification_receipt_sha256": "f3615a06511d2f8259d22887c7752aff8545a0618b3c213810a82a689cf4a8e1",
+  "excluded_smoke_artifact_sha256": "933569c399deed28b3b8b3e2505376769bd5c3fbb73883f5bc9eb4a84afa9ea1",
+  "excluded_smoke_controls_sha256": "797a1d4cef08c330ba6536a45a342d57be721ffbf36eab8bf93cb00476815050",
+  "excluded_smoke_go_sha256": "f3f9c695219ad6922642e4dd1c42a52c692551234950ebaf4f74483514ef568c",
+  "manifest_id": "cosmos3-dose-c00d81db8d910603",
+  "manifest_sha256": "1a37bdba796b580c905970c441aededccf4193c51fe370f0f3557eccd5a9ee7d",
+  "powered_outcomes_inspected": false,
+  "scope": "outcome_blind_prelaunch_audit",
+  "server_container_id": "cba98ed0dc87ac9c925d94eceb91e2b5c116fc9609023210d93ee826591f0617",
+  "server_image": "sha256:95a8933deb69f2fc73697d846f7e17066a4d4e05dc9ef85718a7ee12cfea2a8c",
+  "server_registry_empty_receipt_sha256": "5d07e1faa1d8a026ce0335f31412298d3b76797fa311e0f8a7f01ac6a9a0dd8f",
+  "server_script_sha256": "a6b02c876f617ef87eaa8508e2a8bcb95c48e926c5f5b58b5e3662740930771e",
+  "snapshot_checksum_list_sha256": "126d387ccd39dc0c6e23beefac462a80670266d647463c77622da7ec5cb6a100",
+  "status": "pass",
+  "verdict": "GO"
+}

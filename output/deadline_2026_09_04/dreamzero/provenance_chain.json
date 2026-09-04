@@ -1,0 +1,23 @@
+{
+  "schema": "dreamzero-final-provenance-chain-v1",
+  "note": "The immutable runtime receipt was frozen before the final core-analysis rerun. It records an earlier analyzer snapshot; it is therefore the raw-run provenance anchor, not the binding for the final analyzer. Each final analysis artifact inventory separately binds its exact analyzer to its outputs, and the final core summary embeds the runtime-receipt hash.",
+  "runtime_receipt": {
+    "path": "provenance/final_runtime_receipt.json",
+    "sha256": "57b89a7a98b3326812fa6652fff1f000f9bbe6940cd82a4e1a72b7983eaa06e5"
+  },
+  "final_core_analysis": {
+    "path": "core_analysis_final/artifact_inventory.json",
+    "artifact_inventory_sha256": "4474b1a7f2d9d2c7bf4682d4d94910782d55e0b26e3ec693b235902e1c500327",
+    "analyzer_sha256": "7f17970a858927e37a664efbde0451655bac00e374b3e08446d9a7e9295efc30",
+    "embedded_runtime_receipt_sha256": "57b89a7a98b3326812fa6652fff1f000f9bbe6940cd82a4e1a72b7983eaa06e5"
+  },
+  "final_control_analysis": {
+    "path": "control_analysis/artifact_inventory.json",
+    "artifact_inventory_sha256": "dbc56bd5e282b7c7cd30876206bf15b6a800d3f4e4912af1cf60a5f8b0f7c663",
+    "analyzer_sha256": "bcd3dbc5687f4e3bba941d99792f5b42b1f76b6075c16981b1d852fb7ff5ce57"
+  },
+  "representative_selection": {
+    "path": "representative/artifact_inventory.json",
+    "artifact_inventory_sha256": "6bb7111c65a57ea01cc4b03860b45a63d223eef26215e7763ac6e6ae2c14829b"
+  }
+}

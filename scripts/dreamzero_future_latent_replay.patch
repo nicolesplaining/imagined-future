@@ -1,0 +1,628 @@
+diff --git a/groot/vla/model/dreamzero/action_head/wan_flow_matching_action_tf.py b/groot/vla/model/dreamzero/action_head/wan_flow_matching_action_tf.py
+index b7cd806..8efbb70 100644
+--- a/groot/vla/model/dreamzero/action_head/wan_flow_matching_action_tf.py
++++ b/groot/vla/model/dreamzero/action_head/wan_flow_matching_action_tf.py
+@@ -1,4 +1,5 @@
+ from dataclasses import dataclass, field
++import hashlib
+ import logging
+ import time
+ from typing import TypeAlias, cast
+@@ -178,7 +179,10 @@ class WANPolicyHead(ActionHead):
+         self.model_names = ['text_encoder']
+ 
+         self.num_inference_steps = 16 
+-        self.seed = 1140
++        self.default_seed = int(os.getenv("DREAMZERO_NOISE_SEED", "1140"))
++        self.seed = self.default_seed
++        self._dreamzero_intervention: dict | None = None
++        self._dreamzero_intervention_audit: dict | None = None
+         self.cfg_scale = 5.0
+         self.denoising_strength = 1.0
+         self.sigma_shift = 5.0
+@@ -1221,6 +1225,271 @@ class WANPolicyHead(ActionHead):
+             if self.ip_rank == 0:
+                 print(f"Decoupled inference: video sigmas {sigma_max:.3f} -> {sample_scheduler.sigmas[-1].item():.3f}")
+ 
++        # Optional causal intervention: record or replay the *video* diffusion
++        # state at every matched solver noise level.  The action diffusion
++        # state is deliberately never replaced.  Its initial noise is checked
++        # bit-for-bit against a separate recipient-native trace, never against
++        # the donor trace, so off-diagonal transplants remain well-defined.
++        request_intervention = self._dreamzero_intervention
++        if request_intervention is not None:
++            # Consume the request exactly once.  BaseGrootSimPolicy also resets
++            # this after inference, but clearing here protects exception paths.
++            self._dreamzero_intervention = {
++                "mode": "off",
++                "noise_seed": self.default_seed,
++            }
++            if not isinstance(request_intervention, dict):
++                raise TypeError("DreamZero request intervention must be a dict")
++            allowed_request_keys = {
++                "mode",
++                "noise_seed",
++                "trace_path",
++                "action_noise_reference_path",
++                "replay_start",
++                "replay_stop",
++            }
++            unexpected_request_keys = set(request_intervention) - allowed_request_keys
++            if unexpected_request_keys:
++                raise ValueError(
++                    "Unexpected DreamZero intervention keys: "
++                    f"{sorted(unexpected_request_keys)}"
++                )
++            future_trace_mode = request_intervention.get("mode", "off")
++            future_trace_path_template = request_intervention.get("trace_path")
++            action_noise_reference_path_template = request_intervention.get(
++                "action_noise_reference_path"
++            )
++            replay_start_value = request_intervention.get("replay_start", 0)
++            replay_stop_value = request_intervention.get("replay_stop")
++            request_seed = request_intervention.get("noise_seed", self.default_seed)
++            if not isinstance(request_seed, int) or isinstance(request_seed, bool):
++                raise TypeError("DreamZero intervention noise_seed must be an integer")
++            if request_seed != self.seed:
++                raise RuntimeError(
++                    f"DreamZero intervention noise_seed was not installed on action head: "
++                    f"{request_seed} != {self.seed}"
++                )
++        else:
++            # Environment fallback supports direct action-head use.  Server
++            # requests always install an explicit config, including mode=off.
++            future_trace_mode = os.getenv(
++                "DREAMZERO_FUTURE_TRACE_MODE", "off"
++            ).strip().lower()
++            future_trace_path_template = os.getenv("DREAMZERO_FUTURE_TRACE_PATH")
++            action_noise_reference_path_template = os.getenv(
++                "DREAMZERO_ACTION_NOISE_REFERENCE_PATH"
++            )
++            replay_start_value = os.getenv("DREAMZERO_FUTURE_REPLAY_START", "0")
++            replay_stop_value = os.getenv("DREAMZERO_FUTURE_REPLAY_STOP")
++        if not isinstance(future_trace_mode, str):
++            raise TypeError("DreamZero intervention mode must be a string")
++        future_trace_mode = future_trace_mode.strip().lower()
++        if future_trace_mode not in {"off", "record", "replay"}:
++            raise ValueError(
++                "DREAMZERO_FUTURE_TRACE_MODE must be one of: off, record, replay"
++            )
++        future_trace_path = None
++        if future_trace_mode != "off":
++            if not isinstance(future_trace_path_template, str) or not future_trace_path_template:
++                raise ValueError(
++                    "DREAMZERO_FUTURE_TRACE_PATH is required in record/replay mode"
++                )
++            future_trace_path = future_trace_path_template.replace(
++                "{start_frame}", str(self.current_start_frame)
++            )
++            # Cached/skipped DiT evaluations would make some action updates use
++            # a stale prediction that never consumed the transplanted latent.
++            # Fail closed instead of silently weakening the intervention.
++            if self.dynamic_cache_schedule or not all(
++                self.dit_step_mask[: len(sample_scheduler.timesteps)]
++            ):
++                raise RuntimeError(
++                    "Future trace mode requires DYNAMIC_CACHE_SCHEDULE=False and "
++                    "NUM_DIT_STEPS=16 so every action update sees its matched video latent"
++                )
++
++        future_trace_record = None
++        future_trace_replay = None
++        replay_start = 0
++        replay_stop = len(sample_scheduler.timesteps)
++
++        def tensor_sha256(value: torch.Tensor) -> str:
++            value_cpu = value.detach().cpu().contiguous()
++            return hashlib.sha256(
++                value_cpu.view(torch.uint8).numpy().tobytes()
++            ).hexdigest()
++
++        def video_trace_sha256(trace: dict) -> str:
++            trace_steps = trace.get("video_latents_pre_step")
++            trace_final = trace.get("final_video_latent")
++            if not isinstance(trace_steps, list) or not all(
++                isinstance(step, torch.Tensor) for step in trace_steps
++            ):
++                raise RuntimeError("Video trace steps are absent or malformed")
++            if not isinstance(trace_final, torch.Tensor):
++                raise RuntimeError("Video trace final latent is absent or malformed")
++            digest = hashlib.sha256()
++            for index, value in enumerate([*trace_steps, trace_final]):
++                value_cpu = value.detach().cpu().contiguous()
++                digest.update(index.to_bytes(4, byteorder="little", signed=False))
++                digest.update(str(value_cpu.dtype).encode("utf-8"))
++                digest.update(str(tuple(value_cpu.shape)).encode("utf-8"))
++                digest.update(value_cpu.view(torch.uint8).numpy().tobytes())
++            return digest.hexdigest()
++
++        active_action_noise_cpu = noise_action.detach().cpu().contiguous()
++        active_action_noise_sha256 = tensor_sha256(active_action_noise_cpu)
++        self._dreamzero_intervention_audit = {
++            "schema_version": 1,
++            "trace_format_version": 3,
++            "mode": future_trace_mode,
++            "status": "off" if future_trace_mode == "off" else "configured",
++            "noise_seed": int(self.seed),
++            "current_start_frame": int(self.current_start_frame),
++            "num_solver_steps": int(len(sample_scheduler.timesteps)),
++            "replay_start": None,
++            "replay_stop": None,
++            "trace_path": future_trace_path,
++            "action_noise_reference_path": None,
++            "video_trace_sha256": None,
++            "donor_action_noise_sha256": None,
++            "recipient_reference_action_noise_sha256": None,
++            "active_action_noise_sha256": active_action_noise_sha256,
++            "applied_video_steps": [],
++        }
++        if future_trace_mode == "record" and self.ip_rank == 0:
++            future_trace_record = {
++                "format_version": 3,
++                "current_start_frame": self.current_start_frame,
++                "noise_seed": self.seed,
++                "video_timesteps": sample_scheduler.timesteps.detach().cpu().clone(),
++                "video_sigmas": sample_scheduler.sigmas.detach().cpu().clone(),
++                "action_timesteps": sample_scheduler_action.timesteps.detach().cpu().clone(),
++                "action_sigmas": sample_scheduler_action.sigmas.detach().cpu().clone(),
++                "initial_action_noise": active_action_noise_cpu.clone(),
++                "initial_action_noise_sha256": active_action_noise_sha256,
++                "video_latents_pre_step": [],
++            }
++        elif future_trace_mode == "replay":
++            assert future_trace_path is not None
++            if not isinstance(action_noise_reference_path_template, str) or not action_noise_reference_path_template:
++                raise ValueError(
++                    "DREAMZERO_ACTION_NOISE_REFERENCE_PATH is required in replay mode"
++                )
++            action_noise_reference_path = action_noise_reference_path_template.replace(
++                "{start_frame}", str(self.current_start_frame)
++            )
++            future_trace_replay = torch.load(
++                future_trace_path, map_location="cpu", weights_only=True
++            )
++            action_noise_reference = torch.load(
++                action_noise_reference_path, map_location="cpu", weights_only=True
++            )
++            if future_trace_replay.get("format_version") != 3:
++                raise RuntimeError("Unsupported DreamZero future trace format")
++            if action_noise_reference.get("format_version") != 3:
++                raise RuntimeError("Unsupported recipient action-noise trace format")
++            if future_trace_replay.get("current_start_frame") != self.current_start_frame:
++                raise RuntimeError(
++                    "Donor/recipient current_start_frame mismatch: "
++                    f"{future_trace_replay.get('current_start_frame')} != {self.current_start_frame}"
++                )
++            schedule_pairs = (
++                ("video_timesteps", sample_scheduler.timesteps),
++                ("video_sigmas", sample_scheduler.sigmas),
++                ("action_timesteps", sample_scheduler_action.timesteps),
++                ("action_sigmas", sample_scheduler_action.sigmas),
++            )
++            for name, current in schedule_pairs:
++                recorded = future_trace_replay.get(name)
++                if not isinstance(recorded, torch.Tensor) or not torch.equal(
++                    recorded, current.detach().cpu()
++                ):
++                    raise RuntimeError(f"Donor/recipient {name} mismatch")
++            if action_noise_reference.get("current_start_frame") != self.current_start_frame:
++                raise RuntimeError(
++                    "Recipient action-noise reference current_start_frame mismatch: "
++                    f"{action_noise_reference.get('current_start_frame')} != "
++                    f"{self.current_start_frame}"
++                )
++            for name, current in schedule_pairs[2:]:
++                recorded = action_noise_reference.get(name)
++                if not isinstance(recorded, torch.Tensor) or not torch.equal(
++                    recorded, current.detach().cpu()
++                ):
++                    raise RuntimeError(f"Recipient reference {name} mismatch")
++
++            # Validate each trace's stored action-noise hash for provenance.  The
++            # donor hash is intentionally *not* compared to the active action
++            # noise; only the recipient-native reference is the equality target.
++            for trace_name, trace in (
++                ("donor", future_trace_replay),
++                ("recipient reference", action_noise_reference),
++            ):
++                trace_action_noise = trace.get("initial_action_noise")
++                trace_action_hash = trace.get("initial_action_noise_sha256")
++                if not isinstance(trace_action_noise, torch.Tensor) or not isinstance(
++                    trace_action_hash, str
++                ):
++                    raise RuntimeError(f"{trace_name} action-noise audit metadata missing")
++                computed_hash = tensor_sha256(trace_action_noise)
++                if computed_hash != trace_action_hash:
++                    raise RuntimeError(f"{trace_name} action-noise hash mismatch")
++
++            recipient_action_noise = action_noise_reference["initial_action_noise"]
++            active_action_noise = noise_action.detach().cpu()
++            if not torch.equal(
++                recipient_action_noise, active_action_noise
++            ):
++                raise RuntimeError(
++                    "Active action noise differs from recipient-native reference; "
++                    "refusing confounded replay"
++                )
++            if self.ip_rank == 0:
++                print(
++                    "[DREAMZERO_FUTURE_TRACE] "
++                    f"donor={future_trace_path} "
++                    f"recipient_action_reference={action_noise_reference_path} "
++                    f"donor_action_noise_sha256="
++                    f"{future_trace_replay['initial_action_noise_sha256']} "
++                    f"active_action_noise_sha256="
++                    f"{action_noise_reference['initial_action_noise_sha256']}"
++                )
++            donor_steps = future_trace_replay.get("video_latents_pre_step")
++            if not isinstance(donor_steps, list) or len(donor_steps) != len(
++                sample_scheduler.timesteps
++            ):
++                raise RuntimeError("Donor trace does not cover every solver step")
++            computed_video_trace_sha256 = video_trace_sha256(future_trace_replay)
++            if computed_video_trace_sha256 != future_trace_replay.get(
++                "video_trace_sha256"
++            ):
++                raise RuntimeError("Donor video trace hash mismatch")
++            replay_start = int(replay_start_value)
++            replay_stop = int(
++                len(sample_scheduler.timesteps)
++                if replay_stop_value is None
++                else replay_stop_value
++            )
++            if not 0 <= replay_start < replay_stop <= len(sample_scheduler.timesteps):
++                raise ValueError(
++                    "Replay interval must satisfy 0 <= START < STOP <= num solver steps"
++                )
++            self._dreamzero_intervention_audit.update(
++                {
++                    "replay_start": replay_start,
++                    "replay_stop": replay_stop,
++                    "action_noise_reference_path": action_noise_reference_path,
++                    "video_trace_sha256": computed_video_trace_sha256,
++                    "donor_action_noise_sha256": future_trace_replay[
++                        "initial_action_noise_sha256"
++                    ],
++                    "recipient_reference_action_noise_sha256": action_noise_reference[
++                        "initial_action_noise_sha256"
++                    ],
++                }
++            )
++
+         start_diffusion_events = [torch.cuda.Event(enable_timing=True) for _ in sample_scheduler.timesteps]
+         end_diffusion_events = [torch.cuda.Event(enable_timing=True) for _ in sample_scheduler.timesteps]
+         prev_predictions = [] 
+@@ -1229,6 +1498,24 @@ class WANPolicyHead(ActionHead):
+         for index, current_timestep in enumerate(sample_scheduler.timesteps):
+             start_diffusion_events[index].record()
+ 
++            if future_trace_record is not None:
++                future_trace_record["video_latents_pre_step"].append(
++                    noisy_input.detach().cpu().clone()
++                )
++            elif (
++                future_trace_replay is not None
++                and replay_start <= index < replay_stop
++            ):
++                donor_video_latent = future_trace_replay["video_latents_pre_step"][index]
++                if donor_video_latent.shape != noisy_input.shape:
++                    raise RuntimeError(
++                        f"Donor video latent shape mismatch at step {index}: "
++                        f"{tuple(donor_video_latent.shape)} != {tuple(noisy_input.shape)}"
++                    )
++                noisy_input = donor_video_latent.to(
++                    device=noisy_input.device, dtype=noisy_input.dtype
++                )
++
+             # Get timesteps from respective schedulers
+             action_timestep = sample_scheduler_action.timesteps[index]
+             video_timestep = sample_scheduler.timesteps[index]  # Already rescaled if decoupled
+@@ -1304,6 +1591,46 @@ class WANPolicyHead(ActionHead):
+                 return_dict=False,
+             )[0]
+ 
++        if future_trace_record is not None:
++            assert future_trace_path is not None
++            future_trace_record["final_video_latent"] = noisy_input.detach().cpu().clone()
++            recorded_video_trace_sha256 = video_trace_sha256(future_trace_record)
++            future_trace_record["video_trace_sha256"] = recorded_video_trace_sha256
++            trace_parent = os.path.dirname(os.path.abspath(future_trace_path))
++            os.makedirs(trace_parent, exist_ok=True)
++            temporary_trace_path = future_trace_path + ".rank0.tmp"
++            torch.save(future_trace_record, temporary_trace_path)
++            os.replace(temporary_trace_path, future_trace_path)
++            self._dreamzero_intervention_audit.update(
++                {
++                    "status": "recorded",
++                    "video_trace_sha256": recorded_video_trace_sha256,
++                }
++            )
++        elif (
++            future_trace_replay is not None
++            and replay_start <= len(sample_scheduler.timesteps) - 1 < replay_stop
++        ):
++            # When the final solver step is intervened, expose the coherent
++            # donor endpoint as video_pred.  action_pred remains the recipient
++            # action trajectory evolved exclusively by its own scheduler.
++            donor_final_video = future_trace_replay.get("final_video_latent")
++            if not isinstance(donor_final_video, torch.Tensor) or (
++                donor_final_video.shape != noisy_input.shape
++            ):
++                raise RuntimeError("Donor final video latent is absent or shape-mismatched")
++            noisy_input = donor_final_video.to(
++                device=noisy_input.device, dtype=noisy_input.dtype
++            )
++
++        if future_trace_replay is not None:
++            self._dreamzero_intervention_audit.update(
++                {
++                    "status": "replayed",
++                    "applied_video_steps": list(range(replay_start, replay_stop)),
++                }
++            )
++
+         latents = noisy_input
+         latents_action = noisy_input_action
+         output = latents
+diff --git a/groot/vla/model/n1_5/sim_policy.py b/groot/vla/model/n1_5/sim_policy.py
+index f1d01b5..5768d95 100755
+--- a/groot/vla/model/n1_5/sim_policy.py
++++ b/groot/vla/model/n1_5/sim_policy.py
+@@ -680,6 +680,114 @@ class GrootSimPolicy(BaseGrootSimPolicy):
+         
+         transform_start_time = time.perf_counter()
+ 
++        # Consume the research control before copying or transforming the
++        # observation.  Rank 0 broadcasts the converted observation, so every
++        # rank executes this same validation and installs the same one-shot
++        # action-head configuration.
++        raw_intervention = batch.obs.pop("dreamzero_intervention", None)
++        action_head = getattr(self.trained_model, "action_head", None)
++        self._dreamzero_intervention_audit = None
++        if raw_intervention is not None and action_head is None:
++            raise RuntimeError("DreamZero intervention supplied to a model without an action head")
++
++        default_seed = None
++        if action_head is not None:
++            default_seed = int(
++                getattr(action_head, "default_seed", getattr(action_head, "seed", 1140))
++            )
++            # Reset first, on every request.  An omitted control can therefore
++            # never inherit a previous request's replay path or seed.
++            action_head.seed = default_seed
++            action_head._dreamzero_intervention_audit = None
++            action_head._dreamzero_intervention = {
++                "mode": "off",
++                "noise_seed": default_seed,
++            }
++
++        if raw_intervention is not None:
++            if isinstance(raw_intervention, Batch):
++                raw_intervention = raw_intervention.__getstate__()
++            if not isinstance(raw_intervention, dict):
++                raise TypeError("dreamzero_intervention must decode to a dictionary")
++
++            allowed_keys = {
++                "mode",
++                "noise_seed",
++                "trace_path",
++                "action_noise_reference_path",
++                "replay_start",
++                "replay_stop",
++            }
++            unexpected_keys = set(raw_intervention) - allowed_keys
++            if unexpected_keys:
++                raise ValueError(
++                    f"Unexpected dreamzero_intervention keys: {sorted(unexpected_keys)}"
++                )
++
++            def control_scalar(name, value):
++                if isinstance(value, np.ndarray):
++                    if value.size != 1:
++                        raise TypeError(f"dreamzero_intervention.{name} must be scalar")
++                    value = value.item()
++                return value
++
++            mode = control_scalar("mode", raw_intervention.get("mode", "off"))
++            if not isinstance(mode, str):
++                raise TypeError("dreamzero_intervention.mode must be a string")
++            mode = mode.strip().lower()
++            if mode not in {"off", "record", "replay"}:
++                raise ValueError("dreamzero_intervention.mode must be off, record, or replay")
++
++            noise_seed = control_scalar(
++                "noise_seed", raw_intervention.get("noise_seed", default_seed)
++            )
++            if isinstance(noise_seed, (bool, np.bool_)) or not isinstance(
++                noise_seed, (int, np.integer)
++            ):
++                raise TypeError("dreamzero_intervention.noise_seed must be an integer")
++            noise_seed = int(noise_seed)
++            if not 0 <= noise_seed < 2**63:
++                raise ValueError(
++                    "dreamzero_intervention.noise_seed must be in [0, 2**63)"
++                )
++
++            normalized_intervention = {"mode": mode, "noise_seed": noise_seed}
++            for path_key in ("trace_path", "action_noise_reference_path"):
++                if path_key not in raw_intervention:
++                    continue
++                path_value = control_scalar(path_key, raw_intervention[path_key])
++                if not isinstance(path_value, str) or not path_value:
++                    raise TypeError(f"dreamzero_intervention.{path_key} must be a non-empty string")
++                if not Path(path_value.replace("{start_frame}", "0")).is_absolute():
++                    raise ValueError(f"dreamzero_intervention.{path_key} must be an absolute server path")
++                normalized_intervention[path_key] = path_value
++
++            if mode in {"record", "replay"} and "trace_path" not in normalized_intervention:
++                raise ValueError(f"dreamzero_intervention mode={mode} requires trace_path")
++            if mode == "replay" and "action_noise_reference_path" not in normalized_intervention:
++                raise ValueError(
++                    "dreamzero_intervention mode=replay requires "
++                    "action_noise_reference_path"
++                )
++
++            for index_key in ("replay_start", "replay_stop"):
++                if index_key not in raw_intervention:
++                    continue
++                index_value = control_scalar(index_key, raw_intervention[index_key])
++                if isinstance(index_value, (bool, np.bool_)) or not isinstance(
++                    index_value, (int, np.integer)
++                ):
++                    raise TypeError(f"dreamzero_intervention.{index_key} must be an integer")
++                normalized_intervention[index_key] = int(index_value)
++            replay_start = normalized_intervention.get("replay_start", 0)
++            replay_stop = normalized_intervention.get("replay_stop")
++            if replay_start < 0 or (replay_stop is not None and replay_stop <= replay_start):
++                raise ValueError("dreamzero_intervention replay interval is invalid")
++
++            assert action_head is not None
++            action_head.seed = noise_seed
++            action_head._dreamzero_intervention = normalized_intervention
++
+         # Save original observation before any modification (for relative action conversion)
+         original_obs_for_relative = {k: v.copy() if isinstance(v, np.ndarray) else v.clone() if torch.is_tensor(v) else v 
+                                      for k, v in batch.obs.items()}
+@@ -713,9 +821,28 @@ class GrootSimPolicy(BaseGrootSimPolicy):
+         model_start_time = time.perf_counter()
+ 
+         # 3. Model inference
+-        with torch.inference_mode():
+-            # with maybe_autocast:
+-            model_pred = self.trained_model.lazy_joint_video_action_causal(normalized_input, latent_video=latent_video)
++        try:
++            with torch.inference_mode():
++                # with maybe_autocast:
++                model_pred = self.trained_model.lazy_joint_video_action_causal(normalized_input, latent_video=latent_video)
++        finally:
++            if action_head is not None:
++                action_head_audit = getattr(
++                    action_head, "_dreamzero_intervention_audit", None
++                )
++                if isinstance(action_head_audit, dict):
++                    self._dreamzero_intervention_audit = dict(action_head_audit)
++                action_head.seed = default_seed
++                action_head._dreamzero_intervention = {
++                    "mode": "off",
++                    "noise_seed": default_seed,
++                }
++        if raw_intervention is not None and not isinstance(
++            self._dreamzero_intervention_audit, dict
++        ):
++            raise RuntimeError(
++                "Controlled DreamZero request completed without a server audit"
++            )
+         normalized_action = model_pred["action_pred"].float()
+         video_pred = model_pred["video_pred"]
+ 
+diff --git a/socket_test_optimized_AR.py b/socket_test_optimized_AR.py
+index 5b93e05..61b8d30 100644
+--- a/socket_test_optimized_AR.py
++++ b/socket_test_optimized_AR.py
+@@ -104,6 +104,15 @@ class ARDroidRoboarenaPolicy:
+             - annotation.language.action_text: str
+         """
+         converted = {}
++
++        # Research-only control plane.  Keep this as a structured side-channel
++        # so BaseGrootSimPolicy can consume it before observation transforms;
++        # it must never be interpreted as a model modality.
++        if "dreamzero_intervention" in obs:
++            intervention = obs["dreamzero_intervention"]
++            if not isinstance(intervention, dict):
++                raise TypeError("dreamzero_intervention must be a dictionary")
++            converted["dreamzero_intervention"] = dict(intervention)
+         
+         # Map image keys (roboarena uses 0-indexed, AR_droid uses 1-indexed)
+         image_key_mapping = {
+@@ -242,7 +251,7 @@ class ARDroidRoboarenaPolicy:
+         data_tensor = torch.frombuffer(serialized, dtype=torch.uint8).cuda()
+         dist.broadcast(data_tensor, src=0)
+     
+-    def infer(self, obs: dict) -> np.ndarray:
++    def infer(self, obs: dict) -> np.ndarray | dict:
+         """Infer actions from observations.
+         
+         Args:
+@@ -251,13 +260,19 @@ class ARDroidRoboarenaPolicy:
+         Returns:
+             action: (N, 8) action array
+         """
++        controlled_request = "dreamzero_intervention" in obs
++        skip_video_save = obs.get("dreamzero_skip_video_save", False)
++        if not isinstance(skip_video_save, (bool, np.bool_)):
++            raise TypeError("dreamzero_skip_video_save must be boolean")
++        skip_video_save = bool(skip_video_save)
++
+         # Check for session change - reset state if new session
+         session_id = obs.get("session_id", None)
+         if session_id is not None and session_id != self._current_session_id:
+             if self._current_session_id is not None:
+                 logger.info(f"Session changed from '{self._current_session_id}' to '{session_id}', resetting state")
+                 # Reset state for new session
+-                self._reset_state()
++                self._reset_state(save_video=not skip_video_save)
+             else:
+                 logger.info(f"New session started: '{session_id}'")
+             self._current_session_id = session_id
+@@ -302,6 +317,18 @@ class ARDroidRoboarenaPolicy:
+         if self._is_first_call:
+             self._is_first_call = False
+         
++        if controlled_request:
++            intervention_audit = getattr(
++                self._policy, "_dreamzero_intervention_audit", None
++            )
++            if not isinstance(intervention_audit, dict):
++                raise RuntimeError(
++                    "Controlled DreamZero request is missing its server audit"
++                )
++            return {
++                "actions": action,
++                "dreamzero_intervention_audit": intervention_audit,
++            }
+         return action
+     
+     def _reset_state(self, save_video: bool = True) -> None:
+@@ -310,6 +337,22 @@ class ARDroidRoboarenaPolicy:
+         Args:
+             save_video: Whether to save accumulated video before reset.
+         """
++        # Reset request-scoped intervention state even if a previous inference
++        # raised.  Experiment resets normally pass save_video=False to avoid an
++        # expensive VAE decode and MP4 write between paired calls.
++        action_head = getattr(self._policy.trained_model, "action_head", None)
++        if action_head is not None:
++            default_seed = int(
++                getattr(action_head, "default_seed", getattr(action_head, "seed", 1140))
++            )
++            action_head.seed = default_seed
++            action_head._dreamzero_intervention = {
++                "mode": "off",
++                "noise_seed": default_seed,
++            }
++            action_head._dreamzero_intervention_audit = None
++        self._policy._dreamzero_intervention_audit = None
++
+         # Optionally save accumulated video before reset
+         if save_video and len(self.video_across_time) > 0 and self._output_dir:
+             try:
+@@ -355,7 +398,10 @@ class ARDroidRoboarenaPolicy:
+         
+         Clears frame buffers and resets call count.
+         """
+-        self._reset_state(save_video=True)
++        skip_video_save = reset_info.get("dreamzero_skip_video_save", False)
++        if not isinstance(skip_video_save, (bool, np.bool_)):
++            raise TypeError("dreamzero_skip_video_save must be boolean")
++        self._reset_state(save_video=not bool(skip_video_save))
+ 
+ 
+ class WebsocketPolicyServer:
+@@ -833,4 +879,4 @@ def main(args: Args) -> None:
+ if __name__ == "__main__":
+     logging.basicConfig(level=logging.INFO, force=True)
+     args = tyro.cli(Args)
+-    main(args)
+\ No newline at end of file
++    main(args)

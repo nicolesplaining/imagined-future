@@ -94,6 +94,14 @@ def test_guided_clamp_changes_model_future_but_not_action_coordinates() -> None:
     assert torch.equal(result[:24].reshape(2, 3, 2, 2)[:, 1:], expected_velocity[:, 1:])
     assert clamp.maximum_action_input_error == 0.0
     assert clamp.maximum_action_output_error == 0.0
+    assert clamp.model_input_future_clamp_errors == [0.0]
+    assert clamp.returned_future_velocity_overwrite_errors == [0.0]
+    assert clamp.active_call_sigmas == [0.5]
+    assert clamp.inactive_call_indices == []
+    assert clamp.future_mask_coordinate_count == 16
+    assert clamp.inactive_wrapper_write_count == 0
+    assert clamp.action_input_errors == [0.0]
+    assert clamp.action_output_errors == [0.0]
 
 
 def test_guided_x0_recorder_is_velocity_identity() -> None:
@@ -137,6 +145,41 @@ def test_guided_clamp_can_target_one_denoising_call() -> None:
     assert torch.equal(second[24:], native_state[0][24:] + 1.0)
     assert clamp.calls == [0.9, 0.5]
     assert clamp.clamped_call_indices == [1]
+    assert clamp.inactive_call_indices == [0]
+    assert clamp.active_call_sigmas == [0.5]
+    assert clamp.model_input_future_clamp_errors == [0.0]
+    assert clamp.returned_future_velocity_overwrite_errors == [0.0]
+    assert clamp.action_input_errors == [0.0, 0.0]
+    assert clamp.action_output_errors == [0.0, 0.0]
+
+
+def test_guided_clamp_with_empty_active_set_is_exact_noop() -> None:
+    plans, data = prepared()
+    capture = PreparedLayoutCapture()
+    capture(model=None, net=None, cond_tokens=[], sequence_plans=plans, gen_data_clean=data)
+    target = torch.arange(24, dtype=torch.float32)
+    path_noise = torch.full((24,), 10.0)
+    clamp = GuidedFutureClamp(
+        capture, target, path_noise, (1, 2), active_call_indices=()
+    )
+    native_state = [torch.arange(32, dtype=torch.float32)]
+
+    def velocity_fn(state: list[torch.Tensor], _timestep: torch.Tensor) -> list[torch.Tensor]:
+        return [state[0] + 1.0]
+
+    output = clamp.wrap_velocity(velocity_fn)(native_state, torch.tensor([[500.0]]))
+
+    assert torch.equal(output[0], native_state[0] + 1.0)
+    assert clamp.calls == [0.5]
+    assert clamp.clamped_call_indices == []
+    assert clamp.inactive_call_indices == [0]
+    assert clamp.active_call_sigmas == []
+    assert clamp.model_input_future_clamp_errors == []
+    assert clamp.returned_future_velocity_overwrite_errors == []
+    assert clamp.future_mask_coordinate_count is None
+    assert clamp.inactive_wrapper_write_count == 0
+    assert clamp.action_input_errors == [0.0]
+    assert clamp.action_output_errors == [0.0]
 
 
 def test_sampler_initial_state_capture_delegates_without_copying_argument() -> None:

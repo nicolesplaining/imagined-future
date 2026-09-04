@@ -1,0 +1,34 @@
+{
+  "schema": "dreamzero-provenance-addendum-artifact-index-v1",
+  "created_utc": "2026-09-04T17:42:00Z",
+  "immutable_after_verification": true,
+  "artifacts": [
+    {
+      "path": "actual_intervention_server_snapshot.log",
+      "sha256": "a01f759f9ef18022df7aeb4d543eac5626b08a15ffc80389533538ed24f4c07e",
+      "size_bytes": 1199124
+    },
+    {
+      "path": "postrun_python_distributions.txt",
+      "sha256": "4301a6e9b6805985decdda1b47445b03f949c24a8465c84df3b9664e90279180",
+      "size_bytes": 4966
+    },
+    {
+      "path": "provenance_chain_v2.json",
+      "sha256": "cd6adce62ff09be5c8092212c50d1b49aeb2fef08be7490da848e3db261e1c36",
+      "size_bytes": 2160
+    },
+    {
+      "path": "runtime_provenance_addendum_v1.json",
+      "sha256": "b7ce05309878376cc5f1fa1c091c4fa5007a7c9d705f7481cf902a9c54878078",
+      "size_bytes": 5971
+    }
+  ],
+  "verification": {
+    "raw_receipt_preserved": true,
+    "prior_chain_preserved": true,
+    "actual_server_log_bound_to_live_process_fds": true,
+    "postrun_environment_scope_explicit": true,
+    "scientific_artifact_bytes_changed": false
+  }
+}

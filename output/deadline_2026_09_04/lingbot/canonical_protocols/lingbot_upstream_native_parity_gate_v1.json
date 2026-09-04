@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "gate_id": "lingbot_upstream_native_parity_gate_v1",
+  "frozen_at_utc": "2026-09-04T09:53:31Z",
+  "frozen_before_evaluation_outcome_inspection": true,
+  "evaluation_effect_metrics_inspected_at_freeze": false,
+  "completed_evaluation_states_at_freeze": 28,
+  "scientific_role": "excluded development-state implementation parity gate before dose and upstream-parity wording",
+  "canonical_identity": {
+    "manifest_path": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_states/manifest.json",
+    "manifest_sha256": "9c8d7dd547955e4622d98c7eb42fffed157f6db983f41f02929b28a434be47b4",
+    "development_state_id": "dev_task00_state000",
+    "branch_id": "b0",
+    "branch_index": 0,
+    "core_result_root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_smoke_v2",
+    "core_runner_path": "/home/ubuntu/if_external/tools/run_lingbot_future_transplants.py",
+    "core_runner_sha256": "902d749772eadef213988c1b30ddb1ef2182da7e2f3852dc6ba596d05bf09fc2",
+    "lingbot_repo_path": "/home/ubuntu/if_external/lingbot-va",
+    "upstream_commit": "7c6ffa9bfc4b83582cafc860fab4c82cc7deeeeb",
+    "official_entrypoint": "wan_va.wan_va_server.VA_Server._infer",
+    "official_source_path": "/home/ubuntu/if_external/lingbot-va/wan_va/wan_va_server.py",
+    "official_source_sha256": "9c2a427611db487fea5cf40f184b713bf2088e533990ee00fdcd020d2668b4bf",
+    "checkpoint_path": "/home/ubuntu/if_external/checkpoints/lingbot-va-posttrain-libero-long",
+    "checkpoint_revision": "0e89d1e753019988aba484e8da2dc0810e264d9f",
+    "core_environment_provenance_path": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_eval_v1_artifacts/environment_provenance.json"
+  },
+  "randomness_contract": {
+    "expected_torch_randn_calls_inside_official_infer": 2,
+    "call_0": "initial video noise with exact frozen b0 video seed",
+    "call_1": "exact saved b0 action-noise tensor",
+    "extra_torch_randn_call_policy": "hard fail",
+    "shape_device_dtype_mismatch_policy": "hard fail",
+    "require_all_queued_tensors_consumed": true
+  },
+  "required_source_bindings": [
+    "manifest file hash",
+    "development state and branch",
+    "controlled result metadata and actions archive hashes",
+    "controlled frozen-input file and tensor hashes",
+    "controlled future file and tensor hashes",
+    "core runner hash",
+    "checkpoint revision, path, aggregate content hash, and inventory receipt hash",
+    "official repository commit, entrypoint path, and source hash",
+    "oracle audit script path and self hash"
+  ],
+  "pass_criteria": {
+    "official_encoder_bitwise_equal": true,
+    "official_encoder_max_abs_error_lte": 0.0,
+    "official_future_bitwise_equal": true,
+    "official_future_max_abs_error_lte": 0.0,
+    "official_action_bitwise_equal": true,
+    "official_action_max_abs_error_lte": 0.0
+  },
+  "failure_policy": "do not launch the dose; document the precise mismatch and do not claim upstream parity"
+}

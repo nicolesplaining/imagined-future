@@ -1,0 +1,22 @@
+Traceback (most recent call last):
+  File "/home/ubuntu/if_external/tools/run_lingbot_gaussian_source_grid.py", line 435, in <module>
+    main()
+  File "/home/ubuntu/if_external/tools/run_lingbot_gaussian_source_grid.py", line 367, in main
+    init_distributed(world_size, local_rank, rank)
+  File "/home/ubuntu/if_external/lingbot-va/wan_va/distributed/util.py", line 27, in init_distributed
+    dist.init_process_group(backend="nccl",
+  File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/distributed/c10d_logger.py", line 81, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/distributed/c10d_logger.py", line 95, in wrapper
+    func_return = func(*args, **kwargs)
+                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/distributed/distributed_c10d.py", line 1762, in init_process_group
+    store, rank, world_size = next(rendezvous_iterator)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/distributed/rendezvous.py", line 274, in _env_rendezvous_handler
+    master_addr = _get_env_or_raise("MASTER_ADDR")
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/distributed/rendezvous.py", line 252, in _get_env_or_raise
+    raise _env_error(env_var)
+ValueError: Error initializing torch.distributed using env:// rendezvous: environment variable MASTER_ADDR expected, but not set

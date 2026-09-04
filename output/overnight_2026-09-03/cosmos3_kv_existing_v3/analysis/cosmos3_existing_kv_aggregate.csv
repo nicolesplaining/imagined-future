@@ -1,0 +1,23 @@
+estimand,scale,definition,tasks,states,equal_task_mean,state_weighted_mean,ci95_low,ci95_high,bootstrap_samples,bootstrap_seed
+native_action_l2,action_l2,Euclidean distance between recipient-native and donor-native actions,6,21,3.3666817446549735,3.2970404511406306,2.6309260377453434,4.391968718667825,10000,20260903
+recipient_future_recipient_kv__donor_projection,donor_projection,R future / R K/V action projection on the recipient-to-donor native axis,6,21,-0.011222064420465916,-0.011314346577342758,-0.02243471142302915,0.00034850876547419226,10000,20260903
+recipient_future_recipient_kv__distance_to_recipient,action_l2,R future / R K/V Euclidean action distance to recipient-native,6,21,0.2655651946034696,0.2603218449013574,0.2133324526043402,0.3423566002243509,10000,20260903
+recipient_future_recipient_kv__distance_to_donor,action_l2,R future / R K/V Euclidean action distance to donor-native,6,21,3.4193826880719924,3.3481273424057734,2.6680784323977105,4.477237602157725,10000,20260903
+donor_future_recipient_kv__donor_projection,donor_projection,D future / R K/V action projection on the recipient-to-donor native axis,6,21,0.11896991796293221,0.12093172064785274,0.07759929947792213,0.16246578461374453,10000,20260903
+donor_future_recipient_kv__distance_to_recipient,action_l2,D future / R K/V Euclidean action distance to recipient-native,6,21,0.6360275654329194,0.6268078755764734,0.440192490340107,0.9175442678336468,10000,20260903
+donor_future_recipient_kv__distance_to_donor,action_l2,D future / R K/V Euclidean action distance to donor-native,6,21,2.967664726906353,2.9049938803627375,2.3650364962716894,3.7418517001387137,10000,20260903
+donor_future_donor_kv__donor_projection,donor_projection,D future / D K/V action projection on the recipient-to-donor native axis,6,21,1.003768116269915,1.0032270197533688,0.987655301989535,1.025415301591235,10000,20260903
+donor_future_donor_kv__distance_to_recipient,action_l2,D future / D K/V Euclidean action distance to recipient-native,6,21,3.422838009066052,3.347601890563965,2.635060792002413,4.56761916362577,10000,20260903
+donor_future_donor_kv__distance_to_donor,action_l2,D future / D K/V Euclidean action distance to donor-native,6,21,0.3911328342639737,0.3740174706493105,0.2553298784782075,0.7021526106943686,10000,20260903
+recipient_future_donor_kv__donor_projection,donor_projection,R future / D K/V action projection on the recipient-to-donor native axis,6,21,0.8842418107614387,0.8815136469910734,0.8484881386447062,0.9186716039734505,10000,20260903
+recipient_future_donor_kv__distance_to_recipient,action_l2,R future / D K/V Euclidean action distance to recipient-native,6,21,3.0053732113705744,2.9355467444374446,2.3568662501457665,3.936669369373057,10000,20260903
+recipient_future_donor_kv__distance_to_donor,action_l2,R future / D K/V Euclidean action distance to donor-native,6,21,0.6167330489390427,0.6082121218953814,0.44834073182816303,0.8287196613537767,10000,20260903
+kv_effect_at_recipient_future,donor_projection_difference,recipient-future donor-K/V minus recipient-future recipient-K/V donor projection,6,21,0.8954638751819045,0.892827993568416,0.8593470856126614,0.928270303523405,10000,20260903
+kv_effect_at_donor_future,donor_projection_difference,donor-future donor-K/V minus donor-future recipient-K/V donor projection,6,21,0.8847981983069829,0.8822952991055159,0.8453836989789763,0.921492808971297,10000,20260903
+future_effect_at_recipient_kv,donor_projection_difference,donor-future recipient-K/V minus recipient-future recipient-K/V donor projection,6,21,0.13019198238339813,0.1322460672251955,0.08894468845895673,0.17404317924379073,10000,20260903
+future_effect_at_donor_kv,donor_projection_difference,donor-future donor-K/V minus recipient-future donor-K/V donor projection,6,21,0.11952630550847647,0.12171337276229535,0.08389293859819329,0.1566767136850968,10000,20260903
+future_by_kv_interaction,donor_projection_difference,K/V effect at donor future minus K/V effect at recipient future,6,21,-0.010665676874921648,-0.010532694462900135,-0.03166975230573151,0.0060551043540425275,10000,20260903
+donor_future_recipient_kv_follows_kv,proportion,1 when D-future/R-KV action is closer to recipient-native than donor-native,6,21,1.0,1.0,1.0,1.0,10000,20260903
+recipient_future_donor_kv_follows_kv,proportion,1 when R-future/D-KV action is closer to donor-native than recipient-native,6,21,1.0,1.0,1.0,1.0,10000,20260903
+both_crossed_arms_follow_kv,proportion,1 when both crossed arms are closer to their K/V-native endpoint,6,21,1.0,1.0,1.0,1.0,10000,20260903
+crossed_arm_kv_follow_fraction,proportion,fraction of the two crossed arms closer to their K/V-native endpoint,6,21,1.0,1.0,1.0,1.0,10000,20260903

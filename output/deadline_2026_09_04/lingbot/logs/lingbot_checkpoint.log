@@ -1,0 +1,8 @@
+Downloading hf-xet (4.3MiB)
+ Downloaded hf-xet
+Installed 15 packages in 7ms
+[90mHint: The `hf-cli` skill is not installed. Run `hf skills add -g --claude` to teach your AI agents how to use the `hf` CLI.[0m
+Fetching 19 files:   0%|          | 0/19 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 19 files:  11%|█         | 2/19 [00:00<00:00, 18.86it/s]Fetching 19 files:  32%|███▏      | 6/19 [00:00<00:00, 29.38it/s]Fetching 19 files:  47%|████▋     | 9/19 [00:04<00:05,  1.71it/s]Fetching 19 files:  63%|██████▎   | 12/19 [00:04<00:02,  2.69it/s]Fetching 19 files:  74%|███████▎  | 14/19 [00:20<00:01,  2.69it/s]Fetching 19 files:  79%|███████▉  | 15/19 [00:23<00:09,  2.49s/it]Fetching 19 files:  95%|█████████▍| 18/19 [00:23<00:01,  1.69s/it]Fetching 19 files: 100%|██████████| 19/19 [00:24<00:00,  1.26s/it]
+[32m✓ Downloaded[0m
+  path: /home/ubuntu/if_external/checkpoints/lingbot-va-posttrain-libero-long

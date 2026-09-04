@@ -1,0 +1,3 @@
+The config attributes {'clip_output': False} were passed to AutoencoderKLWan, but are not expected and will be ignored. Please verify your config.json configuration file.
+decoded 1/1 task00_state010/b0 1.14s
+{"artifact_index_sha256": "30a5c2c41f1d026a2d7fcb29d848279ce4aef90d3e273b08229489088a0b820f", "decoded_item_count": 1, "duration_seconds": 7.410907506942749, "output_root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_native_future_decode_smoke_v2", "status": "complete_mode_frozen_read_only_shard", "tree_aggregate_sha256": "75996cb51be019f177f4b55f511f86bb2aae1fe7fea084fb09f31d3a8b716256"}

@@ -1,0 +1,43 @@
+{
+  "contact_sheet_content": "two frozen input camera views for every state",
+  "policy": "include every admitted state exactly once in frozen task/state order",
+  "projection_display_range": [
+    -1.0,
+    1.0
+  ],
+  "selected_by_outcome": false,
+  "state_ids": [
+    "task00_state010",
+    "task00_state020",
+    "task00_state030",
+    "task01_state010",
+    "task01_state020",
+    "task01_state030",
+    "task02_state010",
+    "task02_state020",
+    "task02_state030",
+    "task03_state010",
+    "task03_state020",
+    "task03_state030",
+    "task04_state010",
+    "task04_state020",
+    "task04_state030",
+    "task05_state010",
+    "task05_state020",
+    "task05_state030",
+    "task06_state010",
+    "task06_state020",
+    "task06_state030",
+    "task07_state010",
+    "task07_state020",
+    "task07_state030",
+    "task08_state010",
+    "task08_state020",
+    "task08_state030",
+    "task09_state010",
+    "task09_state020",
+    "task09_state030"
+  ],
+  "video_content": "two frozen input views plus the 4x4 future-source projection matrix for every state",
+  "video_fps": 2.0
+}

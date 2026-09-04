@@ -1,0 +1,148 @@
+The config attributes {'clip_output': False} were passed to AutoencoderKLWan, but are not expected and will be ignored. Please verify your config.json configuration file.
+Loading checkpoint shards:   0%|          | 0/3 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 3/3 [00:00<00:00, 220.90it/s]
+The config attributes {'added_kv_proj_dim': None, 'image_dim': None, 'qk_norm': 'rms_norm_across_heads'} were passed to WanTransformer3DModel, but are not expected and will be ignored. Please verify your config.json configuration file.
+Loading checkpoint shards:   0%|          | 0/3 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 3/3 [00:00<00:00, 83.54it/s]
+Some weights of the model checkpoint at /home/ubuntu/if_external/checkpoints/lingbot-va-posttrain-libero-long/transformer were not used when initializing WanTransformer3DModel: 
+ ['patch_embedding.weight, patch_embedding.bias']
+/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/distributed/distributed_c10d.py:4876: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  warnings.warn(  # warn only once
+[rank0]:[W904 10:19:19.905827780 ProcessGroupNCCL.cpp:5068] Guessing device ID based on global rank. This can cause a hang if rank to GPU mapping is heterogeneous. You can specify device_id in init_process_group()
+  0%|          | 0/21 [00:00<?, ?it/s]  5%|▍         | 1/21 [00:00<00:17,  1.17it/s] 14%|█▍        | 3/21 [00:00<00:04,  3.64it/s] 24%|██▍       | 5/21 [00:01<00:02,  5.86it/s] 33%|███▎      | 7/21 [00:01<00:01,  7.77it/s] 43%|████▎     | 9/21 [00:01<00:01,  9.32it/s] 52%|█████▏    | 11/21 [00:01<00:00, 10.54it/s] 62%|██████▏   | 13/21 [00:01<00:00, 11.46it/s] 71%|███████▏  | 15/21 [00:01<00:00, 12.16it/s] 81%|████████  | 17/21 [00:02<00:00, 12.67it/s] 90%|█████████ | 19/21 [00:02<00:00, 13.03it/s]100%|██████████| 21/21 [00:02<00:00, 13.31it/s]100%|██████████| 21/21 [00:02<00:00,  9.17it/s]
+  0%|          | 0/51 [00:00<?, ?it/s]  2%|▏         | 1/51 [00:00<00:39,  1.26it/s]  6%|▌         | 3/51 [00:00<00:12,  3.82it/s] 10%|▉         | 5/51 [00:01<00:07,  6.05it/s] 14%|█▎        | 7/51 [00:01<00:05,  7.91it/s] 18%|█▊        | 9/51 [00:01<00:04,  9.37it/s] 22%|██▏       | 11/51 [00:01<00:03, 10.51it/s] 25%|██▌       | 13/51 [00:01<00:03, 11.36it/s] 29%|██▉       | 15/51 [00:01<00:03, 11.98it/s] 33%|███▎      | 17/51 [00:01<00:02, 12.44it/s] 37%|███▋      | 19/51 [00:02<00:02, 12.77it/s] 41%|████      | 21/51 [00:02<00:02, 12.99it/s] 45%|████▌     | 23/51 [00:02<00:02, 13.16it/s] 49%|████▉     | 25/51 [00:02<00:01, 13.29it/s] 53%|█████▎    | 27/51 [00:02<00:01, 13.37it/s] 57%|█████▋    | 29/51 [00:02<00:01, 13.37it/s] 61%|██████    | 31/51 [00:03<00:01, 13.33it/s] 65%|██████▍   | 33/51 [00:03<00:01, 13.36it/s] 69%|██████▊   | 35/51 [00:03<00:01, 13.39it/s] 73%|███████▎  | 37/51 [00:03<00:01, 13.37it/s] 76%|███████▋  | 39/51 [00:03<00:00, 13.46it/s] 80%|████████  | 41/51 [00:03<00:00, 13.53it/s] 84%|████████▍ | 43/51 [00:03<00:00, 13.50it/s] 88%|████████▊ | 45/51 [00:04<00:00, 13.46it/s] 92%|█████████▏| 47/51 [00:04<00:00, 13.50it/s] 96%|█████████▌| 49/51 [00:04<00:00, 13.56it/s]100%|██████████| 51/51 [00:04<00:00, 13.61it/s]100%|██████████| 51/51 [00:04<00:00, 11.35it/s]
+{
+  "audit_script": {
+    "path": "/home/ubuntu/if_external/tools/audit_lingbot_upstream_native_parity.py",
+    "sha256": "893c2d9152575b583e1db0d8fafab79727c5038613099aa983fae1ad74f96afc"
+  },
+  "branch_id": "b0",
+  "branch_index": 0,
+  "checkpoint_revision": "0e89d1e753019988aba484e8da2dc0810e264d9f",
+  "comparison": {
+    "action_bitwise_equal": true,
+    "action_max_abs_error": 0.0,
+    "controlled_action_sha256": "ad486ce542ac23ee482a4bd1f0cf8fb315c2e73ea6455d1881eab92a828572f6",
+    "controlled_future_sha256": "302509f688168a9209414b61bfb236dd0a8cdc5b9ee355707cd5d0174b6c5ad5",
+    "future_bitwise_equal": true,
+    "future_max_abs_error": 0.0,
+    "upstream_action_sha256": "ad486ce542ac23ee482a4bd1f0cf8fb315c2e73ea6455d1881eab92a828572f6",
+    "upstream_future_sha256": "302509f688168a9209414b61bfb236dd0a8cdc5b9ee355707cd5d0174b6c5ad5"
+  },
+  "controlled_rng_injection": {
+    "action_initial_noise_sha256": "1f0ca7e3c88474df9e762e4205d9cb801c6caa571468ee37ed9b7d37d672ff17",
+    "action_seed": 1009,
+    "reason": "official _infer samples video and action tensors from one implicit global RNG; the controlled run preregisters independent video/action seeds",
+    "rng_call_shapes": [
+      [
+        1,
+        48,
+        4,
+        8,
+        16
+      ],
+      [
+        1,
+        30,
+        4,
+        4,
+        1
+      ]
+    ],
+    "scope": "only the two torch.randn return tensors at _infer entry",
+    "torch_randn_call_count": 2,
+    "upstream_loop_body_modified": false,
+    "used": true,
+    "video_initial_noise_sha256": "3f96a7956b7b337ffa667bf084b71dca8315dadb9c6f832390911244f5c99f61",
+    "video_seed": 101
+  },
+  "core_environment_provenance": {
+    "checkpoint_aggregate_sha256": "bb895755e071bf5ab74494c07199a11c8e344b367971b4c6405321807e32b2e1",
+    "checkpoint_content_manifest_path": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_eval_v1_artifacts/checkpoint_content_manifest.json",
+    "checkpoint_content_manifest_sha256": "b1c8722becbb4a77a840cb5716cbd57e68c5bd77cb4a0af3d19a6e9ee1de00fd",
+    "current_checkpoint_rehash_matches_inventory": true,
+    "current_checkpoint_rehash_sha256": "bb895755e071bf5ab74494c07199a11c8e344b367971b4c6405321807e32b2e1",
+    "path": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_eval_v1_artifacts/environment_provenance.json",
+    "sha256": "8a09d8957c683da1499d0a4572681dfa25d4c36548221c2d777f7c0d3ccf7843"
+  },
+  "duration_seconds": 6.795770168304443,
+  "environment_addendum": {
+    "all_attention_modules_use_custom_torch_sdpa": true,
+    "attention_module_count": 60,
+    "compatibility_shim_path": "/home/ubuntu/if_external/compat/flash_attn/__init__.py",
+    "compatibility_shim_sha256": "7f1448bdeae5f4991112d78131688d417836c91fee79624929cda5d2f135bec8",
+    "path": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_upstream_native_parity_environment_addendum_v1.json",
+    "pythonpath": "/home/ubuntu/if_external/compat",
+    "sha256": "339b1c50892445ea2a8869bb5e96c3ac51d7e11f6187682bd2266cfc118b8bda",
+    "shim_call_count": 0
+  },
+  "frozen_input": {
+    "init_latent_sha256": "307071d7ef6726ee26c50b85d5163829c24dca1d3d954f04e8fb05895f1016e3",
+    "observation_path": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_states/states/dev_task00_state000/observation.npz",
+    "observation_sha256": "12e24398706918efb5154260589940c8053f82ca8179aa30325e4210058217ec",
+    "official_encoder_bitwise_equal": true,
+    "official_encoder_max_abs_error": 0.0
+  },
+  "included_in_evaluation": false,
+  "invocation": {
+    "argv": [
+      "/home/ubuntu/if_external/tools/audit_lingbot_upstream_native_parity.py",
+      "--lingbot-root",
+      "/home/ubuntu/if_external/lingbot-va",
+      "--checkpoint",
+      "/home/ubuntu/if_external/checkpoints/lingbot-va-posttrain-libero-long",
+      "--manifest",
+      "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_states/manifest.json",
+      "--controlled-result-root",
+      "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_smoke_v2",
+      "--parity-gate",
+      "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_upstream_native_parity_gate_v1.json",
+      "--environment-addendum",
+      "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_upstream_native_parity_environment_addendum_v1.json",
+      "--core-provenance-receipt",
+      "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_eval_v1_artifacts/environment_provenance.json",
+      "--output-root",
+      "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_upstream_native_parity_v4"
+    ],
+    "cwd": "/home/ubuntu",
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "0",
+      "LOCAL_RANK": "0",
+      "MASTER_ADDR": "if-overnight-robolab-clients.ll.local",
+      "MASTER_PORT": "36653",
+      "RANK": "0",
+      "WORLD_SIZE": "1"
+    }
+  },
+  "official_entrypoint": "wan_va.wan_va_server.VA_Server._infer",
+  "official_entrypoint_source": "/home/ubuntu/if_external/lingbot-va/wan_va/wan_va_server.py",
+  "official_entrypoint_source_sha256": "9c2a427611db487fea5cf40f184b713bf2088e533990ee00fdcd020d2668b4bf",
+  "parity_gate": {
+    "path": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_upstream_native_parity_gate_v1.json",
+    "sha256": "6437f774088084b67e6aea001376304dfe01ee622358358dd40642d49d0a67d5"
+  },
+  "parity_gate_passed": true,
+  "paths": {
+    "checkpoint": "/home/ubuntu/if_external/checkpoints/lingbot-va-posttrain-libero-long",
+    "controlled_actions_sha256": "a8ee0c81d9318655864181e3b7e4da9255a7181c8059ff3724cf8d689f6bbbf2",
+    "controlled_frozen_inputs_sha256": "917dc07c6ebce682293d4d45c7cb7494f2b824d3f2df38e90ebe4598dc74d56e",
+    "controlled_future_file_sha256": "c668497319c2c85ccd9e90d070e2fc3aff0f906e991ef7f989ac61ad8411ba73",
+    "controlled_result_json_sha256": "034b6642d6bb2e54d1e6ce4bb8eff2d9328438661779c2a139ef7fc016ba04fa",
+    "controlled_result_root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_smoke_v2",
+    "controlled_runner_sha256": "902d749772eadef213988c1b30ddb1ef2182da7e2f3852dc6ba596d05bf09fc2",
+    "manifest": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_states/manifest.json",
+    "manifest_sha256": "9c8d7dd547955e4622d98c7eb42fffed157f6db983f41f02929b28a434be47b4",
+    "output_root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_upstream_native_parity_v4"
+  },
+  "runtime": {
+    "gpu_name": "NVIDIA H100 80GB HBM3",
+    "gpu_total_memory_bytes": 85017624576,
+    "python": "3.12.3 (main, Jan 22 2026, 20:57:42) [GCC 13.3.0]",
+    "torch": "2.9.0+cu126",
+    "torch_cuda_runtime": "12.6"
+  },
+  "schema_version": 1,
+  "scientific_role": "excluded development-state implementation parity audit",
+  "state_id": "dev_task00_state000",
+  "status": "complete",
+  "upstream_commit": "7c6ffa9bfc4b83582cafc860fab4c82cc7deeeeb"
+}
+[rank0]:[W904 10:19:27.316020830 ProcessGroupNCCL.cpp:1524] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())

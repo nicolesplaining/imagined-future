@@ -1,0 +1,57 @@
+{
+  "branch_seeds": {
+    "0": 900000,
+    "1": 900001,
+    "2": 900002,
+    "3": 900003
+  },
+  "branches_per_state": 4,
+  "created_at_utc": "2026-09-04T18:01:34.166271+00:00",
+  "exact_call": "gaussian_future(reference=future_bR, present=init_latent, seed=900000+R)",
+  "host": "if-overnight-robolab-clients",
+  "immutability": {
+    "applied_recursively_after_index_write": true,
+    "directory_mode": "0555",
+    "file_mode": "0444",
+    "verified_by_builder_after_application": true
+  },
+  "platform": "Linux-6.8.0-1046-nvidia-x86_64-with-glibc2.39",
+  "python_version": "3.12.3 (main, Jan 22 2026, 20:57:42) [GCC 13.3.0]",
+  "schema_version": "lingbot-gaussian-latent-provenance-v1",
+  "scope": "offline deterministic reconstruction and archival of Gaussian future latents only; no model loading, action generation, or core artifact modification",
+  "seed_rule": "seed = 900000 + branch_index",
+  "source_bindings": {
+    "core_action_file_count": 30,
+    "core_actions_canonical_records_sha256": "4ea22080f3d2beb62100869d0a84f2507c09d7ac7d98493a456e90e74024f354",
+    "manifest_sha256": "9c8d7dd547955e4622d98c7eb42fffed157f6db983f41f02929b28a434be47b4",
+    "runner_package_artifact_index_sha256": "698a818bce0f8dbeda22aee7df76752dce70f1d70089c6dd79cedf3e3faf273e",
+    "runner_sha256": "902d749772eadef213988c1b30ddb1ef2182da7e2f3852dc6ba596d05bf09fc2",
+    "source_artifact_index_sha256": "0e6ca53c3403434518a733fdc6d03532282be4941464a8d667b6ab1b3e9f62fb"
+  },
+  "state_count": 30,
+  "status": "complete",
+  "tensor_count": 120,
+  "torch_version": "2.9.0+cu126",
+  "unique_output_tensor_hash_count": 120,
+  "validation": {
+    "all_checks_pass": true,
+    "deterministic_repeat_bitwise_equal_count": 120,
+    "discrepancy_count": 0,
+    "observed_maxima": {
+      "mean_abs_error": 2.4907290935516357e-05,
+      "norm_abs_error": 0.0067901611328125,
+      "norm_rel_error": 5.680306358707262e-05,
+      "present_max_abs_error": 0.0,
+      "std_abs_error": 5.054473876953125e-05
+    },
+    "present_bitwise_equal_count": 120,
+    "saved_tensor_bitwise_equal_count": 120,
+    "statistical_definition": "global mean, unbiased sample standard deviation, and L2 norm over reference[:, :, 1:].float() and saved control[:, :, 1:].float(); small nonzero errors arise only from the exact runner's final cast back to native bfloat16",
+    "tolerances": {
+      "mean_abs": 0.0001,
+      "norm_abs": 0.01,
+      "norm_rel": 0.0001,
+      "std_abs": 0.0001
+    }
+  }
+}

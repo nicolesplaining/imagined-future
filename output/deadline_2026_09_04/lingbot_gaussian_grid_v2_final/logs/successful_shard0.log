@@ -1,0 +1,26 @@
+The config attributes {'clip_output': False} were passed to AutoencoderKLWan, but are not expected and will be ignored. Please verify your config.json configuration file.
+Loading checkpoint shards:   0%|          | 0/3 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 3/3 [00:00<00:00, 228.47it/s]
+The config attributes {'added_kv_proj_dim': None, 'image_dim': None, 'qk_norm': 'rms_norm_across_heads'} were passed to WanTransformer3DModel, but are not expected and will be ignored. Please verify your config.json configuration file.
+Loading checkpoint shards:   0%|          | 0/3 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 3/3 [00:00<00:00, 84.77it/s]
+Some weights of the model checkpoint at /home/ubuntu/if_external/checkpoints/lingbot-va-posttrain-libero-long/transformer were not used when initializing WanTransformer3DModel: 
+ ['patch_embedding.weight, patch_embedding.bias']
+/home/ubuntu/if_external/envs/lingbot/lib/python3.12/site-packages/torch/distributed/distributed_c10d.py:4876: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  warnings.warn(  # warn only once
+[rank0]:[W904 17:59:08.062509587 ProcessGroupNCCL.cpp:5068] Guessing device ID based on global rank. This can cause a hang if rank to GPU mapping is heterogeneous. You can specify device_id in init_process_group()
+complete task00_state010 72.7s
+complete task00_state030 63.2s
+complete task01_state020 63.5s
+complete task02_state010 63.7s
+complete task02_state030 63.7s
+complete task03_state020 63.7s
+complete task04_state010 63.7s
+complete task04_state030 63.7s
+complete task05_state020 63.8s
+complete task06_state010 63.6s
+complete task06_state030 63.6s
+complete task07_state020 63.9s
+complete task08_state010 63.9s
+complete task08_state030 63.9s
+complete task09_state020 64.6s
+{"artifact_index_sha256": "6a7265d6a474d6f584914c35d1fa27d4b51206b65d5b42f6979eeb55bc6887c1", "duration_seconds": 991.8557608127594, "output_root": "/lambda/nfs/imagined-future/results/deadline_2026_09_04/lingbot_gaussian_grid_v2_shard0", "state_count": 15, "status": "complete_mode_frozen_read_only_shard", "tree_aggregate_sha256": "ad351a9e1fbd126ac6f4b2118193549ad13e6eac6f6025cefdf2a3afdcffe2d1"}
+[rank0]:[W904 18:15:15.288570298 ProcessGroupNCCL.cpp:1524] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())

@@ -1,0 +1,883 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reachable-donor future transplantation</title>
+  <style>
+    :root {
+      --ink: #17202a;
+      --muted: #5d6874;
+      --rule: #cfd5da;
+      --soft: #f4f5f4;
+      --paper: #fbfaf7;
+      --recipient: #2f74b5;
+      --recipient-pale: #eaf3fb;
+      --donor: #d8792f;
+      --donor-pale: #fff1e6;
+      --patch: #8a4fa3;
+      --patch-pale: #f5ebf8;
+      --physical: #2e8b70;
+      --physical-pale: #e9f5f0;
+      --token-current: #aeb8bf;
+      --token-future: #9b6bb0;
+      --token-text: #d3a93c;
+      --token-action: #c85e63;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      min-height: 100%;
+      background: #e8e8e5;
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body { display: grid; place-items: center; }
+
+    .canvas {
+      position: relative;
+      width: 1800px;
+      height: 1080px;
+      overflow: hidden;
+      padding: 24px 28px 20px;
+      background: var(--paper);
+    }
+
+    .header {
+      height: 72px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--ink);
+      padding: 2px 4px 10px;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 42px;
+      font-weight: 700;
+      letter-spacing: -0.7px;
+    }
+
+    .header-question {
+      margin-top: 8px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 25px;
+      font-style: italic;
+      color: #3f4952;
+    }
+
+    .semantics {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 23px;
+      font-size: 17px;
+      color: #3d4852;
+    }
+
+    .legend-item { display: inline-flex; align-items: center; gap: 9px; white-space: nowrap; }
+    .legend-line { width: 34px; height: 0; border-top: 4px solid; }
+    .legend-line.recipient { border-color: var(--recipient); }
+    .legend-line.donor { border-color: var(--donor); }
+    .legend-line.patch { border-color: var(--patch); border-top-style: dashed; }
+    .legend-line.physical { border-color: var(--physical); }
+    .photo-key { width: 34px; height: 23px; border: 2px solid var(--ink); background: linear-gradient(135deg,#d6ddd8,#f3c88d); }
+    .token-key { display: inline-grid; grid-template-columns: repeat(3, 11px); gap: 3px; }
+    .token-key i { height: 11px; background: #fff; border: 1.5px solid #4f5962; }
+    .model-key { width: 34px; height: 23px; border-radius: 4px; background: var(--ink); }
+
+    .pipeline {
+      position: relative;
+      height: 485px;
+      display: grid;
+      grid-template-columns: 555px 72px 570px 72px 445px;
+      align-items: stretch;
+    }
+
+    .stage {
+      position: relative;
+      border: 2px solid #bfc6cc;
+      border-radius: 17px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .stage-head {
+      height: 51px;
+      padding: 10px 17px 8px;
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      border-bottom: 1px solid #d6dadd;
+      background: #f5f5f2;
+    }
+
+    .stage-number {
+      display: inline-grid;
+      place-items: center;
+      width: 31px;
+      height: 31px;
+      flex: 0 0 31px;
+      border-radius: 50%;
+      background: var(--ink);
+      color: #fff;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .stage-title {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 26px;
+      font-weight: 700;
+    }
+
+    .state-banner {
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-size: 20px;
+      font-weight: 700;
+      background: #f8f8f6;
+      border-bottom: 1px solid #dadde0;
+    }
+
+    .lock {
+      width: 17px;
+      height: 15px;
+      border: 3px solid var(--ink);
+      border-radius: 3px;
+      position: relative;
+    }
+    .lock::before {
+      content: "";
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border: 3px solid var(--ink);
+      border-bottom: 0;
+      border-radius: 8px 8px 0 0;
+      left: 0;
+      top: -10px;
+    }
+
+    .branch {
+      margin: 11px 13px 0;
+      padding: 9px 10px 8px;
+      border-left: 6px solid;
+      border-radius: 8px;
+    }
+    .branch.recipient { border-color: var(--recipient); background: var(--recipient-pale); }
+    .branch.donor { border-color: var(--donor); background: var(--donor-pale); }
+
+    .branch-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 7px;
+    }
+    .branch-name { font-size: 22px; font-weight: 800; }
+    .branch-caption { font-family: Georgia, "Times New Roman", serif; font-size: 19px; font-style: italic; }
+
+    .filmstrip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .frame {
+      position: relative;
+      min-width: 0;
+      height: 96px;
+      border: 2px solid rgba(23,32,42,.72);
+      overflow: hidden;
+      background: #ddd;
+    }
+    .frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .frame time {
+      position: absolute;
+      top: 4px;
+      left: 5px;
+      padding: 2px 5px;
+      background: rgba(255,255,255,.88);
+      color: #20262c;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .paired-output {
+      display: grid;
+      grid-template-columns: 122px 1fr;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+      font-size: 17px;
+    }
+
+    .math { font-family: Georgia, "Times New Roman", serif; font-style: italic; }
+
+    .vector {
+      height: 22px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .vector i {
+      display: block;
+      width: 28px;
+      border-radius: 2px;
+      background: currentColor;
+    }
+    .recipient .vector { color: var(--recipient); }
+    .donor .vector { color: var(--donor); }
+    .vector i:nth-child(1) { height: 7px; }
+    .vector i:nth-child(2) { height: 15px; }
+    .vector i:nth-child(3) { height: 10px; }
+    .vector i:nth-child(4) { height: 20px; }
+    .vector i:nth-child(5) { height: 12px; }
+    .vector i:nth-child(6) { height: 17px; }
+    .vector i:nth-child(7) { height: 8px; }
+
+    .native-note {
+      margin: 11px 17px 0;
+      font-size: 18px;
+      line-height: 1.24;
+      color: #47535e;
+      text-align: center;
+    }
+
+    .flow-arrow {
+      position: relative;
+      display: grid;
+      place-items: center;
+    }
+    .flow-arrow::before {
+      content: "";
+      width: 47px;
+      height: 5px;
+      background: var(--ink);
+    }
+    .flow-arrow::after {
+      content: "";
+      position: absolute;
+      right: 7px;
+      width: 17px;
+      height: 17px;
+      border-right: 5px solid var(--ink);
+      border-top: 5px solid var(--ink);
+      transform: rotate(45deg);
+    }
+    .flow-label {
+      position: absolute;
+      top: 182px;
+      width: 96px;
+      text-align: center;
+      font-size: 17px;
+      font-weight: 700;
+      color: #505c66;
+    }
+
+    .recompute-body { padding: 10px 13px; }
+
+    .fixed-row {
+      height: 84px;
+      display: grid;
+      grid-template-columns: 92px 1fr 92px;
+      gap: 8px;
+      align-items: stretch;
+    }
+    .observation {
+      position: relative;
+      border: 2px solid var(--recipient);
+      overflow: hidden;
+    }
+    .observation img { width: 100%; height: 100%; object-fit: cover; }
+    .observation b {
+      position: absolute;
+      left: 3px;
+      bottom: 3px;
+      padding: 2px 4px;
+      background: rgba(255,255,255,.88);
+      font-family: Georgia, "Times New Roman", serif;
+      font-style: italic;
+      font-size: 16px;
+    }
+    .instruction {
+      display: grid;
+      place-items: center;
+      padding: 7px 12px;
+      border: 2px solid #7c868e;
+      background: #f4f5f5;
+      text-align: center;
+      font-size: 18px;
+      line-height: 1.22;
+    }
+    .noise {
+      display: grid;
+      place-items: center;
+      border: 2px solid #7c868e;
+      background-color: #f7f7f5;
+      background-image: radial-gradient(#8d969d 1.35px, transparent 1.35px);
+      background-size: 8px 8px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 23px;
+      font-style: italic;
+    }
+    .fixed-label {
+      grid-column: 1 / -1;
+      position: absolute;
+      right: 28px;
+      margin-top: -7px;
+      padding: 2px 8px;
+      background: var(--recipient);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: 10px;
+    }
+
+    .patch-lane {
+      position: relative;
+      margin-top: 11px;
+      padding: 8px 9px 9px;
+      border: 3px dashed var(--patch);
+      background: var(--patch-pale);
+    }
+    .patch-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 6px;
+      font-size: 20px;
+      font-weight: 800;
+      color: #563164;
+    }
+    .patch-title small { font-size: 15px; font-weight: 600; color: #775782; }
+    .patch-lane .frame { height: 74px; border-color: var(--donor); }
+
+    .model {
+      margin-top: 10px;
+      padding: 11px 14px;
+      border-radius: 9px;
+      background: var(--ink);
+      color: #fff;
+      text-align: center;
+    }
+    .model-name { font-family: Georgia, "Times New Roman", serif; font-size: 26px; font-weight: 700; }
+    .model-detail { margin-top: 3px; color: #d6dce0; font-size: 16px; }
+
+    .output-row {
+      display: grid;
+      grid-template-columns: 1fr 135px;
+      gap: 10px;
+      margin-top: 10px;
+      align-items: center;
+    }
+    .action-output {
+      min-height: 56px;
+      display: grid;
+      grid-template-columns: 155px 1fr;
+      align-items: center;
+      padding: 7px 12px;
+      border: 2px solid var(--patch);
+      background: #fff;
+      color: var(--patch);
+      font-size: 19px;
+      font-weight: 800;
+    }
+    .action-output .vector { color: var(--patch); }
+    .withheld {
+      padding: 7px 6px;
+      border: 2px dashed var(--donor);
+      background: #fffaf6;
+      text-align: center;
+      color: #875027;
+      font-size: 15px;
+      line-height: 1.18;
+    }
+
+    .measure-body { padding: 10px 14px; }
+    .execution {
+      padding-bottom: 8px;
+      border-bottom: 1px solid #d5d9dc;
+    }
+    .execution-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 6px;
+      font-size: 19px;
+      font-weight: 800;
+    }
+    .execution-head span:last-child { color: var(--physical); font-size: 16px; }
+    .execution .filmstrip { gap: 5px; }
+    .execution .frame { height: 94px; border-color: var(--physical); }
+
+    .ruler-block { margin-top: 10px; }
+    .ruler-title { font-size: 17px; font-weight: 800; }
+    .ruler {
+      position: relative;
+      height: 52px;
+      margin: 1px 23px 0;
+    }
+    .ruler-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 21px;
+      height: 3px;
+      background: var(--ink);
+    }
+    .ruler-tick {
+      position: absolute;
+      top: 13px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      transform: translateX(-50%);
+    }
+    .ruler-tick.a { left: 0; background: var(--recipient); }
+    .ruler-tick.b { left: 100%; background: var(--donor); }
+    .ruler-tick.hat {
+      left: 98%;
+      top: 10px;
+      width: 22px;
+      height: 22px;
+      border-radius: 2px;
+      background: var(--patch);
+      transform: translateX(-50%) rotate(45deg);
+      box-shadow: 0 0 0 3px #fff;
+    }
+    .ruler-label {
+      position: absolute;
+      top: 34px;
+      transform: translateX(-50%);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 14px;
+      font-style: italic;
+      white-space: nowrap;
+    }
+    .ruler-label.a { left: 0; }
+    .ruler-label.b { left: 100%; }
+    .score {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 11px;
+      background: #f5f5f3;
+      font-size: 18px;
+    }
+    .score strong { color: var(--patch); font-size: 23px; }
+    .scale-note { margin-top: 8px; text-align: center; font-size: 15px; color: #57636e; line-height: 1.2; }
+
+    .evidence-title {
+      height: 42px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 0 4px 6px;
+      border-bottom: 2px solid var(--ink);
+    }
+    .evidence-title h2 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 27px;
+    }
+    .evidence-title span { font-size: 17px; color: var(--muted); }
+
+    .evidence-grid {
+      height: 356px;
+      display: grid;
+      grid-template-columns: 1.03fr 1.13fr 1.08fr;
+      gap: 15px;
+      padding-top: 10px;
+    }
+
+    .evidence {
+      position: relative;
+      border: 1.8px solid #bfc6cc;
+      background: #fff;
+      padding: 11px 14px 9px;
+      overflow: hidden;
+    }
+    .evidence-top {
+      display: flex;
+      align-items: baseline;
+      gap: 9px;
+      margin-bottom: 7px;
+    }
+    .question-number {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 25px;
+      font-weight: 700;
+    }
+    .evidence h3 { margin: 0; font-size: 21px; }
+    .evidence .claim { margin: 0 0 6px 37px; font-size: 16px; color: #54606a; }
+
+    .dotplot {
+      width: 100%;
+      height: 205px;
+      display: block;
+    }
+
+    .factor-layout {
+      display: grid;
+      grid-template-columns: 58px 1fr;
+      grid-template-rows: 1fr 32px;
+      height: 235px;
+      margin-top: 2px;
+    }
+    .factor-y {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 3px 0 2px;
+      font-size: 11px;
+      color: #53606a;
+    }
+    .factor-y b { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 15px; color: var(--ink); }
+    .factor-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 4px;
+    }
+    .factor-cell {
+      position: relative;
+      overflow: hidden;
+      border: 1.5px solid #565f67;
+    }
+    .factor-cell img { width: 100%; height: 100%; object-fit: cover; }
+    .factor-cell b {
+      position: absolute;
+      left: 4px;
+      top: 4px;
+      padding: 2px 5px;
+      background: rgba(255,255,255,.9);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 14px;
+      font-style: italic;
+    }
+    .factor-x { grid-column: 2; text-align: center; font-size: 15px; font-weight: 700; padding-top: 7px; }
+    .axis-ends { display: flex; justify-content: space-between; font-weight: 400; color: #53606a; }
+    .factor-result {
+      position: absolute;
+      right: 18px;
+      bottom: 13px;
+      padding: 5px 9px;
+      background: rgba(255,255,255,.92);
+      border-left: 4px solid var(--ink);
+      font-size: 14px;
+      line-height: 1.2;
+    }
+
+    .token-diagram { margin: 10px 2px 0; }
+    .token-row {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      height: 38px;
+    }
+    .token-row-label { width: 95px; flex: 0 0 95px; font-size: 15px; font-weight: 700; }
+    .token {
+      width: 29px;
+      height: 29px;
+      display: grid;
+      place-items: center;
+      border: 2px solid rgba(23,32,42,.45);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .token.current { background: var(--token-current); }
+    .token.future { background: var(--token-future); }
+    .token.text { background: var(--token-text); }
+    .token.action { background: var(--token-action); }
+    .token.patch-token { background: #fff; border: 3px solid var(--recipient); color: var(--recipient); }
+    .token-legend {
+      display: flex;
+      gap: 13px;
+      margin: 5px 0 7px 97px;
+      font-size: 12px;
+      color: #505b65;
+    }
+    .token-legend span::before {
+      content: "";
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-right: 4px;
+      background: var(--c);
+    }
+    .kv-arrow {
+      margin: 2px 0 3px 97px;
+      color: var(--patch);
+      font-size: 16px;
+      font-weight: 800;
+    }
+    .kv-note { margin: 0 0 8px 97px; font-size: 13px; color: #596570; }
+    .bar-legend {
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+      margin: 0 0 4px 124px;
+      font-size: 12px;
+      color: #56616b;
+    }
+    .bar-legend span::before {
+      content: "";
+      display: inline-block;
+      width: 11px;
+      height: 11px;
+      margin-right: 4px;
+      vertical-align: -1px;
+      background: var(--c);
+    }
+    .loss-bars {
+      display: grid;
+      grid-template-columns: 124px 1fr 61px;
+      align-items: center;
+      row-gap: 5px;
+      font-size: 14px;
+    }
+    .bar-track { position: relative; height: 14px; background: #e9ecee; }
+    .bar-before { position: absolute; inset: 0 auto 0 0; width: var(--before); background: var(--donor); opacity: .35; }
+    .bar-after { position: absolute; inset: 0 auto 0 0; width: var(--after); background: var(--patch); }
+    .loss-bars strong { text-align: right; color: var(--patch); }
+
+    .scope {
+      height: 37px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 38px;
+      font-size: 15px;
+      color: #53606a;
+      white-space: nowrap;
+    }
+    .scope b { color: var(--ink); }
+    .scope .divider { width: 1px; height: 18px; background: #adb5bb; }
+    .scope .boundary { font-style: italic; color: #6c586f; }
+  </style>
+</head>
+<body>
+  <main class="canvas" aria-label="Overview of reachable-donor future transplantation experiments">
+    <header class="header">
+      <h1>Reachable-donor future transplantation</h1>
+      <div class="header-question">Do generated futures causally and directionally control robot behavior?</div>
+    </header>
+
+    <section class="semantics" aria-label="Visual encoding legend">
+      <span class="legend-item"><i class="legend-line recipient"></i>recipient continuation A</span>
+      <span class="legend-item"><i class="legend-line donor"></i>donor continuation B</span>
+      <span class="legend-item"><i class="legend-line patch"></i>targeted future channel / replacement</span>
+      <span class="legend-item"><i class="legend-line physical"></i>simulator execution</span>
+      <span class="legend-item"><i class="photo-key"></i>video frames</span>
+      <span class="legend-item"><i class="token-key"><i></i><i></i><i></i></i>token sequence</span>
+      <span class="legend-item"><i class="model-key"></i>learned model</span>
+    </section>
+
+    <section class="pipeline">
+      <article class="stage">
+        <div class="stage-head">
+          <span class="stage-number">1</span>
+          <span class="stage-title">Pair native continuations</span>
+        </div>
+        <div class="state-banner"><i class="lock"></i>same restored simulator state <span class="math">S</span></div>
+
+        <div class="branch recipient">
+          <div class="branch-heading">
+            <span class="branch-name">A · recipient</span>
+            <span class="branch-caption">future F<sub>A</sub></span>
+          </div>
+          <div class="filmstrip">
+            <div class="frame"><img src="assets/recipient_t00.png" alt="recipient at time zero"><time>t=0</time></div>
+            <div class="frame"><img src="assets/recipient_t16.png" alt="recipient continuation midpoint"><time>t=16</time></div>
+            <div class="frame"><img src="assets/recipient_t32.png" alt="recipient continuation end"><time>t=32</time></div>
+          </div>
+          <div class="paired-output"><span>native action <span class="math">a<sub>A</sub></span></span><span class="vector"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+        </div>
+
+        <div class="branch donor">
+          <div class="branch-heading">
+            <span class="branch-name">B · donor</span>
+            <span class="branch-caption">future F<sub>B</sub></span>
+          </div>
+          <div class="filmstrip">
+            <div class="frame"><img src="assets/donor_t00.png" alt="donor at time zero"><time>t=0</time></div>
+            <div class="frame"><img src="assets/donor_t16.png" alt="donor continuation midpoint"><time>t=16</time></div>
+            <div class="frame"><img src="assets/donor_t32.png" alt="donor continuation end"><time>t=32</time></div>
+          </div>
+          <div class="paired-output"><span>native action <span class="math">a<sub>B</sub></span></span><span class="vector"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+        </div>
+
+        <div class="native-note">Both branches are policy-generated and physically reachable. Their native actions define a direction; they are not candidate actions shown to the model.</div>
+      </article>
+
+      <div class="flow-arrow"><span class="flow-label">hold A fixed</span></div>
+
+      <article class="stage">
+        <div class="stage-head">
+          <span class="stage-number">2</span>
+          <span class="stage-title">Transplant only the future</span>
+        </div>
+        <div class="recompute-body">
+          <div class="fixed-row">
+            <div class="observation"><img src="assets/recipient_t00.png" alt="recipient current observation"><b>O<sub>t</sub></b></div>
+            <div class="instruction">“Put the smartphone<br>in the grey bin”</div>
+            <div class="noise">ε<sub>A</sub></div>
+            <span class="fixed-label">recipient inputs fixed</span>
+          </div>
+
+          <div class="patch-lane">
+            <div class="patch-title">
+              <span>insert donor future <span class="math">F<sub>B</sub></span></span>
+              <small>every denoising step</small>
+            </div>
+            <div class="filmstrip">
+              <div class="frame"><img src="assets/donor_t08.png" alt="transplanted donor future early"></div>
+              <div class="frame"><img src="assets/donor_t16.png" alt="transplanted donor future midpoint"></div>
+              <div class="frame"><img src="assets/donor_t32.png" alt="transplanted donor future end"></div>
+            </div>
+          </div>
+
+          <div class="model">
+            <div class="model-name">Cosmos joint video–action denoiser</div>
+            <div class="model-detail">recompute recipient A with one targeted future-channel replacement</div>
+          </div>
+
+          <div class="output-row">
+            <div class="action-output"><span>recomputed <span class="math">â<sub>A←B</sub></span></span><span class="vector"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+            <div class="withheld"><b>a<sub>B</sub> withheld</b><br>used only after inference for scoring</div>
+          </div>
+        </div>
+      </article>
+
+      <div class="flow-arrow"><span class="flow-label">execute one chunk</span></div>
+
+      <article class="stage">
+        <div class="stage-head">
+          <span class="stage-number">3</span>
+          <span class="stage-title">Execute and score</span>
+        </div>
+        <div class="measure-body">
+          <div class="execution">
+            <div class="execution-head"><span>physical consequence</span><span>endpoint ê<sub>A←B</sub></span></div>
+            <div class="filmstrip">
+              <div class="frame"><img src="assets/executed_t00.png" alt="executed transplant at start"><time>0</time></div>
+              <div class="frame"><img src="assets/executed_t16.png" alt="executed transplant midpoint"><time>16</time></div>
+              <div class="frame"><img src="assets/executed_t32.png" alt="executed transplant end"><time>32</time></div>
+            </div>
+          </div>
+
+          <div class="ruler-block">
+            <div class="ruler-title">action projection <span class="math">π<sub>a</sub></span></div>
+            <div class="ruler"><i class="ruler-line"></i><i class="ruler-tick a"></i><i class="ruler-tick b"></i><i class="ruler-tick hat"></i><span class="ruler-label a">a<sub>A</sub> · 0</span><span class="ruler-label b">a<sub>B</sub> · 1</span></div>
+          </div>
+          <div class="ruler-block">
+            <div class="ruler-title">endpoint projection <span class="math">π<sub>e</sub></span></div>
+            <div class="ruler"><i class="ruler-line"></i><i class="ruler-tick a"></i><i class="ruler-tick b"></i><i class="ruler-tick hat"></i><span class="ruler-label a">e<sub>A</sub> · 0</span><span class="ruler-label b">e<sub>B</sub> · 1</span></div>
+          </div>
+          <div class="score"><span>donor-directed steering</span><strong>Δπ ≈ 1</strong></div>
+          <div class="scale-note">0 = recipient-directed component · 1 = native donor-directed component<br>projection measures direction, not equality of full vectors</div>
+        </div>
+      </article>
+    </section>
+
+    <section class="evidence-title">
+      <h2>Three linked causal tests</h2>
+      <span>same normalized recipient→donor scale throughout</span>
+    </section>
+
+    <section class="evidence-grid">
+      <article class="evidence">
+        <div class="evidence-top"><span class="question-number">Q1</span><h3>Does coherent future content steer behavior?</h3></div>
+        <p class="claim">Cosmos 3 · 22 restored states · six RoboLab tasks</p>
+        <svg class="dotplot" viewBox="0 0 515 205" role="img" aria-label="Cosmos 3 donor projections for predicted action, executed action, and endpoint">
+          <line x1="180" y1="22" x2="482" y2="22" stroke="#a7afb5" stroke-width="1.5"/>
+          <line x1="180" y1="22" x2="180" y2="181" stroke="#c2c8cc" stroke-width="1.4"/>
+          <line x1="454" y1="22" x2="454" y2="181" stroke="#d8792f" stroke-width="2" stroke-dasharray="5 5"/>
+          <text x="180" y="16" text-anchor="middle" font-size="14" fill="#53606a">recipient 0</text>
+          <text x="454" y="16" text-anchor="middle" font-size="14" fill="#96521f">donor 1</text>
+          <text x="5" y="57" font-size="17" fill="#17202a">predicted action</text>
+          <text x="5" y="108" font-size="17" fill="#17202a">executed action</text>
+          <text x="5" y="159" font-size="17" fill="#17202a">executed endpoint</text>
+          <line x1="180" y1="52" x2="452" y2="52" stroke="#2f74b5" stroke-width="5" opacity=".38"/>
+          <circle cx="452" cy="52" r="8" fill="#2f74b5"/>
+          <text x="466" y="58" font-size="17" font-weight="700" fill="#2f74b5">0.992</text>
+          <line x1="180" y1="103" x2="449" y2="103" stroke="#2f74b5" stroke-width="5" opacity=".38"/>
+          <circle cx="449" cy="103" r="8" fill="#2f74b5"/>
+          <text x="463" y="109" font-size="17" font-weight="700" fill="#2f74b5">0.983</text>
+          <line x1="180" y1="154" x2="455" y2="154" stroke="#2e8b70" stroke-width="5" opacity=".38"/>
+          <rect x="447" y="146" width="16" height="16" fill="#2e8b70" transform="rotate(45 455 154)"/>
+          <text x="469" y="160" font-size="17" font-weight="700" fill="#2e8b70">1.003</text>
+          <text x="180" y="199" font-size="14" fill="#5c6872">self</text>
+          <text x="454" y="199" text-anchor="middle" font-size="14" fill="#5c6872">paired donor</text>
+        </svg>
+      </article>
+
+      <article class="evidence">
+        <div class="evidence-top"><span class="question-number">Q2</span><h3>Are isolated robot or object pixels sufficient?</h3></div>
+        <p class="claim">Actual 2×2 hybrid futures · object-priority disjoint masks</p>
+        <div class="factor-layout">
+          <div class="factor-y"><span>donor B</span><b>object pixels ↑</b><span>recipient A</span></div>
+          <div class="factor-grid">
+            <div class="factor-cell"><img src="assets/factor_AB.png" alt="donor object pixels and recipient robot pixels"><b>F<sub>AB</sub></b></div>
+            <div class="factor-cell"><img src="assets/factor_BB.png" alt="donor object and robot pixels"><b>F<sub>BB</sub></b></div>
+            <div class="factor-cell"><img src="assets/factor_AA.png" alt="recipient object and robot pixels"><b>F<sub>AA</sub></b></div>
+            <div class="factor-cell"><img src="assets/factor_BA.png" alt="recipient object pixels and donor robot pixels"><b>F<sub>BA</sub></b></div>
+          </div>
+          <div class="factor-x">robot pixels <span class="axis-ends"><span>recipient</span><span>donor</span></span></div>
+        </div>
+        <div class="factor-result"><b>Action main effects</b><br>robot .002 · object .006<br>whole future .992</div>
+      </article>
+
+      <article class="evidence">
+        <div class="evidence-top"><span class="question-number">Q3</span><h3>Which internal route carries donor influence?</h3></div>
+        <p class="claim">Cosmos 3 · token-count-preserving attention intervention</p>
+        <div class="token-diagram">
+          <div class="token-row">
+            <span class="token-row-label">donor run</span>
+            <i class="token current">C</i><i class="token current">C</i>
+            <i class="token future">K<sub>B</sub></i><i class="token future">V<sub>B</sub></i>
+            <i class="token text">T</i><i class="token action">A</i><i class="token action">A</i>
+          </div>
+          <div class="token-legend"><span style="--c:var(--token-current)">current video</span><span style="--c:var(--token-future)">future video</span><span style="--c:var(--token-text)">text</span><span style="--c:var(--token-action)">action</span></div>
+          <div class="kv-arrow">replace only future-token K,V ↓</div>
+          <div class="token-row">
+            <span class="token-row-label">patched run</span>
+            <i class="token current">C</i><i class="token current">C</i>
+            <i class="token patch-token">K<sub>A</sub></i><i class="token patch-token">V<sub>A</sub></i>
+            <i class="token text">T</i><i class="token action">A</i><i class="token action">A</i>
+          </div>
+          <div class="kv-note">token count, positions, current video, text, action, observation, instruction, and noise stay fixed</div>
+          <div class="bar-legend"><span style="--c:#e7c7af">unpatched donor</span><span style="--c:var(--patch)">residual after replacement</span><b>% removed</b></div>
+          <div class="loss-bars">
+            <span>predicted action</span><i class="bar-track"><i class="bar-before" style="--before:99.2%"></i><i class="bar-after" style="--after:11.5%"></i></i><strong>88%</strong>
+            <span>executed action</span><i class="bar-track"><i class="bar-before" style="--before:98.3%"></i><i class="bar-after" style="--after:16.9%"></i></i><strong>83%</strong>
+            <span>endpoint</span><i class="bar-track"><i class="bar-before" style="--before:100%"></i><i class="bar-after" style="--after:15.2%"></i></i><strong>85%</strong>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <footer class="scope">
+      <span><b>Cosmos 3:</b> 16B · RoboLab · population, content, and K/V tests</span>
+      <i class="divider"></i>
+      <span><b>Cosmos Policy:</b> 2B · LIBERO-Long · early-state steering concentrated in visual futures</span>
+      <i class="divider"></i>
+      <span class="boundary">Evidence for future-conditioned action generation—not candidate search or outcome scoring.</span>
+    </footer>
+  </main>
+</body>
+</html>

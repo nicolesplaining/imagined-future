@@ -1,0 +1,12 @@
+{
+  "all_frozen_outputs_complete": true,
+  "complete_state_count": 120,
+  "expected_run_count": 8640,
+  "expected_state_count": 120,
+  "malformed_records": [],
+  "manifest_id": "fastwam-813f0233b9a2c083",
+  "required_frozen_state_count": 120,
+  "result_root": "/lambda/nfs/imagined-future/results/overnight_2026_09_03/fastwam_optional_idm_powered/fastwam-813f0233b9a2c083",
+  "unexpected_state_ids": [],
+  "valid_complete_run_count": 8640
+}

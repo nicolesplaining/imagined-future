@@ -1,0 +1,63 @@
+study_name = "fastwam_optional_idm_smoke_v2_pairwise_first_frame"
+
+# These seeds are fixed before inspecting any generated future or intervention
+# output. Each paired branch has independent video and action noise.
+video_seeds = [101, 211, 307, 401]
+action_seeds = [1009, 2017, 3019, 4021]
+
+[inference]
+num_inference_steps = 20
+sigma_shift = 1.0
+num_video_frames = 9
+action_horizon = 32
+rand_device = "cpu"
+
+# One short-horizon and one long-horizon task, four unfiltered initial states
+# each. These are implementation gates, not the confirmatory population.
+[[states]]
+suite = "libero_spatial"
+task_id = 0
+initial_state_index = 0
+wait_steps = 30
+
+[[states]]
+suite = "libero_spatial"
+task_id = 0
+initial_state_index = 1
+wait_steps = 30
+
+[[states]]
+suite = "libero_spatial"
+task_id = 0
+initial_state_index = 2
+wait_steps = 30
+
+[[states]]
+suite = "libero_spatial"
+task_id = 0
+initial_state_index = 3
+wait_steps = 30
+
+[[states]]
+suite = "libero_10"
+task_id = 0
+initial_state_index = 0
+wait_steps = 30
+
+[[states]]
+suite = "libero_10"
+task_id = 0
+initial_state_index = 1
+wait_steps = 30
+
+[[states]]
+suite = "libero_10"
+task_id = 0
+initial_state_index = 2
+wait_steps = 30
+
+[[states]]
+suite = "libero_10"
+task_id = 0
+initial_state_index = 3
+wait_steps = 30
