@@ -1230,8 +1230,8 @@ def main() -> None:
                 research_id=f"{study_id}-intervention-{label}",
                 research_seed=recipient_seed,
                 research_recipient_id=f"{study_id}-native-{recipient_seed}",
-                **spec,
             )
+            request.update(spec)
             response = client.client.infer(request)
             if label == "self":
                 self_identity_action_maximum_error = float(

@@ -9,13 +9,15 @@ num_shards=${3:?shard count is required}
 server_host=${4:-localhost}
 server_port=${5:-8001}
 
+python=$(command -v python3 || echo /isaac-sim/python.sh)
+
 cd /workspace/robolab
 line_number=0
 while IFS= read -r job; do
     if (( line_number++ % num_shards != shard )); then
         continue
     fi
-    field() { python3 -c "import json,sys; v=json.loads(sys.argv[1])[sys.argv[2]]; print(' '.join(map(str,v)) if isinstance(v,list) else ('' if v is None else v))" "${job}" "$1"; }
+    field() { "${python}" -c "import json,sys; v=json.loads(sys.argv[1])[sys.argv[2]]; print(' '.join(map(str,v)) if isinstance(v,list) else ('' if v is None else v))" "${job}" "$1"; }
     output_dir=$(field output_dir)
     if [[ -f "${output_dir}/summary.json" ]]; then
         echo "skip $(field unit): complete"
