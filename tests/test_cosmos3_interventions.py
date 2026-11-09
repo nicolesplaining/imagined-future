@@ -10,9 +10,13 @@ from imagined_future.cosmos3_interventions import (
     Cosmos3FlatLayout,
     GuidedFutureClamp,
     GuidedX0Recorder,
+    NativeStateInsertion,
     PreparedLayoutCapture,
     SamplerInitialStateCapture,
+    VisionStateRecorder,
     gaussian_target_on_mask,
+    interpolated_target,
+    permuted_future_target,
     temporal_mask,
 )
 
@@ -169,3 +173,72 @@ def test_gaussian_target_matches_geometry_only_on_mask() -> None:
     assert torch.linalg.vector_norm(target[mask] - recipient[mask]) == pytest.approx(
         torch.linalg.vector_norm(donor[mask] - recipient[mask])
     )
+
+
+def test_interpolated_target_moves_only_masked_coordinates() -> None:
+    mask = temporal_mask((2, 3, 2, 2), (1, 2), device=torch.device("cpu"))
+    recipient = torch.zeros(24)
+    donor = torch.full((24,), 4.0)
+
+    assert torch.equal(interpolated_target(recipient, donor, mask, alpha=0.0), recipient)
+    half = interpolated_target(recipient, donor, mask, alpha=0.5)
+    assert torch.equal(half[mask], torch.full((16,), 2.0))
+    assert torch.equal(half[~mask], recipient[~mask])
+    with pytest.raises(ValueError):
+        interpolated_target(recipient, donor, mask, alpha=1.5)
+
+
+def test_permuted_future_target_keeps_current_frame() -> None:
+    shape = (2, 3, 2, 2)
+    target = torch.arange(24, dtype=torch.float32)
+    swapped = permuted_future_target(target, shape, [2, 1]).reshape(shape)
+    original = target.reshape(shape)
+
+    assert torch.equal(swapped[:, 0], original[:, 0])
+    assert torch.equal(swapped[:, 1], original[:, 2])
+    assert torch.equal(swapped[:, 2], original[:, 1])
+    with pytest.raises(ValueError):
+        permuted_future_target(target, shape, [0, 1])
+
+
+def test_vision_state_recorder_is_velocity_identity() -> None:
+    plans, data = prepared()
+    capture = PreparedLayoutCapture()
+    capture(model=None, net=None, cond_tokens=[], sequence_plans=plans, gen_data_clean=data)
+    recorder = VisionStateRecorder(capture)
+    state = torch.arange(32, dtype=torch.float32)
+    velocity = torch.full((32,), 3.0)
+
+    output = recorder.wrap_velocity(lambda _state, _timestep: [velocity])([state], torch.tensor([500.0]))
+    assert output[0] is velocity
+    assert torch.equal(recorder.states[0], state[:24])
+
+
+def test_native_state_insertion_replaces_one_call_only() -> None:
+    plans, data = prepared()
+    capture = PreparedLayoutCapture()
+    capture(model=None, net=None, cond_tokens=[], sequence_plans=plans, gen_data_clean=data)
+    donor_states = [torch.full((24,), 5.0), torch.full((24,), 9.0)]
+    insertion = NativeStateInsertion(capture, donor_states, (1, 2), call_index=1)
+    mask = temporal_mask((2, 3, 2, 2), (1, 2), device=torch.device("cpu"))
+    seen: list[torch.Tensor] = []
+
+    def velocity_fn(state, _timestep):
+        seen.append(state[0].clone())
+        return [torch.full((32,), 2.0)]
+
+    wrapped = insertion.wrap_velocity(velocity_fn)
+    state = torch.zeros(32)
+    first = wrapped([state], torch.tensor([800.0]))
+    assert torch.equal(first[0], torch.full((32,), 2.0))
+    assert torch.equal(seen[0], state)
+
+    second = wrapped([state], torch.tensor([500.0]))
+    assert torch.equal(seen[1][:24][mask], torch.full((16,), 9.0))
+    assert torch.equal(seen[1][:24][~mask], state[:24][~mask])
+    sampler_clean = state[:24] - 0.5 * second[0][:24]
+    model_clean = 9.0 - 0.5 * 2.0
+    assert torch.allclose(sampler_clean[mask], torch.full((16,), model_clean))
+    assert torch.equal(second[0][24:], torch.full((8,), 2.0))
+    assert insertion.inserted_call_indices == [1]
+    assert insertion.maximum_action_output_error == 0.0

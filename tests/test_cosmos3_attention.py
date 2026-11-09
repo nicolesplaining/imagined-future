@@ -183,3 +183,60 @@ def test_layer_validation_rejects_duplicates_and_bounds() -> None:
         pass
     else:
         raise AssertionError("invalid exclusion scope was accepted")
+
+
+def test_key_only_and_value_only_patches_replace_one_component() -> None:
+    seen: list[tuple[torch.Tensor, torch.Tensor]] = []
+    ops = fake_ops([])
+    base_attention = ops.attention
+
+    def attention(query, key, value):
+        seen.append((key[0].clone(), value[0].clone()))
+        return base_attention(query, key, value)
+
+    ops = AttentionRuntimeOps(
+        attention=attention,
+        from_mode_splits=ops.from_mode_splits,
+        get_all_seq=ops.get_all_seq,
+        get_causal_seq=ops.get_causal_seq,
+        get_full_only_seq=ops.get_full_only_seq,
+    )
+    excluder = ActionQueryFutureKVExcluder(
+        num_layers=1, action_tokens=2, video_latent_frames=2, device=torch.device("cpu"), ops=ops
+    )
+    recipient = packs()
+    recipient_native = native_output(recipient)
+    with excluder.activate([0], mode="record", cache_id="self"):
+        excluder.wrap(0, lambda *_a, **_k: (recipient_native, None))(
+            recipient, recipient, recipient, SimpleNamespace(is_three_way=False)
+        )
+    donor = packs()
+    donor["full_only_seq"] = donor["full_only_seq"].clone()
+    donor["full_only_seq"][2:4] += 100
+    donor_native = native_output(donor)
+    for components in ("k", "v", "kv"):
+        with excluder.activate([0], mode="patch", cache_id="self", components=components):
+            excluder.wrap(0, lambda *_a, **_k: (donor_native, None))(
+                donor, donor, donor, SimpleNamespace(is_three_way=False)
+            )
+    future = slice(4, 6)
+    (key_k, value_k), (key_v, value_v), (key_kv, value_kv) = seen
+    assert torch.equal(key_k[future], recipient["full_only_seq"][2:4])
+    assert torch.equal(value_k[future], donor["full_only_seq"][2:4])
+    assert torch.equal(key_v[future], donor["full_only_seq"][2:4])
+    assert torch.equal(value_v[future], recipient["full_only_seq"][2:4])
+    assert torch.equal(key_kv[future], recipient["full_only_seq"][2:4])
+    assert torch.equal(value_kv[future], recipient["full_only_seq"][2:4])
+    assert excluder.components == "kv"
+
+
+def test_component_patch_requires_patch_mode() -> None:
+    excluder = ActionQueryFutureKVExcluder(
+        num_layers=1, action_tokens=2, video_latent_frames=2, device=torch.device("cpu"), ops=fake_ops([])
+    )
+    try:
+        with excluder.activate([0], mode="record", cache_id="self", components="k"):
+            pass
+    except ValueError:
+        return
+    raise AssertionError("key-only recording should be rejected")

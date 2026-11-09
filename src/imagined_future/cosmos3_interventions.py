@@ -166,6 +166,34 @@ def gaussian_target_on_mask(recipient: Tensor, donor: Tensor, mask: Tensor, *, s
     return output
 
 
+def interpolated_target(recipient: Tensor, donor: Tensor, mask: Tensor, *, alpha: float) -> Tensor:
+    """Move selected coordinates a fraction ``alpha`` of the way to the donor."""
+
+    if recipient.ndim != 1 or donor.shape != recipient.shape or mask.shape != recipient.shape:
+        raise ValueError("recipient, donor, and mask must be equal-length flat tensors")
+    if not 0.0 <= alpha <= 1.0:
+        raise ValueError(f"interpolation alpha must lie in [0,1], got {alpha}")
+    output = recipient.clone()
+    output[mask] = (recipient[mask].double() + alpha * (donor[mask].double() - recipient[mask].double())).to(
+        recipient.dtype
+    )
+    return output
+
+
+def permuted_future_target(target: Tensor, shape: Sequence[int], order: Sequence[int]) -> Tensor:
+    """Reorder latent frames ``1..T-1`` of a flat target; frame 0 stays in place."""
+
+    if len(shape) not in (4, 5):
+        raise ValueError(f"vision latent must have shape [C,T,H,W] or [B,C,T,H,W], got {tuple(shape)}")
+    temporal_axis = len(shape) - 3
+    future = list(range(1, int(shape[temporal_axis])))
+    if sorted(int(item) for item in order) != future:
+        raise ValueError(f"order must permute future frames {future}, got {list(order)}")
+    volume = target.reshape(tuple(shape))
+    index = torch.tensor([0, *[int(item) for item in order]], device=target.device)
+    return volume.index_select(temporal_axis, index).reshape(-1).clone()
+
+
 @dataclass
 class GuidedFutureClamp:
     """Clamp future vision along an RF path at the post-guidance interface.
@@ -317,3 +345,89 @@ class GuidedX0Recorder:
             return velocity
 
         return recording
+
+
+@dataclass
+class VisionStateRecorder:
+    """Record the sampler's vision state at every call, returning velocity unchanged."""
+
+    layout_capture: PreparedLayoutCapture
+    sample_index: int = 0
+    vision_name: str = "vision_0"
+    states: list[Tensor] = field(default_factory=list, init=False)
+
+    def wrap_velocity(self, velocity_fn: VelocityFunction) -> VelocityFunction:
+        def recording(noisy_state: list[Tensor], timestep: Tensor) -> list[Tensor]:
+            if self.layout_capture.layout is None:
+                raise RuntimeError("prepared layout has not been captured")
+            vision = self.layout_capture.layout.modality(self.sample_index, self.vision_name)
+            self.states.append(noisy_state[self.sample_index][vision.start : vision.stop].detach().cpu().clone())
+            return velocity_fn(noisy_state, timestep)
+
+        return recording
+
+
+@dataclass
+class NativeStateInsertion:
+    """Insert a donor's own noisy future state at one sampler call.
+
+    At ``call_index`` the model sees the donor's recorded vision state at the
+    selected future coordinates. The returned future-vision velocity is set so
+    the sampler's clean estimate equals the model's clean estimate at that
+    donor state; every other call, and every action coordinate, is native.
+    """
+
+    layout_capture: PreparedLayoutCapture
+    donor_states: Sequence[Tensor]
+    future_frame_indices: tuple[int, ...]
+    call_index: int
+    num_train_timesteps: float = 1000.0
+    sample_index: int = 0
+    vision_name: str = "vision_0"
+    calls: list[float] = field(default_factory=list, init=False)
+    inserted_call_indices: list[int] = field(default_factory=list, init=False)
+    maximum_action_output_error: float = field(default=0.0, init=False)
+
+    def wrap_velocity(self, velocity_fn: VelocityFunction) -> VelocityFunction:
+        def interventional(noisy_state: list[Tensor], timestep: Tensor) -> list[Tensor]:
+            if self.layout_capture.layout is None:
+                raise RuntimeError("prepared layout has not been captured")
+            sigma = float(timestep.reshape(-1)[0].detach().double().cpu()) / self.num_train_timesteps
+            call = len(self.calls)
+            self.calls.append(sigma)
+            if call != self.call_index:
+                return velocity_fn(noisy_state, timestep)
+            if call >= len(self.donor_states):
+                raise ValueError(f"donor has {len(self.donor_states)} recorded states, call {call} requested")
+            vision = self.layout_capture.layout.modality(self.sample_index, self.vision_name)
+            selected = temporal_mask(vision.shape, self.future_frame_indices, device=noisy_state[self.sample_index].device)
+            donor_state = self.donor_states[call].to(
+                device=noisy_state[self.sample_index].device, dtype=noisy_state[self.sample_index].dtype
+            )
+            if donor_state.numel() != vision.size:
+                raise ValueError("recorded donor state does not match the vision slice")
+            model_state = [item.clone() for item in noisy_state]
+            model_vision = model_state[self.sample_index][vision.start : vision.stop]
+            model_vision[selected] = donor_state[selected]
+            self.inserted_call_indices.append(call)
+
+            guided_velocity = velocity_fn(model_state, timestep)
+            output = [item.clone() for item in guided_velocity]
+            output_vision = output[self.sample_index][vision.start : vision.stop]
+            if sigma > torch.finfo(output_vision.dtype).eps:
+                model_clean = model_vision - sigma * guided_velocity[self.sample_index][vision.start : vision.stop]
+                sampler_vision = noisy_state[self.sample_index][vision.start : vision.stop]
+                desired = (sampler_vision - model_clean) / sigma
+                output_vision[selected] = desired[selected].to(output_vision.dtype)
+            try:
+                action = self.layout_capture.layout.modality(self.sample_index, "action")
+                changed = output[self.sample_index][action.start : action.stop]
+                native = guided_velocity[self.sample_index][action.start : action.stop]
+                self.maximum_action_output_error = max(
+                    self.maximum_action_output_error, float((changed - native).abs().max().detach().cpu())
+                )
+            except KeyError:
+                pass
+            return output
+
+        return interventional

@@ -68,6 +68,21 @@ parser.add_argument(
     help="Transplant every non-recipient native future and audit donor identification.",
 )
 parser.add_argument(
+    "--mechanism-suite",
+    action="store_true",
+    help=(
+        "Add all-pair donor identification, single-call state insertion, "
+        "interpolation, scrambled/reversed and foreign futures, an executed "
+        "natural control, and layer-group, key/value-component, and "
+        "natural-run K/V patches. Only a fixed subset is physically executed."
+    ),
+)
+parser.add_argument(
+    "--foreign-donor-video",
+    type=Path,
+    help="Executed native video from another saved state of the same task (shuffled control).",
+)
+parser.add_argument(
     "--native-screen-only",
     action="store_true",
     help=(
@@ -217,6 +232,10 @@ def main() -> None:
         raise ValueError("frozen recipient and donor seeds must be provided together")
     if args.native_screen_only and any(value is not None for value in frozen_values):
         raise ValueError("native screening selects its own frozen pair")
+    if args.mechanism_suite and (
+        any(value is None for value in frozen_values) or args.natural_control_seed is None
+    ):
+        raise ValueError("the mechanism suite requires a frozen pair and a natural-control seed")
     if all(value is not None for value in frozen_values):
         frozen_pair = (int(args.frozen_recipient_seed), int(args.frozen_donor_seed))
         if frozen_pair[0] == frozen_pair[1] or not set(frozen_pair) <= set(args.branch_seeds):
@@ -431,6 +450,8 @@ def main() -> None:
         execute_native_seeds = (
             set(frozen_pair) if frozen_pair is not None else set(args.branch_seeds)
         )
+        if args.mechanism_suite:
+            execute_native_seeds.add(int(args.natural_control_seed))
         server_state_hashes = set()
         for seed in args.branch_seeds:
             request = dict(initial_request)
@@ -613,6 +634,17 @@ def main() -> None:
             if registered["research_state_hash"] not in server_state_hashes:
                 raise RuntimeError("executed donor registration changed the state fingerprint")
             progress("executed_donor_registered", seed=seed)
+        if args.mechanism_suite and args.foreign_donor_video is not None:
+            register_request = dict(initial_request)
+            register_request.update(
+                research_mode="register_foreign_executed",
+                research_id=f"{study_id}-foreign",
+                research_donor_path=str(args.foreign_donor_video),
+            )
+            registered = client.client.infer(register_request)
+            if registered["research_state_hash"] not in server_state_hashes:
+                raise RuntimeError("foreign donor registration changed the state fingerprint")
+            progress("foreign_donor_registered", video=str(args.foreign_donor_video))
 
         factorization_report = None
         state_cell_donor_ids: dict[str, str] = {}
@@ -1070,6 +1102,123 @@ def main() -> None:
                         ),
                     }
                     intervention_target_seeds[label] = donor_seed
+        intervention_recipient_seeds: dict[str, int] = {}
+        executed_labels: set[str] | None = None
+        if args.mechanism_suite:
+            native_id = lambda seed: f"{study_id}-native-{seed}"  # noqa: E731
+            mechanism_specs: dict[str, dict[str, Any]] = {}
+            mechanism_targets: dict[str, int | None] = {}
+            # E2: every ordered predicted-future pair among the registered seeds.
+            for left in args.branch_seeds:
+                for right in args.branch_seeds:
+                    if left == right:
+                        continue
+                    label = f"pair_{left}_from_{right}"
+                    mechanism_specs[label] = {
+                        "research_mode": "donor",
+                        "research_seed": left,
+                        "research_recipient_id": native_id(left),
+                        "research_donor_id": native_id(right),
+                    }
+                    mechanism_targets[label] = right
+                    intervention_recipient_seeds[label] = left
+            # E1: single-call clamps, single-call native-state insertion, interpolation.
+            for step in range(4):
+                mechanism_specs[f"predicted_donor_clamp_step_{step}"] = {
+                    "research_mode": "donor",
+                    "research_donor_id": native_id(donor_seed),
+                    "research_timing_steps": [step],
+                }
+                mechanism_specs[f"state_insert_step_{step}"] = {
+                    "research_mode": "state_insert",
+                    "research_donor_id": native_id(donor_seed),
+                    "research_timing_steps": [step],
+                }
+                mechanism_targets[f"predicted_donor_clamp_step_{step}"] = donor_seed
+                mechanism_targets[f"state_insert_step_{step}"] = donor_seed
+            for alpha in (25, 50, 75):
+                mechanism_specs[f"interpolate_alpha_{alpha}"] = {
+                    "research_mode": "interpolate",
+                    "research_donor_id": native_id(donor_seed),
+                    "research_alpha": alpha / 100.0,
+                }
+                mechanism_targets[f"interpolate_alpha_{alpha}"] = donor_seed
+            # E4: incoherent and foreign futures, and an executed natural control.
+            for mode in ("scrambled", "reversed"):
+                mechanism_specs[f"predicted_donor_{mode}"] = {
+                    "research_mode": mode,
+                    "research_donor_id": native_id(donor_seed),
+                    "research_permutation_seed": args.gaussian_seed,
+                }
+                mechanism_targets[f"predicted_donor_{mode}"] = donor_seed
+            mechanism_specs["executed_natural"] = {
+                "research_mode": "donor",
+                "research_donor_id": f"{study_id}-executed-{args.natural_control_seed}",
+            }
+            mechanism_targets["executed_natural"] = args.natural_control_seed
+            if args.foreign_donor_video is not None:
+                mechanism_specs["foreign_executed"] = {
+                    "research_mode": "donor",
+                    "research_donor_id": f"{study_id}-foreign",
+                }
+                mechanism_targets["foreign_executed"] = None
+            # E3: layer groups, key/value components, then a natural-run cache.
+            if args.attention_kv_patch_layers is not None:
+                self_cache = f"{study_id}-self-future-kv"
+                kv_conditions = {
+                    "predicted_donor_kv_layers_00_11": (list(range(0, 12)), "kv"),
+                    "predicted_donor_kv_layers_12_23": (list(range(12, 24)), "kv"),
+                    "predicted_donor_kv_layers_24_35": (list(range(24, 36)), "kv"),
+                    "predicted_donor_kv_all_but_16": ([layer for layer in range(36) if layer != 16], "kv"),
+                    "predicted_donor_k_patch_all": (list(range(36)), "k"),
+                    "predicted_donor_v_patch_all": (list(range(36)), "v"),
+                }
+                for label, (layers, components) in kv_conditions.items():
+                    mechanism_specs[label] = {
+                        "research_mode": "donor",
+                        "research_donor_id": native_id(donor_seed),
+                        "research_attention_mode": "patch",
+                        "research_attention_cache_id": self_cache,
+                        "research_attention_exclude_layers": layers,
+                        "research_attention_exclude_scope": "action",
+                        "research_attention_components": components,
+                    }
+                    mechanism_targets[label] = donor_seed
+                natural_cache = f"{study_id}-natural-future-kv"
+                mechanism_specs["natural_kv_record"] = {
+                    "research_mode": "donor",
+                    "research_donor_id": native_id(args.natural_control_seed),
+                    "research_attention_mode": "record",
+                    "research_attention_cache_id": natural_cache,
+                    "research_attention_exclude_layers": list(range(36)),
+                }
+                mechanism_targets["natural_kv_record"] = args.natural_control_seed
+                mechanism_specs["predicted_donor_natural_kv_patch_all"] = {
+                    "research_mode": "donor",
+                    "research_donor_id": native_id(donor_seed),
+                    "research_attention_mode": "patch",
+                    "research_attention_cache_id": natural_cache,
+                    "research_attention_exclude_layers": list(range(36)),
+                    "research_attention_exclude_scope": "action",
+                }
+                mechanism_targets["predicted_donor_natural_kv_patch_all"] = args.natural_control_seed
+            intervention_specs.update(mechanism_specs)
+            intervention_target_seeds.update(mechanism_targets)
+            executed_labels = {
+                "self",
+                "predicted_donor",
+                "executed_donor",
+                "gaussian_executed",
+                "executed_self",
+                "natural_control",
+                "executed_natural",
+                "foreign_executed",
+                "predicted_donor_scrambled",
+                "predicted_donor_reversed",
+                "state_insert_step_0",
+                "interpolate_alpha_50",
+                "predicted_donor_natural_kv_patch_all",
+            }
         intervention_responses = {}
         intervention_runs = {}
         kv_patch_identity_action_errors: dict[str, float] = {}
@@ -1119,13 +1268,22 @@ def main() -> None:
                 if action_error != 0.0:
                     raise RuntimeError(f"{label} changed self action by {action_error}")
             intervention_responses[label] = response
-            intervention_runs[label] = execute(
-                branch_state,
-                initial_request,
-                response,
-                label,
-                require_full_video=False,
-            )
+            if executed_labels is None or label in executed_labels:
+                intervention_runs[label] = execute(
+                    branch_state,
+                    initial_request,
+                    response,
+                    label,
+                    require_full_video=False,
+                )
+            else:
+                intervention_runs[label] = {
+                    "raw_action": np.asarray(response["action"], dtype=np.float32),
+                    "endpoint_state": None,
+                    "video_path": None,
+                    "terminated": False,
+                    "executed_action_count": 0,
+                }
             progress("intervention_completed", label=label)
 
         recipient_run = native_runs[recipient_seed]
@@ -1139,13 +1297,17 @@ def main() -> None:
         for label, run in intervention_runs.items():
             response = intervention_responses[label]
             target_seed = intervention_target_seeds[label]
-            target_action = native_runs[target_seed]["raw_action"] if target_seed is not None else None
+            target_action = (
+                np.asarray(native_responses[target_seed]["action"], dtype=np.float32)
+                if target_seed is not None
+                else None
+            )
             target_endpoints = (
                 {
                     group: state_vector(native_runs[target_seed]["endpoint_state"], group)
                     for group in groups
                 }
-                if target_seed is not None
+                if target_seed is not None and target_seed in native_runs
                 else None
             )
             nearest_action_seed = min(
@@ -1157,6 +1319,49 @@ def main() -> None:
                     )
                 ),
             )
+            executed = run["endpoint_state"] is not None
+            own_recipient = intervention_recipient_seeds.get(label, recipient_seed)
+            own_recipient_action = np.asarray(native_responses[own_recipient]["action"], dtype=np.float32)
+            per_seed = {
+                str(seed): {
+                    "action_projection": projection(
+                        run["raw_action"],
+                        own_recipient_action,
+                        np.asarray(native_responses[seed]["action"], dtype=np.float32),
+                    ),
+                    "action_l2": float(
+                        np.linalg.norm(
+                            run["raw_action"] - np.asarray(native_responses[seed]["action"], dtype=np.float32)
+                        )
+                    ),
+                }
+                for seed in native_responses
+                if seed != own_recipient
+            }
+            if not executed:
+                interventions[label] = {
+                    "target_donor_seed": target_seed,
+                    "recipient_seed": own_recipient,
+                    "executed": False,
+                    "action_donor_projection": projection(run["raw_action"], recipient_action, donor_action),
+                    "action_target_donor_projection": (
+                        projection(
+                            run["raw_action"],
+                            own_recipient_action,
+                            np.asarray(native_responses[target_seed]["action"], dtype=np.float32),
+                        )
+                        if target_seed is not None
+                        else None
+                    ),
+                    "action_l2_from_recipient": float(np.linalg.norm(run["raw_action"] - own_recipient_action)),
+                    "action_by_native_seed": per_seed,
+                    "nearest_native_action_seed": nearest_action_seed,
+                    "correct_action_donor_top1": (
+                        nearest_action_seed == target_seed if target_seed is not None else None
+                    ),
+                    "server": response_metadata(response),
+                }
+                continue
             nearest_endpoint_seed = {
                 group: min(
                     native_runs,
@@ -1170,6 +1375,9 @@ def main() -> None:
                 for group in groups
             }
             interventions[label] = {
+                "recipient_seed": own_recipient,
+                "executed": True,
+                "action_by_native_seed": per_seed,
                 "target_donor_seed": target_seed,
                 "action_donor_projection": projection(run["raw_action"], recipient_action, donor_action),
                 "action_target_donor_projection": (
@@ -1207,7 +1415,7 @@ def main() -> None:
                     {
                         group: nearest_endpoint_seed[group] == target_seed for group in groups
                     }
-                    if target_seed is not None
+                    if target_seed is not None and target_seed in native_runs
                     else None
                 ),
                 "endpoint_l2_from_recipient": {
@@ -1290,6 +1498,8 @@ def main() -> None:
             "self_identity_action_maximum_error": self_identity_action_maximum_error,
             "self_clamp_action_maximum_error": self_clamp_action_maximum_error,
             "multi_donor": args.multi_donor,
+            "mechanism_suite": args.mechanism_suite,
+            "foreign_donor_video": str(args.foreign_donor_video) if args.foreign_donor_video else None,
             "factorize_selected_donor": args.factorize_selected_donor,
             "factorization": factorization_report,
             "factorial_effects": factorial_effects,
@@ -1352,6 +1562,11 @@ def main() -> None:
             },
             "interventions": interventions,
         }
+        np.savez_compressed(
+            args.output_dir / "actions.npz",
+            **{f"native_{seed}": np.asarray(response["action"], dtype=np.float32) for seed, response in native_responses.items()},
+            **{f"intervention_{label}": run["raw_action"] for label, run in intervention_runs.items()},
+        )
         (args.output_dir / "summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n")
         print(json.dumps(summary, indent=2, sort_keys=True))
         progress("completed")

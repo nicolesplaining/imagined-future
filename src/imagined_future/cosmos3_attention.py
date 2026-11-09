@@ -72,6 +72,7 @@ class ActionQueryFutureKVExcluder:
         self.barrier_gates = torch.zeros(self.num_layers, device=device, dtype=torch.float32)
         self.ops = ops or public_attention_runtime_ops()
         self.mode = "exclude"
+        self.components = "kv"
         self.cache_id: str | None = None
         self.kv_caches: dict[
             str, dict[int, list[tuple[torch.Tensor, torch.Tensor]]]
@@ -108,9 +109,14 @@ class ActionQueryFutureKVExcluder:
         scope: str = "action",
         mode: str = "exclude",
         cache_id: str | None = None,
+        components: str = "kv",
     ):
         if mode not in {"exclude", "record", "patch"}:
             raise ValueError("attention mode must be 'exclude', 'record', or 'patch'")
+        if components not in {"kv", "k", "v"}:
+            raise ValueError("attention patch components must be 'kv', 'k', or 'v'")
+        if components != "kv" and mode != "patch":
+            raise ValueError("key-only or value-only replacement requires patch mode")
         if mode in {"record", "patch"} and not cache_id:
             raise ValueError(f"attention mode {mode!r} requires a cache id")
         if mode == "record":
@@ -119,6 +125,7 @@ class ActionQueryFutureKVExcluder:
             raise KeyError(f"unknown attention K/V cache: {cache_id!r}")
         self.set_layers(layers, scope=scope)
         self.mode = mode
+        self.components = components
         self.cache_id = str(cache_id) if cache_id is not None else None
         self.call_indices = {int(layer): 0 for layer in layers}
         try:
@@ -126,6 +133,7 @@ class ActionQueryFutureKVExcluder:
         finally:
             self.set_layers(())
             self.mode = "exclude"
+            self.components = "kv"
             self.cache_id = None
             self.call_indices = {}
 
@@ -244,12 +252,14 @@ class ActionQueryFutureKVExcluder:
                     )
                 alternative_key = key_all.clone()
                 alternative_value = value_all.clone()
-                alternative_key[future_all] = reference_key.to(
-                    device=key_all.device, dtype=key_all.dtype
-                )
-                alternative_value[future_all] = reference_value.to(
-                    device=value_all.device, dtype=value_all.dtype
-                )
+                if "k" in self.components:
+                    alternative_key[future_all] = reference_key.to(
+                        device=key_all.device, dtype=key_all.dtype
+                    )
+                if "v" in self.components:
+                    alternative_value[future_all] = reference_value.to(
+                        device=value_all.device, dtype=value_all.dtype
+                    )
             else:
                 keep = torch.ones(
                     key_all.shape[0], device=key_all.device, dtype=torch.bool

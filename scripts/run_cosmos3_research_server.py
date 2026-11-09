@@ -27,12 +27,18 @@ import torch
 from imagined_future.cosmos3_interventions import (
     GuidedFutureClamp,
     GuidedX0Recorder,
+    NativeStateInsertion,
     PreparedLayoutCapture,
     SamplerInitialStateCapture,
     SamplerVelocityWrapper,
+    VisionStateRecorder,
     gaussian_target_on_mask,
+    interpolated_target,
+    permuted_future_target,
     temporal_mask,
 )
+
+TARGET_MODES = {"self", "donor", "gaussian", "interpolate", "scrambled", "reversed", "state_insert"}
 from imagined_future.cosmos3_attention import ActionQueryFutureKVExcluder
 
 DEFAULT_ALLOWED_DONOR_ROOTS = (
@@ -112,6 +118,7 @@ class FutureRecord:
     sigmas: tuple[float, ...]
     x0_vision_hashes: tuple[str, ...]
     x0_action_hashes: tuple[str, ...]
+    vision_states: tuple[torch.Tensor, ...] = ()
 
 
 class ResearchPolicyService:
@@ -187,7 +194,8 @@ class ResearchPolicyService:
         layout = PreparedLayoutCapture()
         initial = SamplerInitialStateCapture(self._base.model.sampler)
         x0 = GuidedX0Recorder(layout)
-        sampler = SamplerVelocityWrapper(initial, x0.wrap_velocity)
+        states = VisionStateRecorder(layout)
+        sampler = SamplerVelocityWrapper(initial, lambda fn: x0.wrap_velocity(states.wrap_velocity(fn)))
         samples = self._base.model.generate_samples_from_batch(
             data_batch,
             sampler=sampler,
@@ -218,6 +226,7 @@ class ResearchPolicyService:
             sigmas=tuple(float(item["sigma"]) for item in x0.records),
             x0_vision_hashes=tuple(tensor_digest(item["samples"][0]["vision_0"]) for item in x0.records),
             x0_action_hashes=tuple(tensor_digest(item["samples"][0]["action"]) for item in x0.records),
+            vision_states=tuple(states.states),
         )
         return samples, record
 
@@ -231,6 +240,8 @@ class ResearchPolicyService:
         mode: str,
         gaussian_seed: int,
         timing_steps: tuple[int, ...] | None,
+        alpha: float = 1.0,
+        permutation_seed: int = 0,
     ) -> tuple[dict[str, Any], dict[str, Any]]:
         layout = PreparedLayoutCapture()
         if donor.vision_shape != recipient.vision_shape:
@@ -239,24 +250,43 @@ class ResearchPolicyService:
             )
         future_frames = tuple(range(1, donor.vision_shape[-3]))
         mask = temporal_mask(donor.vision_shape, future_frames, device=torch.device("cpu"))
+        permutation = None
         if mode == "self":
             target = recipient.target
-        elif mode == "donor":
+        elif mode in {"donor", "state_insert"}:
             target = donor.target
         elif mode == "gaussian":
             target = gaussian_target_on_mask(recipient.target, donor.target, mask, seed=gaussian_seed)
+        elif mode == "interpolate":
+            target = interpolated_target(recipient.target, donor.target, mask, alpha=alpha)
+        elif mode in {"scrambled", "reversed"}:
+            if mode == "reversed":
+                permutation = list(reversed(future_frames))
+            else:
+                generator = np.random.default_rng(permutation_seed)
+                permutation = list(future_frames)
+                while any(left == right for left, right in zip(permutation, future_frames)):
+                    permutation = [int(item) for item in generator.permutation(future_frames)]
+            target = permuted_future_target(donor.target, donor.vision_shape, permutation)
         else:
             raise ValueError(f"unsupported intervention mode: {mode!r}")
         if recipient.path_noise is None:
             raise ValueError("recipient record has no captured path noise")
 
-        clamp = GuidedFutureClamp(
-            layout,
-            target,
-            recipient.path_noise,
-            future_frames,
-            active_call_indices=timing_steps,
-        )
+        if mode == "state_insert":
+            if not timing_steps or len(timing_steps) != 1:
+                raise ValueError("state insertion requires exactly one research_timing_steps entry")
+            if not donor.vision_states:
+                raise ValueError("donor record has no per-call vision states; register it natively")
+            clamp = NativeStateInsertion(layout, donor.vision_states, future_frames, call_index=int(timing_steps[0]))
+        else:
+            clamp = GuidedFutureClamp(
+                layout,
+                target,
+                recipient.path_noise,
+                future_frames,
+                active_call_indices=timing_steps,
+            )
         x0 = GuidedX0Recorder(layout)
 
         def transform(velocity_fn):
@@ -276,14 +306,24 @@ class ResearchPolicyService:
             shift=self._base.cfg.shift,
         )
         output_target = samples["vision"][0].detach().cpu().reshape(-1)
+        clamped = getattr(clamp, "clamped_call_indices", None)
+        if clamped is None:
+            clamped = clamp.inserted_call_indices
         audit = {
             "target_hash": tensor_digest(target),
             "output_future_hash": tensor_digest(output_target),
             "target_future_max_error": float((output_target[mask] - target[mask]).abs().max()),
-            "maximum_action_input_error": clamp.maximum_action_input_error,
+            "output_future_donor_projection": float(
+                ((output_target[mask].double() - recipient.target[mask].double())
+                 * (donor.target[mask].double() - recipient.target[mask].double())).sum()
+                / torch.clamp(((donor.target[mask].double() - recipient.target[mask].double()) ** 2).sum(), min=1e-12)
+            ),
+            "maximum_action_input_error": getattr(clamp, "maximum_action_input_error", 0.0),
             "maximum_action_output_error": clamp.maximum_action_output_error,
             "sigmas": np.asarray(clamp.calls, dtype=np.float32),
-            "clamped_call_indices": np.asarray(clamp.clamped_call_indices, dtype=np.int64),
+            "clamped_call_indices": np.asarray(clamped, dtype=np.int64),
+            "alpha": float(alpha),
+            "frame_permutation": permutation,
             "x0_sigmas": np.asarray([item["sigma"] for item in x0.records], dtype=np.float32),
             "x0_vision_hashes": [tensor_digest(item["samples"][0]["vision_0"]) for item in x0.records],
             "x0_action_hashes": [tensor_digest(item["samples"][0]["action"]) for item in x0.records],
@@ -319,11 +359,18 @@ class ResearchPolicyService:
         current_sample: dict[str, Any],
         state_hash: str,
         record_id: str,
+        *,
+        foreign: bool = False,
     ) -> FutureRecord:
         path = resolve_donor_path(str(obs["research_donor_path"]))
         with np.load(path, allow_pickle=False) as payload:
-            video = np.asarray(payload["video"])
+            video = np.asarray(payload["video"]).copy()
             action = np.asarray(payload["action"], dtype=np.float32) if "action" in payload else None
+        if foreign:
+            # A future from another state of the same task: keep this state's
+            # live frame so only future frames carry foreign content.
+            video[0] = np.asarray(obs["observation/image"], dtype=np.uint8)
+            action = None
         expected = (self._base.cfg.action_chunk_size + 1, self._base.cfg.image_height, self._base.cfg.image_width, 3)
         if video.shape != expected or video.dtype != np.uint8:
             raise ValueError(f"executed donor video must be uint8 with shape {expected}, got {video.shape} {video.dtype}")
@@ -353,7 +400,7 @@ class ResearchPolicyService:
         latent = encoded.reshape(-1)
         return FutureRecord(
             record_id=record_id,
-            source="executed",
+            source="foreign_executed" if foreign else "executed",
             state_hash=state_hash,
             seed=None,
             vision_shape=tuple(int(item) for item in encoded.shape),
@@ -385,6 +432,7 @@ class ResearchPolicyService:
             if "research_attention_cache_id" in obs
             else None
         )
+        attention_components = str(obs.get("research_attention_components", "kv"))
         attention_instrumented = (
             "research_attention_exclude_layers" in obs or attention_mode != "exclude"
         )
@@ -396,6 +444,7 @@ class ResearchPolicyService:
                 scope=attention_scope,
                 mode=attention_mode,
                 cache_id=attention_cache_id,
+                components=attention_components,
             )
             if self.attention_excluder is not None
             else nullcontext()
@@ -406,8 +455,10 @@ class ResearchPolicyService:
             torch.inference_mode(),
             attention_context,
         ):
-            if mode == "register_executed":
-                record = self._encode_executed_donor(obs, sample, state_hash, record_id)
+            if mode in {"register_executed", "register_foreign_executed"}:
+                record = self._encode_executed_donor(
+                    obs, sample, state_hash, record_id, foreign=mode == "register_foreign_executed"
+                )
                 self._remember(record)
                 outputs = {
                     "action": np.zeros((self._base.cfg.action_chunk_size, self._base.cfg.action_dim), np.float32),
@@ -459,7 +510,7 @@ class ResearchPolicyService:
                     decoded = self._base.model.decode(samples["vision"][0])
                     video = ((decoded[0].clamp(-1, 1) + 1) * 127.5).to(torch.uint8).permute(1, 2, 3, 0)
                     outputs["video"] = video.cpu().numpy()
-            elif mode in {"self", "donor", "gaussian"}:
+            elif mode in TARGET_MODES:
                 recipient_id = str(obs["research_recipient_id"])
                 donor_id = str(obs.get("research_donor_id", recipient_id))
                 recipient = self.registry[recipient_id]
@@ -483,6 +534,8 @@ class ResearchPolicyService:
                         if "research_timing_steps" in obs
                         else None
                     ),
+                    alpha=float(obs.get("research_alpha", 1.0)),
+                    permutation_seed=int(obs.get("research_permutation_seed", 0)),
                 )
                 action = self._format_action(samples)
                 outputs = {
@@ -525,6 +578,7 @@ class ResearchPolicyService:
             "intervention_requested": attention_instrumented,
             "text_kv_reuse": self.attention_excluder is None,
             "mode": attention_mode,
+            "components": attention_components,
             "cache_id": attention_cache_id,
             "cache_call_counts": (
                 self.attention_excluder.cache_summary(attention_cache_id)
