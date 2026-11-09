@@ -813,7 +813,9 @@ def main() -> None:
                 recorded_environment_seed=recorded_environment_seed,
             )
             progress("completed")
-            return
+            # Isaac Sim shutdown can hang after many environment re-creations;
+            # the summary is already on disk, so leave the process directly.
+            os._exit(0)
 
         factorization_report = None
         state_cell_donor_ids: dict[str, str] = {}
