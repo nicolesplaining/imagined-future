@@ -21,6 +21,7 @@ def main() -> None:
     parser.add_argument("--config", type=Path, default=Path("configs/cosmos3_replication.toml"))
     parser.add_argument("--output-root", default="/research/results/cosmos3_mechanism_v1")
     parser.add_argument("--extra-donors", type=int, default=2)
+    parser.add_argument("--study-prefix", default="cosmos3-mechanism-v1")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
@@ -61,7 +62,7 @@ def main() -> None:
                 "foreign_unit": foreign_unit if foreign else None,
                 "foreign_donor_video": foreign,
                 "output_dir": f"{args.output_root}/{name}",
-                "study_id": f"cosmos3-mechanism-v1-{summary['task']}-seed-{summary['environment_seed']}",
+                "study_id": f"{args.study_prefix}-{summary['task']}-seed-{summary['environment_seed']}",
             }
         )
     args.output.write_text("".join(json.dumps(job, sort_keys=True) + "\n" for job in jobs))

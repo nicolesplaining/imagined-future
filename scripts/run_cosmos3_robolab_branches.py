@@ -83,6 +83,19 @@ parser.add_argument(
     help="Executed native video from another saved state of the same task (shuffled control).",
 )
 parser.add_argument(
+    "--future-selection",
+    action="store_true",
+    help=(
+        "Rank every branch seed's predicted future by latent distance to a goal "
+        "image (the recorded successful episode's near-final frame), insert the "
+        "best and worst futures into other seeds' runs, and roll every first "
+        "chunk to task termination under shared continuation seeds."
+    ),
+)
+parser.add_argument("--continuation-seeds", type=int, nargs="+", default=[911, 919])
+parser.add_argument("--selection-recipients", type=int, default=3)
+parser.add_argument("--selection-max-steps", type=int, default=900)
+parser.add_argument(
     "--native-screen-only",
     action="store_true",
     help=(
@@ -212,6 +225,145 @@ def response_metadata(response: dict[str, Any]) -> dict[str, Any]:
         else:
             metadata[key] = value
     return metadata
+
+
+def run_future_selection(
+    *,
+    get_env,
+    restore,
+    pack,
+    client,
+    branch_state: dict[str, Any],
+    initial_request: dict[str, Any],
+    native_responses: dict[int, dict[str, Any]],
+    recorded_actions: np.ndarray,
+    study_id: str,
+    progress,
+    recorded_environment_seed: int,
+) -> None:
+    """Rank predicted futures against a goal image, insert, and roll to termination."""
+
+    # Goal image: continue the recorded successful episode from the branch point
+    # to one step before its success termination (Isaac Lab auto-resets on the
+    # terminating step), in the same single environment.
+    observation, _restored = restore(branch_state)
+    env = get_env()
+    for action_step in recorded_actions[args.branch_step : -1]:
+        tensor = torch.from_numpy(action_step).unsqueeze(0).to(device=env.device, dtype=torch.float32)
+        next_observation, _reward, term, trunc, _info = env.step(tensor)
+        if bool(term[0].item() or trunc[0].item()):
+            break
+        observation = next_observation
+    goal_image = np.asarray(pack(observation)["observation/image"], dtype=np.uint8)
+    goal_path = args.output_dir / "goal_video.npz"
+    np.savez_compressed(goal_path, video=np.repeat(goal_image[None], 33, axis=0))
+    request = dict(initial_request)
+    request.update(research_mode="register_foreign_executed", research_id=f"{study_id}-goal", research_donor_path=str(goal_path))
+    client.client.infer(request)
+    seeds = [int(seed) for seed in args.branch_seeds]
+    request = dict(initial_request)
+    request.update(
+        research_mode="score_records",
+        research_reference_id=f"{study_id}-goal",
+        research_record_ids=[f"{study_id}-native-{seed}" for seed in seeds],
+    )
+    distances = {int(key.rsplit("-", 1)[1]): float(value) for key, value in client.client.infer(request)["research_distances"].items()}
+    best = min(seeds, key=lambda seed: (distances[seed], seed))
+    worst = max(seeds, key=lambda seed: (distances[seed], -seed))
+    progress("futures_ranked", best=best, worst=worst, distances=distances)
+
+    first_chunks: dict[str, np.ndarray] = {
+        f"candidate_{seed}": np.asarray(native_responses[seed]["action"], dtype=np.float32) for seed in seeds
+    }
+    insertion_projection: dict[str, float] = {}
+    for source_name, source in (("best", best), ("worst", worst)):
+        for recipient in [seed for seed in seeds if seed != source][: args.selection_recipients]:
+            label = f"{source_name}_into_{recipient}"
+            request = dict(initial_request)
+            request.update(
+                research_mode="donor",
+                research_id=f"{study_id}-insert-{label}",
+                research_seed=recipient,
+                research_recipient_id=f"{study_id}-native-{recipient}",
+                research_donor_id=f"{study_id}-native-{source}",
+            )
+            action = np.asarray(client.client.infer(request)["action"], dtype=np.float32)
+            first_chunks[f"inserted_{label}"] = action
+            insertion_projection[label] = projection(
+                action,
+                np.asarray(native_responses[recipient]["action"], dtype=np.float32),
+                np.asarray(native_responses[source]["action"], dtype=np.float32),
+            )
+    progress("insertions_computed", count=len(insertion_projection))
+
+    outcomes: dict[str, list[dict[str, Any]]] = {}
+    for label, first_raw in first_chunks.items():
+        outcomes[label] = []
+        for continuation in args.continuation_seeds:
+            observation, _restored = restore(branch_state)
+            env = get_env()
+            chunk = client._postprocess_chunk(first_raw)
+            steps, query, success, truncated, capped = 0, 0, False, False, False
+            while True:
+                ended = False
+                for action_step in chunk:
+                    tensor = torch.from_numpy(action_step).unsqueeze(0).to(device=env.device, dtype=torch.float32)
+                    observation, _reward, term, trunc, _info = env.step(tensor)
+                    steps += 1
+                    if bool(term[0].item()) or bool(trunc[0].item()):
+                        truncated = bool(trunc[0].item())
+                        success = bool(term[0].item()) and not truncated
+                        ended = True
+                        break
+                    if steps >= args.selection_max_steps:
+                        capped = ended = True
+                        break
+                if ended:
+                    break
+                request = pack(observation)
+                request.update(
+                    research_mode="native",
+                    research_seed=int(continuation),
+                    research_id=f"{study_id}-roll-{label}-c{continuation}-q{query}",
+                )
+                query += 1
+                chunk = client._postprocess_chunk(np.asarray(client.client.infer(request)["action"], dtype=np.float32))
+            outcomes[label].append(
+                {"continuation_seed": int(continuation), "success": success, "truncated": truncated, "capped": capped, "steps": steps}
+            )
+            progress("rollout_completed", label=label, continuation=int(continuation), success=success, steps=steps)
+
+    def rate(labels: list[str]) -> float | None:
+        values = [item["success"] for label in labels for item in outcomes.get(label, [])]
+        return float(np.mean(values)) if values else None
+
+    candidate_labels = [f"candidate_{seed}" for seed in seeds]
+    summary = {
+        "scope": "Cosmos 3 future selection by goal-image latent distance; closed-loop RoboLab success",
+        "task": args.task,
+        "study_id": study_id,
+        "environment_seed": recorded_environment_seed,
+        "branch_step": args.branch_step,
+        "candidate_seeds": seeds,
+        "continuation_seeds": args.continuation_seeds,
+        "ranking": "L2 distance between predicted future latents and the encoded near-final frame of the recorded successful episode",
+        "goal_distances": {str(seed): distances[seed] for seed in seeds},
+        "best_seed": best,
+        "worst_seed": worst,
+        "insertion_projection_toward_source": insertion_projection,
+        "success_rates": {
+            "random_candidate": rate(candidate_labels),
+            "best_candidate_direct": rate([f"candidate_{best}"]),
+            "worst_candidate_direct": rate([f"candidate_{worst}"]),
+            "best_inserted": rate([label for label in first_chunks if label.startswith("inserted_best_")]),
+            "worst_inserted": rate([label for label in first_chunks if label.startswith("inserted_worst_")]),
+        },
+        "candidate_success_rates": {str(seed): rate([f"candidate_{seed}"]) for seed in seeds},
+        "outcomes": outcomes,
+    }
+    np.savez_compressed(args.output_dir / "first_chunks.npz", **first_chunks)
+    (args.output_dir / "summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n")
+    print(json.dumps(summary["success_rates"], indent=2), flush=True)
 
 
 def main() -> None:
@@ -645,6 +797,23 @@ def main() -> None:
             if registered["research_state_hash"] not in server_state_hashes:
                 raise RuntimeError("foreign donor registration changed the state fingerprint")
             progress("foreign_donor_registered", video=str(args.foreign_donor_video))
+
+        if args.future_selection:
+            run_future_selection(
+                get_env=lambda: env,
+                restore=restore,
+                pack=pack,
+                client=client,
+                branch_state=branch_state,
+                initial_request=initial_request,
+                native_responses=native_responses,
+                recorded_actions=recorded_actions,
+                study_id=study_id,
+                progress=progress,
+                recorded_environment_seed=recorded_environment_seed,
+            )
+            progress("completed")
+            return
 
         factorization_report = None
         state_cell_donor_ids: dict[str, str] = {}

@@ -484,6 +484,26 @@ class ResearchPolicyService:
                     outputs["video"] = video.cpu().numpy()
                 return outputs
 
+            if mode == "score_records":
+                # Latent distance from each record's predicted future frames to a
+                # reference record (e.g. an encoded goal video); no generation.
+                reference = self.registry[str(obs["research_reference_id"])]
+                future_frames = tuple(range(1, reference.vision_shape[-3]))
+                mask = temporal_mask(reference.vision_shape, future_frames, device=torch.device("cpu"))
+                distances = {}
+                for record_id in np.asarray(obs["research_record_ids"]).reshape(-1).tolist():
+                    record = self.registry[str(record_id)]
+                    if record.vision_shape != reference.vision_shape:
+                        raise ValueError(f"record {record_id} latent shape differs from the reference")
+                    difference = record.target[mask].double() - reference.target[mask].double()
+                    distances[str(record_id)] = float(torch.linalg.vector_norm(difference))
+                return {
+                    "action": np.zeros((self._base.cfg.action_chunk_size, self._base.cfg.action_dim), np.float32),
+                    "research_mode": mode,
+                    "research_state_hash": state_hash,
+                    "research_distances": distances,
+                }
+
             data_batch = self._batch(sample)
             if mode == "native":
                 samples, record = self._native(data_batch, seed)
