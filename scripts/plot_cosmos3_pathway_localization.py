@@ -38,6 +38,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--calibration", type=Path, default=Path("results/cosmos3_kv_patch_v4/summary.json"))
     parser.add_argument("--population", type=Path, default=Path("results/cosmos3_population_confirmatory_v1"))
+    parser.add_argument("--replication", type=Path, default=Path("results/cosmos3_mechanism_v1/aggregate_summary.json"))
     parser.add_argument("--output", type=Path, default=Path("paper/figures/figure_pathway_localization.pdf"))
     args = parser.parse_args()
 
@@ -48,8 +49,8 @@ def main() -> None:
 
     plt.rcParams.update({"font.size": 7, "axes.edgecolor": MUTED, "axes.labelcolor": INK,
                          "xtick.color": MUTED, "ytick.color": MUTED, "font.family": "DejaVu Sans"})
-    figure, (top, bottom) = plt.subplots(
-        2, 1, figsize=(3.35, 2.6), gridspec_kw={"height_ratios": [2.1, 1.0], "hspace": 1.0}
+    figure, (top, bottom, third) = plt.subplots(
+        3, 1, figsize=(3.35, 4.1), gridspec_kw={"height_ratios": [2.1, 1.0, 1.9], "hspace": 1.0}
     )
 
     colors = [BLUE if layer == 16 else NEUTRAL for layer in layers]
@@ -85,6 +86,33 @@ def main() -> None:
     bottom.set_title("b  Route decomposition", loc="left", fontsize=7.5, color=INK)
     for side in ("top", "right", "left"):
         bottom.spines[side].set_visible(False)
+
+    metrics = json.loads(args.replication.read_text())["metrics"]
+    rows = [
+        ("Layers 0-11", "kv_loss_layers_00_11"),
+        ("Layers 12-23", "kv_loss_layers_12_23"),
+        ("Layers 24-35", "kv_loss_layers_24_35"),
+        ("Keys only", "kv_loss_keys_only"),
+        ("Values only", "kv_loss_values_only"),
+    ]
+    positions = np.asarray([0, 1, 2, 3.6, 4.6])
+    means = np.asarray([metrics[key]["mean"] for _, key in rows])
+    lower = means - np.asarray([metrics[key]["lower"] for _, key in rows])
+    upper = np.asarray([metrics[key]["upper"] for _, key in rows]) - means
+    third.barh(positions, means, height=0.62, color=BLUE, linewidth=0)
+    third.errorbar(means, positions, xerr=[lower, upper], fmt="none", ecolor=INK, elinewidth=0.7, capsize=1.5)
+    for position, mean, high in zip(positions, means, means + upper):
+        third.text(high + 0.03, position, f"{mean:.2f}", va="center", fontsize=6.5, color=INK)
+    third.set_yticks(positions)
+    third.set_yticklabels([label for label, _ in rows])
+    third.invert_yaxis()
+    third.set_xlim(0, 1.05)
+    third.set_xlabel("Replacement loss (replication run, 22 states)")
+    third.set_title("c  Which layers and which component", loc="left", fontsize=7.5, color=INK)
+    for side in ("top", "right"):
+        third.spines[side].set_visible(False)
+    third.grid(axis="x", color="#e6e5e0", linewidth=0.5)
+    third.set_axisbelow(True)
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     figure.savefig(args.output, bbox_inches="tight")
