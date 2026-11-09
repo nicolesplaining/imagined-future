@@ -48,10 +48,11 @@ def unit_metrics(report: dict[str, Any]) -> dict[str, float]:
         metrics[f"state_insert_step_{step}_action"] = action(f"state_insert_step_{step}")
     for alpha in (25, 50, 75):
         metrics[f"interpolate_{alpha}_action"] = action(f"interpolate_alpha_{alpha}")
+    # Predicted-future conditions are referenced to the native recipient (0);
+    # executed-video conditions to the recipient's own executed video.
     executed_self_endpoint = endpoint("executed_self") or 0.0
     for label in ("state_insert_step_0", "interpolate_alpha_50", "predicted_donor"):
-        value = endpoint(label)
-        metrics[f"{label}_endpoint"] = None if value is None else value - executed_self_endpoint
+        metrics[f"{label}_endpoint"] = endpoint(label)
 
     # E2: the action follows whichever future is inserted.
     pairs = [run for label, run in runs.items() if label.startswith("pair_")]
@@ -81,8 +82,10 @@ def unit_metrics(report: dict[str, Any]) -> dict[str, float]:
     executed_self_action = action("executed_self") or 0.0
     for label in ("predicted_donor_scrambled", "predicted_donor_reversed"):
         metrics[f"{label}_action"] = action(label)
-        value = endpoint(label)
-        metrics[f"{label}_endpoint"] = None if value is None else value - executed_self_endpoint
+        metrics[f"{label}_endpoint"] = endpoint(label)
+        metrics[f"{label}_top1_donor"] = (
+            None if label not in runs else float(runs[label]["nearest_native_action_seed"] == donor)
+        )
     for label in ("foreign_executed", "executed_natural", "executed_donor", "gaussian_executed"):
         value = action(label)
         metrics[f"{label}_action"] = None if value is None else value - executed_self_action
