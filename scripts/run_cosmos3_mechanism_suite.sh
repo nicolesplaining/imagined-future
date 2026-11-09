@@ -50,7 +50,7 @@ while IFS= read -r job; do
         --attention-kv-patch-layers 16 \
         --mechanism-suite \
         "${foreign_args[@]}" \
-        --study-id "$(field study_id)" \
+        --study-id "$(field study_id)-$(date +%s)" \
         > "${output_dir}/run.log" 2>&1 || echo "FAILED $(field unit)"
     echo "done $(field unit) $(date -u +%FT%TZ)"
 done < "${jobs}"
