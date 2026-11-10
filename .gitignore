@@ -47,3 +47,9 @@ paper/*.synctex.gz
 !results/cosmos3_mechanism_v1/**/actions.npz
 !results/cosmos3_mechanism_v1/aggregate_summary.json
 !results/cosmos3_mechanism_v1/jobs.jsonl
+!results/cosmos3_selection_v1/
+!results/cosmos3_selection_v1/**/
+!results/cosmos3_selection_v1/**/summary.json
+!results/cosmos3_selection_v1/**/first_chunks.npz
+!results/cosmos3_selection_v1/aggregate_summary.json
+!results/cosmos3_selection_v1/jobs*.jsonl

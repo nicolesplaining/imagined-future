@@ -59,26 +59,45 @@ def unit_rows(report: dict[str, Any]) -> tuple[dict[str, float], list[dict[str, 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--root", type=Path, default=Path("results/cosmos3_selection_v1"))
+    parser.add_argument("--root", type=Path, nargs="+", default=[Path("results/cosmos3_selection_v1")])
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
 
-    reports = {path.parent.name: json.loads(path.read_text()) for path in sorted(args.root.glob("*/summary.json"))}
+    # Blocks are independent process runs on the same saved states; each state is
+    # averaged across its blocks before resampling states.
+    blocks: dict[str, list[dict[str, Any]]] = {}
+    for root in args.root:
+        for path in sorted(root.glob("*/summary.json")):
+            blocks.setdefault(path.parent.name, []).append(json.loads(path.read_text()))
+    reports = {name: items[0] for name, items in blocks.items()}
     per_unit, transfer = {}, {}
-    for name, report in reports.items():
-        metrics, insertions = unit_rows(report)
-        per_unit[name] = metrics
-        discordant = [row for row in insertions if row["source_native"] != row["recipient_native"]]
-        if discordant:
-            # Fraction of the source-recipient gap the inserted run moves toward the source.
-            transfer[name] = float(
-                np.mean(
-                    [
-                        (row["inserted"] - row["recipient_native"]) / (row["source_native"] - row["recipient_native"])
-                        for row in discordant
-                    ]
+    for name, items in blocks.items():
+        block_metrics, block_transfer = [], []
+        for report in items:
+            metrics, insertions = unit_rows(report)
+            block_metrics.append(metrics)
+            discordant = [row for row in insertions if row["source_native"] != row["recipient_native"]]
+            if discordant:
+                # Fraction of the source-recipient gap the inserted run moves toward the source.
+                block_transfer.append(
+                    float(
+                        np.mean(
+                            [
+                                (row["inserted"] - row["recipient_native"])
+                                / (row["source_native"] - row["recipient_native"])
+                                for row in discordant
+                            ]
+                        )
+                    )
                 )
-            )
+        keys = set().union(*block_metrics)
+        per_unit[name] = {
+            key: float(np.mean([metrics[key] for metrics in block_metrics if key in metrics])) for key in keys
+        }
+        per_unit[name]["varies"] = float(any(metrics["varies"] for metrics in block_metrics))
+        per_unit[name]["blocks"] = float(len(items))
+        if block_transfer:
+            transfer[name] = float(np.mean(block_transfer))
     aggregate: dict[str, Any] = {}
     for metric in ("random_candidate", "best_candidate", "worst_candidate", "best_minus_random", "rank_success_spearman"):
         values = {name: row[metric] for name, row in per_unit.items() if metric in row}
@@ -98,7 +117,7 @@ def main() -> None:
         "per_unit": per_unit,
         "transfer_per_unit": transfer,
     }
-    destination = args.output or args.root / "aggregate_summary.json"
+    destination = args.output or args.root[0] / "aggregate_summary.json"
     destination.write_text(json.dumps(output, indent=2, sort_keys=True) + "\n")
     print(f"{len(reports)} states, {len(varying)} with outcome variation")
     for metric, estimate in aggregate.items():
