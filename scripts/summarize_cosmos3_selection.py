@@ -52,6 +52,7 @@ def unit_rows(report: dict[str, Any]) -> tuple[dict[str, float], list[dict[str, 
                 "inserted": rate(runs),
                 "source_native": candidates[source],
                 "recipient_native": candidates[int(recipient)],
+                "path_projection": float(report["insertion_projection_toward_source"][label[len("inserted_"):]]),
             }
         )
     return metrics, insertions
@@ -71,6 +72,21 @@ def main() -> None:
             blocks.setdefault(path.parent.name, []).append(json.loads(path.read_text()))
     reports = {name: items[0] for name, items in blocks.items()}
     per_unit, transfer = {}, {}
+    # Route versus outcome: does the action follow the inserted path, and what
+    # happens to success, when source and recipient share or differ in outcome?
+    route_groups = {
+        "same_outcome_success": lambda row: row["source_native"] == 1 and row["recipient_native"] == 1,
+        "same_outcome_failure": lambda row: row["source_native"] == 0 and row["recipient_native"] == 0,
+        "different_outcome": lambda row: row["source_native"] != row["recipient_native"],
+    }
+    route: dict[str, dict[str, dict[str, float]]] = {key: {"path": {}, "success": {}} for key in route_groups}
+    for name, items in blocks.items():
+        rows = [row for report in items for row in unit_rows(report)[1]]
+        for key, predicate in route_groups.items():
+            selected = [row for row in rows if predicate(row)]
+            if selected:
+                route[key]["path"][name] = float(np.mean([row["path_projection"] for row in selected]))
+                route[key]["success"][name] = float(np.mean([row["inserted"] for row in selected]))
     for name, items in blocks.items():
         block_metrics, block_transfer = [], []
         for report in items:
@@ -110,6 +126,10 @@ def main() -> None:
             aggregate[f"{metric}_varying_states"] = cluster_bootstrap_mean(values, seed=20261111)
     if transfer:
         aggregate["outcome_transfer_toward_source"] = cluster_bootstrap_mean(transfer, seed=20261112)
+    for key, values in route.items():
+        if values["path"]:
+            aggregate[f"route_{key}_path_projection"] = cluster_bootstrap_mean(values["path"], seed=20261113)
+            aggregate[f"route_{key}_inserted_success"] = cluster_bootstrap_mean(values["success"], seed=20261114)
     output = {
         "units": sorted(reports),
         "states_with_outcome_variation": sorted(varying),
