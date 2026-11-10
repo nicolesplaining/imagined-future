@@ -53,3 +53,15 @@ paper/*.synctex.gz
 !results/cosmos3_selection_v1/**/first_chunks.npz
 !results/cosmos3_selection_v1/aggregate_summary.json
 !results/cosmos3_selection_v1/jobs*.jsonl
+!results/cosmos3_selection_v1_block2/
+!results/cosmos3_selection_v1_block2/**/
+!results/cosmos3_selection_v1_block2/**/summary.json
+!results/cosmos3_selection_v1_block2/**/first_chunks.npz
+!results/cosmos3_selection_v1_block2/jobs*.jsonl
+!results/cosmos3_selection_v1/aggregate_combined.json
+!results/cosmos_policy_selection_v1/
+!results/cosmos_policy_selection_v1/**/
+!results/cosmos_policy_selection_v1/**/summary.json
+!results/cosmos_policy_selection_v1/**/actions.npz
+!results/cosmos_policy_selection_v1/screen.json
+!results/cosmos_policy_selection_v1/selected.txt

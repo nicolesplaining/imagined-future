@@ -1,0 +1,303 @@
+{
+  "best_candidate": 2,
+  "candidate_seeds": [
+    701,
+    709,
+    719,
+    727,
+    733,
+    739,
+    743,
+    751
+  ],
+  "candidate_success_rates": [
+    0.3333333333333333,
+    0.6666666666666666,
+    1.0,
+    0.6666666666666666,
+    0.3333333333333333,
+    0.3333333333333333,
+    0.3333333333333333,
+    0.6666666666666666
+  ],
+  "continuation_seeds": [
+    801,
+    809,
+    811
+  ],
+  "deterministic_tokenizer": true,
+  "future_noise_seed": 20261109,
+  "initial_state_index": 1,
+  "insertion_steering": {
+    "best_into_0": 0.1309682229022301,
+    "best_into_1": 0.38595895397297464,
+    "best_into_3": 0.33026432117395355,
+    "worst_into_1": 0.6480528409116524,
+    "worst_into_2": 0.49581267897484416,
+    "worst_into_3": 0.3543689411459144
+  },
+  "outcomes": {
+    "candidate_0": [
+      {
+        "continuation_seed": 801,
+        "steps": 520,
+        "success": false
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 255,
+        "success": true
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 520,
+        "success": false
+      }
+    ],
+    "candidate_1": [
+      {
+        "continuation_seed": 801,
+        "steps": 520,
+        "success": false
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 254,
+        "success": true
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 254,
+        "success": true
+      }
+    ],
+    "candidate_2": [
+      {
+        "continuation_seed": 801,
+        "steps": 256,
+        "success": true
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 254,
+        "success": true
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 253,
+        "success": true
+      }
+    ],
+    "candidate_3": [
+      {
+        "continuation_seed": 801,
+        "steps": 260,
+        "success": true
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 520,
+        "success": false
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 253,
+        "success": true
+      }
+    ],
+    "candidate_4": [
+      {
+        "continuation_seed": 801,
+        "steps": 520,
+        "success": false
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 520,
+        "success": false
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 253,
+        "success": true
+      }
+    ],
+    "candidate_5": [
+      {
+        "continuation_seed": 801,
+        "steps": 253,
+        "success": true
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 520,
+        "success": false
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 520,
+        "success": false
+      }
+    ],
+    "candidate_6": [
+      {
+        "continuation_seed": 801,
+        "steps": 520,
+        "success": false
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 520,
+        "success": false
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 255,
+        "success": true
+      }
+    ],
+    "candidate_7": [
+      {
+        "continuation_seed": 801,
+        "steps": 257,
+        "success": true
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 520,
+        "success": false
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 248,
+        "success": true
+      }
+    ],
+    "inserted_best_into_0": [
+      {
+        "continuation_seed": 801,
+        "steps": 254,
+        "success": true
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 255,
+        "success": true
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 253,
+        "success": true
+      }
+    ],
+    "inserted_best_into_1": [
+      {
+        "continuation_seed": 801,
+        "steps": 520,
+        "success": false
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 520,
+        "success": false
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 273,
+        "success": true
+      }
+    ],
+    "inserted_best_into_3": [
+      {
+        "continuation_seed": 801,
+        "steps": 520,
+        "success": false
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 253,
+        "success": true
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 255,
+        "success": true
+      }
+    ],
+    "inserted_worst_into_1": [
+      {
+        "continuation_seed": 801,
+        "steps": 520,
+        "success": false
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 520,
+        "success": false
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 520,
+        "success": false
+      }
+    ],
+    "inserted_worst_into_2": [
+      {
+        "continuation_seed": 801,
+        "steps": 256,
+        "success": true
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 520,
+        "success": false
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 520,
+        "success": false
+      }
+    ],
+    "inserted_worst_into_3": [
+      {
+        "continuation_seed": 801,
+        "steps": 520,
+        "success": false
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 520,
+        "success": false
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 520,
+        "success": false
+      }
+    ]
+  },
+  "predicted_values": [
+    0.03265759348869324,
+    0.03435197472572327,
+    0.035242706537246704,
+    0.034128814935684204,
+    0.03428244590759277,
+    0.03467389941215515,
+    0.03500723838806152,
+    0.03382992744445801
+  ],
+  "ranking": "model-predicted value, computed before any execution",
+  "scope": "Cosmos Policy future selection and insertion; closed-loop LIBERO success",
+  "success_rates": {
+    "best_candidate_direct": 1.0,
+    "best_inserted": 0.6666666666666666,
+    "random_candidate": 0.5416666666666666,
+    "recipients_of_best_native": 0.5555555555555556,
+    "recipients_of_worst_native": 0.7777777777777778,
+    "worst_candidate_direct": 0.3333333333333333,
+    "worst_inserted": 0.1111111111111111
+  },
+  "task_description": "put the yellow and white mug in the microwave and close it",
+  "task_id": 9,
+  "worst_candidate": 0
+}

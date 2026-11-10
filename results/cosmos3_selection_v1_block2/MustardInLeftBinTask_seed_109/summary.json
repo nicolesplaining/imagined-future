@@ -1,0 +1,247 @@
+{
+  "best_seed": 233,
+  "branch_step": 96,
+  "candidate_seeds": [
+    229,
+    263,
+    211,
+    223,
+    227,
+    233
+  ],
+  "candidate_success_rates": {
+    "211": 0.5,
+    "223": 1.0,
+    "227": 1.0,
+    "229": 0.5,
+    "233": 0.0,
+    "263": 1.0
+  },
+  "continuation_seeds": [
+    927,
+    929
+  ],
+  "environment_seed": 109,
+  "goal_distances": {
+    "211": 725.5741049562087,
+    "223": 730.7783903938681,
+    "227": 722.6181487692326,
+    "229": 717.5592628638854,
+    "233": 711.6536764833573,
+    "263": 728.971834609847
+  },
+  "insertion_projection_toward_source": {
+    "best_into_211": 1.0122290304482677,
+    "best_into_229": 0.9988533323478963,
+    "best_into_263": 0.9638209637774168,
+    "worst_into_211": 1.0283076614854907,
+    "worst_into_229": 1.1059637452358169,
+    "worst_into_263": 0.9499207823712628
+  },
+  "outcomes": {
+    "candidate_211": [
+      {
+        "capped": false,
+        "continuation_seed": 927,
+        "steps": 354,
+        "success": false,
+        "truncated": true
+      },
+      {
+        "capped": false,
+        "continuation_seed": 929,
+        "steps": 123,
+        "success": true,
+        "truncated": false
+      }
+    ],
+    "candidate_223": [
+      {
+        "capped": false,
+        "continuation_seed": 927,
+        "steps": 151,
+        "success": true,
+        "truncated": false
+      },
+      {
+        "capped": false,
+        "continuation_seed": 929,
+        "steps": 271,
+        "success": true,
+        "truncated": false
+      }
+    ],
+    "candidate_227": [
+      {
+        "capped": false,
+        "continuation_seed": 927,
+        "steps": 85,
+        "success": true,
+        "truncated": false
+      },
+      {
+        "capped": false,
+        "continuation_seed": 929,
+        "steps": 112,
+        "success": true,
+        "truncated": false
+      }
+    ],
+    "candidate_229": [
+      {
+        "capped": false,
+        "continuation_seed": 927,
+        "steps": 354,
+        "success": false,
+        "truncated": true
+      },
+      {
+        "capped": false,
+        "continuation_seed": 929,
+        "steps": 184,
+        "success": true,
+        "truncated": false
+      }
+    ],
+    "candidate_233": [
+      {
+        "capped": false,
+        "continuation_seed": 927,
+        "steps": 354,
+        "success": false,
+        "truncated": true
+      },
+      {
+        "capped": false,
+        "continuation_seed": 929,
+        "steps": 354,
+        "success": false,
+        "truncated": true
+      }
+    ],
+    "candidate_263": [
+      {
+        "capped": false,
+        "continuation_seed": 927,
+        "steps": 87,
+        "success": true,
+        "truncated": false
+      },
+      {
+        "capped": false,
+        "continuation_seed": 929,
+        "steps": 98,
+        "success": true,
+        "truncated": false
+      }
+    ],
+    "inserted_best_into_211": [
+      {
+        "capped": false,
+        "continuation_seed": 927,
+        "steps": 151,
+        "success": true,
+        "truncated": false
+      },
+      {
+        "capped": false,
+        "continuation_seed": 929,
+        "steps": 116,
+        "success": true,
+        "truncated": false
+      }
+    ],
+    "inserted_best_into_229": [
+      {
+        "capped": false,
+        "continuation_seed": 927,
+        "steps": 354,
+        "success": false,
+        "truncated": true
+      },
+      {
+        "capped": false,
+        "continuation_seed": 929,
+        "steps": 354,
+        "success": false,
+        "truncated": true
+      }
+    ],
+    "inserted_best_into_263": [
+      {
+        "capped": false,
+        "continuation_seed": 927,
+        "steps": 354,
+        "success": false,
+        "truncated": true
+      },
+      {
+        "capped": false,
+        "continuation_seed": 929,
+        "steps": 138,
+        "success": true,
+        "truncated": false
+      }
+    ],
+    "inserted_worst_into_211": [
+      {
+        "capped": false,
+        "continuation_seed": 927,
+        "steps": 121,
+        "success": true,
+        "truncated": false
+      },
+      {
+        "capped": false,
+        "continuation_seed": 929,
+        "steps": 354,
+        "success": false,
+        "truncated": true
+      }
+    ],
+    "inserted_worst_into_229": [
+      {
+        "capped": false,
+        "continuation_seed": 927,
+        "steps": 354,
+        "success": false,
+        "truncated": true
+      },
+      {
+        "capped": false,
+        "continuation_seed": 929,
+        "steps": 354,
+        "success": false,
+        "truncated": true
+      }
+    ],
+    "inserted_worst_into_263": [
+      {
+        "capped": false,
+        "continuation_seed": 927,
+        "steps": 152,
+        "success": true,
+        "truncated": false
+      },
+      {
+        "capped": false,
+        "continuation_seed": 929,
+        "steps": 354,
+        "success": false,
+        "truncated": true
+      }
+    ]
+  },
+  "ranking": "L2 distance between predicted future latents and the encoded near-final frame of the recorded successful episode",
+  "scope": "Cosmos 3 future selection by goal-image latent distance; closed-loop RoboLab success",
+  "study_id": "cosmos3-selection-v1-block2-MustardInLeftBinTask-seed-109-1794305143",
+  "success_rates": {
+    "best_candidate_direct": 0.0,
+    "best_inserted": 0.5,
+    "random_candidate": 0.6666666666666666,
+    "worst_candidate_direct": 1.0,
+    "worst_inserted": 0.3333333333333333
+  },
+  "task": "MustardInLeftBinTask",
+  "worst_seed": 223
+}

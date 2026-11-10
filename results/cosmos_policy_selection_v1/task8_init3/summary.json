@@ -1,0 +1,303 @@
+{
+  "best_candidate": 2,
+  "candidate_seeds": [
+    701,
+    709,
+    719,
+    727,
+    733,
+    739,
+    743,
+    751
+  ],
+  "candidate_success_rates": [
+    0.3333333333333333,
+    0.6666666666666666,
+    1.0,
+    0.6666666666666666,
+    0.6666666666666666,
+    0.6666666666666666,
+    1.0,
+    0.6666666666666666
+  ],
+  "continuation_seeds": [
+    801,
+    809,
+    811
+  ],
+  "deterministic_tokenizer": true,
+  "future_noise_seed": 20261109,
+  "initial_state_index": 3,
+  "insertion_steering": {
+    "best_into_0": 0.9599586335783569,
+    "best_into_1": 0.5345975039411389,
+    "best_into_3": 1.0650215020562506,
+    "worst_into_1": -0.0790003654689507,
+    "worst_into_2": -0.05432416179640028,
+    "worst_into_3": -0.23588574550153882
+  },
+  "outcomes": {
+    "candidate_0": [
+      {
+        "continuation_seed": 801,
+        "steps": 378,
+        "success": true
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 520,
+        "success": false
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 520,
+        "success": false
+      }
+    ],
+    "candidate_1": [
+      {
+        "continuation_seed": 801,
+        "steps": 387,
+        "success": true
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 520,
+        "success": false
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 386,
+        "success": true
+      }
+    ],
+    "candidate_2": [
+      {
+        "continuation_seed": 801,
+        "steps": 390,
+        "success": true
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 397,
+        "success": true
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 394,
+        "success": true
+      }
+    ],
+    "candidate_3": [
+      {
+        "continuation_seed": 801,
+        "steps": 375,
+        "success": true
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 520,
+        "success": false
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 441,
+        "success": true
+      }
+    ],
+    "candidate_4": [
+      {
+        "continuation_seed": 801,
+        "steps": 384,
+        "success": true
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 471,
+        "success": true
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 520,
+        "success": false
+      }
+    ],
+    "candidate_5": [
+      {
+        "continuation_seed": 801,
+        "steps": 375,
+        "success": true
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 520,
+        "success": false
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 466,
+        "success": true
+      }
+    ],
+    "candidate_6": [
+      {
+        "continuation_seed": 801,
+        "steps": 385,
+        "success": true
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 393,
+        "success": true
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 412,
+        "success": true
+      }
+    ],
+    "candidate_7": [
+      {
+        "continuation_seed": 801,
+        "steps": 388,
+        "success": true
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 520,
+        "success": false
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 434,
+        "success": true
+      }
+    ],
+    "inserted_best_into_0": [
+      {
+        "continuation_seed": 801,
+        "steps": 367,
+        "success": true
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 394,
+        "success": true
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 395,
+        "success": true
+      }
+    ],
+    "inserted_best_into_1": [
+      {
+        "continuation_seed": 801,
+        "steps": 379,
+        "success": true
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 390,
+        "success": true
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 377,
+        "success": true
+      }
+    ],
+    "inserted_best_into_3": [
+      {
+        "continuation_seed": 801,
+        "steps": 397,
+        "success": true
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 391,
+        "success": true
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 387,
+        "success": true
+      }
+    ],
+    "inserted_worst_into_1": [
+      {
+        "continuation_seed": 801,
+        "steps": 520,
+        "success": false
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 431,
+        "success": true
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 439,
+        "success": true
+      }
+    ],
+    "inserted_worst_into_2": [
+      {
+        "continuation_seed": 801,
+        "steps": 382,
+        "success": true
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 376,
+        "success": true
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 471,
+        "success": true
+      }
+    ],
+    "inserted_worst_into_3": [
+      {
+        "continuation_seed": 801,
+        "steps": 383,
+        "success": true
+      },
+      {
+        "continuation_seed": 809,
+        "steps": 376,
+        "success": true
+      },
+      {
+        "continuation_seed": 811,
+        "steps": 372,
+        "success": true
+      }
+    ]
+  },
+  "predicted_values": [
+    0.02152743935585022,
+    0.02311331033706665,
+    0.02356487512588501,
+    0.02264651656150818,
+    0.02287885546684265,
+    0.02268126606941223,
+    0.022584766149520874,
+    0.022853583097457886
+  ],
+  "ranking": "model-predicted value, computed before any execution",
+  "scope": "Cosmos Policy future selection and insertion; closed-loop LIBERO success",
+  "success_rates": {
+    "best_candidate_direct": 1.0,
+    "best_inserted": 1.0,
+    "random_candidate": 0.7083333333333334,
+    "recipients_of_best_native": 0.5555555555555556,
+    "recipients_of_worst_native": 0.7777777777777778,
+    "worst_candidate_direct": 0.3333333333333333,
+    "worst_inserted": 0.8888888888888888
+  },
+  "task_description": "put both moka pots on the stove",
+  "task_id": 8,
+  "worst_candidate": 0
+}

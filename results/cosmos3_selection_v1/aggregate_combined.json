@@ -1,0 +1,274 @@
+{
+  "aggregate": {
+    "best_candidate": {
+      "lower": 0.5921052631578947,
+      "mean": 0.7368421052631579,
+      "resamples": 10000,
+      "seed": 20261110,
+      "units": 19,
+      "upper": 0.868421052631579
+    },
+    "best_minus_random": {
+      "lower": -0.07456140350877193,
+      "mean": 0.0021929824561403633,
+      "resamples": 10000,
+      "seed": 20261110,
+      "units": 19,
+      "upper": 0.07236842105263158
+    },
+    "best_minus_random_varying_states": {
+      "lower": -0.12499999999999999,
+      "mean": 0.0034722222222222376,
+      "resamples": 10000,
+      "seed": 20261111,
+      "units": 12,
+      "upper": 0.11111111111111112
+    },
+    "outcome_transfer_toward_source": {
+      "lower": 0.3287878787878788,
+      "mean": 0.5287878787878788,
+      "resamples": 10000,
+      "seed": 20261112,
+      "units": 11,
+      "upper": 0.7329545454545454
+    },
+    "random_candidate": {
+      "lower": 0.5964912280701754,
+      "mean": 0.7346491228070174,
+      "resamples": 10000,
+      "seed": 20261110,
+      "units": 19,
+      "upper": 0.8574561403508772
+    },
+    "rank_success_spearman": {
+      "lower": -0.15714285714285714,
+      "mean": 0.06190476190476191,
+      "resamples": 10000,
+      "seed": 20261110,
+      "units": 12,
+      "upper": 0.30476190476190473
+    },
+    "worst_candidate": {
+      "lower": 0.5789473684210527,
+      "mean": 0.7368421052631579,
+      "resamples": 10000,
+      "seed": 20261110,
+      "units": 19,
+      "upper": 0.881578947368421
+    }
+  },
+  "per_unit": {
+    "BananaInBowlTask_seed_103": {
+      "best_candidate": 1.0,
+      "best_minus_random": 0.0,
+      "blocks": 1.0,
+      "random_candidate": 1.0,
+      "varies": 0.0,
+      "worst_candidate": 1.0
+    },
+    "BananaInBowlTask_seed_107": {
+      "best_candidate": 1.0,
+      "best_minus_random": 0.0,
+      "blocks": 1.0,
+      "random_candidate": 1.0,
+      "varies": 0.0,
+      "worst_candidate": 1.0
+    },
+    "BananaInBowlTask_seed_109": {
+      "best_candidate": 1.0,
+      "best_minus_random": 0.0,
+      "blocks": 1.0,
+      "random_candidate": 1.0,
+      "varies": 0.0,
+      "worst_candidate": 1.0
+    },
+    "BananaInBowlTask_seed_113": {
+      "best_candidate": 1.0,
+      "best_minus_random": 0.0,
+      "blocks": 1.0,
+      "random_candidate": 1.0,
+      "varies": 0.0,
+      "worst_candidate": 1.0
+    },
+    "MustardInLeftBinTask_seed_107": {
+      "best_candidate": 0.25,
+      "best_minus_random": 0.125,
+      "blocks": 2.0,
+      "random_candidate": 0.125,
+      "rank_success_spearman": 0.4000000000000001,
+      "varies": 1.0,
+      "worst_candidate": 0.0
+    },
+    "MustardInLeftBinTask_seed_109": {
+      "best_candidate": 0.5,
+      "best_minus_random": -0.08333333333333331,
+      "blocks": 2.0,
+      "random_candidate": 0.5833333333333333,
+      "rank_success_spearman": -0.20000000000000004,
+      "varies": 1.0,
+      "worst_candidate": 0.5
+    },
+    "MustardInLeftBinTask_seed_113": {
+      "best_candidate": 0.25,
+      "best_minus_random": -0.5416666666666666,
+      "blocks": 2.0,
+      "random_candidate": 0.7916666666666666,
+      "rank_success_spearman": -0.6857142857142857,
+      "varies": 1.0,
+      "worst_candidate": 1.0
+    },
+    "RubiksCubeTask_seed_101": {
+      "best_candidate": 1.0,
+      "best_minus_random": 0.0,
+      "blocks": 1.0,
+      "random_candidate": 1.0,
+      "varies": 0.0,
+      "worst_candidate": 1.0
+    },
+    "RubiksCubeTask_seed_103": {
+      "best_candidate": 1.0,
+      "best_minus_random": 0.0,
+      "blocks": 1.0,
+      "random_candidate": 1.0,
+      "varies": 0.0,
+      "worst_candidate": 1.0
+    },
+    "RubiksCubeTask_seed_109": {
+      "best_candidate": 1.0,
+      "best_minus_random": 0.0,
+      "blocks": 1.0,
+      "random_candidate": 1.0,
+      "varies": 0.0,
+      "worst_candidate": 1.0
+    },
+    "RubiksCubeTask_seed_113": {
+      "best_candidate": 1.0,
+      "best_minus_random": 0.041666666666666685,
+      "blocks": 2.0,
+      "random_candidate": 0.9583333333333333,
+      "rank_success_spearman": 0.08571428571428573,
+      "varies": 1.0,
+      "worst_candidate": 1.0
+    },
+    "SmartphoneInBinTask_seed_101": {
+      "best_candidate": 0.25,
+      "best_minus_random": -0.04166666666666667,
+      "blocks": 2.0,
+      "random_candidate": 0.2916666666666667,
+      "rank_success_spearman": 0.08571428571428573,
+      "varies": 1.0,
+      "worst_candidate": 1.0
+    },
+    "SmartphoneInBinTask_seed_103": {
+      "best_candidate": 0.5,
+      "best_minus_random": 0.1666666666666667,
+      "blocks": 2.0,
+      "random_candidate": 0.3333333333333333,
+      "rank_success_spearman": 0.14285714285714285,
+      "varies": 1.0,
+      "worst_candidate": 0.5
+    },
+    "SmartphoneInBinTask_seed_107": {
+      "best_candidate": 0.5,
+      "best_minus_random": 0.16666666666666666,
+      "blocks": 2.0,
+      "random_candidate": 0.33333333333333337,
+      "rank_success_spearman": 0.2571428571428572,
+      "varies": 1.0,
+      "worst_candidate": 0.25
+    },
+    "SmartphoneInBinTask_seed_113": {
+      "best_candidate": 0.25,
+      "best_minus_random": -0.16666666666666666,
+      "blocks": 2.0,
+      "random_candidate": 0.41666666666666663,
+      "rank_success_spearman": 0.2,
+      "varies": 1.0,
+      "worst_candidate": 0.25
+    },
+    "SpoonInMugTask_seed_101": {
+      "best_candidate": 0.75,
+      "best_minus_random": 0.0,
+      "blocks": 2.0,
+      "random_candidate": 0.75,
+      "rank_success_spearman": -0.028571428571428577,
+      "varies": 1.0,
+      "worst_candidate": 0.25
+    },
+    "SpoonInMugTask_seed_107": {
+      "best_candidate": 0.75,
+      "best_minus_random": -0.041666666666666685,
+      "blocks": 2.0,
+      "random_candidate": 0.7916666666666667,
+      "rank_success_spearman": -0.37142857142857144,
+      "varies": 1.0,
+      "worst_candidate": 0.75
+    },
+    "SpoonInMugTask_seed_109": {
+      "best_candidate": 1.0,
+      "best_minus_random": 0.08333333333333337,
+      "blocks": 1.0,
+      "random_candidate": 0.9166666666666666,
+      "rank_success_spearman": -0.14285714285714288,
+      "varies": 1.0,
+      "worst_candidate": 1.0
+    },
+    "SpoonInMugTask_seed_113": {
+      "best_candidate": 1.0,
+      "best_minus_random": 0.33333333333333337,
+      "blocks": 1.0,
+      "random_candidate": 0.6666666666666666,
+      "rank_success_spearman": 1.0,
+      "varies": 1.0,
+      "worst_candidate": 0.5
+    }
+  },
+  "states_with_outcome_variation": [
+    "MustardInLeftBinTask_seed_107",
+    "MustardInLeftBinTask_seed_109",
+    "MustardInLeftBinTask_seed_113",
+    "RubiksCubeTask_seed_113",
+    "SmartphoneInBinTask_seed_101",
+    "SmartphoneInBinTask_seed_103",
+    "SmartphoneInBinTask_seed_107",
+    "SmartphoneInBinTask_seed_113",
+    "SpoonInMugTask_seed_101",
+    "SpoonInMugTask_seed_107",
+    "SpoonInMugTask_seed_109",
+    "SpoonInMugTask_seed_113"
+  ],
+  "transfer_per_unit": {
+    "MustardInLeftBinTask_seed_107": 0.6666666666666666,
+    "MustardInLeftBinTask_seed_109": 0.1375,
+    "MustardInLeftBinTask_seed_113": 0.75,
+    "RubiksCubeTask_seed_113": 1.0,
+    "SmartphoneInBinTask_seed_101": 0.6333333333333333,
+    "SmartphoneInBinTask_seed_103": 0.45,
+    "SmartphoneInBinTask_seed_107": 0.375,
+    "SmartphoneInBinTask_seed_113": 1.1666666666666665,
+    "SpoonInMugTask_seed_101": 0.1375,
+    "SpoonInMugTask_seed_107": 0.0,
+    "SpoonInMugTask_seed_113": 0.5
+  },
+  "units": [
+    "BananaInBowlTask_seed_103",
+    "BananaInBowlTask_seed_107",
+    "BananaInBowlTask_seed_109",
+    "BananaInBowlTask_seed_113",
+    "MustardInLeftBinTask_seed_107",
+    "MustardInLeftBinTask_seed_109",
+    "MustardInLeftBinTask_seed_113",
+    "RubiksCubeTask_seed_101",
+    "RubiksCubeTask_seed_103",
+    "RubiksCubeTask_seed_109",
+    "RubiksCubeTask_seed_113",
+    "SmartphoneInBinTask_seed_101",
+    "SmartphoneInBinTask_seed_103",
+    "SmartphoneInBinTask_seed_107",
+    "SmartphoneInBinTask_seed_113",
+    "SpoonInMugTask_seed_101",
+    "SpoonInMugTask_seed_107",
+    "SpoonInMugTask_seed_109",
+    "SpoonInMugTask_seed_113"
+  ]
+}
