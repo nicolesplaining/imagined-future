@@ -93,6 +93,14 @@ parser.add_argument(
     ),
 )
 parser.add_argument("--continuation-seeds", type=int, nargs="+", default=[911, 919])
+parser.add_argument(
+    "--view-factorization",
+    action="store_true",
+    help=(
+        "Cross the wrist-camera tile (top 360 rows) and the two exterior-camera "
+        "tiles (bottom 180 rows) of the executed recipient and donor videos."
+    ),
+)
 parser.add_argument("--selection-recipients", type=int, default=3)
 parser.add_argument("--selection-max-steps", type=int, default=900)
 parser.add_argument(
@@ -817,6 +825,31 @@ def main() -> None:
             # the summary is already on disk, so leave the process directly.
             os._exit(0)
 
+        view_cell_labels: dict[str, str] = {}
+        if args.view_factorization:
+            if frozen_pair is None:
+                raise ValueError("view factorization requires a frozen recipient/donor pair")
+            recipient_video = np.load(native_runs[frozen_pair[0]]["video_path"], allow_pickle=False)["video"]
+            donor_video = np.load(native_runs[frozen_pair[1]]["video_path"], allow_pickle=False)["video"]
+            wrist_rows = slice(0, 360)  # RoboLab Cosmos 3 client: wrist tile on top
+            exterior_rows = slice(360, 540)  # left and right exterior tiles below
+            for cell, rows in (("view_wrist_from_donor", wrist_rows), ("view_exterior_from_donor", exterior_rows)):
+                video = recipient_video.copy()
+                video[1:, rows] = donor_video[1:, rows]
+                path = args.output_dir / f"target_{cell}.npz"
+                np.savez_compressed(path, video=video)
+                register_request = dict(initial_request)
+                register_request.update(
+                    research_mode="register_executed",
+                    research_id=f"{study_id}-{cell}",
+                    research_donor_path=str(path),
+                )
+                registered = client.client.infer(register_request)
+                if registered["research_state_hash"] not in server_state_hashes:
+                    raise RuntimeError("view-factor registration changed the state fingerprint")
+                view_cell_labels[cell] = f"{study_id}-{cell}"
+            progress("view_factors_registered", cells=sorted(view_cell_labels))
+
         factorization_report = None
         state_cell_donor_ids: dict[str, str] = {}
         composite_cell_donor_ids: dict[str, str] = {}
@@ -1273,6 +1306,9 @@ def main() -> None:
                         ),
                     }
                     intervention_target_seeds[label] = donor_seed
+        for cell, record_id in view_cell_labels.items():
+            intervention_specs[cell] = {"research_mode": "donor", "research_donor_id": record_id}
+            intervention_target_seeds[cell] = donor_seed
         intervention_recipient_seeds: dict[str, int] = {}
         executed_labels: set[str] | None = None
         if args.mechanism_suite:
@@ -1670,6 +1706,7 @@ def main() -> None:
             "self_clamp_action_maximum_error": self_clamp_action_maximum_error,
             "multi_donor": args.multi_donor,
             "mechanism_suite": args.mechanism_suite,
+            "view_factorization": args.view_factorization,
             "foreign_donor_video": str(args.foreign_donor_video) if args.foreign_donor_video else None,
             "factorize_selected_donor": args.factorize_selected_donor,
             "factorization": factorization_report,
