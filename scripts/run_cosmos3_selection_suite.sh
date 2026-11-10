@@ -43,6 +43,7 @@ while IFS= read -r job; do
         --gaussian-seed 1223 \
         --restore-strategy fresh_replay \
         --future-selection \
+        ${CONTINUATION_SEEDS:+--continuation-seeds ${CONTINUATION_SEEDS}} \
         --study-id "$(field study_id)-$(date +%s)" \
         > "${output_dir}/run.log" 2>&1 || echo "FAILED $(field unit)"
     echo "done $(field unit) $(date -u +%FT%TZ)"
