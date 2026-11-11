@@ -1,63 +1,128 @@
 {
   "aggregate": {
     "best_candidate": {
-      "lower": 0.35,
-      "mean": 0.55,
+      "lower": 0.32142857142857145,
+      "mean": 0.5357142857142857,
       "resamples": 10000,
       "seed": 20261110,
-      "units": 10,
+      "units": 14,
       "upper": 0.75
     },
     "best_minus_random": {
-      "lower": -0.225,
-      "mean": 0.00833333333333336,
+      "lower": -0.15476190476190474,
+      "mean": 0.023809523809523826,
       "resamples": 10000,
       "seed": 20261110,
-      "units": 10,
-      "upper": 0.25
+      "units": 14,
+      "upper": 0.20238095238095238
     },
     "best_minus_random_varying_states": {
-      "lower": -0.25,
-      "mean": 0.009259259259259276,
+      "lower": -0.18749999999999997,
+      "mean": 0.0277777777777778,
       "resamples": 10000,
       "seed": 20261111,
-      "units": 9,
-      "upper": 0.26851851851851855
+      "units": 12,
+      "upper": 0.23611111111111113
     },
     "outcome_transfer_toward_source": {
-      "lower": 0.10092592592592592,
-      "mean": 0.39166666666666666,
+      "lower": 0.23680555555555552,
+      "mean": 0.48124999999999996,
       "resamples": 10000,
       "seed": 20261112,
-      "units": 9,
-      "upper": 0.7222222222222222
+      "units": 12,
+      "upper": 0.7222222222222223
     },
     "random_candidate": {
-      "lower": 0.35,
-      "mean": 0.5416666666666666,
+      "lower": 0.34523809523809523,
+      "mean": 0.5119047619047619,
       "resamples": 10000,
       "seed": 20261110,
-      "units": 10,
-      "upper": 0.725
+      "units": 14,
+      "upper": 0.6726190476190477
     },
     "rank_success_spearman": {
-      "lower": -0.32063492063492066,
-      "mean": -0.04761904761904762,
+      "lower": -0.3285714285714286,
+      "mean": -0.06666666666666667,
       "resamples": 10000,
       "seed": 20261110,
-      "units": 9,
-      "upper": 0.21904761904761907
+      "units": 12,
+      "upper": 0.20476190476190478
+    },
+    "route_different_outcome_inserted_success": {
+      "lower": 0.3194097222222222,
+      "mean": 0.4875,
+      "resamples": 10000,
+      "seed": 20261114,
+      "units": 12,
+      "upper": 0.6597222222222222
+    },
+    "route_different_outcome_path_projection": {
+      "lower": 0.942459899947656,
+      "mean": 0.9628817419264175,
+      "resamples": 10000,
+      "seed": 20261113,
+      "units": 12,
+      "upper": 0.9830916073401516
+    },
+    "route_same_outcome_failure_inserted_success": {
+      "lower": 0.0,
+      "mean": 0.08333333333333333,
+      "resamples": 10000,
+      "seed": 20261114,
+      "units": 5,
+      "upper": 0.18333333333333332
+    },
+    "route_same_outcome_failure_path_projection": {
+      "lower": 0.9547877390462404,
+      "mean": 0.9807960453687592,
+      "resamples": 10000,
+      "seed": 20261113,
+      "units": 5,
+      "upper": 1.0009403573368085
+    },
+    "route_same_outcome_success_inserted_success": {
+      "lower": 0.7083333333333334,
+      "mean": 0.875,
+      "resamples": 10000,
+      "seed": 20261114,
+      "units": 6,
+      "upper": 0.9791666666666666
+    },
+    "route_same_outcome_success_path_projection": {
+      "lower": 0.9700041990373616,
+      "mean": 0.9863713568011532,
+      "resamples": 10000,
+      "seed": 20261113,
+      "units": 6,
+      "upper": 1.0010205519240785
     },
     "worst_candidate": {
-      "lower": 0.3,
-      "mean": 0.55,
+      "lower": 0.32142857142857145,
+      "mean": 0.5357142857142857,
       "resamples": 10000,
       "seed": 20261110,
-      "units": 10,
-      "upper": 0.8
+      "units": 14,
+      "upper": 0.75
     }
   },
   "per_unit": {
+    "MarkerInMugTask_seed_101": {
+      "best_candidate": 0.0,
+      "best_minus_random": 0.0,
+      "blocks": 1.0,
+      "random_candidate": 0.0,
+      "varies": 0.0,
+      "worst_candidate": 0.0
+    },
+    "MarkerInMugTask_seed_113": {
+      "best_candidate": 0.0,
+      "best_minus_random": -0.25,
+      "blocks": 1.0,
+      "random_candidate": 0.25,
+      "rank_success_spearman": -0.6,
+      "varies": 1.0,
+      "worst_candidate": 0.0
+    },
     "MustardInLeftBinTask_seed_107": {
       "best_candidate": 0.5,
       "best_minus_random": 0.4166666666666667,
@@ -146,9 +211,28 @@
       "rank_success_spearman": -0.4285714285714286,
       "varies": 1.0,
       "worst_candidate": 0.5
+    },
+    "SpoonInMugTask_seed_109": {
+      "best_candidate": 1.0,
+      "best_minus_random": 0.25,
+      "blocks": 1.0,
+      "random_candidate": 0.75,
+      "rank_success_spearman": -0.48571428571428577,
+      "varies": 1.0,
+      "worst_candidate": 1.0
+    },
+    "SpoonInMugTask_seed_113": {
+      "best_candidate": 1.0,
+      "best_minus_random": 0.25,
+      "blocks": 1.0,
+      "random_candidate": 0.75,
+      "rank_success_spearman": 0.7142857142857143,
+      "varies": 1.0,
+      "worst_candidate": 1.0
     }
   },
   "states_with_outcome_variation": [
+    "MarkerInMugTask_seed_113",
     "MustardInLeftBinTask_seed_107",
     "MustardInLeftBinTask_seed_109",
     "MustardInLeftBinTask_seed_113",
@@ -157,9 +241,12 @@
     "SmartphoneInBinTask_seed_107",
     "SmartphoneInBinTask_seed_113",
     "SpoonInMugTask_seed_101",
-    "SpoonInMugTask_seed_107"
+    "SpoonInMugTask_seed_107",
+    "SpoonInMugTask_seed_109",
+    "SpoonInMugTask_seed_113"
   ],
   "transfer_per_unit": {
+    "MarkerInMugTask_seed_113": 0.75,
     "MustardInLeftBinTask_seed_107": 0.3333333333333333,
     "MustardInLeftBinTask_seed_109": -0.1,
     "MustardInLeftBinTask_seed_113": 0.6666666666666666,
@@ -168,9 +255,13 @@
     "SmartphoneInBinTask_seed_107": 0.75,
     "SmartphoneInBinTask_seed_113": 1.3333333333333333,
     "SpoonInMugTask_seed_101": -0.125,
-    "SpoonInMugTask_seed_107": 0.0
+    "SpoonInMugTask_seed_107": 0.0,
+    "SpoonInMugTask_seed_109": 0.75,
+    "SpoonInMugTask_seed_113": 0.75
   },
   "units": [
+    "MarkerInMugTask_seed_101",
+    "MarkerInMugTask_seed_113",
     "MustardInLeftBinTask_seed_107",
     "MustardInLeftBinTask_seed_109",
     "MustardInLeftBinTask_seed_113",
@@ -180,6 +271,8 @@
     "SmartphoneInBinTask_seed_107",
     "SmartphoneInBinTask_seed_113",
     "SpoonInMugTask_seed_101",
-    "SpoonInMugTask_seed_107"
+    "SpoonInMugTask_seed_107",
+    "SpoonInMugTask_seed_109",
+    "SpoonInMugTask_seed_113"
   ]
 }

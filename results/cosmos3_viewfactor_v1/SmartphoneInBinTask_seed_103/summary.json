@@ -1,0 +1,1161 @@
+{
+  "attention_kv_patch_layers": null,
+  "attention_mediation_layers": null,
+  "branch_seeds": [
+    211,
+    269,
+    223
+  ],
+  "branch_step": 64,
+  "continuation_repeat_audit": {
+    "exact": true,
+    "reference_endpoint_state_digest": "f71f3d96b0cda00d1f91c5b6d55f99847b4868ab848d23a9f926685cca1de1b4",
+    "repeat_endpoint_state_digest": "f71f3d96b0cda00d1f91c5b6d55f99847b4868ab848d23a9f926685cca1de1b4",
+    "seed": 211
+  },
+  "donor_seed": 269,
+  "donor_selection": "externally frozen maximum native action-L2 pair from the complete 16-seed screen",
+  "environment_seed": 103,
+  "factorial_effects": null,
+  "factorization": null,
+  "factorize_selected_donor": false,
+  "fixed_current_video": null,
+  "foreign_donor_video": null,
+  "frozen_pair_supplied": true,
+  "instruction": "Put the smartphone in the grey bin",
+  "interventions": {
+    "executed_donor": {
+      "action_by_native_seed": {
+        "223": {
+          "action_l2": 1.283270001411438,
+          "action_projection": 1.4017144414166134
+        },
+        "269": {
+          "action_l2": 0.2646191120147705,
+          "action_projection": 0.9821210352699956
+        }
+      },
+      "action_donor_projection": 0.9821210352699956,
+      "action_l2_from_recipient": 1.7705053091049194,
+      "action_target_donor_projection": 0.9821210352699956,
+      "correct_action_donor_top1": true,
+      "correct_endpoint_donor_top1": {
+        "all": true,
+        "object": false,
+        "object_orientation": false,
+        "object_position": false,
+        "robot": true
+      },
+      "endpoint_donor_projection": {
+        "all": 0.9583199218583907,
+        "object": NaN,
+        "object_orientation": NaN,
+        "object_position": NaN,
+        "robot": 0.9583199218583907
+      },
+      "endpoint_l2_from_recipient": {
+        "all": 0.3932847113030591,
+        "object": 0.0,
+        "object_orientation": 0.0,
+        "object_position": 0.0,
+        "robot": 0.3932847113030591
+      },
+      "endpoint_target_donor_projection": {
+        "all": 0.9583199218583907,
+        "object": NaN,
+        "object_orientation": NaN,
+        "object_position": NaN,
+        "robot": 0.9583199218583907
+      },
+      "executed": true,
+      "executed_action_count": 32,
+      "nearest_native_action_seed": 269,
+      "nearest_native_endpoint_seed": {
+        "all": 269,
+        "object": 211,
+        "object_orientation": 211,
+        "object_position": 211,
+        "robot": 269
+      },
+      "recipient_seed": 211,
+      "server": {
+        "research_action_donor_projection": 0.9821210349024742,
+        "research_alpha": 1.0,
+        "research_attention_exclude_layers": [],
+        "research_attention_exclude_scope": "action",
+        "research_attention_interface": {
+          "action_tokens": 33,
+          "cache_call_counts": {},
+          "cache_id": null,
+          "components": "kv",
+          "excluded_keys_values": "future_video",
+          "instrumented_server": true,
+          "intervention_requested": false,
+          "layers": 36,
+          "mode": "exclude",
+          "scopes": {
+            "action": "exclude only for action queries",
+            "nonfuture": "exclude for current-video and action queries to block indirect future-to-current-to-action paths"
+          },
+          "text_kv_reuse": false,
+          "video_latent_frames": 9
+        },
+        "research_clamped_call_indices": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "research_donor_id": "cosmos3-viewfactor-v1-SmartphoneInBinTask-seed-103-1794353058-executed-269",
+        "research_frame_permutation": null,
+        "research_id": "cosmos3-viewfactor-v1-SmartphoneInBinTask-seed-103-1794353058-intervention-executed_donor",
+        "research_infer_ms": 1283.648312000878,
+        "research_maximum_action_input_error": 0.0,
+        "research_maximum_action_output_error": 0.0,
+        "research_mode": "donor",
+        "research_output_future_donor_projection": 1.0006131916266183,
+        "research_output_future_hash": "a49ec7e448a662bc4b380759c9ae550dedda2eb01d851025f2746f1d5d6d55c2",
+        "research_parameter_probe_hash": "705688e35ae16a3cc1dc242436fd50ef4def790324d209fe7695299b12faa224",
+        "research_recipient_id": "cosmos3-viewfactor-v1-SmartphoneInBinTask-seed-103-1794353058-native-211",
+        "research_seed": 211,
+        "research_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_state_hash": "e7da60ac6fa04bd7a44aa6dffd3f92ec707dad0e4eb44606d23588b07051af00",
+        "research_target_future_max_error": 0.02677631378173828,
+        "research_target_hash": "9169aaaed45a119c92c11a6cd680ca4a2481ae5c006ea525023933d400bbee0d",
+        "research_x0_action_hashes": [
+          "3d7cf995ae212420b91d6012bf1375537c883f2c498d01120a524cb95c557585",
+          "e0eea43f6c95100ae0eac96e082fc26972be08537271070cc5b05339112304ba",
+          "706819e4fc76e0255f28ede2233a057612c81fa0857694e8f6b52eaae6c6e7b3",
+          "55d1da96f9c3166e3e6e49f790ff5ff8797172a9d51fe266465dd7dfc3f30b28"
+        ],
+        "research_x0_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_x0_vision_hashes": [
+          "ea8cf02f567c81feb5ea5005ba2457939ec6ba26d850f8c08690d50fb8f02c82",
+          "2696ff3eff293ffdd43df63849789f0bdd002a6b62de973f8a85d34344eb57c8",
+          "01b18a37796370e625cc62bb394b5ffae28effd675a806131c3fa37a92e880e5",
+          "b5074f0247f75e9fada8bbfcd00da06e84b48dca40e81e1deb9d2ac68dc5054d"
+        ],
+        "server_timing": {
+          "infer_ms": 1285.4248639996513,
+          "prev_total_ms": 51217.708498999855
+        }
+      },
+      "target_donor_seed": 269,
+      "terminated": false,
+      "video_path": "/research/results/cosmos3_viewfactor_v1/SmartphoneInBinTask_seed_103/executed_donor.npz"
+    },
+    "executed_self": {
+      "action_by_native_seed": {
+        "223": {
+          "action_l2": 0.9285513758659363,
+          "action_projection": 0.052193815436895157
+        },
+        "269": {
+          "action_l2": 1.907153844833374,
+          "action_projection": -0.05280018429873796
+        }
+      },
+      "action_donor_projection": -0.05280018429873796,
+      "action_l2_from_recipient": 0.35112500190734863,
+      "action_target_donor_projection": null,
+      "correct_action_donor_top1": null,
+      "correct_endpoint_donor_top1": null,
+      "endpoint_donor_projection": {
+        "all": -0.03402362328622453,
+        "object": NaN,
+        "object_orientation": NaN,
+        "object_position": NaN,
+        "robot": -0.03402362328622453
+      },
+      "endpoint_l2_from_recipient": {
+        "all": 0.022484764639662962,
+        "object": 0.0,
+        "object_orientation": 0.0,
+        "object_position": 0.0,
+        "robot": 0.022484764639662962
+      },
+      "endpoint_target_donor_projection": null,
+      "executed": true,
+      "executed_action_count": 32,
+      "nearest_native_action_seed": 211,
+      "nearest_native_endpoint_seed": {
+        "all": 211,
+        "object": 211,
+        "object_orientation": 211,
+        "object_position": 211,
+        "robot": 211
+      },
+      "recipient_seed": 211,
+      "server": {
+        "research_action_donor_projection": NaN,
+        "research_alpha": 1.0,
+        "research_attention_exclude_layers": [],
+        "research_attention_exclude_scope": "action",
+        "research_attention_interface": {
+          "action_tokens": 33,
+          "cache_call_counts": {},
+          "cache_id": null,
+          "components": "kv",
+          "excluded_keys_values": "future_video",
+          "instrumented_server": true,
+          "intervention_requested": false,
+          "layers": 36,
+          "mode": "exclude",
+          "scopes": {
+            "action": "exclude only for action queries",
+            "nonfuture": "exclude for current-video and action queries to block indirect future-to-current-to-action paths"
+          },
+          "text_kv_reuse": false,
+          "video_latent_frames": 9
+        },
+        "research_clamped_call_indices": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "research_donor_id": "cosmos3-viewfactor-v1-SmartphoneInBinTask-seed-103-1794353058-executed-211",
+        "research_frame_permutation": null,
+        "research_id": "cosmos3-viewfactor-v1-SmartphoneInBinTask-seed-103-1794353058-intervention-executed_self",
+        "research_infer_ms": 1297.6849059996312,
+        "research_maximum_action_input_error": 0.0,
+        "research_maximum_action_output_error": 0.0,
+        "research_mode": "donor",
+        "research_output_future_donor_projection": 1.000665626652849,
+        "research_output_future_hash": "bb589aae3ba5ae7d161b83a8d1a887369c6e24d2818a7a035dea223c7b490ae8",
+        "research_parameter_probe_hash": "705688e35ae16a3cc1dc242436fd50ef4def790324d209fe7695299b12faa224",
+        "research_recipient_id": "cosmos3-viewfactor-v1-SmartphoneInBinTask-seed-103-1794353058-native-211",
+        "research_seed": 211,
+        "research_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_state_hash": "e7da60ac6fa04bd7a44aa6dffd3f92ec707dad0e4eb44606d23588b07051af00",
+        "research_target_future_max_error": 0.01952981948852539,
+        "research_target_hash": "716c3a5a80e43fd647b5965c966f5bbf97d8a2b4a3c82099bf7165fb965846f8",
+        "research_x0_action_hashes": [
+          "73e7cf9edf64ce5926da952678e59202f206858faf68435a555fb7aa4a3de381",
+          "ec163859089cd0a9ec48d51d97d75e8b8e1a2dfd733db992b8dbee2811e3734f",
+          "433e1ea4d02513c8768f371dd7cc87e39e07658029bdb8e4b47bf6f740e3e5ff",
+          "595ea1f5a1087b418118411177797dff3e71b3c1a72b2af2e20d08011195897c"
+        ],
+        "research_x0_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_x0_vision_hashes": [
+          "0fc8618856095b9d82d8fb2f6ebfc3e9b73102a5003d338e61f076b4c0f703d1",
+          "6361729a891a2ade06f1da4e108e9928cbb91a5b159ca2cb4410141beb52635a",
+          "fdac99703dc92099728d3fcd30be89823adb2b0b9c1de161f690daeee00fbe5c",
+          "5f273559e38191966105cb010da28c722ab331848e755ff478fcb6cb726c5a88"
+        ],
+        "server_timing": {
+          "infer_ms": 1300.5974409988994,
+          "prev_total_ms": 52474.58639300021
+        }
+      },
+      "target_donor_seed": null,
+      "terminated": false,
+      "video_path": "/research/results/cosmos3_viewfactor_v1/SmartphoneInBinTask_seed_103/executed_self.npz"
+    },
+    "gaussian_executed": {
+      "action_by_native_seed": {
+        "223": {
+          "action_l2": 1.1267346143722534,
+          "action_projection": 0.05623800956478488
+        },
+        "269": {
+          "action_l2": 1.851898193359375,
+          "action_projection": 0.045004020007013645
+        }
+      },
+      "action_donor_projection": 0.045004020007013645,
+      "action_l2_from_recipient": 0.7329975962638855,
+      "action_target_donor_projection": null,
+      "correct_action_donor_top1": null,
+      "correct_endpoint_donor_top1": null,
+      "endpoint_donor_projection": {
+        "all": -0.027260175384123394,
+        "object": NaN,
+        "object_orientation": NaN,
+        "object_position": NaN,
+        "robot": -0.027260175384123394
+      },
+      "endpoint_l2_from_recipient": {
+        "all": 0.09642041165548061,
+        "object": 0.0,
+        "object_orientation": 0.0,
+        "object_position": 0.0,
+        "robot": 0.09642041165548061
+      },
+      "endpoint_target_donor_projection": null,
+      "executed": true,
+      "executed_action_count": 32,
+      "nearest_native_action_seed": 211,
+      "nearest_native_endpoint_seed": {
+        "all": 211,
+        "object": 211,
+        "object_orientation": 211,
+        "object_position": 211,
+        "robot": 211
+      },
+      "recipient_seed": 211,
+      "server": {
+        "research_action_donor_projection": 0.045004020007013645,
+        "research_alpha": 1.0,
+        "research_attention_exclude_layers": [],
+        "research_attention_exclude_scope": "action",
+        "research_attention_interface": {
+          "action_tokens": 33,
+          "cache_call_counts": {},
+          "cache_id": null,
+          "components": "kv",
+          "excluded_keys_values": "future_video",
+          "instrumented_server": true,
+          "intervention_requested": false,
+          "layers": 36,
+          "mode": "exclude",
+          "scopes": {
+            "action": "exclude only for action queries",
+            "nonfuture": "exclude for current-video and action queries to block indirect future-to-current-to-action paths"
+          },
+          "text_kv_reuse": false,
+          "video_latent_frames": 9
+        },
+        "research_clamped_call_indices": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "research_donor_id": "cosmos3-viewfactor-v1-SmartphoneInBinTask-seed-103-1794353058-executed-269",
+        "research_frame_permutation": null,
+        "research_gaussian_distance_relative_error": 1.4375757835920024e-11,
+        "research_gaussian_donor_distance": 462.67115214503593,
+        "research_gaussian_donor_norm": 697.3769037295328,
+        "research_gaussian_norm_relative_error": 7.512855665899672e-11,
+        "research_gaussian_target_distance": 462.6711521383847,
+        "research_gaussian_target_norm": 697.3769036771399,
+        "research_id": "cosmos3-viewfactor-v1-SmartphoneInBinTask-seed-103-1794353058-intervention-gaussian_executed",
+        "research_infer_ms": 1302.131147000182,
+        "research_maximum_action_input_error": 0.0,
+        "research_maximum_action_output_error": 0.0,
+        "research_mode": "gaussian",
+        "research_output_future_donor_projection": 0.039415546982112054,
+        "research_output_future_hash": "76d61c68c37aeac038c0f6d5fa59fb17f2e1901c5665a92e10de744c1926a37e",
+        "research_parameter_probe_hash": "705688e35ae16a3cc1dc242436fd50ef4def790324d209fe7695299b12faa224",
+        "research_recipient_id": "cosmos3-viewfactor-v1-SmartphoneInBinTask-seed-103-1794353058-native-211",
+        "research_seed": 211,
+        "research_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_state_hash": "e7da60ac6fa04bd7a44aa6dffd3f92ec707dad0e4eb44606d23588b07051af00",
+        "research_target_future_max_error": 0.018610000610351562,
+        "research_target_hash": "7def4e87402b9244b9b078f59a29e741742d72b6e64ef8dd6c0718a7a2e29798",
+        "research_x0_action_hashes": [
+          "0e8a8fdef70a9c20a513fef2dde33f2814a3bc38caf7028c16bec58f5131a9d4",
+          "564e58362122c8dd194ec1ee1df0aaf9a15d009fd6ced907676c55d8be7af397",
+          "b701e4b89830ff5e887a79d00b8f02f05a90bbda3bc0d430c3642e2371f92478",
+          "62d5b60e4e84e6003d27dbe2e3eb0403dd7bcb2a236002eddc40c3199245778e"
+        ],
+        "research_x0_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_x0_vision_hashes": [
+          "94b972a9c9c941ccc8c7bacb6b5f52889f9228e9eca52ffc09d74b901b3f58b2",
+          "0b2dd6f1a8e55096e8bbb477b6741f4af0da0398bd142242ad3773c87e0fa61c",
+          "a7a4727ee6fc227d80a4f58c4584adc3846011ddfd948be5f06ab628fa84032b",
+          "e58147206e4310947a50f6e86fd32a299eca77799ec4495f81d06cb99dc4c4b1"
+        ],
+        "server_timing": {
+          "infer_ms": 1304.1557720007404,
+          "prev_total_ms": 51306.242451999424
+        }
+      },
+      "target_donor_seed": null,
+      "terminated": false,
+      "video_path": "/research/results/cosmos3_viewfactor_v1/SmartphoneInBinTask_seed_103/gaussian_executed.npz"
+    },
+    "natural_control": {
+      "action_by_native_seed": {
+        "223": {
+          "action_l2": 0.23097634315490723,
+          "action_projection": 0.9011860917215077
+        },
+        "269": {
+          "action_l2": 1.35780668258667,
+          "action_projection": 0.32250074325699535
+        }
+      },
+      "action_donor_projection": 0.32250074325699535,
+      "action_l2_from_recipient": 0.8457788228988647,
+      "action_target_donor_projection": null,
+      "correct_action_donor_top1": null,
+      "correct_endpoint_donor_top1": null,
+      "endpoint_donor_projection": {
+        "all": 0.1024876156085126,
+        "object": NaN,
+        "object_orientation": NaN,
+        "object_position": NaN,
+        "robot": 0.1024876156085126
+      },
+      "endpoint_l2_from_recipient": {
+        "all": 0.08913562483694068,
+        "object": 0.0,
+        "object_orientation": 0.0,
+        "object_position": 0.0,
+        "robot": 0.08913562483694068
+      },
+      "endpoint_target_donor_projection": null,
+      "executed": true,
+      "executed_action_count": 32,
+      "nearest_native_action_seed": 223,
+      "nearest_native_endpoint_seed": {
+        "all": 211,
+        "object": 211,
+        "object_orientation": 211,
+        "object_position": 211,
+        "robot": 211
+      },
+      "recipient_seed": 211,
+      "server": {
+        "research_action_donor_projection": 0.9011860917215077,
+        "research_alpha": 1.0,
+        "research_attention_exclude_layers": [],
+        "research_attention_exclude_scope": "action",
+        "research_attention_interface": {
+          "action_tokens": 33,
+          "cache_call_counts": {},
+          "cache_id": null,
+          "components": "kv",
+          "excluded_keys_values": "future_video",
+          "instrumented_server": true,
+          "intervention_requested": false,
+          "layers": 36,
+          "mode": "exclude",
+          "scopes": {
+            "action": "exclude only for action queries",
+            "nonfuture": "exclude for current-video and action queries to block indirect future-to-current-to-action paths"
+          },
+          "text_kv_reuse": false,
+          "video_latent_frames": 9
+        },
+        "research_clamped_call_indices": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "research_donor_id": "cosmos3-viewfactor-v1-SmartphoneInBinTask-seed-103-1794353058-native-223",
+        "research_frame_permutation": null,
+        "research_id": "cosmos3-viewfactor-v1-SmartphoneInBinTask-seed-103-1794353058-intervention-natural_control",
+        "research_infer_ms": 1277.8243840002688,
+        "research_maximum_action_input_error": 0.0,
+        "research_maximum_action_output_error": 0.0,
+        "research_mode": "donor",
+        "research_output_future_donor_projection": 1.0005809709212208,
+        "research_output_future_hash": "5ee6211e28113044b60c4efb9fdfcfd52d58fe25cc9e166ace6966405a2d13bf",
+        "research_parameter_probe_hash": "705688e35ae16a3cc1dc242436fd50ef4def790324d209fe7695299b12faa224",
+        "research_recipient_id": "cosmos3-viewfactor-v1-SmartphoneInBinTask-seed-103-1794353058-native-211",
+        "research_seed": 211,
+        "research_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_state_hash": "e7da60ac6fa04bd7a44aa6dffd3f92ec707dad0e4eb44606d23588b07051af00",
+        "research_target_future_max_error": 0.0182950496673584,
+        "research_target_hash": "d64160863c22a6b6faac9fab2a2cd45ea065585ff5582906b38168409f9107d9",
+        "research_x0_action_hashes": [
+          "d21f01f61f7e9bd36c3d43cd35956c8ed77e31c1e0260b24d4024503577866d9",
+          "8ca8570de4309d365dcc3ad589b12877797993cf70c0d153c84243a9731bd508",
+          "2bc6ae05c449d2aad1b6a686c070cee378ef766ffeab17b34ec69ed82c6fa8c5",
+          "f1358c39ce95d1a94cb0f66b255c843f56aa9ca9bf2b8fcd4dd42713ec312afb"
+        ],
+        "research_x0_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_x0_vision_hashes": [
+          "b004bd4145623cf374728f1a473a90505bd24bc30b832b049e8f4c2819de1317",
+          "2dd2647cff3d736489dc6d416894d8a62e19892bed86ba347a9b6269156fe01f",
+          "27d3f477b9ffce237289b23a2942e0041b5492f2abb0240cc37f7cda73f9f66f",
+          "4594ef6684d4f1ab57b42dfc919296ba465bc1c0c7c4cea734c21e5b72d64e79"
+        ],
+        "server_timing": {
+          "infer_ms": 1279.9577759997192,
+          "prev_total_ms": 52059.681802998966
+        }
+      },
+      "target_donor_seed": null,
+      "terminated": false,
+      "video_path": "/research/results/cosmos3_viewfactor_v1/SmartphoneInBinTask_seed_103/natural_control.npz"
+    },
+    "predicted_donor": {
+      "action_by_native_seed": {
+        "223": {
+          "action_l2": 1.3345677852630615,
+          "action_projection": 1.3759402934014675
+        },
+        "269": {
+          "action_l2": 0.24559764564037323,
+          "action_projection": 0.9980830871494113
+        }
+      },
+      "action_donor_projection": 0.9980830871494113,
+      "action_l2_from_recipient": 1.796231746673584,
+      "action_target_donor_projection": 0.9980830871494113,
+      "correct_action_donor_top1": true,
+      "correct_endpoint_donor_top1": {
+        "all": true,
+        "object": false,
+        "object_orientation": false,
+        "object_position": false,
+        "robot": true
+      },
+      "endpoint_donor_projection": {
+        "all": 0.9969278144307665,
+        "object": NaN,
+        "object_orientation": NaN,
+        "object_position": NaN,
+        "robot": 0.9969278144307665
+      },
+      "endpoint_l2_from_recipient": {
+        "all": 0.40879348243202124,
+        "object": 0.004414035971817906,
+        "object_orientation": 0.0044119628104748445,
+        "object_position": 0.00013526906331216932,
+        "robot": 0.40876965098370344
+      },
+      "endpoint_target_donor_projection": {
+        "all": 0.9969278144307665,
+        "object": NaN,
+        "object_orientation": NaN,
+        "object_position": NaN,
+        "robot": 0.9969278144307665
+      },
+      "executed": true,
+      "executed_action_count": 32,
+      "nearest_native_action_seed": 269,
+      "nearest_native_endpoint_seed": {
+        "all": 269,
+        "object": 211,
+        "object_orientation": 211,
+        "object_position": 211,
+        "robot": 269
+      },
+      "recipient_seed": 211,
+      "server": {
+        "research_action_donor_projection": 0.9980830872431312,
+        "research_alpha": 1.0,
+        "research_attention_exclude_layers": [],
+        "research_attention_exclude_scope": "action",
+        "research_attention_interface": {
+          "action_tokens": 33,
+          "cache_call_counts": {},
+          "cache_id": null,
+          "components": "kv",
+          "excluded_keys_values": "future_video",
+          "instrumented_server": true,
+          "intervention_requested": false,
+          "layers": 36,
+          "mode": "exclude",
+          "scopes": {
+            "action": "exclude only for action queries",
+            "nonfuture": "exclude for current-video and action queries to block indirect future-to-current-to-action paths"
+          },
+          "text_kv_reuse": false,
+          "video_latent_frames": 9
+        },
+        "research_clamped_call_indices": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "research_donor_id": "cosmos3-viewfactor-v1-SmartphoneInBinTask-seed-103-1794353058-native-269",
+        "research_frame_permutation": null,
+        "research_id": "cosmos3-viewfactor-v1-SmartphoneInBinTask-seed-103-1794353058-intervention-predicted_donor",
+        "research_infer_ms": 1286.8523180004559,
+        "research_maximum_action_input_error": 0.0,
+        "research_maximum_action_output_error": 0.0,
+        "research_mode": "donor",
+        "research_output_future_donor_projection": 1.0005866595240236,
+        "research_output_future_hash": "1738d473e2aa62a32d536de0b71791c19b00d998a931d590a31deca7b7b76f54",
+        "research_parameter_probe_hash": "705688e35ae16a3cc1dc242436fd50ef4def790324d209fe7695299b12faa224",
+        "research_recipient_id": "cosmos3-viewfactor-v1-SmartphoneInBinTask-seed-103-1794353058-native-211",
+        "research_seed": 211,
+        "research_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_state_hash": "e7da60ac6fa04bd7a44aa6dffd3f92ec707dad0e4eb44606d23588b07051af00",
+        "research_target_future_max_error": 0.018708229064941406,
+        "research_target_hash": "b1e140802c667d371fd476d6801ae8adc8845a09c6f9c5bb68c04ce506581202",
+        "research_x0_action_hashes": [
+          "5ae702b4f426e58aaa0483b6d557009b7bbb5e147d4c600cb78bd450163510b6",
+          "622c993e1ae01a2d323aed2bfa0a8e8bebd7939ea62b89265b66a68daa2431ed",
+          "b4c0f52afd06f674494efd1564273dcd568722c28912c373b1793ba3672c55f2",
+          "a5342b146d10c816665004036da32df2ee4163a935db3d09586a894b8ecc41e7"
+        ],
+        "research_x0_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_x0_vision_hashes": [
+          "8a3c0075b82a435da821e6d0c25644226ba56eb6c2e31c41e2bb3024771d715a",
+          "ed6d88e5262e1944b74c7c20da909ea67bdae7f22cd86cfa5a83451f28e7bec6",
+          "a149a46c2e6669957eccfc0ed014e8318b8a8013c39cb3bcb450c0a06d5cd0d7",
+          "84fd1e7fed75d647ac3d0c060a26e1dbcd9a72575eabc33e55cb64874ba1a7d5"
+        ],
+        "server_timing": {
+          "infer_ms": 1288.5596390005958,
+          "prev_total_ms": 1290.919950000898
+        }
+      },
+      "target_donor_seed": 269,
+      "terminated": false,
+      "video_path": "/research/results/cosmos3_viewfactor_v1/SmartphoneInBinTask_seed_103/predicted_donor.npz"
+    },
+    "self": {
+      "action_by_native_seed": {
+        "223": {
+          "action_l2": 0.9083189368247986,
+          "action_projection": 0.0
+        },
+        "269": {
+          "action_l2": 1.7827831506729126,
+          "action_projection": 0.0
+        }
+      },
+      "action_donor_projection": 0.0,
+      "action_l2_from_recipient": 0.0,
+      "action_target_donor_projection": null,
+      "correct_action_donor_top1": null,
+      "correct_endpoint_donor_top1": null,
+      "endpoint_donor_projection": {
+        "all": 0.0,
+        "object": NaN,
+        "object_orientation": NaN,
+        "object_position": NaN,
+        "robot": 0.0
+      },
+      "endpoint_l2_from_recipient": {
+        "all": 0.0,
+        "object": 0.0,
+        "object_orientation": 0.0,
+        "object_position": 0.0,
+        "robot": 0.0
+      },
+      "endpoint_target_donor_projection": null,
+      "executed": true,
+      "executed_action_count": 32,
+      "nearest_native_action_seed": 211,
+      "nearest_native_endpoint_seed": {
+        "all": 211,
+        "object": 211,
+        "object_orientation": 211,
+        "object_position": 211,
+        "robot": 211
+      },
+      "recipient_seed": 211,
+      "server": {
+        "research_attention_exclude_layers": [],
+        "research_attention_exclude_scope": "action",
+        "research_attention_interface": {
+          "action_tokens": 33,
+          "cache_call_counts": {},
+          "cache_id": null,
+          "components": "kv",
+          "excluded_keys_values": "future_video",
+          "instrumented_server": true,
+          "intervention_requested": false,
+          "layers": 36,
+          "mode": "exclude",
+          "scopes": {
+            "action": "exclude only for action queries",
+            "nonfuture": "exclude for current-video and action queries to block indirect future-to-current-to-action paths"
+          },
+          "text_kv_reuse": false,
+          "video_latent_frames": 9
+        },
+        "research_future_hash": "766c8b9e7136e61a5272d0c42e8ab6ce84c6c0c7913255f23fb30088df5bb900",
+        "research_id": "cosmos3-viewfactor-v1-SmartphoneInBinTask-seed-103-1794353058-intervention-self",
+        "research_infer_ms": 1283.356873998855,
+        "research_initial_state_hash": "b85f28959ba8a6ab041b7219ba91c0611c1b05a75c80d981ca20e0d0c3ab98f9",
+        "research_mode": "native",
+        "research_parameter_probe_hash": "705688e35ae16a3cc1dc242436fd50ef4def790324d209fe7695299b12faa224",
+        "research_path_noise_hash": "eafef44a3304a15e6aee91db0a532f9ac31933254815603ad2526cc6bcccebea",
+        "research_seed": 211,
+        "research_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_state_hash": "e7da60ac6fa04bd7a44aa6dffd3f92ec707dad0e4eb44606d23588b07051af00",
+        "research_x0_action_hashes": [
+          "f6495cfd08334fc391f78f9ae883238f98b0fed6f93da4bdbf9af0379167cbc0",
+          "08a25051a3d000b2bcf927ef0b0c781662827830fd5fb39ec6a2681e79062117",
+          "aade87bf04fa41218c05043eff6a8d67c5eedf86ba74682503b7b9c2709b2d00",
+          "a132d3fdbad5d62f2f6f90c462b4a17abad8317983f1317c979586d9aa47e4e2"
+        ],
+        "research_x0_vision_hashes": [
+          "5a0c135333a8d9a21aa5411fe7612d2000e08af5c3f479856232162aed9c17ca",
+          "9c3bd53b55ae7d907b44b82b597c5b766ac8a0e0df00ff70f6446e0a51490278",
+          "996b77bdbc9eb7efa612c1dfd0399d48b2051941d91fc3e02df02404979af217",
+          "9cf79eee4bacfaa36eac4dfb7145309fb86a48832ecaf912da2c107787c2bec3"
+        ],
+        "server_timing": {
+          "infer_ms": 1285.0334939994354,
+          "prev_total_ms": 2690.2848969984916
+        }
+      },
+      "target_donor_seed": null,
+      "terminated": false,
+      "video_path": "/research/results/cosmos3_viewfactor_v1/SmartphoneInBinTask_seed_103/self.npz"
+    },
+    "view_exterior_from_donor": {
+      "action_by_native_seed": {
+        "223": {
+          "action_l2": 0.5594773292541504,
+          "action_projection": 0.7365883435414543
+        },
+        "269": {
+          "action_l2": 1.196920394897461,
+          "action_projection": 0.38528319647220777
+        }
+      },
+      "action_donor_projection": 0.38528319647220777,
+      "action_l2_from_recipient": 0.8386930823326111,
+      "action_target_donor_projection": 0.38528319647220777,
+      "correct_action_donor_top1": false,
+      "correct_endpoint_donor_top1": {
+        "all": false,
+        "object": false,
+        "object_orientation": false,
+        "object_position": false,
+        "robot": false
+      },
+      "endpoint_donor_projection": {
+        "all": 0.3463165279932411,
+        "object": NaN,
+        "object_orientation": NaN,
+        "object_position": NaN,
+        "robot": 0.3463165279932411
+      },
+      "endpoint_l2_from_recipient": {
+        "all": 0.16032829999124246,
+        "object": 0.0,
+        "object_orientation": 0.0,
+        "object_position": 0.0,
+        "robot": 0.16032829999124246
+      },
+      "endpoint_target_donor_projection": {
+        "all": 0.3463165279932411,
+        "object": NaN,
+        "object_orientation": NaN,
+        "object_position": NaN,
+        "robot": 0.3463165279932411
+      },
+      "executed": true,
+      "executed_action_count": 32,
+      "nearest_native_action_seed": 223,
+      "nearest_native_endpoint_seed": {
+        "all": 211,
+        "object": 211,
+        "object_orientation": 211,
+        "object_position": 211,
+        "robot": 211
+      },
+      "recipient_seed": 211,
+      "server": {
+        "research_alpha": 1.0,
+        "research_attention_exclude_layers": [],
+        "research_attention_exclude_scope": "action",
+        "research_attention_interface": {
+          "action_tokens": 33,
+          "cache_call_counts": {},
+          "cache_id": null,
+          "components": "kv",
+          "excluded_keys_values": "future_video",
+          "instrumented_server": true,
+          "intervention_requested": false,
+          "layers": 36,
+          "mode": "exclude",
+          "scopes": {
+            "action": "exclude only for action queries",
+            "nonfuture": "exclude for current-video and action queries to block indirect future-to-current-to-action paths"
+          },
+          "text_kv_reuse": false,
+          "video_latent_frames": 9
+        },
+        "research_clamped_call_indices": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "research_donor_id": "cosmos3-viewfactor-v1-SmartphoneInBinTask-seed-103-1794353058-view_exterior_from_donor",
+        "research_frame_permutation": null,
+        "research_id": "cosmos3-viewfactor-v1-SmartphoneInBinTask-seed-103-1794353058-intervention-view_exterior_from_donor",
+        "research_infer_ms": 1274.2369700008567,
+        "research_maximum_action_input_error": 0.0,
+        "research_maximum_action_output_error": 0.0,
+        "research_mode": "donor",
+        "research_output_future_donor_projection": 1.000658115036636,
+        "research_output_future_hash": "ac3d471db984eeac00353ee75be7c06abaf84cdd7746476c6f6c2ca87c56f198",
+        "research_parameter_probe_hash": "705688e35ae16a3cc1dc242436fd50ef4def790324d209fe7695299b12faa224",
+        "research_recipient_id": "cosmos3-viewfactor-v1-SmartphoneInBinTask-seed-103-1794353058-native-211",
+        "research_seed": 211,
+        "research_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_state_hash": "e7da60ac6fa04bd7a44aa6dffd3f92ec707dad0e4eb44606d23588b07051af00",
+        "research_target_future_max_error": 0.01952981948852539,
+        "research_target_hash": "a92484b97054ba614c9b13b5a21488afb10dc14453149dfc2351694385dc3f3f",
+        "research_x0_action_hashes": [
+          "ddfe29b86ce1f566dc428f773c0f0c560b0f6a015633756d41494b49a8bce929",
+          "9666a60606a196253b6675199c868b531ecb815d4300550092973d7a1b34cbff",
+          "a6b9466c24b384551762f053b7ba8db0b8170b812188777bebdfe2414f4c53df",
+          "771ae3844c62b30fe777da95b51a857ce1c778682645de0ed90d6b4f5bc9d5af"
+        ],
+        "research_x0_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_x0_vision_hashes": [
+          "46683dc0365b50792c392f153219d20770ea486ffbd2f0971cdc903aa71f074f",
+          "4b40de07d87e08dbcf2ef1a6e40ea2df72115635f755fa05a1577ea50325ed5f",
+          "2d44fbd21dfe80f00b4d1b8214de86419047dc83402c61880b4fb0109323a7f9",
+          "5fb9e94583ece431828a5796f7967765540476d53795a646f1b3c4e9c2c47261"
+        ],
+        "server_timing": {
+          "infer_ms": 1275.9035130002303,
+          "prev_total_ms": 51502.778516000035
+        }
+      },
+      "target_donor_seed": 269,
+      "terminated": false,
+      "video_path": "/research/results/cosmos3_viewfactor_v1/SmartphoneInBinTask_seed_103/view_exterior_from_donor.npz"
+    },
+    "view_wrist_from_donor": {
+      "action_by_native_seed": {
+        "223": {
+          "action_l2": 0.7619367241859436,
+          "action_projection": 0.7894391841258139
+        },
+        "269": {
+          "action_l2": 0.8440433740615845,
+          "action_projection": 0.5543901220864552
+        }
+      },
+      "action_donor_projection": 0.5543901220864552,
+      "action_l2_from_recipient": 1.0286628007888794,
+      "action_target_donor_projection": 0.5543901220864552,
+      "correct_action_donor_top1": false,
+      "correct_endpoint_donor_top1": {
+        "all": true,
+        "object": false,
+        "object_orientation": false,
+        "object_position": false,
+        "robot": true
+      },
+      "endpoint_donor_projection": {
+        "all": 0.5728901514189312,
+        "object": NaN,
+        "object_orientation": NaN,
+        "object_position": NaN,
+        "robot": 0.5728901514189312
+      },
+      "endpoint_l2_from_recipient": {
+        "all": 0.2357682980254292,
+        "object": 0.0,
+        "object_orientation": 0.0,
+        "object_position": 0.0,
+        "robot": 0.2357682980254292
+      },
+      "endpoint_target_donor_projection": {
+        "all": 0.5728901514189312,
+        "object": NaN,
+        "object_orientation": NaN,
+        "object_position": NaN,
+        "robot": 0.5728901514189312
+      },
+      "executed": true,
+      "executed_action_count": 32,
+      "nearest_native_action_seed": 223,
+      "nearest_native_endpoint_seed": {
+        "all": 269,
+        "object": 211,
+        "object_orientation": 211,
+        "object_position": 211,
+        "robot": 269
+      },
+      "recipient_seed": 211,
+      "server": {
+        "research_alpha": 1.0,
+        "research_attention_exclude_layers": [],
+        "research_attention_exclude_scope": "action",
+        "research_attention_interface": {
+          "action_tokens": 33,
+          "cache_call_counts": {},
+          "cache_id": null,
+          "components": "kv",
+          "excluded_keys_values": "future_video",
+          "instrumented_server": true,
+          "intervention_requested": false,
+          "layers": 36,
+          "mode": "exclude",
+          "scopes": {
+            "action": "exclude only for action queries",
+            "nonfuture": "exclude for current-video and action queries to block indirect future-to-current-to-action paths"
+          },
+          "text_kv_reuse": false,
+          "video_latent_frames": 9
+        },
+        "research_clamped_call_indices": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "research_donor_id": "cosmos3-viewfactor-v1-SmartphoneInBinTask-seed-103-1794353058-view_wrist_from_donor",
+        "research_frame_permutation": null,
+        "research_id": "cosmos3-viewfactor-v1-SmartphoneInBinTask-seed-103-1794353058-intervention-view_wrist_from_donor",
+        "research_infer_ms": 1284.621196999069,
+        "research_maximum_action_input_error": 0.0,
+        "research_maximum_action_output_error": 0.0,
+        "research_mode": "donor",
+        "research_output_future_donor_projection": 1.000625339637957,
+        "research_output_future_hash": "0f938c85e7d5bc0645fb13b88b2d95f85060ef1594ef907ab2e268cd48fd49c6",
+        "research_parameter_probe_hash": "705688e35ae16a3cc1dc242436fd50ef4def790324d209fe7695299b12faa224",
+        "research_recipient_id": "cosmos3-viewfactor-v1-SmartphoneInBinTask-seed-103-1794353058-native-211",
+        "research_seed": 211,
+        "research_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_state_hash": "e7da60ac6fa04bd7a44aa6dffd3f92ec707dad0e4eb44606d23588b07051af00",
+        "research_target_future_max_error": 0.02677631378173828,
+        "research_target_hash": "415eb5efe0918c28a74fb6d8f57d87ae4431d322bb77f2ba26fab21ea0e71537",
+        "research_x0_action_hashes": [
+          "e9319b74b5c3af5d9a10f2f643b7d5b5cd530f8610e2ed9229f0e852edf59e6d",
+          "d7afacb1a58084b75074ffe14a373da528a65d24caf1af80717160dcc38cd28a",
+          "67a66cbf35f15e0928c36b12a4874a9681dfdba420f2bf0b6bc146ae6f7aa9cb",
+          "94cac6382199db688146755b4b505154e4e89d5745889203a93ad7400dec6665"
+        ],
+        "research_x0_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_x0_vision_hashes": [
+          "96e7be57d9106ed5823484afb165af8dd89c1d92392ac0f3ab96e38b968d74e4",
+          "4c3e02c464c1c6d99df94a92e0f9efa19ded3b072c9be62fe481a7e3b36d453c",
+          "8ab1399ff466917a95978fa11b2de764863820bc3e1d86d49074e2c27b4594f9",
+          "c83a04451226b18e127cf543d4d90128a3d2d579d3f4aea230a527e3b331b40a"
+        ],
+        "server_timing": {
+          "infer_ms": 1286.3723520003987,
+          "prev_total_ms": 51865.379454000504
+        }
+      },
+      "target_donor_seed": 269,
+      "terminated": false,
+      "video_path": "/research/results/cosmos3_viewfactor_v1/SmartphoneInBinTask_seed_103/view_wrist_from_donor.npz"
+    }
+  },
+  "kv_patch_identity_action_maximum_errors": {},
+  "mechanism_suite": false,
+  "multi_donor": false,
+  "native": {
+    "211": {
+      "endpoint_state_digest": "f71f3d96b0cda00d1f91c5b6d55f99847b4868ab848d23a9f926685cca1de1b4",
+      "executed_action_count": 32,
+      "server": {
+        "research_attention_exclude_layers": [],
+        "research_attention_exclude_scope": "action",
+        "research_attention_interface": {
+          "action_tokens": 33,
+          "cache_call_counts": {},
+          "cache_id": null,
+          "components": "kv",
+          "excluded_keys_values": "future_video",
+          "instrumented_server": true,
+          "intervention_requested": false,
+          "layers": 36,
+          "mode": "exclude",
+          "scopes": {
+            "action": "exclude only for action queries",
+            "nonfuture": "exclude for current-video and action queries to block indirect future-to-current-to-action paths"
+          },
+          "text_kv_reuse": false,
+          "video_latent_frames": 9
+        },
+        "research_future_hash": "766c8b9e7136e61a5272d0c42e8ab6ce84c6c0c7913255f23fb30088df5bb900",
+        "research_id": "cosmos3-viewfactor-v1-SmartphoneInBinTask-seed-103-1794353058-native-211",
+        "research_infer_ms": 1279.9320989997796,
+        "research_initial_state_hash": "b85f28959ba8a6ab041b7219ba91c0611c1b05a75c80d981ca20e0d0c3ab98f9",
+        "research_mode": "native",
+        "research_parameter_probe_hash": "705688e35ae16a3cc1dc242436fd50ef4def790324d209fe7695299b12faa224",
+        "research_path_noise_hash": "eafef44a3304a15e6aee91db0a532f9ac31933254815603ad2526cc6bcccebea",
+        "research_seed": 211,
+        "research_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_state_hash": "e7da60ac6fa04bd7a44aa6dffd3f92ec707dad0e4eb44606d23588b07051af00",
+        "research_x0_action_hashes": [
+          "f6495cfd08334fc391f78f9ae883238f98b0fed6f93da4bdbf9af0379167cbc0",
+          "08a25051a3d000b2bcf927ef0b0c781662827830fd5fb39ec6a2681e79062117",
+          "aade87bf04fa41218c05043eff6a8d67c5eedf86ba74682503b7b9c2709b2d00",
+          "a132d3fdbad5d62f2f6f90c462b4a17abad8317983f1317c979586d9aa47e4e2"
+        ],
+        "research_x0_vision_hashes": [
+          "5a0c135333a8d9a21aa5411fe7612d2000e08af5c3f479856232162aed9c17ca",
+          "9c3bd53b55ae7d907b44b82b597c5b766ac8a0e0df00ff70f6446e0a51490278",
+          "996b77bdbc9eb7efa612c1dfd0399d48b2051941d91fc3e02df02404979af217",
+          "9cf79eee4bacfaa36eac4dfb7145309fb86a48832ecaf912da2c107787c2bec3"
+        ],
+        "server_timing": {
+          "infer_ms": 1281.498873999226
+        }
+      },
+      "terminated": false,
+      "video_path": "/research/results/cosmos3_viewfactor_v1/SmartphoneInBinTask_seed_103/native_211.npz"
+    },
+    "269": {
+      "endpoint_state_digest": "1e17aee1beca931d3b3c8330db2cf01b4f5fb44992fedeb3dc2f7886b70c6be9",
+      "executed_action_count": 32,
+      "server": {
+        "research_attention_exclude_layers": [],
+        "research_attention_exclude_scope": "action",
+        "research_attention_interface": {
+          "action_tokens": 33,
+          "cache_call_counts": {},
+          "cache_id": null,
+          "components": "kv",
+          "excluded_keys_values": "future_video",
+          "instrumented_server": true,
+          "intervention_requested": false,
+          "layers": 36,
+          "mode": "exclude",
+          "scopes": {
+            "action": "exclude only for action queries",
+            "nonfuture": "exclude for current-video and action queries to block indirect future-to-current-to-action paths"
+          },
+          "text_kv_reuse": false,
+          "video_latent_frames": 9
+        },
+        "research_future_hash": "b1e140802c667d371fd476d6801ae8adc8845a09c6f9c5bb68c04ce506581202",
+        "research_id": "cosmos3-viewfactor-v1-SmartphoneInBinTask-seed-103-1794353058-native-269",
+        "research_infer_ms": 1294.5533399997657,
+        "research_initial_state_hash": "741bd9a97e2eef0ee0379663d207ad8b813ed413f932c0785a0b120fab278019",
+        "research_mode": "native",
+        "research_parameter_probe_hash": "705688e35ae16a3cc1dc242436fd50ef4def790324d209fe7695299b12faa224",
+        "research_path_noise_hash": "7bfb771ad8c7b9062ee28c93799dc6fcf941f4dc47831fb7ba6e43784e86e35b",
+        "research_seed": 269,
+        "research_sigmas": [
+          0.9990000128746033,
+          0.9369999766349792,
+          0.8330000042915344,
+          0.6240000128746033
+        ],
+        "research_state_hash": "e7da60ac6fa04bd7a44aa6dffd3f92ec707dad0e4eb44606d23588b07051af00",
+        "research_x0_action_hashes": [
+          "ebb20a79325b3d8eb7797c7b859b2e8ab19fd64cecf4d859f95c34cc812b7f7b",
+          "9982c14d01732d06436664a51ab075c8f6f0bc6698f9cb1761ea70b3391f286f",
+          "a7f1a9b1ca1d03dba6d39b2950c561f35afbde747362da95d7c7d68ea1d6a3b8",
+          "f80093e646d84697d1bb004c22764a1272cb59a4002554e144d4488745bec04f"
+        ],
+        "research_x0_vision_hashes": [
+          "7c9950064c20cbd439be7156913819da563c4c7e7659b2d12baf8a7b72626361",
+          "4d2a6503e9fd3abe0c9d74a4fb47a4ab9f51b8693e831ccc731da942cc21d6a3",
+          "4239bf37ec0f2c27556c1b4e116444e2875dbdc13dbbbf24a5ef1ae7fc7bea81",
+          "9130ac61c3b1bb5baca0978b96a99a1961915d5f231dbe56652a0dc31f380cfb"
+        ],
+        "server_timing": {
+          "infer_ms": 1296.2794679988292,
+          "prev_total_ms": 135769.36189200025
+        }
+      },
+      "terminated": false,
+      "video_path": "/research/results/cosmos3_viewfactor_v1/SmartphoneInBinTask_seed_103/native_269.npz"
+    }
+  },
+  "native_action_l2": 1.7827831506729126,
+  "native_endpoint_l2": {
+    "all": 0.4094485649470352,
+    "object": 0.0,
+    "object_orientation": 0.0,
+    "object_position": 0.0,
+    "robot": 0.4094485649470352
+  },
+  "native_pairwise_endpoint_l2": {
+    "211:269": 0.4094485649470352
+  },
+  "native_target_object_position_l2": 0.0,
+  "natural_control_seed": 223,
+  "prefix_maximum_state_error": 0.0,
+  "recipient_seed": 211,
+  "recorded_env_cfg": "/workspace/robolab/output/cosmos3_population_screen_v1/seed_103/SmartphoneInBinTask/env_cfg.json",
+  "recorded_hdf5": "/workspace/robolab/output/cosmos3_population_screen_v1/seed_103/SmartphoneInBinTask/run_0.hdf5",
+  "restore_image_maximum_absolute_errors": [
+    112,
+    80,
+    82
+  ],
+  "restore_state_digests": [
+    "e28d7f3aee769d2f9997467c8357eb82ad80c452cbf10b91a96ad0d462f8064c",
+    "e28d7f3aee769d2f9997467c8357eb82ad80c452cbf10b91a96ad0d462f8064c",
+    "e28d7f3aee769d2f9997467c8357eb82ad80c452cbf10b91a96ad0d462f8064c"
+  ],
+  "restore_strategy": "fresh_replay",
+  "scope": "frozen same-state RoboLab population intervention",
+  "self_clamp_action_maximum_error": null,
+  "self_identity_action_maximum_error": 0.0,
+  "server_state_hash": "e7da60ac6fa04bd7a44aa6dffd3f92ec707dad0e4eb44606d23588b07051af00",
+  "study_id": "cosmos3-viewfactor-v1-SmartphoneInBinTask-seed-103-1794353058",
+  "target_object_name": "smartphone",
+  "task": "SmartphoneInBinTask",
+  "timing_sweep": false,
+  "view_factorization": true
+}
